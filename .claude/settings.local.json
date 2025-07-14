@@ -82,7 +82,13 @@
       "Bash(brew services:*)",
       "Bash(DATABASE_URL=postgresql://postgres:postgres@localhost:5432/mids_web uv run alembic stamp head)",
       "Bash(docker build:*)",
-      "Bash(docker rmi:*)"
+      "Bash(docker rmi:*)",
+      "Bash(brew install:*)",
+      "Bash(dotnet new:*)",
+      "Bash(dotnet add reference:*)",
+      "Bash(dotnet add:*)",
+      "Bash(dotnet build)",
+      "Bash(dotnet run:*)"
     ],
     "deny": [
       "// Dangerous operations",

@@ -8,7 +8,18 @@
       "Bash(rm:*)",
       "Bash(trash:*)",
       "Bash(git rm:*)",
-      "Bash(git reset:*)"
+      "Bash(git reset:*)",
+      "Bash(git commit:*)",
+      "Bash(gh auth:*)",
+      "Bash(gh repo create:*)",
+      "Bash(chmod:*)",
+      "Bash(./create_issues.sh:*)",
+      "Bash(mkdir:*)",
+      "Bash(mv:*)",
+      "Bash(just quickstart:*)",
+      "Bash(just:*)",
+      "Bash(uv add:*)",
+      "Bash(npm install:*)"
     ],
     "deny": []
   }

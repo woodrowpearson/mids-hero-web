@@ -1,306 +1,142 @@
-# Mids-Web: Modern Character Planner
+# CLAUDE.md - Mids Hero Web Development Guide
 
-Modern web-based rewrite of the Mids Reborn character planner for _City of Heroes_.
+This file provides essential guidance for AI-assisted development of the Mids Hero Web project.
 
 ## 🚀 Quick Start
 
 ```bash
-# 1. Clone and setup
-git clone https://github.com/mids-web/mids-web.git
-cd mids-web
+# Set project root and navigate
 export PROJECT_ROOT_DIR=$(git rev-parse --show-toplevel)
+cd "$PROJECT_ROOT_DIR"
 
-# 2. Run health checks
-python scripts/dev.py setup
-
-# 3. Start development
-docker-compose up --build
+# Development workflow
+just quickstart     # Initial setup
+just dev           # Start all services
+just health        # Run health checks
+just test          # Run all tests
 ```
 
-See [ROADMAP.md](ROADMAP.md) for detailed development milestones and [README.md](README.md) for project overview.
+## 📋 Project Overview
 
-## 📋 Overview
+Mids Hero Web is a modern web-based character build planner for City of Heroes, replacing the legacy Windows Forms application with a React/FastAPI stack.
 
-Mids-Web is a complete rewrite of the popular Mids Reborn character build planner, transforming the Windows Forms desktop application into a modern, responsive web application. The goal is to provide the same powerful build planning capabilities with improved accessibility, easier updates, and potential for new collaborative features.
+### Core Functionality
+- Character archetype and powerset selection
+- Power selection with level/prerequisite validation  
+- Enhancement slotting with set bonus calculations
+- Build statistics computation and validation
+- Import/export of character builds
+- Real-time updates from game servers
 
-### Technology Stack
+### Tech Stack
+- **Frontend**: React 19 + TypeScript, Material-UI (planned)
+- **Backend**: FastAPI + Python 3.11, SQLAlchemy, PostgreSQL
+- **DevOps**: Docker, uv package manager, GCP (planned)
 
-- **Frontend**: React with TypeScript for responsive user interface
-- **Backend**: Python with FastAPI (using `uv` for modern package management)
-- **Database**: PostgreSQL with SQLAlchemy ORM and Alembic migrations
-- **Authentication**: JWT-based (planned for user accounts)
-- **Storage**: PostgreSQL for game data, file export/import for builds
-- **API**: RESTful FastAPI with automatic OpenAPI documentation
-- **Cloud Platform**: Google Cloud Platform (GCP)
-- **Deployment**: Docker containers with Cloud Run (serverless)
+## 🛠️ Development Standards
 
-## 🛠️ Development Setup
+### Critical Rules
+1. **Always use just** for all operations - NEVER run commands directly
+2. **Token limits**: Keep contexts under 50k tokens, alert at 90k/128k
+3. **Run `just health`** before starting any work session
+4. **Update progress** after completing tasks: `just progress-update`
+5. **Use /clear** between unrelated tasks to prevent context pollution
 
-### Prerequisites
+### Code Standards
+- **Python**: Follow PEP 8, use type hints, async/await patterns
+- **TypeScript**: Strict mode enabled, proper interface definitions
+- **Database**: Always use migrations, never modify schema directly
+- **API**: RESTful conventions, Pydantic schemas for validation
+- **Testing**: TDD approach, maintain >80% coverage
 
-- Python 3.11+
-- `uv` (modern Python package manager)
-- Node.js 18+ (for React frontend)
-- Git
-- Docker and Docker Compose
-- PostgreSQL (for local development outside Docker)
+## 📊 Current Development State
 
-### Environment Setup
+Following the 6-epic roadmap (see `.claude/epics/` for details):
 
+**✅ Epic 1: Project Setup** - Complete
+- Git repository initialized
+- Docker environment configured
+- Backend/frontend scaffolds created
+- Database models defined
+
+**🚧 Epic 2: Data Import** - In Progress (CRITICAL BLOCKER)
+- Need City of Heroes game data files
+- Database migrations pending
+- Import scripts to be created
+
+**📋 Epic 3-6**: Backend API, Frontend, Deployment, Optimization - Planned
+
+## 🔧 Common Workflows
+
+### Daily Development
 ```bash
-# 1. Install uv (if not already installed)
-curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# 2. Set up backend dependencies
-cd backend
-uv sync  # Creates virtual environment and installs dependencies
-
-# 3. Set up frontend dependencies
-cd ../frontend
-npm install
-
-# 4. Set up environment variables
-cp .env.example .env
-# Edit .env with your database URL and other configuration
-
-# 5. Start development environment
-cd ..
-docker-compose up --build
+just dev            # Start all services
+just db-migrate     # Run pending migrations
+just test-watch     # Run tests in watch mode
+just lint-fix       # Auto-fix code issues
 ```
 
-### Daily Development Workflow
-
+### Database Operations
 ```bash
-# Always start with setup/health checks
-python scripts/dev.py setup
-
-# Start all services via Docker
-docker-compose up --build
-
-# Or run backend directly
-python scripts/dev.py run
-
-# Run tests
-python scripts/dev.py test
-
-# Run database migrations
-python scripts/dev.py migrate
-
-# Format and lint code
-python scripts/dev.py format
-python scripts/dev.py lint
-
-# Clean up build artifacts
-python scripts/dev.py clean
+just db-migration-create "description"  # Create new migration
+just db-reset                          # Reset database
+just db-seed                           # Load sample data
 ```
 
-## 🏗️ Project Structure
-
-```
-mids-web/
-├── backend/                   # FastAPI Python application
-│   ├── app/                  # Application code
-│   │   ├── routers/         # API route handlers
-│   │   ├── models.py        # Database models
-│   │   ├── schemas.py       # Pydantic schemas
-│   │   ├── crud.py          # Database operations
-│   │   └── database.py      # Database configuration
-│   ├── main.py              # FastAPI entry point
-│   └── pyproject.toml       # Python dependencies & config
-├── frontend/                  # React TypeScript application
-│   ├── src/                 # Source code
-│   │   ├── components/      # React components
-│   │   ├── services/        # API service layer
-│   │   └── App.tsx          # Main application component
-│   ├── public/              # Static assets
-│   └── package.json         # Node.js dependencies
-├── alembic/                   # Database migrations
-│   ├── versions/            # Migration files
-│   ├── env.py              # Alembic configuration
-│   └── alembic.ini         # Alembic settings
-├── scripts/                   # Development and utility scripts
-│   └── dev.py              # Main development helper
-├── docs/                      # Documentation (future)
-├── ROADMAP.md                # Development roadmap
-├── CLAUDE.md                 # This file - Core development instructions
-└── README.md                 # Project overview
-```
-
-## 🧪 Testing
-
+### Code Quality
 ```bash
-# Run all backend tests with coverage
-python scripts/dev.py test
-
-# Backend tests directly
-cd backend
-uv run pytest -v --cov=app
-
-# Frontend tests
-cd frontend
-npm test
-
-# Specific test files
-cd backend
-uv run pytest tests/test_api.py -v
-
-# Integration tests with Docker
-docker-compose -f docker-compose.test.yml up --build --abort-on-container-exit
+just quality        # Run all checks
+just format         # Format code
+just type-check     # Type checking
 ```
 
-## 🚦 Development Standards
+## 📁 Project Structure
 
-1. **Branch Strategy**: Create feature branches from `main`
+```
+mids-hero-web/
+├── .claude/              # AI development context
+│   ├── agents/          # Specialized AI agents
+│   ├── epics/           # Roadmap epic details
+│   └── shared/          # Shared context
+├── backend/             # FastAPI application
+│   ├── app/            # Application code
+│   └── pyproject.toml  # Dependencies
+├── frontend/            # React application  
+├── scripts/            # Helper scripts
+├── docker-compose.yml  # Local development
+└── justfile           # Development commands
+```
 
-   ```bash
-   git checkout main && git pull
-   git checkout -b feature/epic-{number}-{description}
-   ```
+## ⚠️ Important Notes
 
-2. **Code Quality**: Use `uv` with automated tools
+### Current Blockers
+1. **No game data**: Epic 2 requires City of Heroes .mhd files
+2. **No migrations**: Database schema exists but not migrated
+3. **Mock data only**: API returns placeholders
 
-   ```bash
-   # Format code
-   python scripts/dev.py format
+### Development Priorities
+1. Obtain game data files (contact Homecoming team)
+2. Create and run database migrations
+3. Implement data import pipeline
+4. Replace mock API responses with real data
 
-   # Lint and type check
-   python scripts/dev.py lint
+## 🤖 AI Agent Guidelines
 
-   # Pre-commit checks
-   uv run ruff check --fix .
-   uv run black .
-   uv run mypy .
-   ```
+When creating specialized agents:
+- **Database Agent**: Focus on migrations, models, import scripts
+- **API Agent**: Handle endpoint creation, schemas, testing
+- **Frontend Agent**: Component development, state management
+- **DevOps Agent**: Docker, deployment, monitoring
 
-3. **Commit Standards**: Use conventional commits aligned with roadmap epics
-
-   - `feat:` New feature implementation
-   - `fix:` Bug fix
-   - `docs:` Documentation changes
-   - `test:` Test additions/changes
-   - `refactor:` Code refactoring
-   - `data:` Game data updates
-
-4. **Test-Driven Development**: Write tests first, especially for API endpoints and calculations
-
-## 🎮 Game Data Architecture
-
-Modern approach to City of Heroes data management:
-
-- **Data Import**: Python scripts to convert original .mhd files to PostgreSQL
-- **API Endpoints**: RESTful access to archetypes, powersets, powers, enhancements
-- **Calculations**: Server-side build validation and statistics computation
-- **Caching**: Efficient data serving with potential Redis integration
-- **Updates**: Automated data pipeline for new game versions
+Always reference `.claude/agents/` for agent-specific context.
 
 ## 📚 Documentation
 
-- **[CLAUDE.md](CLAUDE.md)** - 🚨 **START HERE** - Core development workflow
-- **[README.md](README.md)** - Project overview and quick start
-- **[ROADMAP.md](ROADMAP.md)** - Detailed development plan with 6 epics
-- **[backend/pyproject.toml](backend/pyproject.toml)** - Python dependencies and tool configuration
-
-## 🔧 Common Commands
-
-```bash
-# Development helper (shows all available commands)
-python scripts/dev.py
-
-# Database operations
-cd backend
-uv run alembic upgrade head              # Run migrations
-uv run alembic revision --autogenerate -m "description"  # Create migration
-
-# Docker operations
-docker-compose up --build               # Start all services
-docker-compose logs -f backend          # View backend logs
-docker-compose down -v                  # Stop and remove volumes
-
-# Frontend operations
-cd frontend
-npm start                               # Start development server
-npm run build                           # Build for production
-npm test                                # Run tests
-
-# API testing
-curl http://localhost:8000/ping         # Health check
-curl http://localhost:8000/docs         # API documentation
-```
-
-## 🚢 Deployment
-
-The project uses Docker for containerized deployment:
-
-- **Development**: Docker Compose with hot-reload
-- **Production**: Multi-stage Dockerfile with optimized builds
-- **Cloud**: Google Cloud Platform with Cloud Run
-- **CI/CD**: GitHub Actions (to be implemented)
-
-Current deployment targets:
-
-- **Local**: `docker-compose up --build`
-- **Cloud**: GCP Cloud Run with Cloud SQL PostgreSQL
-
-## 🛡️ Security
-
-- Environment variables for all configuration
-- No hardcoded API keys or database credentials
-- Non-root Docker containers
-- CORS configuration for API access
-- Input validation with Pydantic schemas
-
-## 🤝 Contributing
-
-1. Read [ROADMAP.md](ROADMAP.md) for current development priorities
-2. Create feature branch aligned with roadmap epics
-3. Write tests first (TDD approach)
-4. Ensure all checks pass: `python scripts/dev.py test`
-5. Submit PR with clear description referencing roadmap tasks
-
-## 📊 Current Status
-
-Following the [6-epic roadmap](ROADMAP.md):
-
-- **Epic 1**: ✅ Project Setup and Planning (Complete)
-- **Epic 2**: 🚧 Data Model & Database Integration (In Progress)
-- **Epic 3**: 📋 Backend API Development (Next)
-- **Epic 4**: 📋 Frontend Application Implementation (Planned)
-- **Epic 5**: 📋 Deployment and DevOps (Planned)
-- **Epic 6**: 📋 Optimization and Feature Enhancements (Future)
-
-**MVP Target**: Functional character build planner with Homecoming 2025.7.1111 database
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-_Mids-Web is not affiliated with or endorsed by NCSoft or the original City of Heroes development team._
+- **Roadmap**: `.claude/epics/` - Detailed epic breakdowns
+- **Architecture**: `.claude/shared/architecture.md`
+- **API Design**: `.claude/shared/api-standards.md`
+- **Database**: `.claude/shared/database-design.md`
 
 ---
 
-<!-- Auto-generated development notes -->
-
-## Development Setup
-
-This project uses modern Python tooling with two main approaches:
-
-### Daily Development
-
-Use `scripts/dev.py` for common development tasks:
-
-- Setting up Python environment with `uv`
-- Installing dependencies
-- Running the development server
-- Database migrations
-- Code formatting and linting
-
-### Container Development
-
-Use `docker-compose up --build` for:
-
-- Full-stack development environment
-- Database with sample data
-- Hot-reload for both frontend and backend
-- Consistent environment across team members
-
-New developers should start with the Quick Start section and use `python scripts/dev.py setup` for initial environment configuration.
+Remember: This is a community project recreating a beloved tool. Quality and accuracy are paramount - the City of Heroes community depends on precise build calculations.

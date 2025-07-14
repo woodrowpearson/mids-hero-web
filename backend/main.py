@@ -6,11 +6,12 @@ FastAPI application for serving City of Heroes build planning data and calculati
 import os
 from contextlib import asynccontextmanager
 
-from app.database import close_database_pool, create_database_pool
-from app.routers import archetypes, builds, enhancements, powers, powersets
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+
+from app.database import close_database_pool, create_database_pool
+from app.routers import archetypes, builds, enhancements, powers, powersets
 
 
 # Application lifecycle management

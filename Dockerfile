@@ -26,7 +26,7 @@ RUN pip install uv
 WORKDIR /app/backend
 
 # Copy Python project files
-COPY backend/pyproject.toml ./
+COPY backend/pyproject.toml backend/README.md backend/uv.lock ./
 
 # Create virtual environment and install dependencies
 RUN uv venv .venv && uv sync --no-dev

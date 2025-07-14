@@ -1,0 +1,2 @@
+# Requirements for context management scripts
+tiktoken>=0.5.1

@@ -81,6 +81,8 @@ packages = ["app"]
 [tool.ruff]
 target-version = "py311"
 line-length = 88
+
+[tool.ruff.lint]
 select = [
     "E",  # pycodestyle errors
     "W",  # pycodestyle warnings
@@ -98,9 +100,11 @@ ignore = [
     "B904",  # raise-without-from-inside-except
 ]
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F401"]
 "test_*.py" = ["ARG001", "ARG002"]
+"main.py" = ["ARG001"]  # Allow unused args in lifespan
+"app/routers/*.py" = ["ARG001"]  # Allow unused args in placeholder endpoints
 
 [tool.black]
 target-version = ['py311']
@@ -188,3 +192,9 @@ exclude_lines = [
 ]
 show_missing = true
 skip_covered = false
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "pytest>=8.4.1",
+]

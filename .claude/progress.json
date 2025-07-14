@@ -1,0 +1,11 @@
+{
+  "epics": {
+    "1": {"status": "complete", "percentage": 100},
+    "2": {"status": "blocked", "percentage": 20},
+    "3": {"status": "planned", "percentage": 0},
+    "4": {"status": "planned", "percentage": 0},
+    "5": {"status": "planned", "percentage": 0},
+    "6": {"status": "future", "percentage": 0}
+  },
+  "last_updated": "2025-07-13T19:24:01-07:00"
+}

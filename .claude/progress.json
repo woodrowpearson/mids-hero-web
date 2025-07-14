@@ -41,22 +41,23 @@
     "epic2": {
       "name": "Data Model & Database Integration",
       "status": "in_progress",
-      "progress": 30,
+      "progress": 50,
       "tasks": [
         "✅ Database schema design completed",
         "✅ Comprehensive SQLAlchemy models implemented",
         "✅ Alembic migration framework set up",
-        "✅ Initial database migration created",
+        "✅ Initial database migration created and applied",
+        "✅ Database schema deployment successful",
         "✅ Pydantic schemas updated",
         "🚧 Data import utilities - next phase"
       ],
       "blockers": [
         "Need City of Heroes game data files (.mhd files)",
-        "Database deployment pending (requires Docker fix)",
         "Import scripts to be created for Task 2.2"
       ],
       "github_issues_closed": [
-        "#24 Subtask 2.1.2: Translate design into SQLAlchemy models"
+        "#24 Subtask 2.1.2: Translate design into SQLAlchemy models",
+        "#25 Subtask 2.1.3: Run migrations to apply schema to Postgres database"
       ],
       "current_branch": "epic2-database-schema"
     },

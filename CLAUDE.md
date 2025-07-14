@@ -69,7 +69,7 @@ Mids Hero Web is a modern web-based character build planner for City of Heroes, 
 
 Following the 6-epic roadmap (see `.claude/epics/` for details):
 
-**✅ Epic 1: Project Setup** - Complete
+**✅ Epic 1: Project Setup** - Complete (All 20 GitHub issues closed)
 
 - Git repository and project structure established
 - React 19 frontend scaffold with TypeScript

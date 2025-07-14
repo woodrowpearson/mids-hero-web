@@ -19,8 +19,13 @@ RUN npm run build
 # Backend stage with uv
 FROM python:3.11-slim AS backend-builder
 
-# Install uv - the modern Python package manager
-RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+# Install curl and uv - the modern Python package manager
+RUN apt-get update && apt-get install -y curl && \
+    curl -LsSf https://astral.sh/uv/install.sh | sh && \
+    rm -rf /var/lib/apt/lists/*
+
+# Add uv to PATH
+ENV PATH="/root/.cargo/bin:$PATH"
 
 # Set working directory for backend
 WORKDIR /app/backend
@@ -37,6 +42,7 @@ FROM python:3.11-slim AS production
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     libpq-dev \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Set working directory

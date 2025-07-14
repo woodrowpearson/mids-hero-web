@@ -61,7 +61,10 @@
       "Bash(uv add:*)",
       "Bash(just:*)",
       "Bash(touch:*)",
-      "Bash(bash:*)"
+      "Bash(bash:*)",
+      "Bash(gh issue list:*)",
+      "Bash(gh issue view:*)",
+      "Bash(gh issue close:*)"
     ],
     "deny": [
       "// Dangerous operations",

@@ -92,6 +92,7 @@ just health       # Check environment
 just install      # Reinstall deps
 just clean        # Clean artifacts
 just docker-clean # Reset Docker
+just setup-github-workflows # Configure AI workflows
 ```
 
 ## Environment Variables

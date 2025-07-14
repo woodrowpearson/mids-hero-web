@@ -40,6 +40,12 @@ share/python-wheels/
 *.egg
 MANIFEST
 
+# bi-directional sync between ai and local user
+/shared/
+
+# data files for db import
+/data/
+
 # PyInstaller
 *.manifest
 *.spec

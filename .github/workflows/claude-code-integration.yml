@@ -1,0 +1,148 @@
+name: Claude Code Integration
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  claude-response:
+    if: |
+      (github.event.issue.pull_request && contains(github.event.comment.body, '@claude')) ||
+      (contains(github.event.comment.body, '@claude') && !github.event.issue.pull_request)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          
+      - name: Install dependencies
+        run: |
+          pip install anthropic pyyaml
+          
+      - name: Get issue/PR context
+        id: context
+        run: |
+          ISSUE_NUMBER=${{ github.event.issue.number }}
+          USER_COMMENT="${{ github.event.comment.body }}"
+          
+          # Remove @claude mention and get actual question
+          QUESTION=$(echo "$USER_COMMENT" | sed 's/@claude//' | sed 's/^[[:space:]]*//')
+          
+          echo "question=$QUESTION" >> $GITHUB_OUTPUT
+          echo "issue_number=$ISSUE_NUMBER" >> $GITHUB_OUTPUT
+          
+          # Get issue/PR details
+          if [ "${{ github.event.issue.pull_request }}" != "null" ]; then
+            gh pr view $ISSUE_NUMBER --json title,body,files > pr_context.json
+            echo "type=pr" >> $GITHUB_OUTPUT
+          else
+            gh issue view $ISSUE_NUMBER --json title,body > issue_context.json
+            echo "type=issue" >> $GITHUB_OUTPUT
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
+          
+      - name: Generate Claude response
+        id: claude
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          python -c "
+          import os
+          import anthropic
+          import json
+          
+          client = anthropic.Anthropic()
+          
+          question = '''${{ steps.context.outputs.question }}'''
+          context_type = '${{ steps.context.outputs.type }}'
+          
+          # Read project context
+          project_context = ''
+          try:
+              with open('CLAUDE.md', 'r') as f:
+                  project_context = f.read()[:4000]
+          except:
+              project_context = 'Mids Hero Web - City of Heroes character build planner'
+          
+          # Read issue/PR context
+          additional_context = ''
+          try:
+              if context_type == 'pr':
+                  with open('pr_context.json', 'r') as f:
+                      pr_data = json.load(f)
+                      additional_context = f\"PR: {pr_data.get('title', '')}\nDescription: {pr_data.get('body', '')[:1000]}\"
+              else:
+                  with open('issue_context.json', 'r') as f:
+                      issue_data = json.load(f)
+                      additional_context = f\"Issue: {issue_data.get('title', '')}\nDescription: {issue_data.get('body', '')[:1000]}\"
+          except:
+              pass
+          
+          # Create comprehensive prompt
+          prompt = f'''You are Claude Code assistant helping with the Mids Hero Web project.
+
+Project Context:
+{project_context}
+
+Current {context_type.upper()} Context:
+{additional_context}
+
+User Question:
+{question}
+
+Instructions:
+1. Provide helpful, accurate responses about this City of Heroes character build planner
+2. Reference the 6-epic roadmap when relevant (Epic 2 data import is currently blocked)
+3. Suggest using 'just' commands instead of direct script execution
+4. Recommend uv over pip, fd over find, trash over rm -rf
+5. Keep responses focused and actionable
+6. Include specific file references when helpful (e.g., backend/app/models.py:42)
+7. Consider the FastAPI/React/PostgreSQL tech stack
+
+Provide a helpful response:'''
+          
+          # Get response
+          response = client.messages.create(
+              model='claude-3-5-sonnet-20241022',
+              max_tokens=2000,
+              messages=[{'role': 'user', 'content': prompt}]
+          )
+          
+          claude_response = response.content[0].text
+          
+          # Save response
+          with open('claude_response.md', 'w') as f:
+              f.write(claude_response)
+          "
+          
+      - name: Post Claude response
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const response = fs.readFileSync('claude_response.md', 'utf8');
+            const issueNumber = ${{ steps.context.outputs.issue_number }};
+            
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber,
+              body: `## 🤖 Claude Code Assistant
+
+${response}
+
+---
+*I'm Claude, your AI assistant for the Mids Hero Web project. Mention @claude in comments to ask questions about the codebase, epic progress, or City of Heroes mechanics.*`
+            });

@@ -1,0 +1,192 @@
+name: Context Health Check
+
+on:
+  schedule:
+    # Run every 6 hours to monitor context drift
+    - cron: "0 */6 * * *"
+  push:
+    branches: [main, develop]
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+jobs:
+  context-size-monitor:
+    name: Monitor Context Sizes
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install tiktoken
+
+      - name: Check CLAUDE.md size
+        id: claude-check
+        run: |
+          if [ -f "CLAUDE.md" ]; then
+            LINES=$(wc -l < CLAUDE.md)
+            CHARS=$(wc -c < CLAUDE.md)
+            echo "lines=$LINES" >> $GITHUB_OUTPUT
+            echo "chars=$CHARS" >> $GITHUB_OUTPUT
+
+            # Estimate tokens (roughly 1 token per 4 chars)
+            TOKENS=$((CHARS / 4))
+            echo "tokens=$TOKENS" >> $GITHUB_OUTPUT
+
+            if [ "$TOKENS" -gt 5000 ]; then
+              echo "::warning file=CLAUDE.md::CLAUDE.md has ~$TOKENS tokens (target: <5000)"
+            fi
+          fi
+
+      - name: Install just for token analysis
+        uses: extractions/setup-just@v2
+
+      - name: Run token usage analysis
+        run: |
+          echo "## Context Size Analysis" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ -f "requirements-context.txt" ]; then
+            pip install -r requirements-context.txt
+          fi
+
+          # Run our project's token analysis
+          if [ -x "scripts/context/analyze_token_usage.py" ]; then
+            python scripts/context/analyze_token_usage.py >> $GITHUB_STEP_SUMMARY
+          else
+            # Fallback analysis
+            echo "### Markdown Files" >> $GITHUB_STEP_SUMMARY
+            echo "| File | Lines | Size | Est. Tokens | Status |" >> $GITHUB_STEP_SUMMARY
+            echo "|------|-------|------|-------------|--------|" >> $GITHUB_STEP_SUMMARY
+
+            fd -e md . | head -20 | while read -r file; do
+              LINES=$(wc -l < "$file")
+              SIZE=$(du -h "$file" | cut -f1)
+              CHARS=$(wc -c < "$file")
+              TOKENS=$((CHARS / 4))
+              STATUS="✅"
+
+              # Flag oversized files
+              if [[ "$file" == *"CLAUDE.md" ]] && [ "$TOKENS" -gt 5000 ]; then
+                STATUS="⚠️ Over token limit"
+              elif [ "$TOKENS" -gt 10000 ]; then
+                STATUS="⚠️ Very large file"
+              elif [ "$TOKENS" -gt 5000 ]; then
+                STATUS="📝 Large file"
+              fi
+
+              echo "| $file | $LINES | $SIZE | ~$TOKENS | $STATUS |" >> $GITHUB_STEP_SUMMARY
+            done
+          fi
+
+  validate-structure:
+    name: Validate Context Structure
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check required structure
+        run: |
+          echo "## Structure Validation" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          CHECKS_PASSED=0
+          TOTAL_CHECKS=0
+
+          check_exists() {
+            TOTAL_CHECKS=$((TOTAL_CHECKS + 1))
+            if [ -e "$1" ]; then
+              echo "✅ $1" >> $GITHUB_STEP_SUMMARY
+              CHECKS_PASSED=$((CHECKS_PASSED + 1))
+              return 0
+            else
+              echo "❌ $1 (missing)" >> $GITHUB_STEP_SUMMARY
+              return 1
+            fi
+          }
+
+          # Check key Mids Hero Web files
+          check_exists "CLAUDE.md"
+          check_exists "justfile"
+          check_exists "ROADMAP.md"
+          check_exists "backend/pyproject.toml"
+          check_exists "frontend/package.json"
+
+          # Check key directories
+          check_exists ".claude/"
+          check_exists ".claude/shared/"
+          check_exists ".claude/commands/"
+          check_exists "scripts/"
+          check_exists "backend/app/"
+          check_exists "frontend/src/"
+
+          # Check Docker files
+          check_exists "Dockerfile"
+          check_exists "docker-compose.yml"
+
+          # Summary
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Checks Passed**: $CHECKS_PASSED/$TOTAL_CHECKS" >> $GITHUB_STEP_SUMMARY
+
+          if [ "$CHECKS_PASSED" -ne "$TOTAL_CHECKS" ]; then
+            echo "::warning::Some required context structure elements are missing"
+          fi
+
+  command-compliance:
+    name: Check Command Compliance
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check for forbidden commands
+        run: |
+          echo "## Command Compliance Check" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          VIOLATIONS=0
+
+          # Check for dangerous rm commands (exclude documentation and shared)
+          if grep -r "rm -rf" --include="*.sh" --include="*.py" --exclude-dir="shared" --exclude-dir=".github" --exclude-dir=".new-project" . | grep -v "# Use.*instead of.*rm -rf\|Use.*trash.*instead of.*rm -rf" ; then
+            echo "❌ Found 'rm -rf' usage - use 'trash' instead" >> $GITHUB_STEP_SUMMARY
+            VIOLATIONS=$((VIOLATIONS + 1))
+          else
+            echo "✅ No 'rm -rf' violations found" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Check for find commands (should use fd, exclude shared directory)
+          if grep -r "find \." --include="*.md" --include="*.sh" --exclude-dir="shared" . | grep -v "fd\|/usr/bin/find"; then
+            echo "❌ Found 'find' usage - use 'fd' instead" >> $GITHUB_STEP_SUMMARY
+            VIOLATIONS=$((VIOLATIONS + 1))
+          else
+            echo "✅ No 'find' violations found" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Check for pip usage (should use uv, exclude documentation and shared)
+          if grep -r "pip install" --include="*.sh" --include="*.py" --exclude-dir="shared" --exclude-dir=".github" --exclude-dir=".new-project" . | grep -v "requirements-context\|use.*uv.*instead\|Use.*uv.*instead"; then
+            echo "❌ Found 'pip install' usage - use 'uv' instead" >> $GITHUB_STEP_SUMMARY
+            VIOLATIONS=$((VIOLATIONS + 1))
+          else
+            echo "✅ No 'pip install' violations found" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ "$VIOLATIONS" -eq 0 ]; then
+            echo "**✅ All command compliance checks passed**" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "**❌ Found $VIOLATIONS command compliance violations**" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi

@@ -159,24 +159,24 @@ jobs:
 
           VIOLATIONS=0
 
-          # Check for dangerous rm commands
-          if grep -r "rm -rf" --include="*.md" --include="*.sh" --include="*.py" . ; then
+          # Check for dangerous rm commands (exclude shared directory which contains templates)
+          if grep -r "rm -rf" --include="*.md" --include="*.sh" --include="*.py" --exclude-dir="shared" . ; then
             echo "❌ Found 'rm -rf' usage - use 'trash' instead" >> $GITHUB_STEP_SUMMARY
             VIOLATIONS=$((VIOLATIONS + 1))
           else
             echo "✅ No 'rm -rf' violations found" >> $GITHUB_STEP_SUMMARY
           fi
 
-          # Check for find commands (should use fd)
-          if grep -r "find \." --include="*.md" --include="*.sh" . | grep -v "fd\|/usr/bin/find"; then
+          # Check for find commands (should use fd, exclude shared directory)
+          if grep -r "find \." --include="*.md" --include="*.sh" --exclude-dir="shared" . | grep -v "fd\|/usr/bin/find"; then
             echo "❌ Found 'find' usage - use 'fd' instead" >> $GITHUB_STEP_SUMMARY
             VIOLATIONS=$((VIOLATIONS + 1))
           else
             echo "✅ No 'find' violations found" >> $GITHUB_STEP_SUMMARY
           fi
 
-          # Check for pip usage (should use uv)
-          if grep -r "pip install" --include="*.md" --include="*.sh" --include="*.py" . | grep -v "requirements-context"; then
+          # Check for pip usage (should use uv, exclude shared directory)
+          if grep -r "pip install" --include="*.md" --include="*.sh" --include="*.py" --exclude-dir="shared" . | grep -v "requirements-context"; then
             echo "❌ Found 'pip install' usage - use 'uv' instead" >> $GITHUB_STEP_SUMMARY
             VIOLATIONS=$((VIOLATIONS + 1))
           else

@@ -80,13 +80,12 @@ def main():
 
     elif command == "clean":
         print("Cleaning up build artifacts...")
-        run_command(
-            "find . -type d -name '__pycache__' -exec rm -rf {} +", cwd=backend_dir
-        )
-        run_command("find . -type f -name '*.pyc' -delete", cwd=backend_dir)
-        run_command("rm -rf .pytest_cache", cwd=backend_dir)
-        run_command("rm -rf .mypy_cache", cwd=backend_dir)
-        run_command("rm -rf .ruff_cache", cwd=backend_dir)
+        # Use proper commands instead of rm -rf
+        run_command("fd __pycache__ -t d -x trash", cwd=backend_dir)
+        run_command("fd -e pyc -x trash", cwd=backend_dir)
+        run_command("trash .pytest_cache", cwd=backend_dir)
+        run_command("trash .mypy_cache", cwd=backend_dir)
+        run_command("trash .ruff_cache", cwd=backend_dir)
         print("Clean complete!")
 
     else:

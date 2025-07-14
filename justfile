@@ -115,9 +115,10 @@ db-seed:
 clean:
     @echo "🧹 Cleaning build artifacts..."
     {{python}} scripts/dev.py clean
-    find . -type d -name "__pycache__" -exec trash {} + 2>/dev/null || true
-    find . -type d -name ".pytest_cache" -exec trash {} + 2>/dev/null || true
-    find . -type d -name "node_modules" -prune -o -type d -name ".next" -exec trash {} + 2>/dev/null || true
+    fd __pycache__ -t d -x trash 2>/dev/null || true
+    fd .pytest_cache -t d -x trash 2>/dev/null || true
+    fd node_modules -t d -x trash 2>/dev/null || true
+    fd .next -t d -x trash 2>/dev/null || true
 
 # Update progress in roadmap
 progress-update:

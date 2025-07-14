@@ -1,0 +1,188 @@
+name: Context Health Check
+
+on:
+  schedule:
+    # Run every 6 hours to monitor context drift
+    - cron: "0 */6 * * *"
+  push:
+    branches: [main, develop]
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+jobs:
+  context-size-monitor:
+    name: Monitor Context Sizes
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install tiktoken
+
+      - name: Check CLAUDE.md size
+        id: claude-check
+        run: |
+          if [ -f "CLAUDE.md" ]; then
+            LINES=$(wc -l < CLAUDE.md)
+            CHARS=$(wc -c < CLAUDE.md)
+            echo "lines=$LINES" >> $GITHUB_OUTPUT
+            echo "chars=$CHARS" >> $GITHUB_OUTPUT
+
+            # Estimate tokens (roughly 1 token per 4 chars)
+            TOKENS=$((CHARS / 4))
+            echo "tokens=$TOKENS" >> $GITHUB_OUTPUT
+
+            if [ "$TOKENS" -gt 5000 ]; then
+              echo "::warning file=CLAUDE.md::CLAUDE.md has ~$TOKENS tokens (target: <5000)"
+            fi
+          fi
+
+      - name: Analyze context distribution
+        run: |
+          echo "## Context Size Analysis" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Check all markdown files
+          echo "### Markdown Files" >> $GITHUB_STEP_SUMMARY
+          echo "| File | Lines | Size | Est. Tokens | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|-------|------|-------------|--------|" >> $GITHUB_STEP_SUMMARY
+
+          fd -e md . | while read -r file; do
+            LINES=$(wc -l < "$file")
+            SIZE=$(du -h "$file" | cut -f1)
+            CHARS=$(wc -c < "$file")
+            TOKENS=$((CHARS / 4))
+            STATUS="✅"
+
+            # Flag oversized files
+            if [[ "$file" == *"CLAUDE.md" ]] && [ "$TOKENS" -gt 5000 ]; then
+              STATUS="⚠️ Over token limit"
+            elif [ "$TOKENS" -gt 10000 ]; then
+              STATUS="⚠️ Very large file"
+            elif [ "$TOKENS" -gt 5000 ]; then
+              STATUS="📝 Large file"
+            fi
+
+            echo "| $file | $LINES | $SIZE | ~$TOKENS | $STATUS |" >> $GITHUB_STEP_SUMMARY
+          done
+
+      - name: Calculate total token usage
+        run: |
+          python -c "
+          import os
+          from pathlib import Path
+
+          total_chars = 0
+          files = []
+
+          # Calculate for key context files
+          patterns = ['*.md', '.claude/**/*.md', '.new-project/**/*.md']
+          for pattern in patterns:
+              for path in Path('.').rglob(pattern):
+                  if path.is_file() and '.git' not in str(path):
+                      try:
+                          content = path.read_text(encoding='utf-8')
+                          chars = len(content)
+                          total_chars += chars
+                          files.append((str(path), chars))
+                      except:
+                          pass
+
+          # Sort by size
+          files.sort(key=lambda x: x[1], reverse=True)
+
+          # Estimate tokens
+          total_tokens = total_chars // 4
+
+          print(f'Total estimated tokens: {total_tokens:,}')
+          print(f'Percentage of 200k limit: {(total_tokens / 200000) * 100:.1f}%')
+          print(f'Recommended max (50k): {(total_tokens / 50000) * 100:.1f}%')
+          print('\\nTop 5 largest files:')
+          for file, chars in files[:5]:
+              tokens = chars // 4
+              print(f'  {file}: ~{tokens:,} tokens')
+          "
+
+  validate-structure:
+    name: Validate Context Structure
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check required structure
+        run: |
+          echo "## Structure Validation" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          CHECKS_PASSED=0
+          TOTAL_CHECKS=0
+
+          check_exists() {
+            TOTAL_CHECKS=$((TOTAL_CHECKS + 1))
+            if [ -e "$1" ]; then
+              echo "✅ $1" >> $GITHUB_STEP_SUMMARY
+              CHECKS_PASSED=$((CHECKS_PASSED + 1))
+              return 0
+            else
+              echo "❌ $1 (missing)" >> $GITHUB_STEP_SUMMARY
+              return 1
+            fi
+          }
+
+          # Check key files
+          check_exists "CLAUDE.md"
+          check_exists "justfile"
+          check_exists ".env.template"
+
+          # Check key directories
+          check_exists ".claude/"
+          check_exists ".claude/shared/"
+          check_exists "scripts/"
+
+          # Summary
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Checks Passed**: $CHECKS_PASSED/$TOTAL_CHECKS" >> $GITHUB_STEP_SUMMARY
+
+          if [ "$CHECKS_PASSED" -ne "$TOTAL_CHECKS" ]; then
+            echo "::warning::Some required context structure elements are missing"
+          fi
+
+  context-optimization:
+    name: Suggest Optimizations
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install tiktoken
+
+      - name: Run optimization analysis
+        run: |
+          python scripts/context/analyze_token_usage.py --analyze > optimization_report.txt
+
+          if [ -s optimization_report.txt ]; then
+            echo "## Optimization Suggestions" >> $GITHUB_STEP_SUMMARY
+            cat optimization_report.txt >> $GITHUB_STEP_SUMMARY
+          fi

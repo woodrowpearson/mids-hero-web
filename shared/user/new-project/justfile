@@ -1,0 +1,256 @@
+# Claude Code Optimized Justfile
+# Focused on context management and AI-assisted development
+
+set shell := ["bash", "-euo", "pipefail", "-c"]
+set dotenv-load := true
+set positional-arguments := true
+
+# Configuration
+project_root := justfile_directory()
+python_version := env_var_or_default("PYTHON_VERSION", "3.11")
+venv_name := env_var_or_default("VENV_NAME", ".venv")
+
+# Colors for output
+export BOLD := '\033[1m'
+export RESET := '\033[0m'
+export GREEN := '\033[32m'
+export YELLOW := '\033[33m'
+export RED := '\033[31m'
+
+# Default - show available commands
+default:
+    @just --list --justfile {{justfile()}}
+
+# === Quick Start ===
+
+# Complete setup for new developers
+quickstart: install-tools setup
+    @echo "✅ Development environment ready!"
+    @echo "🚀 Run 'just dev' to start development"
+
+# Install required tools
+install-tools:
+    @echo "🔧 Checking required tools..."
+    @command -v python3 >/dev/null || echo "⚠️  Please install Python {{python_version}}"
+    @command -v git >/dev/null || echo "⚠️  Please install Git"
+    @echo "✅ Tools check complete"
+
+# Setup project environment
+setup: venv install
+    @echo "✅ Project setup complete"
+
+# Create virtual environment
+venv:
+    @echo "🐍 Creating virtual environment..."
+    python{{python_version}} -m venv {{venv_name}}
+    @echo "✅ Virtual environment created"
+
+# Install dependencies
+install:
+    @echo "📦 Installing dependencies..."
+    {{venv_name}}/bin/pip install --upgrade pip
+    {{venv_name}}/bin/pip install -r requirements.txt
+    @echo "✅ Dependencies installed"
+
+# === Context Management ===
+
+# Check context health
+context-health:
+    @echo "🏥 Checking context health..."
+    {{venv_name}}/bin/python scripts/context/context_health_monitor.py
+
+# Analyze context sizes
+context-analyze:
+    @echo "📊 Analyzing context sizes..."
+    {{venv_name}}/bin/python scripts/context/measure_context_complexity.py
+
+# Prune oversized contexts
+context-prune:
+    @echo "✂️ Pruning contexts..."
+    {{venv_name}}/bin/python scripts/context/context_pruning.py --auto
+
+# Monitor token usage
+token-monitor:
+    @echo "🔤 Monitoring token usage..."
+    {{venv_name}}/bin/python scripts/context/analyze_token_usage.py --watch
+
+# Full context optimization
+optimize-context: context-analyze context-prune token-monitor
+    @echo "✅ Context optimization complete"
+
+# Resume context management session
+context-resume:
+    @echo "🔄 Resuming context management..."
+    @echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    @if [ -f ".claude/shared/memory/session.json" ]; then \
+        {{venv_name}}/bin/python scripts/context/load_session.py; \
+    else \
+        echo "  • No active session found"; \
+    fi
+    @echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+# === Development ===
+
+# Start development server
+dev:
+    @echo "🚀 Starting development server..."
+    {{venv_name}}/bin/python -m app.main
+
+# Run with custom port
+dev-port port="8000":
+    @echo "🚀 Starting on port {{port}}..."
+    {{venv_name}}/bin/python -m app.main --port {{port}}
+
+# Run with debugger
+dev-debug:
+    @echo "🐛 Starting with debugger..."
+    {{venv_name}}/bin/python -m debugpy --listen 5678 --wait-for-client -m app.main
+
+# === Testing ===
+
+# Run all tests
+test:
+    @echo "🧪 Running tests..."
+    {{venv_name}}/bin/pytest
+
+# Run tests matching pattern
+test-match pattern:
+    @echo "🧪 Running tests matching '{{pattern}}'..."
+    {{venv_name}}/bin/pytest -k {{pattern}}
+
+# Run tests with coverage
+test-cov:
+    @echo "📊 Running tests with coverage..."
+    {{venv_name}}/bin/pytest --cov=. --cov-report=html
+
+# === Code Quality ===
+
+# Run all quality checks
+quality: format lint typecheck
+    @echo "✅ Quality checks passed"
+
+# Format code
+format:
+    @echo "✨ Formatting code..."
+    {{venv_name}}/bin/black .
+    {{venv_name}}/bin/isort .
+
+# Run linting
+lint:
+    @echo "🔍 Linting code..."
+    {{venv_name}}/bin/flake8 .
+
+# Run type checking
+typecheck:
+    @echo "🔍 Type checking..."
+    {{venv_name}}/bin/mypy .
+
+# === Git Workflows ===
+
+# Create feature branch
+feature name:
+    @echo "🌿 Creating feature branch..."
+    git checkout main && git pull
+    git checkout -b feature/{{name}}
+
+# Quick commit and push
+ucp message:
+    @echo "📝 Committing and pushing..."
+    git add -A
+    git commit -m "{{message}}"
+    git push
+
+# === Agent Development ===
+
+# Initialize new agent
+init-agent name:
+    @echo "🤖 Creating agent: {{name}}"
+    mkdir -p .claude/agents/{{name}}
+    cp .claude/templates/specialized-agent.md .claude/agents/{{name}}/instructions.md
+    @echo "✅ Agent {{name}} initialized"
+
+# Run agent with monitoring
+run-agent name task:
+    @echo "🚀 Running agent {{name}}"
+    just context-health
+    {{venv_name}}/bin/python scripts/agents/run_agent.py --agent {{name}} --task "{{task}}"
+
+# === Progress Tracking ===
+
+# Update progress
+progress-update task="" status="":
+    @echo "📊 Updating progress..."
+    @if [ -n "{{task}}" ]; then \
+        {{venv_name}}/bin/python scripts/context/update_progress.py --task "{{task}}" --status "{{status}}"; \
+    else \
+        {{venv_name}}/bin/python scripts/context/update_progress.py; \
+    fi
+
+# === Utilities ===
+
+# Create scratch workspace
+scratch name:
+    @echo "🧪 Creating scratch workspace..."
+    mkdir -p .agent-scratch/{{name}}
+    @echo "Created: .agent-scratch/{{name}}"
+
+# View logs
+logs n="50" pattern="":
+    @echo "📜 Viewing logs..."
+    @if [ -n "{{pattern}}" ]; then \
+        tail -n {{n}} logs/*.log | grep -i "{{pattern}}"; \
+    else \
+        tail -n {{n}} logs/*.log; \
+    fi
+
+# Clean generated files
+clean:
+    @echo "🧹 Cleaning..."
+    trash __pycache__ .pytest_cache .coverage htmlcov 2>/dev/null || true
+    fd -t f -e pyc -x trash {} \;
+    @echo "✅ Clean complete"
+
+# Show environment info
+env-info:
+    @echo "📋 Environment Information"
+    @echo "━━━━━━━━━━━━━━━━━━━━━━━"
+    @echo "Project: {{project_root}}"
+    @echo "Python: $({{venv_name}}/bin/python --version)"
+    @echo "━━━━━━━━━━━━━━━━━━━━━━━"
+
+# === Health & Validation ===
+
+# Run health checks
+health:
+    @echo "🏥 Running health checks..."
+    {{venv_name}}/bin/python scripts/health_check.py
+
+# Run all validation
+validate: lint typecheck test
+    @echo "✅ All validation passed"
+
+# === CI/CD ===
+
+# Run CI pipeline locally
+ci: install quality test
+    @echo "✅ CI pipeline passed"
+
+# Build for production
+build:
+    @echo "🏗️ Building..."
+    {{venv_name}}/bin/python -m build
+
+# === Documentation ===
+
+# Serve documentation
+docs:
+    @echo "📚 Serving documentation..."
+    {{venv_name}}/bin/mkdocs serve
+
+# === Shortcuts ===
+
+# Aliases for common commands
+d: dev
+t: test
+q: quality
+c: clean

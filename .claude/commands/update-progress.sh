@@ -1,5 +1,5 @@
 #!/bin/bash
-# Claude command to update refactor progress, commit, and push
+# Claude command to update project progress, commit, and push
 # Usage: claude run update-progress.sh
 
 set -euo pipefail
@@ -15,7 +15,7 @@ NC='\033[0m' # No Color
 PROJECT_ROOT=$(git rev-parse --show-toplevel)
 cd "$PROJECT_ROOT"
 
-echo -e "${BLUE}🔄 Updating refactor progress, committing, and pushing...${NC}"
+echo -e "${BLUE}🔄 Updating project progress, committing, and pushing...${NC}"
 
 # Function to check if there are uncommitted changes
 has_changes() {
@@ -32,18 +32,62 @@ has_upstream() {
     git rev-parse --abbrev-ref --symbolic-full-name @{u} >/dev/null 2>&1
 }
 
+# Function to update progress.json
+update_progress() {
+    if [[ -f ".claude/progress.json" ]] && command -v python3 &> /dev/null; then
+        python3 -c "
+import json
+from datetime import datetime
+
+with open('.claude/progress.json', 'r') as f:
+    data = json.load(f)
+
+# Update timestamp
+data['last_updated'] = datetime.now().strftime('%Y-%m-%d')
+
+# Update commit count
+import subprocess
+try:
+    commit_count = subprocess.check_output(['git', 'rev-list', '--count', 'HEAD'], text=True).strip()
+    data['commit_count'] = int(commit_count)
+except:
+    pass
+
+# Update files modified count
+try:
+    files_modified = len(subprocess.check_output(['git', 'diff', '--cached', '--name-only'], text=True).strip().split('\n'))
+    if files_modified > 0:
+        data['files_modified'] = files_modified
+except:
+    pass
+
+# Add recent activity
+activity = {
+    'timestamp': datetime.now().isoformat(),
+    'branch': subprocess.check_output(['git', 'rev-parse', '--abbrev-ref', 'HEAD'], text=True).strip(),
+    'action': 'progress_update'
+}
+
+if 'recent_activities' not in data:
+    data['recent_activities'] = []
+
+data['recent_activities'].insert(0, activity)
+# Keep only last 10 activities
+data['recent_activities'] = data['recent_activities'][:10]
+
+with open('.claude/progress.json', 'w') as f:
+    json.dump(data, f, indent=2)
+
+print('Progress updated successfully')
+" || echo "Failed to update progress.json"
+    fi
+}
+
 # Main workflow
 main() {
     local current_branch=$(get_current_branch)
     
-    # 1. Check if we're on a feature branch
-    if [[ "$current_branch" == "main" ]] || [[ "$current_branch" == "develop" ]]; then
-        echo -e "${RED}❌ Cannot run on $current_branch branch${NC}"
-        echo "Please switch to a feature branch first"
-        exit 1
-    fi
-    
-    # 2. Stage all changes if any exist
+    # 1. Stage all changes if any exist
     if has_changes; then
         echo -e "${YELLOW}📝 Staging changes...${NC}"
         git add -A
@@ -55,57 +99,27 @@ main() {
         echo -e "${YELLOW}ℹ️  No changes to stage${NC}"
     fi
     
-    # 3. Update refactor progress if the script exists
-    if [[ -f "./scripts/context/safe_refactor_update.sh" ]]; then
-        echo -e "${YELLOW}📊 Updating refactor progress...${NC}"
-        
-        # Check for any new files to track
-        new_files=$(git diff --cached --name-only --diff-filter=A)
-        if [[ -n "$new_files" ]]; then
-            for file in $new_files; do
-                ./scripts/context/safe_refactor_update.sh --file-created "$file" || true
-            done
-        fi
-        
-        # Check for modified files
-        modified_files=$(git diff --cached --name-only --diff-filter=M)
-        if [[ -n "$modified_files" ]]; then
-            for file in $modified_files; do
-                # Only track if not already the refactor-progress.json itself
-                if [[ "$file" != ".abundance-ai/refactor-progress.json" ]]; then
-                    ./scripts/context/safe_refactor_update.sh --file-modified "$file" || true
-                fi
-            done
-        fi
-        
-        # Show current status
-        ./scripts/context/safe_refactor_update.sh --status-check || true
-        
-        # Stage the updated progress file
-        git add .abundance-ai/refactor-progress.json 2>/dev/null || true
-    fi
+    # 2. Update progress
+    echo -e "${YELLOW}📊 Updating project progress...${NC}"
+    update_progress
     
-    # 4. Commit if there are staged changes
+    # Stage the updated progress file
+    git add .claude/progress.json 2>/dev/null || true
+    
+    # 3. Commit if there are staged changes
     if git diff --cached --quiet; then
         echo -e "${YELLOW}ℹ️  No staged changes to commit${NC}"
     else
         echo -e "${YELLOW}💾 Committing changes...${NC}"
         
         # Generate commit message based on changes
-        if git diff --cached --name-only | grep -q "refactor-progress.json"; then
-            # If only progress file changed
-            if [[ $(git diff --cached --name-only | wc -l) -eq 1 ]]; then
-                commit_msg="chore: Update refactor progress"
-            else
-                # Other files changed too
-                commit_msg="chore: Update implementation and refactor progress
-
-$(git diff --cached --stat)"
-            fi
+        num_files=$(git diff --cached --name-only | wc -l)
+        
+        # Check if only progress file changed
+        if [[ $(git diff --cached --name-only) == ".claude/progress.json" ]]; then
+            commit_msg="chore: Update project progress"
         else
-            # No progress file, generate based on changes
-            num_files=$(git diff --cached --name-only | wc -l)
-            commit_msg="chore: Update $num_files file(s)
+            commit_msg="chore: Update $num_files file(s) and project progress
 
 $(git diff --cached --stat)"
         fi
@@ -114,7 +128,7 @@ $(git diff --cached --stat)"
         echo -e "${GREEN}✅ Changes committed${NC}"
     fi
     
-    # 5. Push to remote
+    # 4. Push to remote
     echo -e "${YELLOW}🚀 Pushing to remote...${NC}"
     
     # Check if branch has upstream
@@ -127,7 +141,7 @@ $(git diff --cached --stat)"
     
     echo -e "${GREEN}✅ Successfully pushed to origin/$current_branch${NC}"
     
-    # 6. Show summary
+    # 5. Show summary
     echo -e "\n${BLUE}📋 Summary:${NC}"
     echo -e "Branch: ${GREEN}$current_branch${NC}"
     echo -e "Latest commit: $(git log -1 --oneline)"

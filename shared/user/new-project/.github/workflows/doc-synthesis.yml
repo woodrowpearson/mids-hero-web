@@ -1,0 +1,91 @@
+name: Documentation Synthesis
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'PR number to process'
+        required: true
+        type: number
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  analyze-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      needs_doc_update: ${{ steps.check.outputs.needs_update }}
+      changed_files: ${{ steps.check.outputs.files }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v44
+        with:
+          files: |
+            **/*.py
+            **/*.js
+            **/*.ts
+            **/*.jsx
+            **/*.tsx
+            **/*.md
+            **/*.yaml
+            **/*.yml
+            **/*.json
+            
+      - name: Check if docs need update
+        id: check
+        run: |
+          if [[ "${{ steps.changed-files.outputs.any_changed }}" == "true" ]]; then
+            echo "needs_update=true" >> $GITHUB_OUTPUT
+            echo "files=${{ steps.changed-files.outputs.all_changed_files }}" >> $GITHUB_OUTPUT
+          else
+            echo "needs_update=false" >> $GITHUB_OUTPUT
+          fi
+
+  synthesize-docs:
+    needs: analyze-changes
+    if: needs.analyze-changes.outputs.needs_doc_update == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: ${{ github.event.pull_request.head.ref }}
+          
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          
+      - name: Install dependencies
+        run: |
+          pip install anthropic pyyaml tiktoken
+          
+      - name: Synthesize documentation updates
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          python scripts/doc_synthesis.py \
+            --files "${{ needs.analyze-changes.outputs.changed_files }}" \
+            --mode auto
+            
+      - name: Commit documentation updates
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          
+          if [ -n "$(git status --porcelain)" ]; then
+            git add -A
+            git commit -m "docs: Auto-synthesize documentation updates"
+            git push
+          else
+            echo "No documentation changes needed"
+          fi

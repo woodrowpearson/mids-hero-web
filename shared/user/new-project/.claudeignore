@@ -1,0 +1,75 @@
+# .claudeignore - Files and directories to exclude from Claude's context
+
+# Version control
+.git/
+.gitignore
+
+# Dependencies
+node_modules/
+venv/
+.venv/
+env/
+vendor/
+bower_components/
+
+# Build outputs
+dist/
+build/
+out/
+target/
+*.egg-info/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Test coverage
+.coverage
+htmlcov/
+coverage/
+*.lcov
+
+# Logs
+logs/
+*.log
+
+# Cache
+.cache/
+.pytest_cache/
+__pycache__/
+*.pyc
+
+# Large binary files
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.ico
+*.pdf
+*.zip
+*.tar.gz
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Environment files with secrets
+.env.local
+.env.*.local
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+
+# Generated documentation
+docs/_build/
+site/
+
+# OS files
+Thumbs.db

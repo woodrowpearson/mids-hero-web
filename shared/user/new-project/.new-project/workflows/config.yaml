@@ -1,0 +1,98 @@
+# AI Workflow Configuration
+
+doc_synthesis:
+  enabled: true
+  triggers:
+    - pull_request
+  file_patterns:
+    - "**/*.py"
+    - "**/*.js"
+    - "**/*.ts"
+    - "**/*.md"
+    - "**/*.yaml"
+    - "**/*.yml"
+    - "**/*.json"
+  exclude_patterns:
+    - "**/node_modules/**"
+    - "**/.venv/**"
+    - "**/venv/**"
+    - "**/dist/**"
+    - "**/build/**"
+  documentation_targets:
+    - "docs/"
+    - "README.md"
+    - "CHANGELOG.md"
+  max_tokens: 2000
+  model: "claude-3-5-sonnet-20241022"
+
+ai_pr_review:
+  enabled: true
+  triggers:
+    - pull_request
+    - issue_comment: "/ai-review"
+  max_iterations: 5
+  checks:
+    test_coverage:
+      enabled: true
+      minimum_coverage: 80
+      fail_on_decrease: true
+    linting:
+      enabled: true
+      tools:
+        - ruff
+        - black
+        - isort
+    command_usage:
+      forbidden_commands:
+        - pattern: "find "
+          replacement: "fd"
+          message: "Use 'fd' instead of 'find'"
+        - pattern: "rm -rf"
+          replacement: "trash"
+          message: "Use 'trash' instead of 'rm -rf'"
+        - pattern: "grep "
+          replacement: "rg"
+          message: "Use 'rg' (ripgrep) instead of 'grep'"
+    documentation:
+      check_docstrings: true
+      check_readme_updates: true
+  auto_approve_conditions:
+    all_tests_pass: true
+    coverage_threshold_met: true
+    no_lint_errors: true
+    no_forbidden_commands: true
+    documentation_complete: true
+  notification_channels:
+    - github_comment
+    - status_check
+
+context_management:
+  max_file_tokens: 5000
+  total_context_limit: 50000
+  warning_threshold: 0.9
+  critical_threshold: 0.95
+  
+memory_persistence:
+  enabled: true
+  storage_path: ".claude/shared/memory/"
+  sync_to_remote: false
+  patterns_file: "patterns.json"
+  
+security:
+  require_signed_commits: false
+  allow_force_push: false
+  protect_main_branch: true
+  scan_for_secrets: true
+  
+monitoring:
+  track_metrics: true
+  metrics_endpoint: null  # Configure if needed
+  alert_on_failure: true
+  context_health_checks: true
+  
+feature_flags:
+  enable_auto_merge: false
+  parallel_reviews: true
+  incremental_documentation: true
+  context_pruning: true
+  token_monitoring: true

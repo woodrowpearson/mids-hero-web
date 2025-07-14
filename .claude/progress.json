@@ -1,11 +1,55 @@
 {
+  "project": "mids-hero-web",
+  "last_updated": "2025-07-13",
   "epics": {
-    "1": {"status": "complete", "percentage": 100},
-    "2": {"status": "blocked", "percentage": 20},
-    "3": {"status": "planned", "percentage": 0},
-    "4": {"status": "planned", "percentage": 0},
-    "5": {"status": "planned", "percentage": 0},
-    "6": {"status": "future", "percentage": 0}
+    "epic1": {
+      "name": "Project Setup",
+      "status": "completed",
+      "progress": 100,
+      "tasks": [
+        "Git repository initialized",
+        "Docker environment configured",
+        "Backend/frontend scaffolds created",
+        "Database models defined"
+      ]
+    },
+    "epic2": {
+      "name": "Data Import",
+      "status": "in_progress",
+      "progress": 0,
+      "blockers": [
+        "Need City of Heroes game data files",
+        "Database migrations pending",
+        "Import scripts to be created"
+      ],
+      "tasks": []
+    },
+    "epic3": {
+      "name": "Backend API",
+      "status": "planned",
+      "progress": 0,
+      "tasks": []
+    },
+    "epic4": {
+      "name": "Frontend",
+      "status": "planned",
+      "progress": 0,
+      "tasks": []
+    },
+    "epic5": {
+      "name": "Deployment",
+      "status": "planned",
+      "progress": 0,
+      "tasks": []
+    },
+    "epic6": {
+      "name": "Optimization",
+      "status": "planned",
+      "progress": 0,
+      "tasks": []
+    }
   },
-  "last_updated": "2025-07-13T19:24:01-07:00"
+  "recent_activities": [],
+  "commit_count": 0,
+  "files_modified": 0
 }

@@ -17,13 +17,24 @@ echo -e "${YELLOW}🚀 Quick update-commit-push...${NC}"
 # 1. Add all changes
 git add -A
 
-# 2. Update refactor progress if possible
-if [[ -f "./scripts/context/safe_refactor_update.sh" ]]; then
-    # Quick update for any new files
-    for file in $(git diff --cached --name-only --diff-filter=A); do
-        ./scripts/context/safe_refactor_update.sh --file-created "$file" 2>/dev/null || true
-    done
-    git add .abundance-ai/refactor-progress.json 2>/dev/null || true
+# 2. Update progress.json timestamp if it exists
+if [[ -f ".claude/progress.json" ]]; then
+    # Update last_updated timestamp
+    if command -v python3 &> /dev/null; then
+        python3 -c "
+import json
+from datetime import datetime
+
+with open('.claude/progress.json', 'r') as f:
+    data = json.load(f)
+
+data['last_updated'] = datetime.now().strftime('%Y-%m-%d')
+
+with open('.claude/progress.json', 'w') as f:
+    json.dump(data, f, indent=2)
+" 2>/dev/null || true
+        git add .claude/progress.json 2>/dev/null || true
+    fi
 fi
 
 # 3. Commit with provided message or auto-generate
@@ -36,7 +47,7 @@ else
         echo "No changes to commit"
     else
         files_changed=$(git diff --cached --name-only | wc -l)
-        git commit -m "chore: Update $files_changed file(s) and refactor progress"
+        git commit -m "chore: Update $files_changed file(s)"
     fi
 fi
 

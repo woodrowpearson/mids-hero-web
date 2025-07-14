@@ -37,7 +37,7 @@
       "Bash(./scripts/context/update_refactor_progress.py:*)",
       "Bash(./scripts/dev.sh:*)",
       "Bash(chmod:*)",
-      "Bash(for file in \"CLAUDE.md\" \".abundance-ai/claude/CLAUDE.md\" \"scripts/context/update_refactor_progress.py\" \".claude/settings.local.json\" \"backend/app/config/agent_archetypes.yaml\" \"scripts/environment/README.md\")",
+      "Bash(for file in \"CLAUDE.md\" \".claude/settings.local.json\")",
       "Bash(do python scripts/context/update_refactor_progress.py --file-modified \"$file\")",
       "Bash(done)",
       "Bash(./scripts/context/safe_refactor_update.sh:*)",
@@ -59,7 +59,9 @@
       "Bash(uv sync:*)",
       "Bash(uv run:*)",
       "Bash(uv add:*)",
-      "Bash(just:*)"
+      "Bash(just:*)",
+      "Bash(touch:*)",
+      "Bash(bash:*)"
     ],
     "deny": [
       "// Dangerous operations",

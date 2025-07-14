@@ -2,7 +2,6 @@
 Basic health check tests for the API.
 """
 
-import pytest
 from fastapi.testclient import TestClient
 
 from main import app

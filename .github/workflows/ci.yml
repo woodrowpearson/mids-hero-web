@@ -108,6 +108,8 @@ jobs:
         run: uv run pytest --cov=app --cov-report=xml --cov-report=term
         
       - name: Upload coverage
+        # Temporarily disabled - requires CODECOV_TOKEN secret configuration
+        if: false
         uses: codecov/codecov-action@v4
         with:
           file: ./backend/coverage.xml

@@ -80,7 +80,9 @@
       "Bash(DATABASE_URL=postgresql://postgres:postgres@localhost:5432/mids_web uv run alembic upgrade head)",
       "Bash(DATABASE_URL=postgresql://postgres:postgres@localhost:5432/mids_web uv run alembic history)",
       "Bash(brew services:*)",
-      "Bash(DATABASE_URL=postgresql://postgres:postgres@localhost:5432/mids_web uv run alembic stamp head)"
+      "Bash(DATABASE_URL=postgresql://postgres:postgres@localhost:5432/mids_web uv run alembic stamp head)",
+      "Bash(docker build:*)",
+      "Bash(docker rmi:*)"
     ],
     "deny": [
       "// Dangerous operations",

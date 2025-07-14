@@ -24,8 +24,8 @@ RUN apt-get update && apt-get install -y curl && \
     curl -LsSf https://astral.sh/uv/install.sh | sh && \
     rm -rf /var/lib/apt/lists/*
 
-# Add uv to PATH
-ENV PATH="/root/.cargo/bin:$PATH"
+# Add uv to PATH (uv installs to ~/.local/bin by default)
+ENV PATH="/root/.local/bin:$PATH"
 
 # Set working directory for backend
 WORKDIR /app/backend

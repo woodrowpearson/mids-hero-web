@@ -90,21 +90,36 @@ format:
     cd backend && {{uv}} run ruff format .
     cd frontend && npm run format
 
+# Database setup - comprehensive setup including Docker
+db-setup:
+    @echo "🗃️ Setting up database..."
+    ./scripts/setup-database.sh
+
 # Database migrations
 db-migrate:
     @echo "🗄️ Running database migrations..."
-    cd backend && {{uv}} run alembic upgrade head
+    cd backend && DATABASE_URL=postgresql://postgres:postgres@localhost:5432/mids_web {{uv}} run alembic upgrade head
 
 # Create a new migration
 db-migration-create description:
     @echo "🗄️ Creating new migration: {{description}}..."
-    cd backend && {{uv}} run alembic revision --autogenerate -m "{{description}}"
+    cd backend && DATABASE_URL=postgresql://postgres:postgres@localhost:5432/mids_web {{uv}} run alembic revision --autogenerate -m "{{description}}"
 
 # Reset database
 db-reset:
     @echo "⚠️  Resetting database..."
-    cd backend && {{uv}} run alembic downgrade base
-    cd backend && {{uv}} run alembic upgrade head
+    docker-compose down db -v || true
+    just db-setup
+
+# Database status
+db-status:
+    @echo "📊 Database status..."
+    cd backend && DATABASE_URL=postgresql://postgres:postgres@localhost:5432/mids_web {{uv}} run alembic current
+
+# Connect to database
+db-connect:
+    @echo "🔗 Connecting to database..."
+    docker exec -it mids-hero-web-db-1 psql -U postgres -d mids_web
 
 # Load sample data
 db-seed:

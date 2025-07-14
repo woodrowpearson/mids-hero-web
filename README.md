@@ -113,11 +113,16 @@ just lint-fix       # Auto-fix linting issues
 #### Database Operations
 
 ```bash
+just db-setup                      # Complete database setup (recommended)
 just db-migrate                    # Run pending migrations
 just db-migration-create "description"  # Create new migration
 just db-reset                      # Reset database
+just db-status                     # Check migration status
+just db-connect                    # Connect to database
 just db-seed                       # Load sample data
 ```
+
+> **Database Setup**: The project uses PostgreSQL in Docker for consistency. Run `just db-setup` for automated setup including Docker container management and migration application.
 
 #### Individual Service Development
 
@@ -179,6 +184,83 @@ This project features AI-assisted development workflows:
 - [ ] Multi-server database support (Homecoming, Rebirth)
 - [ ] Mobile-responsive design
 - [ ] Community build sharing
+
+## Database Setup and Troubleshooting
+
+### Recommended Setup (Docker)
+
+The project uses PostgreSQL in Docker for consistency across development environments:
+
+```bash
+just db-setup  # Automated setup with Docker
+```
+
+This script:
+1. Checks for conflicts with local PostgreSQL
+2. Starts Docker PostgreSQL container
+3. Runs database migrations
+4. Verifies setup
+
+### Database Connection Information
+
+```bash
+# Database URL
+postgresql://postgres:postgres@localhost:5432/mids_web
+
+# Container name
+mids-hero-web-db-1
+
+# Admin interface (when running)
+http://localhost:8080  # Adminer
+```
+
+### Common Issues and Solutions
+
+**Issue**: `FATAL: role "postgres" does not exist`
+
+**Solution**: Local PostgreSQL is conflicting with Docker
+```bash
+# Stop local PostgreSQL
+brew services stop postgresql@14
+
+# Or use the automated setup
+just db-setup
+```
+
+**Issue**: Docker build fails with `uv: not found`
+
+**Solution**: Docker image build issue (fixed in latest version)
+```bash
+# Use database-only setup
+docker-compose up -d db
+just db-migrate
+```
+
+**Issue**: Migration fails or tables don't exist
+
+**Solution**: Reset and recreate database
+```bash
+just db-reset  # Complete reset
+```
+
+### Alternative: Local PostgreSQL
+
+If you prefer local PostgreSQL:
+
+```bash
+# Install PostgreSQL
+brew install postgresql@15
+brew services start postgresql@15
+
+# Create database
+createdb mids_web
+
+# Set environment variable
+export DATABASE_URL=postgresql://postgres@localhost:5432/mids_web
+
+# Run migrations
+just db-migrate
+```
 
 ## Data Sources
 

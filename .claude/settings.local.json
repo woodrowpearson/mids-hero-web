@@ -72,7 +72,17 @@
       "Bash(open:*)",
       "Bash(DATABASE_URL=sqlite:///./test.db uv run alembic upgrade head)",
       "Bash(DATABASE_URL=sqlite:///./test.db uv run alembic upgrade head --sql)",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "Bash(sed:*)",
+      "Bash(gh pr list:*)",
+      "Bash(DATABASE_URL=postgresql://postgres:postgres@localhost:5432/mids_web uv run alembic current)",
+      "Bash(docker exec:*)",
+      "Bash(DATABASE_URL=postgresql://postgres:postgres@localhost:5432/mids_web uv run alembic upgrade head)",
+      "Bash(DATABASE_URL=postgresql://postgres:postgres@localhost:5432/mids_web uv run alembic history)",
+      "Bash(brew services:*)",
+      "Bash(DATABASE_URL=postgresql://postgres:postgres@localhost:5432/mids_web uv run alembic stamp head)",
+      "Bash(docker build:*)",
+      "Bash(docker rmi:*)"
     ],
     "deny": [
       "// Dangerous operations",

@@ -36,9 +36,12 @@ just format       # Format code
 ## Database
 
 ```bash
+just db-setup     # Complete database setup (Docker)
 just db-migrate   # Run migrations
 just db-migration-create "name"  # New migration
 just db-reset     # Reset database
+just db-status    # Check migration status
+just db-connect   # Connect to database
 just db-seed      # Load sample data
 ```
 
@@ -148,6 +151,12 @@ API_PORT=8000
 3. Review migration file
 4. `just db-migrate`
 5. Update schemas and API
+
+### Database Setup
+
+1. `just db-setup` - Automated setup with Docker
+2. Handles PostgreSQL conflicts automatically
+3. Runs migrations and verifies setup
 
 ## Custom Commands
 

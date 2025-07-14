@@ -20,7 +20,7 @@ RUN npm run build
 FROM python:3.11-slim AS backend-builder
 
 # Install uv - the modern Python package manager
-RUN pip install uv
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # Set working directory for backend
 WORKDIR /app/backend

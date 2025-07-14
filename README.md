@@ -191,7 +191,7 @@ This project uses **uv**, a modern Python package manager that provides:
 - **Built-in virtual environment management** - No need to manually create/activate venvs
 - **Modern pyproject.toml support** - Standard Python project configuration
 
-Benefits over traditional pip/requirements.txt:
+Benefits over traditional package managers:
 
 - Faster installs and updates
 - Better reproducibility across environments

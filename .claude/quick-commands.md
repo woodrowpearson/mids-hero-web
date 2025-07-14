@@ -97,6 +97,7 @@ just docker-clean # Reset Docker
 ## Environment Variables
 
 Key variables in `.env`:
+
 ```bash
 DATABASE_URL=postgresql://user:pass@localhost/db
 REDIS_URL=redis://localhost:6379
@@ -125,12 +126,14 @@ API_PORT=8000
 ## Common Workflows
 
 ### Add New API Endpoint
+
 1. Create schema in `backend/app/schemas.py`
 2. Add route in `backend/app/routers/`
 3. Write tests in `backend/tests/`
 4. Update API client in `frontend/src/services/`
 
 ### Add Frontend Feature
+
 1. Create component in `frontend/src/components/`
 2. Add to router if needed
 3. Connect to API service
@@ -138,8 +141,21 @@ API_PORT=8000
 5. Update documentation
 
 ### Database Change
+
 1. Modify `backend/app/models.py`
 2. `just db-migration-create "description"`
 3. Review migration file
 4. `just db-migrate`
 5. Update schemas and API
+
+## Custom Commands
+
+For complex workflows, use pre-approved commands:
+
+```bash
+.claude/commands/update-progress.sh    # Full update, commit, push
+.claude/commands/ucp.sh "message"      # Quick commit and push  
+.claude/commands/debug-session.sh      # Debug environment setup
+```
+
+Detailed usage documentation: `.claude/commands/README.md`

@@ -198,7 +198,7 @@ Below is a detailed development plan for implementing the new web-based Mids Reb
 
 4. **Docker Environment**
 
-   * *Sub-task 1.4.1:* Write a `Dockerfile` for the backend service (base image python:3.11-slim, copy code, pip install, expose port, command to run Uvicorn).
+   * *Sub-task 1.4.1:* Write a `Dockerfile` for the backend service (base image python:3.11-slim, copy code, uv install, expose port, command to run Uvicorn).
 
    * *Sub-task 1.4.2:* Write a `Dockerfile` for the frontend (could use node:16-alpine to build, then nginx:alpine to serve static files, or simply use multi-stage and serve via a lightweight server). Alternatively, plan to serve frontend via the backend (in which case, just ensure frontend build outputs can be integrated).
 

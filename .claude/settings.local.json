@@ -1,26 +1,118 @@
 {
   "permissions": {
     "allow": [
-      "Bash(find:*)",
-      "Bash(git init:*)",
-      "Bash(python scripts/create_github_issues.py:*)",
+      "// Git operations",
       "Bash(git add:*)",
-      "Bash(rm:*)",
-      "Bash(trash:*)",
-      "Bash(git rm:*)",
-      "Bash(git reset:*)",
       "Bash(git commit:*)",
-      "Bash(gh auth:*)",
-      "Bash(gh repo create:*)",
-      "Bash(chmod:*)",
-      "Bash(./create_issues.sh:*)",
+      "Bash(git push:*)",
+      "Bash(git fetch:*)",
+      "Bash(git checkout:*)",
+      "Bash(git rebase:*)",
+      "Bash(git mv:*)",
+      "Bash(git restore:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "// GitHub CLI",
+      "Bash(gh pr create:*)",
+      "Bash(gh pr checkout:*)",
+      "Bash(gh pr view:*)",
+      "// File operations",
       "Bash(mkdir:*)",
+      "Bash(cp:*)",
+      "Bash(ls:*)",
+      "Bash(trash:*)",
+      "Bash(cat:*)",
+      "Bash(echo:*)",
+      "// Search tools",
+      "Bash(grep:*)",
+      "Bash(fd:*)",
+      "// Python and development",
+      "Bash(python:*)",
+      "Bash(uv:*)",
+      "Bash(source:*)",
+      "// Project-specific scripts",
+      "Bash(./scripts/context/start_context_refactor.sh:*)",
+      "Bash(./scripts/context/load_memory_context.py:*)",
+      "Bash(./scripts/context/update_refactor_progress.py:*)",
+      "Bash(./scripts/dev.sh:*)",
+      "Bash(chmod:*)",
+      "Bash(for file in \"CLAUDE.md\" \".abundance-ai/claude/CLAUDE.md\" \"scripts/context/update_refactor_progress.py\" \".claude/settings.local.json\" \"backend/app/config/agent_archetypes.yaml\" \"scripts/environment/README.md\")",
+      "Bash(do python scripts/context/update_refactor_progress.py --file-modified \"$file\")",
+      "Bash(done)",
+      "Bash(./scripts/context/safe_refactor_update.sh:*)",
+      "// Claude custom commands",
+      "Bash(.claude/commands/update-progress.sh:*)",
+      "Bash(.claude/commands/ucp.sh:*)",
+      "Bash(gh secret:*)",
+      "Bash(./scripts/setup-github-secret.sh:*)",
+      "Bash(xcodebuild:*)",
+      "Bash(gh run view:*)",
+      "Bash(git pull:*)",
+      "Bash(gh workflow run:*)",
+      "Bash(gh workflow:*)",
+      "Bash(gh run list:*)",
       "Bash(mv:*)",
-      "Bash(just quickstart:*)",
-      "Bash(just:*)",
+      "Bash(gh pr comment:*)",
+      "Bash(gh run download:*)",
+      "Bash(/usr/bin/find . -name \"*.toml\" -type f)",
+      "Bash(uv sync:*)",
+      "Bash(uv run:*)",
       "Bash(uv add:*)",
-      "Bash(npm install:*)"
+      "Bash(just:*)"
     ],
-    "deny": []
+    "deny": [
+      "// Dangerous operations",
+      "Bash(rm -rf:*)",
+      "Bash(sudo:*)",
+      "Bash(chmod 777:*)",
+      "Bash(curl | sh)",
+      "Bash(wget | sh)"
+    ]
+  },
+  "chat_preferences": {
+    "system_prompt_parts": {
+      "environment_info": "You are working in the mids-hero-web repository with the justfile-based development workflow.",
+      "rules": "1. Always use 'just' commands for operations\n2. Keep context under 50k tokens\n3. Run 'just health' before starting work\n4. Use 'just progress-update' to track progress",
+      "context_paths": [
+        "CLAUDE.md",
+        ".claude/",
+        ".claude/shared/",
+        "justfile"
+      ]
+    },
+    "context_depth": "codebase_diagram",
+    "open_composer_with_codebase_context": true,
+    "show_internal_linter_messages": false
+  },
+  "low_context_mode": {
+    "enabled": false,
+    "recent_files_limit": 10,
+    "recent_edits_limit": 5,
+    "max_file_size_kb": 100
+  },
+  "custom_context_instructions": "Use 'just' commands for all operations. Context management guidelines are in .claude/shared/context-management.md",
+  "auto_context_management": {
+    "max_tokens": 50000,
+    "warning_threshold": 40000,
+    "prune_on_threshold": true
+  },
+  "custom_commands": {
+    "dev": "just dev",
+    "test": "just test",
+    "quality": "just quality",
+    "health": "just health",
+    "refactor": "just refactor-update",
+    "context": "just context-health"
+  },
+  "tool_loadout": {
+    "max_tools": 20,
+    "dynamic_selection": true,
+    "prefer_just_commands": true
+  },
+  "monitoring": {
+    "track_token_usage": true,
+    "alert_on_large_context": true,
+    "log_context_operations": true
   }
 }

@@ -6,7 +6,7 @@ Comprehensive schema definitions matching the database models.
 
 from datetime import datetime
 from decimal import Decimal
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from pydantic import BaseModel, ConfigDict
 
@@ -26,43 +26,52 @@ class BaseEntitySchema(BaseModel):
 # Archetype Schemas
 class ArchetypeBase(BaseModel):
     name: str
-    description: Optional[str] = None
-    display_name: Optional[str] = None
-    primary_group: Optional[str] = None
-    secondary_group: Optional[str] = None
-    hit_points_base: Optional[int] = None
-    hit_points_max: Optional[int] = None
+    description: str | None = None
+    display_name: str | None = None
+    primary_group: str | None = None
+    secondary_group: str | None = None
+    hit_points_base: int | None = None
+    hit_points_max: int | None = None
 
 
 class ArchetypeCreate(ArchetypeBase):
     pass
 
 
-class ArchetypeUpdate(ArchetypeBase):
-    name: Optional[str] = None
+class ArchetypeUpdate(BaseModel):
+    name: str | None = None
+    description: str | None = None
+    display_name: str | None = None
+    primary_group: str | None = None
+    secondary_group: str | None = None
+    hit_points_base: int | None = None
+    hit_points_max: int | None = None
 
 
 class Archetype(ArchetypeBase, TimestampedBase, BaseEntitySchema):
     id: int
-    inherent_power_id: Optional[int] = None
+    inherent_power_id: int | None = None
 
 
 # Powerset Schemas
 class PowersetBase(BaseModel):
     name: str
-    display_name: Optional[str] = None
-    description: Optional[str] = None
+    display_name: str | None = None
+    description: str | None = None
     powerset_type: str  # primary, secondary, pool, epic, incarnate
-    icon_path: Optional[str] = None
+    icon_path: str | None = None
 
 
 class PowersetCreate(PowersetBase):
     archetype_id: int
 
 
-class PowersetUpdate(PowersetBase):
-    name: Optional[str] = None
-    powerset_type: Optional[str] = None
+class PowersetUpdate(BaseModel):
+    name: str | None = None
+    display_name: str | None = None
+    description: str | None = None
+    powerset_type: str | None = None
+    icon_path: str | None = None
 
 
 class Powerset(PowersetBase, TimestampedBase, BaseEntitySchema):
@@ -73,31 +82,46 @@ class Powerset(PowersetBase, TimestampedBase, BaseEntitySchema):
 # Power Schemas
 class PowerBase(BaseModel):
     name: str
-    display_name: Optional[str] = None
-    description: Optional[str] = None
+    display_name: str | None = None
+    description: str | None = None
     level_available: int = 1
-    power_type: Optional[str] = None  # attack, defense, control, support, travel
-    target_type: Optional[str] = None  # self, ally, enemy, location
-    accuracy: Optional[Decimal] = None
-    damage_scale: Optional[Decimal] = None
-    endurance_cost: Optional[Decimal] = None
-    recharge_time: Optional[Decimal] = None
-    activation_time: Optional[Decimal] = None
-    range_feet: Optional[int] = None
-    radius_feet: Optional[int] = None
-    max_targets: Optional[int] = None
-    effects: Optional[Dict[str, Any]] = None
-    icon_path: Optional[str] = None
-    display_order: Optional[int] = None
+    power_type: str | None = None  # attack, defense, control, support, travel
+    target_type: str | None = None  # self, ally, enemy, location
+    accuracy: Decimal | None = None
+    damage_scale: Decimal | None = None
+    endurance_cost: Decimal | None = None
+    recharge_time: Decimal | None = None
+    activation_time: Decimal | None = None
+    range_feet: int | None = None
+    radius_feet: int | None = None
+    max_targets: int | None = None
+    effects: dict[str, Any] | None = None
+    icon_path: str | None = None
+    display_order: int | None = None
 
 
 class PowerCreate(PowerBase):
     powerset_id: int
 
 
-class PowerUpdate(PowerBase):
-    name: Optional[str] = None
-    level_available: Optional[int] = None
+class PowerUpdate(BaseModel):
+    name: str | None = None
+    display_name: str | None = None
+    description: str | None = None
+    level_available: int | None = None
+    power_type: str | None = None
+    target_type: str | None = None
+    accuracy: Decimal | None = None
+    damage_scale: Decimal | None = None
+    endurance_cost: Decimal | None = None
+    recharge_time: Decimal | None = None
+    activation_time: Decimal | None = None
+    range_feet: int | None = None
+    radius_feet: int | None = None
+    max_targets: int | None = None
+    effects: dict[str, Any] | None = None
+    icon_path: str | None = None
+    display_order: int | None = None
 
 
 class Power(PowerBase, TimestampedBase, BaseEntitySchema):
@@ -107,8 +131,8 @@ class Power(PowerBase, TimestampedBase, BaseEntitySchema):
 
 # Power Prerequisite Schemas
 class PowerPrerequisiteBase(BaseModel):
-    required_level: Optional[int] = None
-    prerequisite_type: Optional[str] = None  # one_of, all_of
+    required_level: int | None = None
+    prerequisite_type: str | None = None  # one_of, all_of
 
 
 class PowerPrerequisiteCreate(PowerPrerequisiteBase):
@@ -126,8 +150,8 @@ class PowerPrerequisite(PowerPrerequisiteBase, BaseEntitySchema):
 # Enhancement Set Schemas
 class EnhancementSetBase(BaseModel):
     name: str
-    display_name: Optional[str] = None
-    description: Optional[str] = None
+    display_name: str | None = None
+    description: str | None = None
     min_level: int = 10
     max_level: int = 50
 
@@ -136,8 +160,12 @@ class EnhancementSetCreate(EnhancementSetBase):
     pass
 
 
-class EnhancementSetUpdate(EnhancementSetBase):
-    name: Optional[str] = None
+class EnhancementSetUpdate(BaseModel):
+    name: str | None = None
+    display_name: str | None = None
+    description: str | None = None
+    min_level: int | None = None
+    max_level: int | None = None
 
 
 class EnhancementSet(EnhancementSetBase, TimestampedBase, BaseEntitySchema):
@@ -147,41 +175,54 @@ class EnhancementSet(EnhancementSetBase, TimestampedBase, BaseEntitySchema):
 # Enhancement Schemas
 class EnhancementBase(BaseModel):
     name: str
-    display_name: Optional[str] = None
-    enhancement_type: Optional[str] = None  # IO, SO, DO, TO, HamiO, set_piece
+    display_name: str | None = None
+    enhancement_type: str | None = None  # IO, SO, DO, TO, HamiO, set_piece
     level_min: int = 1
     level_max: int = 50
-    accuracy_bonus: Optional[Decimal] = None
-    damage_bonus: Optional[Decimal] = None
-    endurance_bonus: Optional[Decimal] = None
-    recharge_bonus: Optional[Decimal] = None
-    defense_bonus: Optional[Decimal] = None
-    resistance_bonus: Optional[Decimal] = None
-    other_bonuses: Optional[Dict[str, Any]] = None
+    accuracy_bonus: Decimal | None = None
+    damage_bonus: Decimal | None = None
+    endurance_bonus: Decimal | None = None
+    recharge_bonus: Decimal | None = None
+    defense_bonus: Decimal | None = None
+    resistance_bonus: Decimal | None = None
+    other_bonuses: dict[str, Any] | None = None
     unique_enhancement: bool = False
-    icon_path: Optional[str] = None
+    icon_path: str | None = None
 
 
 class EnhancementCreate(EnhancementBase):
-    set_id: Optional[int] = None
+    set_id: int | None = None
 
 
-class EnhancementUpdate(EnhancementBase):
-    name: Optional[str] = None
+class EnhancementUpdate(BaseModel):
+    name: str | None = None
+    display_name: str | None = None
+    enhancement_type: str | None = None
+    level_min: int | None = None
+    level_max: int | None = None
+    accuracy_bonus: Decimal | None = None
+    damage_bonus: Decimal | None = None
+    endurance_bonus: Decimal | None = None
+    recharge_bonus: Decimal | None = None
+    defense_bonus: Decimal | None = None
+    resistance_bonus: Decimal | None = None
+    other_bonuses: dict[str, Any] | None = None
+    unique_enhancement: bool | None = None
+    icon_path: str | None = None
 
 
 class Enhancement(EnhancementBase, TimestampedBase, BaseEntitySchema):
     id: int
-    set_id: Optional[int] = None
+    set_id: int | None = None
 
 
 # Set Bonus Schemas
 class SetBonusBase(BaseModel):
     pieces_required: int
-    bonus_description: Optional[str] = None
-    bonus_type: Optional[str] = None
-    bonus_amount: Optional[Decimal] = None
-    bonus_details: Optional[Dict[str, Any]] = None
+    bonus_description: str | None = None
+    bonus_type: str | None = None
+    bonus_amount: Decimal | None = None
+    bonus_details: dict[str, Any] | None = None
 
 
 class SetBonusCreate(SetBonusBase):
@@ -214,7 +255,7 @@ class PowerEnhancementCompatibility(PowerEnhancementCompatibilityBase, BaseEntit
 class BuildBase(BaseModel):
     name: str
     level: int = 1
-    build_data: Optional[Dict[str, Any]] = None
+    build_data: dict[str, Any] | None = None
     is_public: bool = False
 
 
@@ -224,9 +265,11 @@ class BuildCreate(BuildBase):
     secondary_powerset_id: int
 
 
-class BuildUpdate(BuildBase):
-    name: Optional[str] = None
-    level: Optional[int] = None
+class BuildUpdate(BaseModel):
+    name: str | None = None
+    level: int | None = None
+    build_data: dict[str, Any] | None = None
+    is_public: bool | None = None
 
 
 class Build(BuildBase, TimestampedBase, BaseEntitySchema):
@@ -234,7 +277,7 @@ class Build(BuildBase, TimestampedBase, BaseEntitySchema):
     archetype_id: int
     primary_powerset_id: int
     secondary_powerset_id: int
-    user_id: Optional[int] = None
+    user_id: int | None = None
 
 
 # Build Power Schemas
@@ -275,15 +318,15 @@ class BuildEnhancement(BuildEnhancementBase, BaseEntitySchema):
 
 # Import Log Schemas
 class ImportLogBase(BaseModel):
-    import_type: Optional[str] = None  # full, incremental, patch
-    source_file: Optional[str] = None
-    game_version: Optional[str] = None
-    records_processed: Optional[int] = None
-    records_imported: Optional[int] = None
-    errors: Optional[int] = None
-    import_data: Optional[Dict[str, Any]] = None
-    started_at: Optional[datetime] = None
-    completed_at: Optional[datetime] = None
+    import_type: str | None = None  # full, incremental, patch
+    source_file: str | None = None
+    game_version: str | None = None
+    records_processed: int | None = None
+    records_imported: int | None = None
+    errors: int | None = None
+    import_data: dict[str, Any] | None = None
+    started_at: datetime | None = None
+    completed_at: datetime | None = None
 
 
 class ImportLogCreate(ImportLogBase):
@@ -298,24 +341,24 @@ class ImportLog(ImportLogBase, BaseEntitySchema):
 # Complex Response Schemas
 class ArchetypeWithPowersets(Archetype):
     """Archetype with associated powersets."""
-    powersets: List[Powerset] = []
+    powersets: list[Powerset] = []
 
 
 class PowersetWithPowers(Powerset):
     """Powerset with associated powers."""
-    powers: List[Power] = []
+    powers: list[Power] = []
 
 
 class PowerWithDetails(Power):
     """Power with prerequisites and compatibility info."""
-    prerequisites: List[PowerPrerequisite] = []
-    compatibilities: List[PowerEnhancementCompatibility] = []
+    prerequisites: list[PowerPrerequisite] = []
+    compatibilities: list[PowerEnhancementCompatibility] = []
 
 
 class EnhancementSetWithDetails(EnhancementSet):
     """Enhancement set with enhancements and bonuses."""
-    enhancements: List[Enhancement] = []
-    set_bonuses: List[SetBonus] = []
+    enhancements: list[Enhancement] = []
+    set_bonuses: list[SetBonus] = []
 
 
 class BuildWithDetails(Build):
@@ -323,15 +366,16 @@ class BuildWithDetails(Build):
     archetype: Archetype
     primary_powerset: Powerset
     secondary_powerset: Powerset
-    build_powers: List[BuildPower] = []
+    build_powers: list[BuildPower] = []
 
 
 class BuildStats(BaseModel):
     """Calculated build statistics."""
     damage_bonus: Decimal = Decimal("0.0")
     accuracy_bonus: Decimal = Decimal("0.0")
-    defense_totals: Dict[str, Decimal] = {}
-    resistance_totals: Dict[str, Decimal] = {}
-    set_bonuses: List[str] = []
+    defense_totals: dict[str, Decimal] = {}
+    resistance_totals: dict[str, Decimal] = {}
+    set_bonuses: list[str] = []
     total_endurance_cost: Decimal = Decimal("0.0")
     recharge_reduction: Decimal = Decimal("0.0")
+

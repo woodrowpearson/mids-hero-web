@@ -5,15 +5,12 @@ Based on the comprehensive database design for City of Heroes character build pl
 """
 
 from datetime import datetime
-from decimal import Decimal
-from typing import Optional
 
 from sqlalchemy import (
     JSON,
     Boolean,
     Column,
     DateTime,
-    Float,
     ForeignKey,
     Index,
     Integer,
@@ -94,7 +91,7 @@ class Power(Base):
     level_available = Column(Integer, default=1)
     power_type = Column(String(50))  # attack, defense, control, support, travel
     target_type = Column(String(50))  # self, ally, enemy, location
-    
+
     # Base stats
     accuracy = Column(Numeric(5, 2), default=1.0)
     damage_scale = Column(Numeric(5, 2))
@@ -104,10 +101,10 @@ class Power(Base):
     range_feet = Column(Integer)
     radius_feet = Column(Integer)
     max_targets = Column(Integer)
-    
+
     # Effects stored as JSONB for flexibility
     effects = Column(JSON)
-    
+
     # UI information
     icon_path = Column(String(255))
     display_order = Column(Integer)
@@ -180,7 +177,7 @@ class Enhancement(Base):
     set_id = Column(Integer, ForeignKey("enhancement_sets.id"))
     level_min = Column(Integer, default=1)
     level_max = Column(Integer, default=50)
-    
+
     # Enhancement values as percentages
     accuracy_bonus = Column(Numeric(5, 2))
     damage_bonus = Column(Numeric(5, 2))
@@ -188,7 +185,7 @@ class Enhancement(Base):
     recharge_bonus = Column(Numeric(5, 2))
     defense_bonus = Column(Numeric(5, 2))
     resistance_bonus = Column(Numeric(5, 2))
-    
+
     # Additional bonuses as JSONB
     other_bonuses = Column(JSON)
     unique_enhancement = Column(Boolean, default=False)
@@ -214,7 +211,7 @@ class SetBonus(Base):
     set_id = Column(Integer, ForeignKey("enhancement_sets.id"), nullable=False)
     pieces_required = Column(Integer, nullable=False, index=True)  # 2, 3, 4, 5, 6
     bonus_description = Column(Text)
-    
+
     # Bonus values
     bonus_type = Column(String(50))  # defense, resistance, recharge, etc.
     bonus_amount = Column(Numeric(5, 2))
@@ -344,3 +341,4 @@ class ImportLog(Base):
     started_at = Column(DateTime)
     completed_at = Column(DateTime)
     created_at = Column(DateTime, default=datetime.utcnow)
+

@@ -64,7 +64,15 @@
       "Bash(bash:*)",
       "Bash(gh issue list:*)",
       "Bash(gh issue view:*)",
-      "Bash(gh issue close:*)"
+      "Bash(gh issue close:*)",
+      "Bash(docker-compose:*)",
+      "Bash(gh api:*)",
+      "Bash(python test-doc-synthesis.py:*)",
+      "Bash(uv run alembic:*)",
+      "Bash(open:*)",
+      "Bash(DATABASE_URL=sqlite:///./test.db uv run alembic upgrade head)",
+      "Bash(DATABASE_URL=sqlite:///./test.db uv run alembic upgrade head --sql)",
+      "WebFetch(domain:github.com)"
     ],
     "deny": [
       "// Dangerous operations",

@@ -14,12 +14,14 @@ from pydantic import BaseModel, ConfigDict
 # Base classes for common patterns
 class TimestampedBase(BaseModel):
     """Base class for models with timestamps."""
+
     created_at: datetime
     updated_at: datetime
 
 
 class BaseEntitySchema(BaseModel):
     """Base schema with common model configuration."""
+
     model_config = ConfigDict(from_attributes=True)
 
 
@@ -245,7 +247,9 @@ class PowerEnhancementCompatibilityCreate(PowerEnhancementCompatibilityBase):
     power_id: int
 
 
-class PowerEnhancementCompatibility(PowerEnhancementCompatibilityBase, BaseEntitySchema):
+class PowerEnhancementCompatibility(
+    PowerEnhancementCompatibilityBase, BaseEntitySchema
+):
     id: int
     power_id: int
     created_at: datetime
@@ -341,28 +345,33 @@ class ImportLog(ImportLogBase, BaseEntitySchema):
 # Complex Response Schemas
 class ArchetypeWithPowersets(Archetype):
     """Archetype with associated powersets."""
+
     powersets: list[Powerset] = []
 
 
 class PowersetWithPowers(Powerset):
     """Powerset with associated powers."""
+
     powers: list[Power] = []
 
 
 class PowerWithDetails(Power):
     """Power with prerequisites and compatibility info."""
+
     prerequisites: list[PowerPrerequisite] = []
     compatibilities: list[PowerEnhancementCompatibility] = []
 
 
 class EnhancementSetWithDetails(EnhancementSet):
     """Enhancement set with enhancements and bonuses."""
+
     enhancements: list[Enhancement] = []
     set_bonuses: list[SetBonus] = []
 
 
 class BuildWithDetails(Build):
     """Complete build with all related data."""
+
     archetype: Archetype
     primary_powerset: Powerset
     secondary_powerset: Powerset
@@ -371,6 +380,7 @@ class BuildWithDetails(Build):
 
 class BuildStats(BaseModel):
     """Calculated build statistics."""
+
     damage_bonus: Decimal = Decimal("0.0")
     accuracy_bonus: Decimal = Decimal("0.0")
     defense_totals: dict[str, Decimal] = {}
@@ -378,4 +388,3 @@ class BuildStats(BaseModel):
     set_bonuses: list[str] = []
     total_endurance_cost: Decimal = Decimal("0.0")
     recharge_reduction: Decimal = Decimal("0.0")
-

@@ -175,6 +175,11 @@ epic-status:
     @echo "📋 Epic 5: Deployment - Planned"
     @echo "📋 Epic 6: Optimization - Future"
 
+# Setup GitHub workflows and secrets
+setup-github-workflows:
+    @echo "🤖 Setting up GitHub workflows..."
+    bash scripts/setup-github-secret.sh
+
 # Open API documentation
 api-docs:
     @echo "📚 Opening API documentation..."

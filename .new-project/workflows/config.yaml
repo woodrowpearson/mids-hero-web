@@ -1,0 +1,152 @@
+# AI Workflow Configuration for Mids Hero Web
+
+doc_synthesis:
+  enabled: true
+  triggers:
+    - pull_request
+  file_patterns:
+    - "backend/**/*.py"
+    - "frontend/**/*.{js,ts,jsx,tsx}"
+    - "**/*.md"
+    - "backend/pyproject.toml"
+    - "frontend/package.json"
+    - "docker-compose.yml"
+    - "Dockerfile"
+    - "justfile"
+  exclude_patterns:
+    - "**/node_modules/**"
+    - "backend/.venv/**"
+    - "**/venv/**"
+    - "**/dist/**"
+    - "**/build/**"
+    - "backend/.pytest_cache/**"
+    - "frontend/coverage/**"
+  documentation_targets:
+    - "README.md"
+    - "CLAUDE.md"
+    - ".claude/epics/"
+    - ".claude/shared/"
+  max_tokens: 2000
+  model: "claude-3-5-sonnet-20241022"
+
+ai_pr_review:
+  enabled: true
+  triggers:
+    - pull_request
+    - issue_comment: "/ai-review"
+  max_iterations: 5
+  checks:
+    test_coverage:
+      enabled: true
+      minimum_coverage: 80
+      fail_on_decrease: true
+    linting:
+      enabled: true
+      tools:
+        - ruff
+        - black
+        - isort
+        - mypy
+        - eslint
+    command_usage:
+      forbidden_commands:
+        - pattern: "pip install"
+          replacement: "uv add"
+          message: "Use 'uv add' instead of 'pip install'"
+        - pattern: "find "
+          replacement: "fd"
+          message: "Use 'fd' instead of 'find'"
+        - pattern: "rm -rf"
+          replacement: "trash"
+          message: "Use 'trash' instead of 'rm -rf'"
+        - pattern: "grep "
+          replacement: "rg"
+          message: "Use 'rg' (ripgrep) instead of 'grep'"
+    city_of_heroes_domain:
+      check_archetype_accuracy: true
+      check_power_mechanics: true
+      check_enhancement_calculations: true
+      validate_database_models: true
+    documentation:
+      check_docstrings: true
+      check_readme_updates: true
+      check_epic_progress: true
+  auto_approve_conditions:
+    all_tests_pass: true
+    coverage_threshold_met: true
+    no_lint_errors: true
+    no_forbidden_commands: true
+    documentation_complete: true
+    epic_alignment_clear: true
+  notification_channels:
+    - github_comment
+    - status_check
+
+context_management:
+  max_file_tokens: 5000
+  total_context_limit: 50000
+  warning_threshold: 0.9
+  critical_threshold: 0.95
+  claude_md_limit: 5000
+  
+memory_persistence:
+  enabled: true
+  storage_path: ".claude/shared/memory/"
+  sync_to_remote: false
+  patterns_file: "patterns.json"
+  
+security:
+  require_signed_commits: false
+  allow_force_push: false
+  protect_main_branch: true
+  scan_for_secrets: true
+  check_environment_vars: true
+  
+monitoring:
+  track_metrics: true
+  metrics_endpoint: null
+  alert_on_failure: true
+  context_health_checks: true
+  epic_progress_tracking: true
+  
+# Mids Hero Web specific settings
+mids_hero_web:
+  epic_tracking:
+    current_epic: 2
+    blocker_check: true
+    epic_files_path: ".claude/epics/"
+  
+  tech_stack:
+    backend:
+      framework: "FastAPI"
+      language: "Python 3.11"
+      package_manager: "uv"
+      database: "PostgreSQL"
+      orm: "SQLAlchemy"
+    frontend:
+      framework: "React 19"
+      language: "TypeScript"
+      build_tool: "Create React App"
+      testing: "Jest + React Testing Library"
+    deployment:
+      containerization: "Docker"
+      orchestration: "Docker Compose"
+      cloud_target: "Google Cloud Platform"
+  
+  review_focus:
+    - "Database model accuracy for City of Heroes data"
+    - "API endpoint consistency and validation"
+    - "React component patterns and state management"
+    - "Build calculation correctness"
+    - "Epic 2 blocker resolution progress"
+    - "Command compliance (uv, fd, trash, just)"
+    - "Context management (token limits)"
+
+feature_flags:
+  enable_auto_merge: false
+  parallel_reviews: true
+  incremental_documentation: true
+  context_pruning: true
+  token_monitoring: true
+  epic_progress_tracking: true
+  city_of_heroes_validation: true

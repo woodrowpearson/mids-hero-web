@@ -62,7 +62,10 @@ mids-hero-web/
 └── README.md               # This file
 ```
 
-## Quick Start
+## Quick Start 
+
+> **Note**: This project requires Node.js 18+ and Python 3.11+
+
 
 ### Prerequisites
 

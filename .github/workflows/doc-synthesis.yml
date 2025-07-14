@@ -81,28 +81,41 @@ jobs:
           client = anthropic.Anthropic()
           
           # Read changed files
-          changed_files = os.environ.get('CHANGED_FILES', '').split()
+          changed_files_str = os.environ.get('CHANGED_FILES', '')
+          if not changed_files_str.strip():
+              print("No changed files found")
+              exit(0)
+              
+          changed_files = changed_files_str.split()
+          print(f"Processing {len(changed_files)} changed files")
           
           # Read current CLAUDE.md for context
           claude_md = ''
           try:
               with open('CLAUDE.md', 'r') as f:
                   claude_md = f.read()
-          except:
+              print("Loaded CLAUDE.md for context")
+          except Exception as e:
+              print(f"Could not load CLAUDE.md: {e}")
               pass
           
           # Analyze changes and suggest doc updates
           file_contents = {}
           for file_path in changed_files[:10]:  # Limit to first 10 files
               try:
-                  with open(file_path, 'r') as f:
+                  with open(file_path, 'r', encoding='utf-8') as f:
                       content = f.read()[:2000]  # First 2k chars
                       file_contents[file_path] = content
-              except:
+                  print(f"Loaded content from {file_path}")
+              except Exception as e:
+                  print(f"Could not read {file_path}: {e}")
                   pass
           
           if not file_contents:
+              print("No file contents could be read")
               exit(0)
+              
+          print(f"Analyzing {len(file_contents)} files for documentation updates")
           
           changed_files_text = '\n'.join([f"{path}:\n{content[:500]}..." for path, content in file_contents.items()])
           
@@ -129,16 +142,29 @@ Focus on:
 
 Provide specific suggestions in markdown format:"""
           
-          response = client.messages.create(
-              model='claude-3-5-sonnet-20241022',
-              max_tokens=2000,
-              messages=[{'role': 'user', 'content': prompt}]
-          )
-          
-          suggestions = response.content[0].text
-          
-          with open('doc_suggestions.md', 'w') as f:
-              f.write(suggestions)
+          try:
+              response = client.messages.create(
+                  model='claude-3-5-sonnet-20241022',
+                  max_tokens=2000,
+                  messages=[{'role': 'user', 'content': prompt}]
+              )
+              
+              suggestions = response.content[0].text
+              print("Generated documentation suggestions")
+              
+              with open('doc_suggestions.md', 'w', encoding='utf-8') as f:
+                  f.write(suggestions)
+              print("Saved suggestions to doc_suggestions.md")
+              
+          except Exception as e:
+              print(f"Error calling Anthropic API: {e}")
+              # Create a basic fallback suggestion
+              with open('doc_suggestions.md', 'w', encoding='utf-8') as f:
+                  f.write(f"## Documentation Review Needed\n\nThe following files were changed and may need documentation updates:\n\n")
+                  for path in file_contents.keys():
+                      f.write(f"- {path}\n")
+                  f.write(f"\nPlease review these changes and update documentation as needed.\n")
+              print("Created fallback suggestions")
           EOF
           
       - name: Run documentation analysis

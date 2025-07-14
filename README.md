@@ -1,10 +1,10 @@
-# Mids-Web: Modern Web Rewrite of Mids Reborn
+# Mids Hero Web: Modern City of Heroes Character Build Planner
 
-A modern web-based rewrite of the Mids Reborn character planner for _City of Heroes_. This project transforms the existing Windows Forms desktop application into a responsive web application with a React frontend and FastAPI backend.
+A modern web-based character build planner for City of Heroes, replacing the legacy Windows Forms application with a React/FastAPI stack. This project provides the same powerful build planning capabilities in a modern web environment with AI-assisted development workflows.
 
 ## Overview
 
-Mids-Web is a complete rewrite of the popular Mids Reborn character build planner, designed to provide the same powerful build planning capabilities in a modern web environment. The application allows players to:
+Mids Hero Web is a complete rewrite of the popular Mids Reborn character build planner, designed to provide the same powerful build planning capabilities in a modern web environment. The application allows players to:
 
 - Select archetypes, powersets, and individual powers
 - Plan enhancement slotting with accurate set bonuses
@@ -16,10 +16,10 @@ Mids-Web is a complete rewrite of the popular Mids Reborn character build planne
 
 ### Frontend
 
-- **React** with TypeScript for the user interface
-- **Material-UI** or **Ant Design** for component library
-- **React Router** for navigation
-- **Redux Toolkit** for state management
+- **React 19** with TypeScript for the user interface
+- **Material-UI** (planned) for component library
+- Component structure with services layer for API integration
+- Modern development tooling (ESLint, Prettier)
 
 ### Backend
 
@@ -33,13 +33,14 @@ Mids-Web is a complete rewrite of the popular Mids Reborn character build planne
 
 - **Docker** with multi-stage builds
 - **Docker Compose** for local development
-- **Google Cloud Platform (GCP)** for production deployment
-- **GitHub Actions** for CI/CD pipeline
+- **Google Cloud Platform (GCP)** (planned) for production deployment
+- **GitHub Actions** CI/CD with AI-powered workflows
+- **AI-assisted development** with Claude integration
 
 ## Project Structure
 
 ```
-mids-web/
+mids-hero-web/
 ├── frontend/                 # React TypeScript application
 │   ├── src/
 │   │   ├── components/      # React components
@@ -61,12 +62,16 @@ mids-web/
 └── README.md               # This file
 ```
 
-## Quick Start
+## Quick Start 
+
+> **Note**: This project requires Node.js 18+ and Python 3.11+
+
 
 ### Prerequisites
 
 - **Docker** and **Docker Compose** installed
 - **Git** for version control
+- **just** command runner - [Install just](https://github.com/casey/just)
 - **uv** (modern Python package manager) - [Install uv](https://docs.astral.sh/uv/getting-started/installation/)
 
 ### Clone and Run
@@ -74,14 +79,15 @@ mids-web/
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/your-org/mids-web.git
-   cd mids-web
+   git clone https://github.com/woodrowpearson/mids-hero-web.git
+   cd mids-hero-web
    ```
 
-2. **Start the development environment:**
+2. **Quick start:**
 
    ```bash
-   docker-compose up --build
+   just quickstart  # Sets up everything
+   just dev         # Start development environment
    ```
 
 3. **Access the application:**
@@ -91,76 +97,79 @@ mids-web/
 
 ### Development Setup
 
-#### Backend Development
+All development operations use the `just` command runner for consistency:
+
+#### Essential Commands
 
 ```bash
-cd backend
-uv sync  # Install dependencies and create virtual environment
-uv run uvicorn main:app --reload --host 0.0.0.0 --port 8000
-
-# Or activate the virtual environment and run directly
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-uvicorn main:app --reload --host 0.0.0.0 --port 8000
+just quickstart      # Initial setup
+just dev            # Start all services
+just health         # Run health checks
+just test           # Run all tests
+just quality        # Code quality checks
+just lint-fix       # Auto-fix linting issues
 ```
 
-#### Development Helper Script
-
-We provide a convenient development script that wraps common uv commands:
+#### Database Operations
 
 ```bash
-# Set up development environment (installs uv if needed)
-python scripts/dev.py setup
-
-# Install dependencies
-python scripts/dev.py install
-
-# Run the backend server
-python scripts/dev.py run
-
-# Run tests
-python scripts/dev.py test
-
-# Run linting
-python scripts/dev.py lint
-
-# Format code
-python scripts/dev.py format
-
-# Run database migrations
-python scripts/dev.py migrate
-
-# Clean up build artifacts
-python scripts/dev.py clean
+just db-migrate                    # Run pending migrations
+just db-migration-create "description"  # Create new migration
+just db-reset                      # Reset database
+just db-seed                       # Load sample data
 ```
 
-#### Frontend Development
+#### Individual Service Development
 
 ```bash
-cd frontend
-npm install
-npm start
+# Backend only
+just backend-dev
+
+# Frontend only  
+just frontend-dev
+
+# API documentation
+just api-docs
 ```
 
-#### Database Setup
+#### Legacy Commands (if needed)
 
 ```bash
-# Run database migrations
-cd backend
-uv run alembic upgrade head
+# Backend development (direct)
+cd backend && uv run uvicorn main:app --reload
 
-# Create a new migration (when needed)
-uv run alembic revision --autogenerate -m "Description of changes"
+# Frontend development (direct)
+cd frontend && npm start
 ```
 
 ## Features
 
-### Current Features (MVP)
+### Current Status
 
-- [ ] Archetype selection and powerset browsing
-- [ ] Power selection with prerequisite validation
-- [ ] Enhancement slotting interface
-- [ ] Basic build statistics calculation
-- [ ] Build export/import functionality
+**✅ Epic 1: Project Setup** - Complete
+- Git repository and project structure
+- React frontend scaffold with TypeScript
+- FastAPI backend with proper Python structure  
+- Docker environment configuration
+- GitHub Actions CI/CD pipeline
+- AI-powered workflows
+
+**🚧 Epic 2: Data Import** - In Progress (BLOCKED)
+- Need City of Heroes game data files (.mhd)
+- Database migrations pending
+- Import scripts to be created
+
+**📋 Epics 3-6**: Backend API, Frontend, Deployment, Optimization - Planned
+
+### AI-Powered Development
+
+This project features AI-assisted development workflows:
+
+- **@claude mentions** in PRs and issues for AI assistance
+- **Automated PR reviews** with City of Heroes domain knowledge
+- **Context health monitoring** to prevent token limit issues
+- **Command compliance checks** (uv over pip, fd over find, etc.)
+- **Epic progress tracking** and documentation synthesis
 
 ### Planned Features
 
@@ -206,9 +215,16 @@ We welcome contributions! Please see our [development roadmap](ROADMAP.md) for c
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+3. Use `just` commands for development (`just health`, `just test`, etc.)
+4. Commit your changes (`git commit -m 'Add amazing feature'`)
+5. Push to the branch (`git push origin feature/amazing-feature`)
+6. Open a Pull Request (AI workflows will assist with review)
+
+### AI Assistance
+
+- Use **@claude** in PR comments for AI assistance
+- AI workflows automatically review code for City of Heroes domain compliance
+- Context health is monitored to prevent token limit issues
 
 ## License
 

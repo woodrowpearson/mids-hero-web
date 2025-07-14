@@ -3,11 +3,13 @@ name: Documentation Synthesis
 on:
   pull_request:
     types: [opened, synchronize, ready_for_review]
+  push:
+    branches: [main, develop, test/*]
   workflow_dispatch:
     inputs:
       pr_number:
         description: 'PR number to process'
-        required: true
+        required: false
         type: number
 
 permissions:
@@ -69,11 +71,9 @@ jobs:
         run: |
           pip install anthropic pyyaml tiktoken
           
-      - name: Analyze code changes for documentation
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      - name: Create documentation analysis script
         run: |
-          python -c "
+          cat << 'EOF' > analyze_docs.py
           import os
           import anthropic
           from pathlib import Path
@@ -81,36 +81,51 @@ jobs:
           client = anthropic.Anthropic()
           
           # Read changed files
-          changed_files = '''${{ needs.analyze-changes.outputs.changed_files }}'''.split()
+          changed_files_str = os.environ.get('CHANGED_FILES', '')
+          if not changed_files_str.strip():
+              print("No changed files found")
+              exit(0)
+              
+          changed_files = changed_files_str.split()
+          print(f"Processing {len(changed_files)} changed files")
           
           # Read current CLAUDE.md for context
           claude_md = ''
           try:
               with open('CLAUDE.md', 'r') as f:
                   claude_md = f.read()
-          except:
+              print("Loaded CLAUDE.md for context")
+          except Exception as e:
+              print(f"Could not load CLAUDE.md: {e}")
               pass
           
           # Analyze changes and suggest doc updates
           file_contents = {}
           for file_path in changed_files[:10]:  # Limit to first 10 files
               try:
-                  with open(file_path, 'r') as f:
+                  with open(file_path, 'r', encoding='utf-8') as f:
                       content = f.read()[:2000]  # First 2k chars
                       file_contents[file_path] = content
-              except:
+                  print(f"Loaded content from {file_path}")
+              except Exception as e:
+                  print(f"Could not read {file_path}: {e}")
                   pass
           
           if not file_contents:
+              print("No file contents could be read")
               exit(0)
+              
+          print(f"Analyzing {len(file_contents)} files for documentation updates")
           
-          prompt = f'''Analyze these code changes for the Mids Hero Web project and suggest documentation updates.
+          changed_files_text = '\n'.join([f"{path}:\n{content[:500]}..." for path, content in file_contents.items()])
+          
+          prompt = f"""Analyze these code changes for the Mids Hero Web project and suggest documentation updates.
 
 Current CLAUDE.md (first 3000 chars):
 {claude_md[:3000]}
 
 Changed Files:
-{chr(10).join([f\"{path}:\n{content[:500]}...\" for path, content in file_contents.items()])}
+{changed_files_text}
 
 Please suggest:
 1. Updates needed for README.md (if API changes, new features, setup changes)
@@ -125,19 +140,39 @@ Focus on:
 - New Epic progress (update epic status)
 - Docker/deployment changes (update setup instructions)
 
-Provide specific suggestions in markdown format:'''
+Provide specific suggestions in markdown format:"""
           
-          response = client.messages.create(
-              model='claude-3-5-sonnet-20241022',
-              max_tokens=2000,
-              messages=[{'role': 'user', 'content': prompt}]
-          )
+          try:
+              response = client.messages.create(
+                  model='claude-3-5-sonnet-20241022',
+                  max_tokens=2000,
+                  messages=[{'role': 'user', 'content': prompt}]
+              )
+              
+              suggestions = response.content[0].text
+              print("Generated documentation suggestions")
+              
+              with open('doc_suggestions.md', 'w', encoding='utf-8') as f:
+                  f.write(suggestions)
+              print("Saved suggestions to doc_suggestions.md")
+              
+          except Exception as e:
+              print(f"Error calling Anthropic API: {e}")
+              # Create a basic fallback suggestion
+              with open('doc_suggestions.md', 'w', encoding='utf-8') as f:
+                  f.write(f"## Documentation Review Needed\n\nThe following files were changed and may need documentation updates:\n\n")
+                  for path in file_contents.keys():
+                      f.write(f"- {path}\n")
+                  f.write(f"\nPlease review these changes and update documentation as needed.\n")
+              print("Created fallback suggestions")
+          EOF
           
-          suggestions = response.content[0].text
-          
-          with open('doc_suggestions.md', 'w') as f:
-              f.write(suggestions)
-          "
+      - name: Run documentation analysis
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CHANGED_FILES: ${{ needs.analyze-changes.outputs.changed_files }}
+        run: |
+          python analyze_docs.py
           
       - name: Check if documentation updates are needed
         id: doc-check
@@ -149,7 +184,7 @@ Provide specific suggestions in markdown format:'''
           fi
           
       - name: Create documentation PR comment
-        if: steps.doc-check.outputs.has_suggestions == 'true'
+        if: steps.doc-check.outputs.has_suggestions == 'true' && github.event_name == 'pull_request'
         uses: actions/github-script@v7
         with:
           script: |
@@ -177,3 +212,10 @@ ${suggestions}
               issue_number: context.issue.number,
               body: comment
             });
+            
+      - name: Output suggestions for push events
+        if: steps.doc-check.outputs.has_suggestions == 'true' && github.event_name == 'push'
+        run: |
+          echo "## 📚 Documentation Update Suggestions for Push Event" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          cat doc_suggestions.md >> $GITHUB_STEP_SUMMARY

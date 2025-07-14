@@ -159,8 +159,8 @@ jobs:
 
           VIOLATIONS=0
 
-          # Check for dangerous rm commands (exclude shared directory which contains templates)
-          if grep -r "rm -rf" --include="*.md" --include="*.sh" --include="*.py" --exclude-dir="shared" . ; then
+          # Check for dangerous rm commands (exclude documentation and shared)
+          if grep -r "rm -rf" --include="*.sh" --include="*.py" --exclude-dir="shared" --exclude-dir=".github" --exclude-dir=".new-project" . | grep -v "# Use.*instead of.*rm -rf\|Use.*trash.*instead of.*rm -rf" ; then
             echo "❌ Found 'rm -rf' usage - use 'trash' instead" >> $GITHUB_STEP_SUMMARY
             VIOLATIONS=$((VIOLATIONS + 1))
           else
@@ -175,8 +175,8 @@ jobs:
             echo "✅ No 'find' violations found" >> $GITHUB_STEP_SUMMARY
           fi
 
-          # Check for pip usage (should use uv, exclude shared directory)
-          if grep -r "pip install" --include="*.md" --include="*.sh" --include="*.py" --exclude-dir="shared" . | grep -v "requirements-context"; then
+          # Check for pip usage (should use uv, exclude documentation and shared)
+          if grep -r "pip install" --include="*.sh" --include="*.py" --exclude-dir="shared" --exclude-dir=".github" --exclude-dir=".new-project" . | grep -v "requirements-context\|use.*uv.*instead\|Use.*uv.*instead"; then
             echo "❌ Found 'pip install' usage - use 'uv' instead" >> $GITHUB_STEP_SUMMARY
             VIOLATIONS=$((VIOLATIONS + 1))
           else

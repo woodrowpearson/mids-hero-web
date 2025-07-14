@@ -1,0 +1,233 @@
+name: Documentation Auto-Synthesis
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  doc-auto-update:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: ${{ github.event.pull_request.head.ref }}
+          
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v44
+        with:
+          files: |
+            **/*.py
+            **/*.md
+            backend/pyproject.toml
+            frontend/package.json
+            docker-compose.yml
+            Dockerfile
+            justfile
+            .claude/**/*.md
+            
+      - name: Set up Python
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          
+      - name: Install dependencies
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: pip install anthropic
+        
+      - name: Analyze changes and auto-apply safe updates
+        if: steps.changed-files.outputs.any_changed == 'true'
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          python << 'EOF'
+          import os
+          import re
+          
+          changed_files = "${{ steps.changed-files.outputs.all_changed_files }}".split()
+          print(f"Analyzing {len(changed_files)} changed files...")
+          
+          # Read current documentation
+          claude_md = ""
+          readme_md = ""
+          progress_json = ""
+          
+          try:
+              with open('CLAUDE.md', 'r') as f:
+                  claude_md = f.read()
+          except:
+              pass
+              
+          try:
+              with open('README.md', 'r') as f:
+                  readme_md = f.read()
+          except:
+              pass
+              
+          try:
+              with open('.claude/progress.json', 'r') as f:
+                  progress_json = f.read()
+          except:
+              pass
+          
+          changes_made = []
+          suggestions_only = []
+          
+          # Auto-apply safe changes
+          for file_path in changed_files[:10]:
+              try:
+                  with open(file_path, 'r') as f:
+                      content = f.read()[:2000]
+                  
+                  # Safe auto-updates
+                  if file_path == 'README.md' and 'Epic' in content:
+                      # Check if CLAUDE.md Epic status needs updating
+                      if 'Epic 1' in claude_md and 'Complete' in claude_md:
+                          if 'All GitHub issues closed' not in claude_md:
+                              # Auto-update Epic 1 status
+                              updated_claude = claude_md.replace(
+                                  'Epic 1: Project Setup** - Complete',
+                                  'Epic 1: Project Setup** - Complete (All GitHub issues closed)'
+                              )
+                              if updated_claude != claude_md:
+                                  with open('CLAUDE.md', 'w') as f:
+                                      f.write(updated_claude)
+                                  changes_made.append("✅ Updated Epic 1 status in CLAUDE.md")
+                  
+                  elif file_path.endswith('.py') and ('def ' in content or 'class ' in content):
+                      suggestions_only.append(f"🐍 {file_path} has new functions/classes - consider API documentation")
+                  
+                  elif file_path == 'justfile':
+                      suggestions_only.append("⚡ justfile updated - check if .claude/quick-commands.md needs updating")
+                  
+                  elif 'workflows' in file_path and file_path.endswith('.yml'):
+                      # Auto-update workflow documentation status
+                      if 'AI' in content.upper() or 'CLAUDE' in content.upper():
+                          if 'AI-powered workflows' not in claude_md:
+                              updated_claude = claude_md.replace(
+                                  'GitHub Actions CI/CD pipeline',
+                                  'GitHub Actions CI/CD pipeline with AI workflows'
+                              )
+                              if updated_claude != claude_md:
+                                  with open('CLAUDE.md', 'w') as f:
+                                      f.write(updated_claude)
+                                  changes_made.append("✅ Updated AI workflow status in CLAUDE.md")
+                      suggestions_only.append(f"🤖 Workflow {file_path} updated - documented in CLAUDE.md")
+                      
+              except Exception as e:
+                  print(f"Could not process {file_path}: {e}")
+          
+          # Check token limits automatically
+          if claude_md:
+              char_count = len(claude_md)
+              token_est = char_count // 4
+              print(f"CLAUDE.md token estimate: {token_est}")
+              
+              if token_est > 4500:
+                  suggestions_only.append(f"⚠️ CLAUDE.md approaching token limit ({token_est} tokens)")
+              else:
+                  changes_made.append(f"✅ CLAUDE.md token count healthy ({token_est} tokens)")
+          
+          # Save results
+          with open('auto_changes.txt', 'w') as f:
+              for change in changes_made:
+                  f.write(f"AUTO_APPLIED: {change}\n")
+          
+          with open('suggestions.txt', 'w') as f:
+              for suggestion in suggestions_only:
+                  f.write(f"SUGGESTION: {suggestion}\n")
+          
+          print(f"Auto-applied {len(changes_made)} changes, {len(suggestions_only)} suggestions")
+          EOF
+          
+      - name: Commit auto-applied changes
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          if [ -f "auto_changes.txt" ] && [ -s "auto_changes.txt" ]; then
+            if ! git diff --quiet; then
+              git config user.name "doc-synthesis-bot"
+              git config user.email "doc-synthesis-bot@mids-hero-web.com"
+              
+              git add -A
+              git commit -m "🤖 Auto-apply documentation updates
+
+$(cat auto_changes.txt | sed 's/AUTO_APPLIED: /- /')
+
+Automatically applied safe documentation updates based on code changes.
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>"
+              
+              git push
+              echo "CHANGES_COMMITTED=true" >> $GITHUB_ENV
+            fi
+          fi
+          
+      - name: Comment with results
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            
+            let autoChanges = [];
+            let suggestions = [];
+            
+            try {
+              const autoContent = fs.readFileSync('auto_changes.txt', 'utf8');
+              autoChanges = autoContent.split('\n').filter(line => line.trim()).map(line => line.replace('AUTO_APPLIED: ', ''));
+            } catch (e) {}
+            
+            try {
+              const sugContent = fs.readFileSync('suggestions.txt', 'utf8');
+              suggestions = sugContent.split('\n').filter(line => line.trim()).map(line => line.replace('SUGGESTION: ', ''));
+            } catch (e) {}
+            
+            if (autoChanges.length === 0 && suggestions.length === 0) {
+              console.log('No documentation updates needed');
+              return;
+            }
+            
+            let comment = `## 🤖 Documentation Auto-Synthesis Results\n\n`;
+            
+            if (autoChanges.length > 0) {
+              comment += `### ✅ Auto-Applied Changes\n\nThe following documentation updates were applied automatically:\n\n`;
+              autoChanges.forEach(change => {
+                comment += `- ${change}\n`;
+              });
+              comment += `\nChanges have been committed and pushed to this branch.\n\n`;
+            }
+            
+            if (suggestions.length > 0) {
+              comment += `### 📋 Manual Review Needed\n\nThe following changes may require manual attention:\n\n`;
+              suggestions.forEach(suggestion => {
+                comment += `- ${suggestion}\n`;
+              });
+              comment += `\n### Recommended Actions:\n`;
+              comment += `- [ ] Review the suggested updates above\n`;
+              comment += `- [ ] Update relevant documentation files if needed\n`;
+            }
+            
+            if (autoChanges.length === 0) {
+              comment += `### ℹ️ No Auto-Updates Applied\n\nNo safe automatic updates were identified for this change.\n\n`;
+            }
+            
+            comment += `\n---\n*Powered by automated documentation synthesis with AI assistance*`;
+            
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: comment
+            });

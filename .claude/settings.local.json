@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "Bash(git init:*)",
+      "Bash(python scripts/create_github_issues.py:*)",
+      "Bash(git add:*)",
+      "Bash(rm:*)",
+      "Bash(trash:*)",
+      "Bash(git rm:*)",
+      "Bash(git reset:*)"
+    ],
+    "deny": []
+  }
+}

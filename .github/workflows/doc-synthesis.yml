@@ -3,11 +3,13 @@ name: Documentation Synthesis
 on:
   pull_request:
     types: [opened, synchronize, ready_for_review]
+  push:
+    branches: [main, develop, test/*]
   workflow_dispatch:
     inputs:
       pr_number:
         description: 'PR number to process'
-        required: true
+        required: false
         type: number
 
 permissions:
@@ -69,11 +71,9 @@ jobs:
         run: |
           pip install anthropic pyyaml tiktoken
           
-      - name: Analyze code changes for documentation
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      - name: Create documentation analysis script
         run: |
-          python -c "
+          cat << 'EOF' > analyze_docs.py
           import os
           import anthropic
           from pathlib import Path
@@ -81,7 +81,7 @@ jobs:
           client = anthropic.Anthropic()
           
           # Read changed files
-          changed_files = '''${{ needs.analyze-changes.outputs.changed_files }}'''.split()
+          changed_files = os.environ.get('CHANGED_FILES', '').split()
           
           # Read current CLAUDE.md for context
           claude_md = ''
@@ -104,13 +104,15 @@ jobs:
           if not file_contents:
               exit(0)
           
-          prompt = f'''Analyze these code changes for the Mids Hero Web project and suggest documentation updates.
+          changed_files_text = '\n'.join([f"{path}:\n{content[:500]}..." for path, content in file_contents.items()])
+          
+          prompt = f"""Analyze these code changes for the Mids Hero Web project and suggest documentation updates.
 
 Current CLAUDE.md (first 3000 chars):
 {claude_md[:3000]}
 
 Changed Files:
-{chr(10).join([f\"{path}:\n{content[:500]}...\" for path, content in file_contents.items()])}
+{changed_files_text}
 
 Please suggest:
 1. Updates needed for README.md (if API changes, new features, setup changes)
@@ -125,7 +127,7 @@ Focus on:
 - New Epic progress (update epic status)
 - Docker/deployment changes (update setup instructions)
 
-Provide specific suggestions in markdown format:'''
+Provide specific suggestions in markdown format:"""
           
           response = client.messages.create(
               model='claude-3-5-sonnet-20241022',
@@ -137,7 +139,14 @@ Provide specific suggestions in markdown format:'''
           
           with open('doc_suggestions.md', 'w') as f:
               f.write(suggestions)
-          "
+          EOF
+          
+      - name: Run documentation analysis
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CHANGED_FILES: ${{ needs.analyze-changes.outputs.changed_files }}
+        run: |
+          python analyze_docs.py
           
       - name: Check if documentation updates are needed
         id: doc-check
@@ -149,7 +158,7 @@ Provide specific suggestions in markdown format:'''
           fi
           
       - name: Create documentation PR comment
-        if: steps.doc-check.outputs.has_suggestions == 'true'
+        if: steps.doc-check.outputs.has_suggestions == 'true' && github.event_name == 'pull_request'
         uses: actions/github-script@v7
         with:
           script: |
@@ -177,3 +186,10 @@ ${suggestions}
               issue_number: context.issue.number,
               body: comment
             });
+            
+      - name: Output suggestions for push events
+        if: steps.doc-check.outputs.has_suggestions == 'true' && github.event_name == 'push'
+        run: |
+          echo "## 📚 Documentation Update Suggestions for Push Event" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          cat doc_suggestions.md >> $GITHUB_STEP_SUMMARY

@@ -78,11 +78,15 @@ Following the 6-epic roadmap (see `.claude/epics/` for details):
 - GitHub Actions CI/CD pipeline
 - AI-powered workflows with @claude integration
 
-**🚧 Epic 2: Data Import** - In Progress (CRITICAL BLOCKER)
+**🚧 Epic 2: Data Import** - In Progress (50% Complete)
 
-- Need City of Heroes game data files
-- Database migrations pending
-- Import scripts to be created
+- ✅ Database schema design completed
+- ✅ Comprehensive SQLAlchemy models implemented
+- ✅ Alembic migration framework set up
+- ✅ Initial database migration created and applied
+- ✅ Database schema deployment successful
+- 🚧 Data import utilities - next phase
+- 🚧 City of Heroes game data files (.mhd) needed for import
 
 **📋 Epic 3-6**: Backend API, Frontend, Deployment, Optimization - Planned
 
@@ -134,16 +138,8 @@ mids-hero-web/
 
 ### Current Blockers
 
-1. **No game data**: Epic 2 requires City of Heroes .mhd files
-2. **No migrations**: Database schema exists but not migrated
-3. **Mock data only**: API returns placeholders
-
-### Development Priorities
-
-1. Obtain game data files (contact Homecoming team)
-2. Create and run database migrations
-3. Implement data import pipeline
-4. Replace mock API responses with real data
+1. **Game data needed**: Epic 2 requires City of Heroes .mhd files
+2. **Import utilities**: Data import scripts to be created
 
 ## 🤖 AI Agent Guidelines
 

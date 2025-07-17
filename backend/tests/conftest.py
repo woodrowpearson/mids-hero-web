@@ -9,7 +9,7 @@ import sys
 
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
@@ -89,7 +89,25 @@ def db():
     connection.close()
 
     # Drop all tables after test
-    Base.metadata.drop_all(bind=engine)
+    # Handle circular dependencies by dropping tables in the correct order
+    if SQLALCHEMY_DATABASE_URL.startswith("sqlite"):
+        # SQLite doesn't enforce foreign keys by default, so we can drop all at once
+        Base.metadata.drop_all(bind=engine)
+    else:
+        # For PostgreSQL, drop tables in reverse dependency order
+        # First drop tables with foreign keys
+        with engine.begin() as conn:
+            conn.execute(text("DROP TABLE IF EXISTS build_powers CASCADE"))
+            conn.execute(text("DROP TABLE IF EXISTS build_enhancements CASCADE"))
+            conn.execute(text("DROP TABLE IF EXISTS builds CASCADE"))
+            conn.execute(text("DROP TABLE IF EXISTS set_bonuses CASCADE"))
+            conn.execute(text("DROP TABLE IF EXISTS power_enhancement_compatibility CASCADE"))
+            conn.execute(text("DROP TABLE IF EXISTS power_prerequisites CASCADE"))
+            conn.execute(text("DROP TABLE IF EXISTS enhancements CASCADE"))
+            conn.execute(text("DROP TABLE IF EXISTS enhancement_sets CASCADE"))
+            conn.execute(text("DROP TABLE IF EXISTS powers CASCADE"))
+            conn.execute(text("DROP TABLE IF EXISTS powersets CASCADE"))
+            conn.execute(text("DROP TABLE IF EXISTS archetypes CASCADE"))
 
 
 @pytest.fixture

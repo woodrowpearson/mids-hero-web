@@ -2,7 +2,6 @@
 Power API endpoints for Mids-Web backend.
 """
 
-from typing import List
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
@@ -15,7 +14,7 @@ router = APIRouter()
 
 class PowerWithPrerequisites(schemas.Power):
     """Power schema with prerequisite information."""
-    prerequisites: List[schemas.PowerPrerequisite] = []
+    prerequisites: list[schemas.PowerPrerequisite] = []
 
 
 @router.get("/powers/{power_id}", response_model=PowerWithPrerequisites)
@@ -26,16 +25,16 @@ async def get_power(
 ):
     """
     Get a specific power by ID.
-    
+
     Returns detailed information about a power, optionally including prerequisites.
     """
     power = crud.get_power(db, power_id=power_id)
     if power is None:
         raise HTTPException(status_code=404, detail="Power not found")
-    
+
     # Convert to dict to add prerequisites
     power_data = power.__dict__.copy()
-    
+
     # Include prerequisites if requested
     if include_prerequisites:
         # Get prerequisites for this power
@@ -47,11 +46,11 @@ async def get_power(
         power_data["prerequisites"] = prerequisites
     else:
         power_data["prerequisites"] = []
-    
+
     return PowerWithPrerequisites(**power_data)
 
 
-@router.get("/powers", response_model=List[schemas.Power])
+@router.get("/powers", response_model=list[schemas.Power])
 async def search_powers(
     name: str | None = Query(None, description="Search by power name"),
     power_type: str | None = Query(None, description="Filter by power type"),
@@ -63,24 +62,24 @@ async def search_powers(
 ):
     """
     Search and filter powers.
-    
+
     Supports searching by name and filtering by various criteria.
     """
     query = db.query(models.Power)
-    
+
     # Apply filters
     if name:
         query = query.filter(models.Power.name.ilike(f"%{name}%"))
-    
+
     if power_type:
         query = query.filter(models.Power.power_type == power_type)
-    
+
     if min_level is not None:
         query = query.filter(models.Power.level_available >= min_level)
-    
+
     if max_level is not None:
         query = query.filter(models.Power.level_available <= max_level)
-    
+
     # Apply pagination
     powers = query.offset(skip).limit(limit).all()
     return powers

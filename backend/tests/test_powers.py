@@ -2,8 +2,6 @@
 Tests for power API endpoints.
 """
 
-import pytest
-from sqlalchemy.orm import Session
 
 from app.models import Power, PowerPrerequisite
 
@@ -43,7 +41,7 @@ def test_get_power_with_prerequisites(client, sample_power, sample_powerset, db_
     db_session.add(power2)
     db_session.commit()
     db_session.refresh(power2)
-    
+
     # Add prerequisite
     prereq = PowerPrerequisite(
         power_id=power2.id,
@@ -52,7 +50,7 @@ def test_get_power_with_prerequisites(client, sample_power, sample_powerset, db_
     )
     db_session.add(prereq)
     db_session.commit()
-    
+
     response = client.get(f"/api/powers/{power2.id}")
     assert response.status_code == 200
     data = response.json()
@@ -103,7 +101,7 @@ def test_search_powers_by_name(client, sample_power, sample_powerset, db_session
     ]
     db_session.add_all(powers)
     db_session.commit()
-    
+
     # Search for "fire"
     response = client.get("/api/powers?name=fire")
     assert response.status_code == 200
@@ -129,14 +127,14 @@ def test_search_powers_by_type(client, sample_power, sample_powerset, db_session
     )
     db_session.add(toggle)
     db_session.commit()
-    
+
     # Filter by click powers
     response = client.get("/api/powers?power_type=click")
     assert response.status_code == 200
     data = response.json()
     assert len(data) == 1
     assert data[0]["name"] == "Fire Blast"
-    
+
     # Filter by toggle powers
     response = client.get("/api/powers?power_type=toggle")
     assert response.status_code == 200
@@ -162,21 +160,21 @@ def test_search_powers_by_level(client, sample_powerset, db_session):
     ]
     db_session.add_all(powers)
     db_session.commit()
-    
+
     # Filter by min level
     response = client.get("/api/powers?min_level=20")
     assert response.status_code == 200
     data = response.json()
     assert len(data) == 3
     assert all(p["level_available"] >= 20 for p in data)
-    
+
     # Filter by max level
     response = client.get("/api/powers?max_level=20")
     assert response.status_code == 200
     data = response.json()
     assert len(data) == 3
     assert all(p["level_available"] <= 20 for p in data)
-    
+
     # Filter by level range
     response = client.get("/api/powers?min_level=10&max_level=30")
     assert response.status_code == 200
@@ -202,7 +200,7 @@ def test_search_powers_pagination(client, sample_powerset, db_session):
     ]
     db_session.add_all(powers)
     db_session.commit()
-    
+
     # Test pagination
     response = client.get("/api/powers?skip=2&limit=2")
     assert response.status_code == 200

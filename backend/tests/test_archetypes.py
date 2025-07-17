@@ -2,8 +2,6 @@
 Tests for archetype API endpoints.
 """
 
-import pytest
-from sqlalchemy.orm import Session
 
 from app.models import Archetype, Powerset
 
@@ -43,7 +41,7 @@ def test_get_archetypes_pagination(client, db_session):
     ]
     db_session.add_all(archetypes)
     db_session.commit()
-    
+
     # Test pagination
     response = client.get("/api/archetypes?skip=2&limit=2")
     assert response.status_code == 200
@@ -98,7 +96,7 @@ def test_get_archetype_powersets_filtered(client, sample_archetype, db_session):
     )
     db_session.add_all([primary, secondary])
     db_session.commit()
-    
+
     # Test filtering by primary
     response = client.get(
         f"/api/archetypes/{sample_archetype.id}/powersets?powerset_type=primary"
@@ -107,7 +105,7 @@ def test_get_archetype_powersets_filtered(client, sample_archetype, db_session):
     data = response.json()
     assert len(data) == 1
     assert data[0]["name"] == "Fire Blast"
-    
+
     # Test filtering by secondary
     response = client.get(
         f"/api/archetypes/{sample_archetype.id}/powersets?powerset_type=secondary"

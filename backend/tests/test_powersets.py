@@ -2,8 +2,6 @@
 Tests for powerset API endpoints.
 """
 
-import pytest
-from sqlalchemy.orm import Session
 
 from app.models import Power
 
@@ -69,12 +67,12 @@ def test_get_powerset_powers(client, sample_powerset, sample_power, db_session):
     )
     db_session.add(power2)
     db_session.commit()
-    
+
     response = client.get(f"/api/powersets/{sample_powerset.id}/powers")
     assert response.status_code == 200
     data = response.json()
     assert len(data) == 2
-    
+
     # Powers should be returned in order
     assert data[0]["name"] == "Fire Blast"
     assert data[0]["level_available"] == 1

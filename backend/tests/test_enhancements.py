@@ -2,8 +2,6 @@
 Tests for enhancement API endpoints.
 """
 
-import pytest
-from sqlalchemy.orm import Session
 
 from app.models import Enhancement, EnhancementSet, SetBonus
 
@@ -44,7 +42,7 @@ def test_get_enhancements_pagination(client, sample_enhancement_set, db_session)
     ]
     db_session.add_all(enhancements)
     db_session.commit()
-    
+
     # Test pagination
     response = client.get("/api/enhancements?skip=2&limit=2")
     assert response.status_code == 200
@@ -79,21 +77,21 @@ def test_get_enhancements_filtered_by_type(client, sample_enhancement, db_sessio
     )
     db_session.add_all([io_enh, so_enh])
     db_session.commit()
-    
+
     # Filter by IO
     response = client.get("/api/enhancements?enhancement_type=IO")
     assert response.status_code == 200
     data = response.json()
     assert len(data) == 1
     assert data[0]["name"] == "Damage IO"
-    
+
     # Filter by SO
     response = client.get("/api/enhancements?enhancement_type=SO")
     assert response.status_code == 200
     data = response.json()
     assert len(data) == 1
     assert data[0]["name"] == "Damage SO"
-    
+
     # Filter by set_piece
     response = client.get("/api/enhancements?enhancement_type=set_piece")
     assert response.status_code == 200
@@ -152,7 +150,7 @@ def test_get_enhancement_sets_pagination(client, db_session):
     ]
     db_session.add_all(sets)
     db_session.commit()
-    
+
     # Test pagination
     response = client.get("/api/enhancement-sets?skip=1&limit=3")
     assert response.status_code == 200
@@ -212,12 +210,12 @@ def test_get_enhancement_set_with_bonuses(client, sample_enhancement_set, db_ses
     ]
     db_session.add_all(bonuses)
     db_session.commit()
-    
+
     response = client.get(f"/api/enhancement-sets/{sample_enhancement_set.id}")
     assert response.status_code == 200
     data = response.json()
     assert len(data["set_bonuses"]) == 3
-    
+
     # Bonuses should be ordered by pieces required
     assert data["set_bonuses"][0]["pieces_required"] == 2
     assert data["set_bonuses"][0]["bonus_type"] == "recovery"
@@ -237,7 +235,7 @@ def test_get_enhancement_set_without_related_data(client, sample_enhancement_set
     )
     db_session.add(bonus)
     db_session.commit()
-    
+
     response = client.get(
         f"/api/enhancement-sets/{sample_enhancement_set.id}?include_enhancements=false&include_bonuses=false"
     )

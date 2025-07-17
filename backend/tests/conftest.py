@@ -1,19 +1,21 @@
 """
 Shared test fixtures for API tests.
 """
+# ruff: noqa: E402, I001
 
-import os
 import sys
+
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
+
 # Mock asyncpg before importing anything that uses it
 class MockAsyncpg:
     class Pool:
         pass
-    
+
 mock_asyncpg = MockAsyncpg()
 sys.modules['asyncpg'] = mock_asyncpg
 
@@ -25,16 +27,17 @@ async def mock_close_database_pool():
     pass
 
 # Import database module first to get Base
-from app import database
+from app import database  # noqa: E402
+
 database.create_database_pool = mock_create_database_pool
 database.close_database_pool = mock_close_database_pool
 
 # Now import models - this will use the same Base from database module
-from app.models import Archetype, Powerset, Power, Enhancement, EnhancementSet, PowerPrerequisite, SetBonus
-from app.database import Base  # Use the same Base instance
+from app.database import Base  # Use the same Base instance  # noqa: E402
+from app.models import Archetype, Enhancement, EnhancementSet, Power, Powerset  # noqa: E402, I001
 
 # Import the app last
-from main import app
+from main import app  # noqa: E402
 
 # Use in-memory SQLite for tests
 SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"
@@ -63,10 +66,10 @@ def client():
     """Create a test client with a fresh database."""
     # Create tables
     Base.metadata.create_all(bind=engine)
-    
+
     with TestClient(app) as test_client:
         yield test_client
-    
+
     # Drop tables after test
     Base.metadata.drop_all(bind=engine)
 

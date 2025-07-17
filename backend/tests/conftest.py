@@ -218,15 +218,15 @@ def sample_enhancement(db_session, sample_enhancement_set):
     """Create a sample enhancement for testing."""
     enhancement = Enhancement(
         name="Devastation: Accuracy/Damage",
-        short_name="Acc/Dam",
+        display_name="Devastation: Accuracy/Damage",
         description="Increases accuracy and damage",
         enhancement_type="set_piece",
         set_id=sample_enhancement_set.id,
         level_min=30,
         level_max=50,
-        effect_type="accuracy_damage",
-        effect_value=0.265,
-        unique_per_build=False,
+        accuracy_bonus=26.5,
+        damage_bonus=26.5,
+        unique_enhancement=False,
     )
     db_session.add(enhancement)
     db_session.commit()

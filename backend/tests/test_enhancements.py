@@ -29,13 +29,12 @@ def test_get_enhancements_pagination(client, sample_enhancement_set, db_session)
     enhancements = [
         Enhancement(
             name=f"Enhancement {i}",
-            short_name=f"Enh {i}",
+            display_name=f"Enhancement {i}",
             description=f"Test enhancement {i}",
             enhancement_type="IO",
             level_min=1,
             level_max=50,
-            effect_type="damage",
-            effect_value=0.25,
+            damage_bonus=25.0,
         )
         for i in range(5)
     ]
@@ -56,23 +55,21 @@ def test_get_enhancements_filtered_by_type(client, sample_enhancement, db_sessio
     # Add different types of enhancements
     io_enh = Enhancement(
         name="Damage IO",
-        short_name="Dam IO",
+        display_name="Damage IO",
         description="Generic damage enhancement",
         enhancement_type="IO",
         level_min=10,
         level_max=50,
-        effect_type="damage",
-        effect_value=0.425,
+        damage_bonus=42.5,
     )
     so_enh = Enhancement(
         name="Damage SO",
-        short_name="Dam SO",
+        display_name="Damage SO",
         description="Single origin damage enhancement",
         enhancement_type="SO",
         level_min=22,
         level_max=50,
-        effect_type="damage",
-        effect_value=0.333,
+        damage_bonus=33.3,
     )
     db_session.add_all([io_enh, so_enh])
     db_session.commit()
@@ -191,8 +188,8 @@ def test_get_enhancement_set_with_bonuses(client, sample_enhancement_set, db_ses
             set_id=sample_enhancement_set.id,
             pieces_required=2,
             bonus_type="recovery",
-            bonus_value=0.025,
-            description="2.5% Recovery",
+            bonus_amount=0.025,
+            bonus_description="2.5% Recovery",
         ),
         SetBonus(
             set_id=sample_enhancement_set.id,

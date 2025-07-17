@@ -13,7 +13,7 @@ def test_get_power_by_id(client, sample_power):
     assert data["name"] == "Fire Blast"
     assert data["display_name"] == "Fire Blast"
     assert data["level_available"] == 1
-    assert data["damage_scale"] == 1.0
+    assert data["damage_scale"] == "1.00"  # Decimal fields are serialized as strings
     assert "prerequisites" in data
     assert data["prerequisites"] == []
 
@@ -84,9 +84,9 @@ def test_search_powers_by_name(client, sample_power, sample_powerset, db_session
             display_name="Fire Ball",
             description="AoE fire attack",
             powerset_id=sample_powerset.id,
-            power_type="click",
+            power_type="attack",
+            target_type="enemy",
             level_available=2,
-            requires_tokens=1,
         ),
         Power(
             name="Ice Blast",
@@ -121,18 +121,20 @@ def test_search_powers_by_type(client, sample_power, sample_powerset, db_session
         description="Toggle defense",
         powerset_id=sample_powerset.id,
         power_type="toggle",
+        target_type="self",
         level_available=4,
-        requires_tokens=1,
     )
     db_session.add(toggle)
     db_session.commit()
 
-    # Filter by click powers
-    response = client.get("/api/powers?power_type=click")
+    # Filter by attack powers
+    response = client.get("/api/powers?power_type=attack")
     assert response.status_code == 200
     data = response.json()
-    assert len(data) == 1
-    assert data[0]["name"] == "Fire Blast"
+    assert len(data) == 2  # Fire Blast and Fire Ball
+    names = [p["name"] for p in data]
+    assert "Fire Blast" in names
+    assert "Fire Ball" in names
 
     # Filter by toggle powers
     response = client.get("/api/powers?power_type=toggle")
@@ -151,9 +153,9 @@ def test_search_powers_by_level(client, sample_powerset, db_session):
             display_name=f"Power Level {level}",
             description=f"Power available at level {level}",
             powerset_id=sample_powerset.id,
-            power_type="click",
+            power_type="attack",
+            target_type="enemy",
             level_available=level,
-            requires_tokens=0,
         )
         for level in [1, 10, 20, 30, 40]
     ]

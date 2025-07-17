@@ -1,0 +1,1 @@
+"""Python parser for Mids Hero Designer binary (.mhd) files."""

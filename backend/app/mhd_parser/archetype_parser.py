@@ -1,7 +1,7 @@
 """Parser for Archetype records from MHD files."""
 
 from dataclasses import dataclass
-from typing import BinaryIO, List
+from typing import BinaryIO
 
 from .binary_reader import BinaryReader
 
@@ -9,17 +9,17 @@ from .binary_reader import BinaryReader
 @dataclass
 class Archetype:
     """Represents an Archetype record from MHD data."""
-    
+
     # Basic info
     display_name: str
     hitpoints: int
     hp_cap: float
     desc_long: str
     res_cap: float
-    
+
     # Origins
-    origins: List[str]
-    
+    origins: list[str]
+
     # Class info
     class_name: str
     class_type: int
@@ -28,7 +28,7 @@ class Archetype:
     primary_group: str
     secondary_group: str
     playable: bool
-    
+
     # Caps
     recharge_cap: float
     damage_cap: float
@@ -37,7 +37,7 @@ class Archetype:
     threat_cap: float
     resist_cap: float
     damage_resist_cap: float
-    
+
     # Base stats
     base_recovery: float
     base_regen: float
@@ -58,23 +58,23 @@ def parse_archetype(stream: BinaryIO) -> Archetype:
         EOFError: If stream ends while reading
     """
     reader = BinaryReader(stream)
-    
+
     try:
         # 1. DisplayName (string)
         display_name = reader.read_string()
-        
+
         # 2. Hitpoints (Int32)
         hitpoints = reader.read_int32()
-        
+
         # 3. HPCap (Single/float)
         hp_cap = reader.read_float32()
-        
+
         # 4. DescLong (string)
         desc_long = reader.read_string()
-        
+
         # 5. ResCap (Single)
         res_cap = reader.read_float32()
-        
+
         # 6. numOrigins (Int32) + Origin array (count+1 strings)
         num_origins = reader.read_int32()
         origins = []
@@ -82,28 +82,28 @@ def parse_archetype(stream: BinaryIO) -> Archetype:
             origins.append(reader.read_string())
         # Read the extra string (count+1 pattern)
         reader.read_string()
-        
+
         # 7. ClassName (string)
         class_name = reader.read_string()
-        
+
         # 8. ClassType (Int32)
         class_type = reader.read_int32()
-        
+
         # 9. Column (Int32)
         column = reader.read_int32()
-        
+
         # 10. DescShort (string)
         desc_short = reader.read_string()
-        
+
         # 11. PrimaryGroup (string)
         primary_group = reader.read_string()
-        
+
         # 12. SecondaryGroup (string)
         secondary_group = reader.read_string()
-        
+
         # 13. Playable (Boolean)
         playable = reader.read_bool()
-        
+
         # 14. Various caps (7 floats in order)
         recharge_cap = reader.read_float32()
         damage_cap = reader.read_float32()
@@ -112,15 +112,15 @@ def parse_archetype(stream: BinaryIO) -> Archetype:
         threat_cap = reader.read_float32()
         resist_cap = reader.read_float32()
         damage_resist_cap = reader.read_float32()
-        
+
         # 15. Base stats (3 floats)
         base_recovery = reader.read_float32()
         base_regen = reader.read_float32()
         base_threat = reader.read_float32()
-        
+
         # 16. PerceptionCap (Single)
         perception_cap = reader.read_float32()
-        
+
         return Archetype(
             display_name=display_name,
             hitpoints=hitpoints,
@@ -147,7 +147,7 @@ def parse_archetype(stream: BinaryIO) -> Archetype:
             base_threat=base_threat,
             perception_cap=perception_cap
         )
-        
+
     except EOFError as e:
         # Re-raise with more context
         raise EOFError(f"Unexpected EOF while parsing Archetype: {str(e)}")

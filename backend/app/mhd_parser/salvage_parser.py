@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 from enum import IntEnum
-from typing import BinaryIO, List
+from typing import BinaryIO
 
 from .binary_reader import BinaryReader
 
@@ -25,7 +25,7 @@ class SalvageType(IntEnum):
 @dataclass
 class Salvage:
     """Represents a Salvage record from MHD data."""
-    
+
     internal_name: str
     display_name: str
     rarity: SalvageRarity
@@ -36,10 +36,10 @@ class Salvage:
 @dataclass
 class SalvageDatabase:
     """Represents a complete Salvage database file."""
-    
+
     header: str
     version: str
-    salvage_items: List[Salvage]
+    salvage_items: list[Salvage]
 
 
 def parse_salvage(stream: BinaryIO) -> Salvage:
@@ -55,7 +55,7 @@ def parse_salvage(stream: BinaryIO) -> Salvage:
         EOFError: If stream ends while reading
     """
     reader = BinaryReader(stream)
-    
+
     try:
         # Read fields in order
         internal_name = reader.read_string()
@@ -63,7 +63,7 @@ def parse_salvage(stream: BinaryIO) -> Salvage:
         rarity = SalvageRarity(reader.read_int32())
         salvage_type = SalvageType(reader.read_int32())
         description = reader.read_string()
-        
+
         return Salvage(
             internal_name=internal_name,
             display_name=display_name,
@@ -71,7 +71,7 @@ def parse_salvage(stream: BinaryIO) -> Salvage:
             salvage_type=salvage_type,
             description=description
         )
-        
+
     except EOFError as e:
         raise EOFError(f"Unexpected EOF while parsing Salvage: {str(e)}")
 
@@ -90,28 +90,28 @@ def parse_salvage_database(stream: BinaryIO) -> SalvageDatabase:
         ValueError: If file format is invalid
     """
     reader = BinaryReader(stream)
-    
+
     try:
         # Parse header
         header = reader.read_string()
         if "Salvage" not in header:
             raise ValueError(f"Invalid salvage database header: {header}")
-        
+
         # Version
         version = reader.read_string()
-        
+
         # Read salvage count
         salvage_count = reader.read_int32()
         salvage_items = []
-        
+
         for _ in range(salvage_count):
             salvage_items.append(parse_salvage(stream))
-        
+
         return SalvageDatabase(
             header=header,
             version=version,
             salvage_items=salvage_items
         )
-        
+
     except EOFError as e:
         raise EOFError(f"Unexpected EOF while parsing salvage database: {str(e)}")

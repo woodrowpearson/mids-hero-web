@@ -3,47 +3,47 @@
 import json
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, Union
+from typing import Any
 
-from .main_database_parser import MainDatabase
 from .enhancement_database_parser import EnhancementDatabase
-from .salvage_parser import SalvageDatabase
+from .main_database_parser import MainDatabase
 from .recipe_parser import RecipeDatabase
+from .salvage_parser import SalvageDatabase
 from .text_mhd_parser import TextMhdFile
 
 
 class MhdJsonExporter:
     """Exports MHD parsed data to JSON format for comparison and validation."""
-    
+
     def __init__(self, indent: int = 2):
         """Initialize the exporter with formatting options."""
         self.indent = indent
-    
-    def export_main_database(self, db: MainDatabase, output_path: Union[str, Path]) -> None:
+
+    def export_main_database(self, db: MainDatabase, output_path: str | Path) -> None:
         """Export main database to JSON file."""
         data = self._main_database_to_dict(db)
         self._write_json(data, output_path)
-    
-    def export_enhancement_database(self, db: EnhancementDatabase, 
-                                  output_path: Union[str, Path]) -> None:
+
+    def export_enhancement_database(self, db: EnhancementDatabase,
+                                  output_path: str | Path) -> None:
         """Export enhancement database to JSON file."""
         data = self._enhancement_database_to_dict(db)
         self._write_json(data, output_path)
-    
-    def export_salvage_database(self, db: SalvageDatabase, 
-                               output_path: Union[str, Path]) -> None:
+
+    def export_salvage_database(self, db: SalvageDatabase,
+                               output_path: str | Path) -> None:
         """Export salvage database to JSON file."""
         data = self._salvage_database_to_dict(db)
         self._write_json(data, output_path)
-    
-    def export_recipe_database(self, db: RecipeDatabase, 
-                              output_path: Union[str, Path]) -> None:
+
+    def export_recipe_database(self, db: RecipeDatabase,
+                              output_path: str | Path) -> None:
         """Export recipe database to JSON file."""
         data = self._recipe_database_to_dict(db)
         self._write_json(data, output_path)
-    
-    def export_text_mhd(self, text_file: TextMhdFile, 
-                       output_path: Union[str, Path]) -> None:
+
+    def export_text_mhd(self, text_file: TextMhdFile,
+                       output_path: str | Path) -> None:
         """Export text MHD file to JSON."""
         data = {
             "version": text_file.version,
@@ -51,8 +51,8 @@ class MhdJsonExporter:
             "data": text_file.data
         }
         self._write_json(data, output_path)
-    
-    def _main_database_to_dict(self, db: MainDatabase) -> Dict[str, Any]:
+
+    def _main_database_to_dict(self, db: MainDatabase) -> dict[str, Any]:
         """Convert main database to dictionary."""
         return {
             "header": db.header,
@@ -72,8 +72,8 @@ class MhdJsonExporter:
             "powers": [self._power_to_dict(p) for p in db.powers],
             "summons": [self._summon_to_dict(s) for s in db.summons]
         }
-    
-    def _archetype_to_dict(self, archetype) -> Dict[str, Any]:
+
+    def _archetype_to_dict(self, archetype) -> dict[str, Any]:
         """Convert archetype to dictionary."""
         return {
             "display_name": archetype.display_name,
@@ -101,8 +101,8 @@ class MhdJsonExporter:
             "base_threat": archetype.base_threat,
             "perception_cap": archetype.perception_cap
         }
-    
-    def _powerset_to_dict(self, powerset) -> Dict[str, Any]:
+
+    def _powerset_to_dict(self, powerset) -> dict[str, Any]:
         """Convert powerset to dictionary."""
         return {
             "display_name": powerset.display_name,
@@ -119,8 +119,8 @@ class MhdJsonExporter:
             "uid_link_secondary": powerset.uid_link_secondary,
             "mutex_list": [{"name": m[0], "index": m[1]} for m in powerset.mutex_list]
         }
-    
-    def _power_to_dict(self, power) -> Dict[str, Any]:
+
+    def _power_to_dict(self, power) -> dict[str, Any]:
         """Convert power to dictionary."""
         return {
             "full_name": power.full_name,
@@ -173,8 +173,8 @@ class MhdJsonExporter:
             "forced_class": power.forced_class,
             "hidden_power": power.hidden_power
         }
-    
-    def _summon_to_dict(self, summon) -> Dict[str, Any]:
+
+    def _summon_to_dict(self, summon) -> dict[str, Any]:
         """Convert summon to dictionary."""
         return {
             "uid": summon.uid,
@@ -184,8 +184,8 @@ class MhdJsonExporter:
             "powerset_full_names": summon.powerset_full_names,
             "upgrade_power_full_names": summon.upgrade_power_full_names
         }
-    
-    def _enhancement_database_to_dict(self, db: EnhancementDatabase) -> Dict[str, Any]:
+
+    def _enhancement_database_to_dict(self, db: EnhancementDatabase) -> dict[str, Any]:
         """Convert enhancement database to dictionary."""
         return {
             "header": db.header,
@@ -198,8 +198,8 @@ class MhdJsonExporter:
             "enhancements": [self._enhancement_to_dict(e) for e in db.enhancements],
             "enhancement_sets": [self._enhancement_set_to_dict(s) for s in db.enhancement_sets]
         }
-    
-    def _enhancement_to_dict(self, enhancement) -> Dict[str, Any]:
+
+    def _enhancement_to_dict(self, enhancement) -> dict[str, Any]:
         """Convert enhancement to dictionary."""
         return {
             "static_index": enhancement.static_index,
@@ -235,8 +235,8 @@ class MhdJsonExporter:
             "is_proc": enhancement.is_proc,
             "is_scalable": enhancement.is_scalable
         }
-    
-    def _enhancement_set_to_dict(self, enh_set) -> Dict[str, Any]:
+
+    def _enhancement_set_to_dict(self, enh_set) -> dict[str, Any]:
         """Convert enhancement set to dictionary."""
         return {
             "display_index": enh_set.display_index,
@@ -253,8 +253,8 @@ class MhdJsonExporter:
             "level_min": enh_set.level_min,
             "level_max": enh_set.level_max
         }
-    
-    def _salvage_database_to_dict(self, db: SalvageDatabase) -> Dict[str, Any]:
+
+    def _salvage_database_to_dict(self, db: SalvageDatabase) -> dict[str, Any]:
         """Convert salvage database to dictionary."""
         return {
             "header": db.header,
@@ -272,8 +272,8 @@ class MhdJsonExporter:
                 } for s in db.salvage_items
             ]
         }
-    
-    def _recipe_database_to_dict(self, db: RecipeDatabase) -> Dict[str, Any]:
+
+    def _recipe_database_to_dict(self, db: RecipeDatabase) -> dict[str, Any]:
         """Convert recipe database to dictionary."""
         return {
             "header": db.header,
@@ -294,17 +294,17 @@ class MhdJsonExporter:
                 } for r in db.recipes
             ]
         }
-    
-    def _serialize_date(self, date: Union[int, datetime]) -> Union[int, str]:
+
+    def _serialize_date(self, date: int | datetime) -> int | str:
         """Serialize date to JSON-compatible format."""
         if isinstance(date, datetime):
             return date.isoformat()
         return date
-    
-    def _write_json(self, data: Dict[str, Any], output_path: Union[str, Path]) -> None:
+
+    def _write_json(self, data: dict[str, Any], output_path: str | Path) -> None:
         """Write data to JSON file."""
         path = Path(output_path)
         path.parent.mkdir(parents=True, exist_ok=True)
-        
+
         with open(path, 'w', encoding='utf-8') as f:
             json.dump(data, f, indent=self.indent, ensure_ascii=False)

@@ -2,24 +2,29 @@
 
 from dataclasses import dataclass
 from datetime import datetime
-from typing import BinaryIO, List, Union
+from typing import BinaryIO
 
 from .binary_reader import BinaryReader
-from .enhancement_parser import Enhancement, EnhancementSet, parse_enhancement, parse_enhancement_set
+from .enhancement_parser import (
+    Enhancement,
+    EnhancementSet,
+    parse_enhancement,
+    parse_enhancement_set,
+)
 
 
 @dataclass
 class EnhancementDatabase:
     """Represents a complete Enhancement database file."""
-    
+
     # Header info
     header: str
     version: str
-    date: Union[int, datetime]
-    
+    date: int | datetime
+
     # Entity collections
-    enhancements: List[Enhancement]
-    enhancement_sets: List[EnhancementSet]
+    enhancements: list[Enhancement]
+    enhancement_sets: list[EnhancementSet]
 
 
 def _parse_version(version_str: str) -> tuple:
@@ -34,14 +39,14 @@ def _parse_version(version_str: str) -> tuple:
     parts = version_str.split('.')
     if len(parts) != 4:
         return (0, 0, 0, 0)
-    
+
     try:
         return tuple(int(p) for p in parts)
     except ValueError:
         return (0, 0, 0, 0)
 
 
-def _parse_date(reader: BinaryReader, version_str: str) -> Union[int, datetime]:
+def _parse_date(reader: BinaryReader, version_str: str) -> int | datetime:
     """Parse date based on version.
     
     For versions >= 3.0, date is stored as Int64 (.NET ticks).
@@ -55,7 +60,7 @@ def _parse_date(reader: BinaryReader, version_str: str) -> Union[int, datetime]:
         Either int (YYYYMMDD) or datetime object
     """
     major, minor, _, _ = _parse_version(version_str)
-    
+
     if major >= 3:
         # Read as Int64 (.NET ticks)
         ticks = reader.read_int64()
@@ -91,29 +96,29 @@ def parse_enhancement_database(stream: BinaryIO) -> EnhancementDatabase:
         ValueError: If file format is invalid
     """
     reader = BinaryReader(stream)
-    
+
     try:
         # Parse header
         header = reader.read_string()
         if "Enhancement" not in header:
             raise ValueError(f"Invalid enhancement database header: {header}")
-        
+
         # Version info
         version = reader.read_string()
         date = _parse_date(reader, version)
-        
+
         # Read enhancement count
         enhancement_count = reader.read_int32()
         enhancements = []
         for _ in range(enhancement_count):
             enhancements.append(parse_enhancement(stream))
-        
+
         # Read enhancement set count
         set_count = reader.read_int32()
         enhancement_sets = []
         for _ in range(set_count):
             enhancement_sets.append(parse_enhancement_set(stream))
-        
+
         return EnhancementDatabase(
             header=header,
             version=version,
@@ -121,6 +126,6 @@ def parse_enhancement_database(stream: BinaryIO) -> EnhancementDatabase:
             enhancements=enhancements,
             enhancement_sets=enhancement_sets
         )
-        
+
     except EOFError as e:
         raise EOFError(f"Unexpected EOF while parsing enhancement database: {str(e)}")

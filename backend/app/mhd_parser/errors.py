@@ -1,13 +1,12 @@
 """Enhanced error handling for MHD parser with context tracking."""
 
-from typing import Optional, List
 
 
 class MhdParseError(Exception):
     """Base exception for MHD parsing errors."""
-    
-    def __init__(self, message: str, position: Optional[int] = None, 
-                 context: Optional[List[str]] = None):
+
+    def __init__(self, message: str, position: int | None = None,
+                 context: list[str] | None = None):
         """Initialize parse error with context.
         
         Args:
@@ -17,18 +16,18 @@ class MhdParseError(Exception):
         """
         self.position = position
         self.context = context or []
-        
+
         # Build detailed error message
         error_parts = []
-        
+
         if position is not None:
             error_parts.append(f"Error at position {position}")
-        
+
         if context:
             error_parts.append(f"While parsing: {' > '.join(context)}")
-        
+
         error_parts.append(message)
-        
+
         super().__init__(' | '.join(error_parts))
 
 
@@ -47,8 +46,8 @@ class MhdDataError(MhdParseError):
     pass
 
 
-def format_parse_context(entity_type: str, entity_name: Optional[str] = None, 
-                        field: Optional[str] = None) -> str:
+def format_parse_context(entity_type: str, entity_name: str | None = None,
+                        field: str | None = None) -> str:
     """Format a parsing context string.
     
     Args:
@@ -60,11 +59,11 @@ def format_parse_context(entity_type: str, entity_name: Optional[str] = None,
         Formatted context string
     """
     parts = [entity_type]
-    
+
     if entity_name:
         parts.append(f"[{entity_name}]")
-    
+
     if field:
         parts.append(f".{field}")
-    
+
     return ''.join(parts)

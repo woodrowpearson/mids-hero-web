@@ -2,7 +2,7 @@
 
 import io
 import struct
-from typing import BinaryIO, Union
+from typing import BinaryIO
 
 
 def read_7bit_encoded_int(stream: BinaryIO) -> int:
@@ -24,20 +24,20 @@ def read_7bit_encoded_int(stream: BinaryIO) -> int:
     """
     value = 0
     shift = 0
-    
+
     while True:
         byte_data = stream.read(1)
         if not byte_data:
             raise EOFError("Unexpected EOF while reading 7-bit encoded int")
-            
+
         byte = byte_data[0]
         value |= (byte & 0x7F) << shift
-        
+
         if (byte & 0x80) == 0:
             break
-            
+
         shift += 7
-        
+
     return value
 
 
@@ -63,16 +63,16 @@ def read_string(stream: BinaryIO) -> str:
         length = read_7bit_encoded_int(stream)
     except EOFError:
         raise EOFError("Unexpected EOF while reading string length")
-    
+
     # Handle empty string
     if length == 0:
         return ""
-    
+
     # Read the string data
     string_data = stream.read(length)
     if len(string_data) < length:
         raise EOFError(f"String data truncated: expected {length} bytes, got {len(string_data)}")
-    
+
     # Decode UTF-8
     return string_data.decode('utf-8')
 
@@ -171,8 +171,8 @@ def read_bool(stream: BinaryIO) -> bool:
 
 class BinaryReader:
     """A reader for .NET BinaryWriter format data with position tracking."""
-    
-    def __init__(self, data: Union[bytes, BinaryIO]):
+
+    def __init__(self, data: bytes | BinaryIO):
         """Initialize BinaryReader with data or stream.
         
         Args:
@@ -183,19 +183,19 @@ class BinaryReader:
         else:
             self._stream = data
         self._start_pos = self._stream.tell()
-    
+
     def read(self, size: int) -> bytes:
         """Read raw bytes from the stream."""
         return self._stream.read(size)
-    
+
     def seek(self, offset: int, whence: int = 0) -> int:
         """Seek to a position in the stream."""
         return self._stream.seek(offset, whence)
-    
+
     def tell(self) -> int:
         """Get current position in the stream."""
         return self._stream.tell()
-    
+
     def read_string(self) -> str:
         """Read a .NET formatted string."""
         pos = self.tell()
@@ -203,7 +203,7 @@ class BinaryReader:
             return read_string(self._stream)
         except EOFError as e:
             raise EOFError(f"Error at position {pos}: {str(e)}")
-    
+
     def read_int32(self) -> int:
         """Read a 32-bit signed integer."""
         pos = self.tell()
@@ -211,7 +211,7 @@ class BinaryReader:
             return read_int32(self._stream)
         except EOFError as e:
             raise EOFError(f"Error at position {pos}: {str(e)}")
-    
+
     def read_uint32(self) -> int:
         """Read a 32-bit unsigned integer."""
         pos = self.tell()
@@ -219,7 +219,7 @@ class BinaryReader:
             return read_uint32(self._stream)
         except EOFError as e:
             raise EOFError(f"Error at position {pos}: {str(e)}")
-    
+
     def read_int64(self) -> int:
         """Read a 64-bit signed integer."""
         pos = self.tell()
@@ -227,7 +227,7 @@ class BinaryReader:
             return read_int64(self._stream)
         except EOFError as e:
             raise EOFError(f"Error at position {pos}: {str(e)}")
-    
+
     def read_float32(self) -> float:
         """Read a 32-bit float."""
         pos = self.tell()
@@ -235,7 +235,7 @@ class BinaryReader:
             return read_float32(self._stream)
         except EOFError as e:
             raise EOFError(f"Error at position {pos}: {str(e)}")
-    
+
     def read_bool(self) -> bool:
         """Read a boolean value."""
         pos = self.tell()

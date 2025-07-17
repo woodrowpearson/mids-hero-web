@@ -3,12 +3,12 @@
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
-from typing import BinaryIO, List, Union
+from typing import BinaryIO
 
-from .binary_reader import BinaryReader
 from .archetype_parser import Archetype, parse_archetype
-from .powerset_parser import Powerset, parse_powerset
+from .binary_reader import BinaryReader
 from .power_parser import Power, parse_power
+from .powerset_parser import Powerset, parse_powerset
 
 
 class DatabaseSection(Enum):
@@ -22,32 +22,32 @@ class DatabaseSection(Enum):
 @dataclass
 class SummonedEntity:
     """Represents a summoned entity (pet/pseudo-pet) from MHD data."""
-    
+
     uid: str
     display_name: str
     entity_type: int
     class_name: str
-    powerset_full_names: List[str]
-    upgrade_power_full_names: List[str]
+    powerset_full_names: list[str]
+    upgrade_power_full_names: list[str]
 
 
 @dataclass
 class MainDatabase:
     """Represents a complete MHD database file."""
-    
+
     # Header info
     header: str
     version: str
-    date: Union[int, datetime]
+    date: int | datetime
     issue: int
     page_vol: int
     page_vol_text: str
-    
+
     # Entity collections
-    archetypes: List[Archetype]
-    powersets: List[Powerset]
-    powers: List[Power]
-    summons: List[SummonedEntity]
+    archetypes: list[Archetype]
+    powersets: list[Powerset]
+    powers: list[Power]
+    summons: list[SummonedEntity]
 
 
 def parse_summoned_entity(stream: BinaryIO) -> SummonedEntity:
@@ -63,26 +63,26 @@ def parse_summoned_entity(stream: BinaryIO) -> SummonedEntity:
         EOFError: If stream ends while reading
     """
     reader = BinaryReader(stream)
-    
+
     try:
         # Basic fields
         uid = reader.read_string()
         display_name = reader.read_string()
         entity_type = reader.read_int32()
         class_name = reader.read_string()
-        
+
         # PowersetFullName array
         powerset_count = reader.read_int32()
         powerset_full_names = []
         for _ in range(powerset_count):
             powerset_full_names.append(reader.read_string())
-        
+
         # UpgradePowerFullName array
         upgrade_count = reader.read_int32()
         upgrade_power_full_names = []
         for _ in range(upgrade_count):
             upgrade_power_full_names.append(reader.read_string())
-        
+
         return SummonedEntity(
             uid=uid,
             display_name=display_name,
@@ -91,7 +91,7 @@ def parse_summoned_entity(stream: BinaryIO) -> SummonedEntity:
             powerset_full_names=powerset_full_names,
             upgrade_power_full_names=upgrade_power_full_names
         )
-        
+
     except EOFError as e:
         raise EOFError(f"Unexpected EOF while parsing SummonedEntity: {str(e)}")
 
@@ -108,14 +108,14 @@ def _parse_version(version_str: str) -> tuple:
     parts = version_str.split('.')
     if len(parts) != 4:
         return (0, 0, 0, 0)
-    
+
     try:
         return tuple(int(p) for p in parts)
     except ValueError:
         return (0, 0, 0, 0)
 
 
-def _parse_date(reader: BinaryReader, version_str: str) -> Union[int, datetime]:
+def _parse_date(reader: BinaryReader, version_str: str) -> int | datetime:
     """Parse date based on version.
     
     For versions >= 3.0, date is stored as Int64 (.NET ticks).
@@ -129,7 +129,7 @@ def _parse_date(reader: BinaryReader, version_str: str) -> Union[int, datetime]:
         Either int (YYYYMMDD) or datetime object
     """
     major, minor, _, _ = _parse_version(version_str)
-    
+
     if major >= 3:
         # Read as Int64 (.NET ticks)
         ticks = reader.read_int64()
@@ -165,28 +165,28 @@ def parse_main_database(stream: BinaryIO) -> MainDatabase:
         ValueError: If file format is invalid
     """
     reader = BinaryReader(stream)
-    
+
     try:
         # Parse header
         header = reader.read_string()
         if not header.startswith("Mids"):
             raise ValueError(f"Invalid database header: {header}")
-        
+
         # Version info
         version = reader.read_string()
         date = _parse_date(reader, version)
-        
+
         # Issue info
         issue = reader.read_int32()
         page_vol = reader.read_int32()
         page_vol_text = reader.read_string()
-        
+
         # Initialize collections
         archetypes = []
         powersets = []
         powers = []
         summons = []
-        
+
         # Parse sections in order
         expected_sections = [
             DatabaseSection.ARCHETYPES,
@@ -194,16 +194,16 @@ def parse_main_database(stream: BinaryIO) -> MainDatabase:
             DatabaseSection.POWERS,
             DatabaseSection.SUMMONS
         ]
-        
+
         for expected_section in expected_sections:
             # Read section marker
             marker = reader.read_string()
             if marker != expected_section.value:
                 raise ValueError(f"Invalid section marker: expected {expected_section.value}, got {marker}")
-            
+
             # Read count
             count = reader.read_int32()
-            
+
             # Parse entities based on section
             if expected_section == DatabaseSection.ARCHETYPES:
                 for _ in range(count):
@@ -217,7 +217,7 @@ def parse_main_database(stream: BinaryIO) -> MainDatabase:
             elif expected_section == DatabaseSection.SUMMONS:
                 for _ in range(count):
                     summons.append(parse_summoned_entity(stream))
-        
+
         return MainDatabase(
             header=header,
             version=version,
@@ -230,6 +230,6 @@ def parse_main_database(stream: BinaryIO) -> MainDatabase:
             powers=powers,
             summons=summons
         )
-        
+
     except EOFError as e:
         raise EOFError(f"Unexpected EOF while parsing database: {str(e)}")

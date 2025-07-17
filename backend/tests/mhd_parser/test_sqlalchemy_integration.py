@@ -113,10 +113,9 @@ class TestSQLAlchemyIntegration:
                     damage_cap=400.0,
                     recovery_cap=200.0,
                     regen_cap=175.0,
-                    threat_level=1.0,
-                    taunt_effectiveness=1.0,
-                    taunt_effectiveness_players=1.0,
-                    debuff_resistance=0.0,
+                    threat_cap=500.0,
+                    resist_cap=95.0,
+                    damage_resist_cap=300.0,
                     base_recovery=1.0,
                     base_regen=1.0,
                     base_threat=1.0,
@@ -134,11 +133,11 @@ class TestSQLAlchemyIntegration:
                 name=arch.class_name,
                 display_name=arch.display_name,
                 description=arch.desc_long,
-                hit_points=arch.hitpoints,
-                max_hp=arch.hp_cap,
-                primary_category=arch.primary_group,
-                secondary_category=arch.secondary_group,
-                playable=arch.playable
+                hit_points_base=arch.hitpoints,
+                hit_points_max=int(arch.hp_cap),
+                primary_group=arch.primary_group,
+                secondary_group=arch.secondary_group
+                # Note: playable field doesn't exist in SQLAlchemy model
             )
             db_session.add(model)
 
@@ -221,10 +220,9 @@ class TestSQLAlchemyIntegration:
                     damage_cap=400.0,
                     recovery_cap=200.0,
                     regen_cap=175.0,
-                    threat_level=1.0,
-                    taunt_effectiveness=1.0,
-                    taunt_effectiveness_players=1.0,
-                    debuff_resistance=0.0,
+                    threat_cap=500.0,
+                    resist_cap=95.0,
+                    damage_resist_cap=300.0,
                     base_recovery=1.0,
                     base_regen=1.0,
                     base_threat=1.0,

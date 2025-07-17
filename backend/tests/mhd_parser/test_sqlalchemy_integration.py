@@ -63,11 +63,11 @@ class TestSQLAlchemyIntegration:
             name=parsed.class_name,
             display_name=parsed.display_name,
             description=parsed.desc_long,
-            hit_points=parsed.hitpoints,
-            max_hp=parsed.hp_cap,
-            primary_category=parsed.primary_group,
-            secondary_category=parsed.secondary_group,
-            playable=parsed.playable
+            hit_points_base=parsed.hitpoints,
+            hit_points_max=int(parsed.hp_cap),  # Convert float to int
+            primary_group=parsed.primary_group,
+            secondary_group=parsed.secondary_group
+            # Note: playable field doesn't exist in SQLAlchemy model
         )
         
         # Save to database
@@ -81,8 +81,8 @@ class TestSQLAlchemyIntegration:
         
         assert saved is not None
         assert saved.display_name == "Blaster"
-        assert saved.hit_points == 1000
-        assert saved.playable is True
+        assert saved.hit_points_base == 1000
+        assert saved.hit_points_max == 1606
     
     def test_database_import_order(self, db_session):
         """Test that entities can be imported in dependency order."""
@@ -101,7 +101,6 @@ class TestSQLAlchemyIntegration:
                     hp_cap=1606.0,
                     desc_long="",
                     res_cap=75.0,
-                    num_origins=5,
                     origins=["Science", "Technology", "Magic", "Mutation", "Natural"],
                     class_name="Class_Blaster",
                     class_type=0,
@@ -113,12 +112,13 @@ class TestSQLAlchemyIntegration:
                     recharge_cap=500.0,
                     damage_cap=400.0,
                     recovery_cap=200.0,
-                    regen_cap=175.0,
-                    threat_cap=175.0,
-                    resist_cap=95.0,
-                    damage_resist_cap=300.0,
+                    regeneration_cap=175.0,
+                    threat_level=1.0,
+                    taunt_effectiveness=1.0,
+                    taunt_effectiveness_players=1.0,
+                    debuff_resistance=0.0,
                     base_recovery=1.0,
-                    base_regen=1.0,
+                    base_regeneration=1.0,
                     base_threat=1.0,
                     perception_cap=1153.0
                 )
@@ -209,7 +209,6 @@ class TestSQLAlchemyIntegration:
                     hp_cap=1606.0,
                     desc_long="",
                     res_cap=75.0,
-                    num_origins=5,
                     origins=["Science", "Technology", "Magic", "Mutation", "Natural"],
                     class_name="Class_Blaster",
                     class_type=0,
@@ -221,12 +220,13 @@ class TestSQLAlchemyIntegration:
                     recharge_cap=500.0,
                     damage_cap=400.0,
                     recovery_cap=200.0,
-                    regen_cap=175.0,
-                    threat_cap=175.0,
-                    resist_cap=95.0,
-                    damage_resist_cap=300.0,
+                    regeneration_cap=175.0,
+                    threat_level=1.0,
+                    taunt_effectiveness=1.0,
+                    taunt_effectiveness_players=1.0,
+                    debuff_resistance=0.0,
                     base_recovery=1.0,
-                    base_regen=1.0,
+                    base_regeneration=1.0,
                     base_threat=1.0,
                     perception_cap=1153.0
                 )

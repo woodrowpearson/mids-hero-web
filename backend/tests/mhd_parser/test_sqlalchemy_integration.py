@@ -112,13 +112,13 @@ class TestSQLAlchemyIntegration:
                     recharge_cap=500.0,
                     damage_cap=400.0,
                     recovery_cap=200.0,
-                    regeneration_cap=175.0,
+                    regen_cap=175.0,
                     threat_level=1.0,
                     taunt_effectiveness=1.0,
                     taunt_effectiveness_players=1.0,
                     debuff_resistance=0.0,
                     base_recovery=1.0,
-                    base_regeneration=1.0,
+                    base_regen=1.0,
                     base_threat=1.0,
                     perception_cap=1153.0
                 )
@@ -220,13 +220,13 @@ class TestSQLAlchemyIntegration:
                     recharge_cap=500.0,
                     damage_cap=400.0,
                     recovery_cap=200.0,
-                    regeneration_cap=175.0,
+                    regen_cap=175.0,
                     threat_level=1.0,
                     taunt_effectiveness=1.0,
                     taunt_effectiveness_players=1.0,
                     debuff_resistance=0.0,
                     base_recovery=1.0,
-                    base_regeneration=1.0,
+                    base_regen=1.0,
                     base_threat=1.0,
                     perception_cap=1153.0
                 )

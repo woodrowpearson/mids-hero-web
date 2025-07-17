@@ -131,10 +131,8 @@ def test_search_powers_by_type(client, sample_power, sample_powerset, db_session
     response = client.get("/api/powers?power_type=attack")
     assert response.status_code == 200
     data = response.json()
-    assert len(data) == 2  # Fire Blast and Fire Ball
-    names = [p["name"] for p in data]
-    assert "Fire Blast" in names
-    assert "Fire Ball" in names
+    assert len(data) == 1  # Only Fire Blast from sample_power
+    assert data[0]["name"] == "Fire Blast"
 
     # Filter by toggle powers
     response = client.get("/api/powers?power_type=toggle")

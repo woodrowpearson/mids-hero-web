@@ -219,7 +219,6 @@ def sample_enhancement(db_session, sample_enhancement_set):
     enhancement = Enhancement(
         name="Devastation: Accuracy/Damage",
         display_name="Devastation: Accuracy/Damage",
-        description="Increases accuracy and damage",
         enhancement_type="set_piece",
         set_id=sample_enhancement_set.id,
         level_min=30,

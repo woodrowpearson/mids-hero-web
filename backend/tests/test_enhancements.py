@@ -30,7 +30,6 @@ def test_get_enhancements_pagination(client, sample_enhancement_set, db_session)
         Enhancement(
             name=f"Enhancement {i}",
             display_name=f"Enhancement {i}",
-            description=f"Test enhancement {i}",
             enhancement_type="IO",
             level_min=1,
             level_max=50,
@@ -56,7 +55,6 @@ def test_get_enhancements_filtered_by_type(client, sample_enhancement, db_sessio
     io_enh = Enhancement(
         name="Damage IO",
         display_name="Damage IO",
-        description="Generic damage enhancement",
         enhancement_type="IO",
         level_min=10,
         level_max=50,
@@ -65,7 +63,6 @@ def test_get_enhancements_filtered_by_type(client, sample_enhancement, db_sessio
     so_enh = Enhancement(
         name="Damage SO",
         display_name="Damage SO",
-        description="Single origin damage enhancement",
         enhancement_type="SO",
         level_min=22,
         level_max=50,

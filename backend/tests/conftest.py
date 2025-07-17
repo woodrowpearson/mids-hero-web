@@ -95,6 +95,7 @@ def db():
 @pytest.fixture
 def client(db):
     """Create a test client with a fresh database."""
+
     # Override the get_db dependency to use our test db
     def override_get_db():
         yield db

@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "opVb2BTGjqjbgmb6nGVlAqm2muuR/Afuihk+foRP/NfFv4dYio2fAvhteQsFlbTmnBRpWezzEMoleNw/H7kPzg==",
+  "success": true,
+  "projectFilePath": "/Users/w/code/mids-hero-web/DataExporter/DataExporter.csproj",
+  "expectedPackageFiles": [
+    "/Users/w/.nuget/packages/newtonsoft.json/13.0.3/newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

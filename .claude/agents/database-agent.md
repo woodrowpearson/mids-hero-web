@@ -13,6 +13,7 @@ Specialized agent for database-related tasks in the Mids Hero Web project.
 ## Context Files
 
 When working on database tasks, include:
+
 - `.claude/shared/database-design.md`
 - `.claude/epics/epic-2-data-import.md`
 - `backend/app/models.py`
@@ -39,7 +40,7 @@ cd backend && uv run python
 ## Current Tasks
 
 1. **Create initial migrations** from existing models
-2. **Design import schema** for .mhd files  
+2. **Design import schema** for .mhd files
 3. **Implement data validation** framework
 4. **Optimize query performance** with indexes
 
@@ -81,7 +82,7 @@ The critical blocker is obtaining game data files. While waiting:
 ```python
 class ImportPipeline:
     """Data import workflow"""
-    
+
     phases = [
         "parse",      # Extract from .mhd
         "transform",  # Convert to models
@@ -94,6 +95,7 @@ class ImportPipeline:
 ## Validation Checklist
 
 After any data operation:
+
 - [ ] Foreign key constraints satisfied
 - [ ] Required fields populated
 - [ ] Unique constraints maintained
@@ -111,4 +113,4 @@ After any data operation:
 
 - [SQLAlchemy 2.0 Docs](https://docs.sqlalchemy.org/)
 - [Alembic Tutorial](https://alembic.sqlalchemy.org/)
-- [PostgreSQL Optimization](https://wiki.postgresql.org/wiki/Performance_Optimization)
+- [PostgreSQL Optimization](https://wiki.postgresql.org/wiki/Performance_Optimization)continue

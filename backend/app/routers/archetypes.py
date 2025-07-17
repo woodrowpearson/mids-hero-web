@@ -2,7 +2,6 @@
 Archetype API endpoints for Mids-Web backend.
 """
 
-
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
@@ -43,10 +42,14 @@ async def get_archetype(
     return archetype
 
 
-@router.get("/archetypes/{archetype_id}/powersets", response_model=list[schemas.Powerset])
+@router.get(
+    "/archetypes/{archetype_id}/powersets", response_model=list[schemas.Powerset]
+)
 async def get_archetype_powersets(
     archetype_id: int,
-    powerset_type: str | None = Query(None, description="Filter by powerset type (primary, secondary, pool, epic)"),
+    powerset_type: str | None = Query(
+        None, description="Filter by powerset type (primary, secondary, pool, epic)"
+    ),
     db: Session = Depends(get_db),
 ):
     """

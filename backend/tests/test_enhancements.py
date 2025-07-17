@@ -2,7 +2,6 @@
 Tests for enhancement API endpoints.
 """
 
-
 from app.models import Enhancement, EnhancementSet, SetBonus
 
 
@@ -36,7 +35,7 @@ def test_get_enhancements_pagination(client, sample_enhancement_set, db_session)
             level_min=1,
             level_max=50,
             effect_type="damage",
-            effect_value=0.25
+            effect_value=0.25,
         )
         for i in range(5)
     ]
@@ -63,7 +62,7 @@ def test_get_enhancements_filtered_by_type(client, sample_enhancement, db_sessio
         level_min=10,
         level_max=50,
         effect_type="damage",
-        effect_value=0.425
+        effect_value=0.425,
     )
     so_enh = Enhancement(
         name="Damage SO",
@@ -73,7 +72,7 @@ def test_get_enhancements_filtered_by_type(client, sample_enhancement, db_sessio
         level_min=22,
         level_max=50,
         effect_type="damage",
-        effect_value=0.333
+        effect_value=0.333,
     )
     db_session.add_all([io_enh, so_enh])
     db_session.commit()
@@ -144,7 +143,7 @@ def test_get_enhancement_sets_pagination(client, db_session):
             display_name=f"Enhancement Set {i}",
             description=f"Test set {i}",
             min_level=10,
-            max_level=50
+            max_level=50,
         )
         for i in range(5)
     ]
@@ -172,7 +171,9 @@ def test_get_enhancement_set_by_id(client, sample_enhancement_set):
     assert data["set_bonuses"] == []
 
 
-def test_get_enhancement_set_with_enhancements(client, sample_enhancement_set, sample_enhancement):
+def test_get_enhancement_set_with_enhancements(
+    client, sample_enhancement_set, sample_enhancement
+):
     """Test getting an enhancement set with its enhancements."""
     response = client.get(f"/api/enhancement-sets/{sample_enhancement_set.id}")
     assert response.status_code == 200
@@ -191,22 +192,22 @@ def test_get_enhancement_set_with_bonuses(client, sample_enhancement_set, db_ses
             pieces_required=2,
             bonus_type="recovery",
             bonus_value=0.025,
-            description="2.5% Recovery"
+            description="2.5% Recovery",
         ),
         SetBonus(
             set_id=sample_enhancement_set.id,
             pieces_required=3,
             bonus_type="damage",
             bonus_amount=0.03,
-            bonus_description="3% Damage"
+            bonus_description="3% Damage",
         ),
         SetBonus(
             set_id=sample_enhancement_set.id,
             pieces_required=4,
             bonus_type="recharge",
             bonus_amount=0.05,
-            bonus_description="5% Recharge"
-        )
+            bonus_description="5% Recharge",
+        ),
     ]
     db_session.add_all(bonuses)
     db_session.commit()
@@ -223,7 +224,9 @@ def test_get_enhancement_set_with_bonuses(client, sample_enhancement_set, db_ses
     assert data["set_bonuses"][2]["pieces_required"] == 4
 
 
-def test_get_enhancement_set_without_related_data(client, sample_enhancement_set, sample_enhancement, db_session):
+def test_get_enhancement_set_without_related_data(
+    client, sample_enhancement_set, sample_enhancement, db_session
+):
     """Test getting an enhancement set without related data."""
     # Add bonus
     bonus = SetBonus(
@@ -231,7 +234,7 @@ def test_get_enhancement_set_without_related_data(client, sample_enhancement_set
         pieces_required=2,
         bonus_type="recovery",
         bonus_amount=0.025,
-        bonus_description="2.5% Recovery"
+        bonus_description="2.5% Recovery",
     )
     db_session.add(bonus)
     db_session.commit()

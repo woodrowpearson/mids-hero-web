@@ -2,7 +2,6 @@
 Tests for powerset API endpoints.
 """
 
-
 from app.models import Power
 
 
@@ -63,7 +62,7 @@ def test_get_powerset_powers(client, sample_powerset, sample_power, db_session):
         range_base=80.0,
         effect_area="aoe",
         max_targets=16,
-        radius=15.0
+        radius=15.0,
     )
     db_session.add(power2)
     db_session.commit()

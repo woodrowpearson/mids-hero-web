@@ -2,7 +2,6 @@
 Power API endpoints for Mids-Web backend.
 """
 
-
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
@@ -14,6 +13,7 @@ router = APIRouter()
 
 class PowerWithPrerequisites(schemas.Power):
     """Power schema with prerequisite information."""
+
     prerequisites: list[schemas.PowerPrerequisite] = []
 
 
@@ -54,8 +54,12 @@ async def get_power(
 async def search_powers(
     name: str | None = Query(None, description="Search by power name"),
     power_type: str | None = Query(None, description="Filter by power type"),
-    min_level: int | None = Query(None, ge=1, le=50, description="Minimum level available"),
-    max_level: int | None = Query(None, ge=1, le=50, description="Maximum level available"),
+    min_level: int | None = Query(
+        None, ge=1, le=50, description="Minimum level available"
+    ),
+    max_level: int | None = Query(
+        None, ge=1, le=50, description="Maximum level available"
+    ),
     skip: int = Query(0, ge=0),
     limit: int = Query(100, ge=1, le=1000),
     db: Session = Depends(get_db),

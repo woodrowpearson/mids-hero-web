@@ -2,7 +2,6 @@
 Tests for power API endpoints.
 """
 
-
 from app.models import Power, PowerPrerequisite
 
 
@@ -19,7 +18,9 @@ def test_get_power_by_id(client, sample_power):
     assert data["prerequisites"] == []
 
 
-def test_get_power_with_prerequisites(client, sample_power, sample_powerset, db_session):
+def test_get_power_with_prerequisites(
+    client, sample_power, sample_powerset, db_session
+):
     """Test getting a power with prerequisites."""
     # Create another power that requires the first
     power2 = Power(
@@ -36,7 +37,7 @@ def test_get_power_with_prerequisites(client, sample_power, sample_powerset, db_
         recharge_time=10.0,
         activation_time=1.0,
         range_feet=20,
-        max_targets=1
+        max_targets=1,
     )
     db_session.add(power2)
     db_session.commit()
@@ -44,9 +45,7 @@ def test_get_power_with_prerequisites(client, sample_power, sample_powerset, db_
 
     # Add prerequisite
     prereq = PowerPrerequisite(
-        power_id=power2.id,
-        required_power_id=sample_power.id,
-        prerequisite_type="power"
+        power_id=power2.id, required_power_id=sample_power.id, prerequisite_type="power"
     )
     db_session.add(prereq)
     db_session.commit()
@@ -87,7 +86,7 @@ def test_search_powers_by_name(client, sample_power, sample_powerset, db_session
             powerset_id=sample_powerset.id,
             power_type="click",
             level_available=2,
-            requires_tokens=1
+            requires_tokens=1,
         ),
         Power(
             name="Ice Blast",
@@ -96,8 +95,8 @@ def test_search_powers_by_name(client, sample_power, sample_powerset, db_session
             powerset_id=sample_powerset.id,
             power_type="attack",
             target_type="enemy",
-            level_available=1
-        )
+            level_available=1,
+        ),
     ]
     db_session.add_all(powers)
     db_session.commit()
@@ -123,7 +122,7 @@ def test_search_powers_by_type(client, sample_power, sample_powerset, db_session
         powerset_id=sample_powerset.id,
         power_type="toggle",
         level_available=4,
-        requires_tokens=1
+        requires_tokens=1,
     )
     db_session.add(toggle)
     db_session.commit()
@@ -154,7 +153,7 @@ def test_search_powers_by_level(client, sample_powerset, db_session):
             powerset_id=sample_powerset.id,
             power_type="click",
             level_available=level,
-            requires_tokens=0
+            requires_tokens=0,
         )
         for level in [1, 10, 20, 30, 40]
     ]
@@ -194,7 +193,7 @@ def test_search_powers_pagination(client, sample_powerset, db_session):
             powerset_id=sample_powerset.id,
             power_type="attack",
             target_type="enemy",
-            level_available=1
+            level_available=1,
         )
         for i in range(5)
     ]

@@ -2,7 +2,6 @@
 Tests for archetype API endpoints.
 """
 
-
 from app.models import Archetype, Powerset
 
 
@@ -35,7 +34,7 @@ def test_get_archetypes_pagination(client, db_session):
             hit_points_base=1000.0,
             hit_points_max=1606.4,
             primary_group="damage",
-            secondary_group="support"
+            secondary_group="support",
         )
         for i in range(5)
     ]
@@ -85,14 +84,14 @@ def test_get_archetype_powersets_filtered(client, sample_archetype, db_session):
         display_name="Fire Blast",
         description="Primary powerset",
         archetype_id=sample_archetype.id,
-        powerset_type="primary"
+        powerset_type="primary",
     )
     secondary = Powerset(
         name="Fire Manipulation",
         display_name="Fire Manipulation",
         description="Secondary powerset",
         archetype_id=sample_archetype.id,
-        powerset_type="secondary"
+        powerset_type="secondary",
     )
     db_session.add_all([primary, secondary])
     db_session.commit()

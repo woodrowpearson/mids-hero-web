@@ -2,7 +2,6 @@
 Enhancement API endpoints for Mids-Web backend.
 """
 
-
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
@@ -16,7 +15,10 @@ router = APIRouter()
 async def get_enhancements(
     skip: int = Query(0, ge=0, description="Number of items to skip"),
     limit: int = Query(100, ge=1, le=1000, description="Number of items to return"),
-    enhancement_type: str | None = Query(None, description="Filter by enhancement type (IO, SO, DO, TO, HamiO, set_piece)"),
+    enhancement_type: str | None = Query(
+        None,
+        description="Filter by enhancement type (IO, SO, DO, TO, HamiO, set_piece)",
+    ),
     db: Session = Depends(get_db),
 ):
     """
@@ -29,7 +31,9 @@ async def get_enhancements(
 
     # Filter by type if specified
     if enhancement_type:
-        enhancements = [e for e in enhancements if e.enhancement_type == enhancement_type]
+        enhancements = [
+            e for e in enhancements if e.enhancement_type == enhancement_type
+        ]
 
     return enhancements
 
@@ -61,17 +65,13 @@ async def get_enhancement_sets(
 
     Returns a list of all enhancement sets with pagination support.
     """
-    sets = (
-        db.query(models.EnhancementSet)
-        .offset(skip)
-        .limit(limit)
-        .all()
-    )
+    sets = db.query(models.EnhancementSet).offset(skip).limit(limit).all()
     return sets
 
 
 class EnhancementSetWithBonuses(schemas.EnhancementSet):
     """Enhancement set schema with bonuses and enhancements."""
+
     enhancements: list[schemas.Enhancement] = []
     set_bonuses: list[schemas.SetBonus] = []
 

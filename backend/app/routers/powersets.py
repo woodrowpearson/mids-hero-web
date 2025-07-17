@@ -2,7 +2,6 @@
 Powerset API endpoints for Mids-Web backend.
 """
 
-
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
@@ -14,6 +13,7 @@ router = APIRouter()
 
 class PowersetWithPowers(schemas.Powerset):
     """Powerset schema with related powers."""
+
     powers: list[schemas.Power] = []
 
 

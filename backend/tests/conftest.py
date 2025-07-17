@@ -1,6 +1,7 @@
 """
 Shared test fixtures for API tests.
 """
+
 # ruff: noqa: E402, I001
 
 import sys
@@ -16,15 +17,19 @@ class MockAsyncpg:
     class Pool:
         pass
 
+
 mock_asyncpg = MockAsyncpg()
-sys.modules['asyncpg'] = mock_asyncpg
+sys.modules["asyncpg"] = mock_asyncpg
+
 
 # Mock the async database functions
 async def mock_create_database_pool():
     pass
 
+
 async def mock_close_database_pool():
     pass
+
 
 # Import database module first to get Base
 from app import database  # noqa: E402
@@ -34,7 +39,13 @@ database.close_database_pool = mock_close_database_pool
 
 # Now import models - this will use the same Base from database module
 from app.database import Base  # Use the same Base instance  # noqa: E402
-from app.models import Archetype, Enhancement, EnhancementSet, Power, Powerset  # noqa: E402, I001
+from app.models import (  # noqa: E402, I001
+    Archetype,
+    Enhancement,
+    EnhancementSet,
+    Power,
+    Powerset,
+)
 
 # Import the app last
 from main import app  # noqa: E402
@@ -94,7 +105,7 @@ def sample_archetype(db_session):
         hit_points_base=1000,
         hit_points_max=1606,
         primary_group="damage",
-        secondary_group="support"
+        secondary_group="support",
     )
     db_session.add(archetype)
     db_session.commit()
@@ -111,7 +122,7 @@ def sample_powerset(db_session, sample_archetype):
         description="Wield fire to blast your foes",
         archetype_id=sample_archetype.id,
         powerset_type="primary",
-        icon_path="fire_blast.png"
+        icon_path="fire_blast.png",
     )
     db_session.add(powerset)
     db_session.commit()
@@ -137,7 +148,7 @@ def sample_power(db_session, sample_powerset):
         activation_time=1.67,
         range_feet=80,
         max_targets=1,
-        icon_path="fire_blast.png"
+        icon_path="fire_blast.png",
     )
     db_session.add(power)
     db_session.commit()
@@ -153,7 +164,7 @@ def sample_enhancement_set(db_session):
         display_name="Devastation",
         description="Ranged damage enhancement set",
         min_level=30,
-        max_level=50
+        max_level=50,
     )
     db_session.add(enhancement_set)
     db_session.commit()
@@ -174,7 +185,7 @@ def sample_enhancement(db_session, sample_enhancement_set):
         level_max=50,
         effect_type="accuracy_damage",
         effect_value=0.265,
-        unique_per_build=False
+        unique_per_build=False,
     )
     db_session.add(enhancement)
     db_session.commit()

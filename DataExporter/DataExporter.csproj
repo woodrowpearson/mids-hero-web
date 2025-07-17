@@ -12,8 +12,12 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
+  <!-- MidsReborn reference removed due to Windows dependency -->
+  <!-- To use MidsReborn, uncomment the following and ensure MidsReborn is available -->
+  <!--
   <ItemGroup>
     <ProjectReference Include="..\external\MidsReborn\MidsReborn\MidsReborn.csproj" />
   </ItemGroup>
+  -->
 
 </Project>

@@ -49,9 +49,14 @@ namespace DataExporter
             // Create output directory if needed
             Directory.CreateDirectory(outputPath);
             
-            // Use the MidsReborn exporter
-            var exporter = new MidsRebornExporter(inputPath, outputPath);
+            // Check if we can use MidsReborn (Windows with MidsReborn available)
+            // For now, use the simplified exporter that creates placeholder files
+            var exporter = new SimpleMhdExporter(inputPath, outputPath);
             exporter.ExportAllData();
+            
+            // TODO: When running on Windows with MidsReborn available, use:
+            // var exporter = new MidsRebornExporter(inputPath, outputPath);
+            // exporter.ExportAllData();
         }
     }
 }

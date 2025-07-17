@@ -36,9 +36,15 @@ namespace DataExporter
             // Process JSON files that are already available
             ProcessJsonFiles(inputPath, outputPath);
             
-            // TODO: Process .mhd files when cross-platform parser is available
-            Console.WriteLine("\nNote: .mhd binary file processing requires cross-platform parser development");
-            Console.WriteLine("Currently processing available JSON files only.");
+            // Process MHD files
+            Console.WriteLine("\nProcessing MHD files...");
+            Console.WriteLine("\nTrying simple parser approach:");
+            SimpleMhdParser.ParseAndConvert(inputPath, outputPath);
+            
+            Console.WriteLine("\nNote: Full MHD parsing requires either:");
+            Console.WriteLine("1. Reverse engineering the custom binary format");
+            Console.WriteLine("2. Using Mids Reborn's actual DLLs");
+            Console.WriteLine("3. Obtaining data in JSON/SQL format from the Mids Reborn team");
         }
 
         static void ProcessJsonFiles(string inputPath, string outputPath)

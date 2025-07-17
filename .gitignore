@@ -249,3 +249,10 @@ temp/
 alembic/versions/*.py
 !alembic/versions/
 alembic/__pycache__/
+
+# External repos cloned for reference
+external/MidsReborn/
+
+# C# / .NET build artifacts
+DataExporter/bin/
+DataExporter/obj/

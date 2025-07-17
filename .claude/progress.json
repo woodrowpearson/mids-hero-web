@@ -41,7 +41,7 @@
     "epic2": {
       "name": "Data Model & Database Integration",
       "status": "in_progress",
-      "progress": 70,
+      "progress": 75,
       "tasks": [
         "✅ Database schema design completed",
         "✅ Comprehensive SQLAlchemy models implemented",
@@ -54,17 +54,41 @@
         "✅ Text MHD file support",
         "✅ JSON export functionality",
         "✅ CLI interface for parsing",
-        "🚧 Data import utilities - awaiting .mhd files"
+        "✅ MHD data files acquired",
+        "✅ DataExporter C# tool created using MidsReborn",
+        "🚧 Data import from MHD to database in progress"
       ],
-      "blockers": [
-        "Need City of Heroes game data files (.mhd files) to complete import"
-      ],
+      "parser_implementation": {
+        "decision": "Using C# MidsReborn parser from external/MidsReborn",
+        "rationale": "Community-maintained, complete, handles all edge cases",
+        "tools": {
+          "DataExporter": "C# tool that uses MidsReborn to export MHD to JSON",
+          "import_mhd_json_to_db.py": "Python script to import JSON to PostgreSQL"
+        },
+        "progress": {
+          "archetypes": "Ready to export",
+          "powersets": "Ready to export",
+          "powers": "Ready to export",
+          "enhancements": "Ready to export",
+          "recipes": "Ready to export",
+          "salvage": "Ready to export"
+        }
+      },
+      "blockers": [],
       "github_issues_closed": [
         "#24 Subtask 2.1.2: Translate design into SQLAlchemy models",
-        "#25 Subtask 2.1.3: Run migrations to apply schema to Postgres database"
+        "#25 Subtask 2.1.3: Run migrations to apply schema to Postgres database",
+        "#152 Task 2.5.1: Create GitHub issues for parser completion",
+        "#153 Task 2.5.2: Document parser implementation decision"
       ],
       "github_issues_in_progress": [
-        "#149 Epic 2 - Task 2.5: Implement MHD Parser with TDD"
+        "#149 Epic 2 - Task 2.5: Implement MHD Parser with TDD",
+        "#154 Task 2.5.3: Complete enhancement parser implementation",
+        "#155 Task 2.5.4: Complete power parser implementation",
+        "#156 Task 2.5.5: Implement recipe parser with TDD",
+        "#157 Task 2.5.6: Implement salvage parser with TDD",
+        "#158 Task 2.5.7: Fix powerset import constraints",
+        "#159 Task 2.5.8: Execute full data import pipeline"
       ],
       "current_branch": "epic2-database-schema",
       "pull_request": "PR #149 - Epic 2 - Task 2.5: Implement MHD Parser with TDD"
@@ -95,6 +119,12 @@
     }
   },
   "recent_activities": [
+    {
+      "timestamp": "2025-07-17T12:00:00Z",
+      "branch": "epic2-database-schema",
+      "action": "epic2_dataexporter_implementation",
+      "description": "Created C# DataExporter tool using MidsReborn parser to export all MHD data to JSON format. Ready to export and import all game data."
+    },
     {
       "timestamp": "2025-07-17T07:00:00Z",
       "branch": "epic2-database-schema",

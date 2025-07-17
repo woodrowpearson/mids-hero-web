@@ -1,0 +1,60 @@
+name: Export MHD Data with MidsReborn
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'DataExporter/**'
+      - '.github/workflows/export-mhd-data.yml'
+
+jobs:
+  export-data:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+    
+    - name: Build DataExporter
+      run: |
+        cd DataExporter
+        dotnet build --configuration Release
+    
+    - name: Run DataExporter
+      run: |
+        cd DataExporter
+        dotnet run --configuration Release -- `
+          "${{ github.workspace }}\data\Homecoming_2025-7-1111" `
+          "${{ github.workspace }}\data\exported-json"
+    
+    - name: Upload exported JSON files
+      uses: actions/upload-artifact@v4
+      with:
+        name: mhd-exported-json
+        path: data/exported-json/
+        retention-days: 30
+    
+    - name: Create export summary
+      run: |
+        $files = Get-ChildItem -Path "data\exported-json\*.json" | Select-Object Name, Length
+        $totalSize = ($files | Measure-Object -Property Length -Sum).Sum
+        
+        Write-Output "# MHD Data Export Summary" > $env:GITHUB_STEP_SUMMARY
+        Write-Output "" >> $env:GITHUB_STEP_SUMMARY
+        Write-Output "## Exported Files" >> $env:GITHUB_STEP_SUMMARY
+        Write-Output "" >> $env:GITHUB_STEP_SUMMARY
+        
+        foreach ($file in $files) {
+          $sizeMB = [math]::Round($file.Length / 1MB, 2)
+          Write-Output "- $($file.Name): $sizeMB MB" >> $env:GITHUB_STEP_SUMMARY
+        }
+        
+        Write-Output "" >> $env:GITHUB_STEP_SUMMARY
+        Write-Output "**Total Size**: $([math]::Round($totalSize / 1MB, 2)) MB" >> $env:GITHUB_STEP_SUMMARY

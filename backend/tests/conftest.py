@@ -4,12 +4,14 @@ Shared test fixtures for API tests.
 
 # ruff: noqa: E402, I001
 
+import os
 import sys
 
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.pool import StaticPool
 
 
 # Mock asyncpg before importing anything that uses it
@@ -38,7 +40,7 @@ database.create_database_pool = mock_create_database_pool
 database.close_database_pool = mock_close_database_pool
 
 # Now import models - this will use the same Base from database module
-from app.database import Base  # Use the same Base instance  # noqa: E402
+from app.database import Base, get_db  # Use the same Base instance  # noqa: E402
 from app.models import (  # noqa: E402, I001
     Archetype,
     Enhancement,
@@ -50,49 +52,67 @@ from app.models import (  # noqa: E402, I001
 # Import the app last
 from main import app  # noqa: E402
 
-# Use in-memory SQLite for tests
-SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"
+# Configure test database
+# Check if we're running in CI with real PostgreSQL
+if "DATABASE_URL" in os.environ and "test" in os.environ.get("DATABASE_URL", ""):
+    # Use the real test database in CI
+    SQLALCHEMY_DATABASE_URL = os.environ["DATABASE_URL"]
+    engine = create_engine(SQLALCHEMY_DATABASE_URL, poolclass=StaticPool)
+else:
+    # Use in-memory SQLite for local tests
+    SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"
+    engine = create_engine(
+        SQLALCHEMY_DATABASE_URL,
+        connect_args={"check_same_thread": False},
+        poolclass=StaticPool,
+    )
 
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
-)
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
-def override_get_db():
-    """Override the get_db dependency for tests."""
-    db = TestingSessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-
-# Override the get_db dependency
-app.dependency_overrides[database.get_db] = override_get_db
+@pytest.fixture(scope="function")
+def db():
+    """Create a database session for tests."""
+    # Create all tables
+    Base.metadata.create_all(bind=engine)
+    
+    # Create a new session for this test
+    connection = engine.connect()
+    transaction = connection.begin()
+    session = TestingSessionLocal(bind=connection)
+    
+    yield session
+    
+    # Rollback the transaction and close everything
+    session.close()
+    transaction.rollback()
+    connection.close()
+    
+    # Drop all tables after test
+    Base.metadata.drop_all(bind=engine)
 
 
 @pytest.fixture
-def client():
+def client(db):
     """Create a test client with a fresh database."""
-    # Create tables
-    Base.metadata.create_all(bind=engine)
-
+    # Override the get_db dependency to use our test db
+    def override_get_db():
+        yield db
+    
+    app.dependency_overrides[get_db] = override_get_db
+    
     with TestClient(app) as test_client:
         yield test_client
+    
+    # Clear the override after the test
+    app.dependency_overrides.clear()
 
-    # Drop tables after test
-    Base.metadata.drop_all(bind=engine)
 
-
+# Keep db_session as alias for backward compatibility
 @pytest.fixture
-def db_session():
-    """Create a database session for tests."""
-    Base.metadata.create_all(bind=engine)
-    db = TestingSessionLocal()
-    yield db
-    db.close()
-    Base.metadata.drop_all(bind=engine)
+def db_session(db):
+    """Alias for db fixture for backward compatibility."""
+    return db
 
 
 @pytest.fixture

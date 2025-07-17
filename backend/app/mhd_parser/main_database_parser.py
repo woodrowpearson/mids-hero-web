@@ -52,13 +52,13 @@ class MainDatabase:
 
 def parse_summoned_entity(stream: BinaryIO) -> SummonedEntity:
     """Parse a SummonedEntity record from a binary stream.
-    
+
     Args:
         stream: Binary stream positioned at the start of a SummonedEntity
-        
+
     Returns:
         Parsed SummonedEntity object
-        
+
     Raises:
         EOFError: If stream ends while reading
     """
@@ -98,10 +98,10 @@ def parse_summoned_entity(stream: BinaryIO) -> SummonedEntity:
 
 def _parse_version(version_str: str) -> tuple:
     """Parse version string into components.
-    
+
     Args:
         version_str: Version string like "3.0.7.21"
-        
+
     Returns:
         Tuple of (major, minor, patch, build)
     """
@@ -117,14 +117,14 @@ def _parse_version(version_str: str) -> tuple:
 
 def _parse_date(reader: BinaryReader, version_str: str) -> int | datetime:
     """Parse date based on version.
-    
+
     For versions >= 3.0, date is stored as Int64 (.NET ticks).
     For older versions, date is stored as Int32 (YYYYMMDD).
-    
+
     Args:
         reader: Binary reader
         version_str: Version string to determine format
-        
+
     Returns:
         Either int (YYYYMMDD) or datetime object
     """
@@ -153,13 +153,13 @@ def _parse_date(reader: BinaryReader, version_str: str) -> int | datetime:
 
 def parse_main_database(stream: BinaryIO) -> MainDatabase:
     """Parse a complete MHD database file.
-    
+
     Args:
         stream: Binary stream positioned at the start of the database
-        
+
     Returns:
         Parsed MainDatabase object with all entities
-        
+
     Raises:
         EOFError: If stream ends unexpectedly
         ValueError: If file format is invalid

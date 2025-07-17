@@ -47,13 +47,13 @@ class Archetype:
 
 def parse_archetype(stream: BinaryIO) -> Archetype:
     """Parse an Archetype record from a binary stream.
-    
+
     Args:
         stream: Binary stream positioned at the start of an Archetype record
-        
+
     Returns:
         Parsed Archetype object
-        
+
     Raises:
         EOFError: If stream ends while reading
     """
@@ -78,7 +78,7 @@ def parse_archetype(stream: BinaryIO) -> Archetype:
         # 6. numOrigins (Int32) + Origin array (count+1 strings)
         num_origins = reader.read_int32()
         origins = []
-        for i in range(num_origins):
+        for _i in range(num_origins):
             origins.append(reader.read_string())
         # Read the extra string (count+1 pattern)
         reader.read_string()

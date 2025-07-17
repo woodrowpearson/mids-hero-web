@@ -7,18 +7,18 @@ from typing import BinaryIO
 
 def read_7bit_encoded_int(stream: BinaryIO) -> int:
     """Read a 7-bit encoded integer from the stream.
-    
+
     .NET's BinaryWriter uses 7-bit encoding for string lengths where:
     - Each byte uses 7 bits for data and 1 bit as a continuation flag
     - If bit 7 (0x80) is set, there are more bytes to read
     - The value is assembled from low to high bytes
-    
+
     Args:
         stream: Binary stream to read from
-        
+
     Returns:
         The decoded integer value
-        
+
     Raises:
         EOFError: If stream ends while reading
     """
@@ -43,18 +43,18 @@ def read_7bit_encoded_int(stream: BinaryIO) -> int:
 
 def read_string(stream: BinaryIO) -> str:
     """Read a .NET BinaryReader format string from the stream.
-    
+
     Format:
     - Length prefix using 7-bit encoding (byte count, not char count)
     - UTF-8 encoded string data
     - Empty strings are encoded as single zero byte
-    
+
     Args:
         stream: Binary stream to read from
-        
+
     Returns:
         The decoded string
-        
+
     Raises:
         EOFError: If stream ends while reading
     """
@@ -79,13 +79,13 @@ def read_string(stream: BinaryIO) -> str:
 
 def read_int32(stream: BinaryIO) -> int:
     """Read a 32-bit signed integer from the stream.
-    
+
     Args:
         stream: Binary stream to read from
-        
+
     Returns:
         The 32-bit signed integer value
-        
+
     Raises:
         EOFError: If stream ends while reading
     """
@@ -97,13 +97,13 @@ def read_int32(stream: BinaryIO) -> int:
 
 def read_uint32(stream: BinaryIO) -> int:
     """Read a 32-bit unsigned integer from the stream.
-    
+
     Args:
         stream: Binary stream to read from
-        
+
     Returns:
         The 32-bit unsigned integer value
-        
+
     Raises:
         EOFError: If stream ends while reading
     """
@@ -115,13 +115,13 @@ def read_uint32(stream: BinaryIO) -> int:
 
 def read_int64(stream: BinaryIO) -> int:
     """Read a 64-bit signed integer from the stream.
-    
+
     Args:
         stream: Binary stream to read from
-        
+
     Returns:
         The 64-bit signed integer value
-        
+
     Raises:
         EOFError: If stream ends while reading
     """
@@ -133,13 +133,13 @@ def read_int64(stream: BinaryIO) -> int:
 
 def read_float32(stream: BinaryIO) -> float:
     """Read a 32-bit float from the stream.
-    
+
     Args:
         stream: Binary stream to read from
-        
+
     Returns:
         The 32-bit float value
-        
+
     Raises:
         EOFError: If stream ends while reading
     """
@@ -151,15 +151,15 @@ def read_float32(stream: BinaryIO) -> float:
 
 def read_bool(stream: BinaryIO) -> bool:
     """Read a boolean value from the stream.
-    
+
     In .NET, bool is stored as 1 byte where 0 = false, non-zero = true
-    
+
     Args:
         stream: Binary stream to read from
-        
+
     Returns:
         The boolean value
-        
+
     Raises:
         EOFError: If stream ends while reading
     """
@@ -174,7 +174,7 @@ class BinaryReader:
 
     def __init__(self, data: bytes | BinaryIO):
         """Initialize BinaryReader with data or stream.
-        
+
         Args:
             data: Either raw bytes or a file-like object
         """

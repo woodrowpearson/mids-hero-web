@@ -38,13 +38,13 @@ class MhdParserCLI:
     def parse_file(self, file_path: Path, output_dir: Path | None = None,
                   dry_run: bool = False, export_json: bool = False) -> bool:
         """Parse a single MHD file.
-        
+
         Args:
             file_path: Path to the MHD file
             output_dir: Directory for JSON output (if export_json is True)
             dry_run: If True, parse without database operations
             export_json: If True, export to JSON
-            
+
         Returns:
             True if successful, False otherwise
         """
@@ -122,14 +122,14 @@ class MhdParserCLI:
                        output_dir: Path | None = None,
                        dry_run: bool = False, export_json: bool = False) -> int:
         """Parse all MHD files in a directory.
-        
+
         Args:
             directory: Directory containing MHD files
             pattern: Glob pattern for files
             output_dir: Directory for JSON output
             dry_run: If True, parse without database operations
             export_json: If True, export to JSON
-            
+
         Returns:
             Number of successfully parsed files
         """
@@ -210,13 +210,13 @@ def main():
 Examples:
   # Parse a single file
   python -m app.mhd_parser.cli parse path/to/I12.mhd
-  
+
   # Parse all files in a directory with JSON export
   python -m app.mhd_parser.cli parse path/to/data/ --export-json --output output/
-  
+
   # Validate files without importing
   python -m app.mhd_parser.cli validate path/to/data/
-  
+
   # Dry run with debug logging
   python -m app.mhd_parser.cli parse path/to/data/ --dry-run --log-level DEBUG
 """

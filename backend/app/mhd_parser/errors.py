@@ -8,7 +8,7 @@ class MhdParseError(Exception):
     def __init__(self, message: str, position: int | None = None,
                  context: list[str] | None = None):
         """Initialize parse error with context.
-        
+
         Args:
             message: Error description
             position: Byte position in file where error occurred
@@ -49,12 +49,12 @@ class MhdDataError(MhdParseError):
 def format_parse_context(entity_type: str, entity_name: str | None = None,
                         field: str | None = None) -> str:
     """Format a parsing context string.
-    
+
     Args:
         entity_type: Type of entity being parsed (e.g., "Archetype")
         entity_name: Name of the entity if known
         field: Current field being parsed
-        
+
     Returns:
         Formatted context string
     """

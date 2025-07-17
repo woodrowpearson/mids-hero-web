@@ -42,13 +42,13 @@ class Powerset:
 
 def parse_powerset(stream: BinaryIO) -> Powerset:
     """Parse a Powerset record from a binary stream.
-    
+
     Args:
         stream: Binary stream positioned at the start of a Powerset record
-        
+
     Returns:
         Parsed Powerset object
-        
+
     Raises:
         EOFError: If stream ends while reading
     """
@@ -95,7 +95,7 @@ def parse_powerset(stream: BinaryIO) -> Powerset:
         mutex_list = []
 
         # Read mutex pairs
-        for i in range(num_mutex):
+        for _i in range(num_mutex):
             mutex_name = reader.read_string()
             mutex_index = reader.read_int32()
             mutex_list.append((mutex_name, mutex_index))

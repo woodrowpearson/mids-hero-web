@@ -211,13 +211,13 @@ class Power:
 
 def parse_requirement(stream: BinaryIO) -> Requirement:
     """Parse a Requirement structure from a binary stream.
-    
+
     Args:
         stream: Binary stream positioned at the start of a Requirement
-        
+
     Returns:
         Parsed Requirement object
-        
+
     Raises:
         EOFError: If stream ends while reading
     """
@@ -265,13 +265,13 @@ def parse_requirement(stream: BinaryIO) -> Requirement:
 
 def parse_effect(stream: BinaryIO) -> Effect:
     """Parse an Effect structure from a binary stream.
-    
+
     Args:
         stream: Binary stream positioned at the start of an Effect
-        
+
     Returns:
         Parsed Effect object
-        
+
     Raises:
         EOFError: If stream ends while reading
     """
@@ -442,13 +442,13 @@ def parse_effect(stream: BinaryIO) -> Effect:
 
 def parse_power(stream: BinaryIO) -> Power:
     """Parse a Power record from a binary stream.
-    
+
     Args:
         stream: Binary stream positioned at the start of a Power record
-        
+
     Returns:
         Parsed Power object
-        
+
     Raises:
         EOFError: If stream ends while reading
     """

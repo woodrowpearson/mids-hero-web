@@ -44,13 +44,13 @@ class SalvageDatabase:
 
 def parse_salvage(stream: BinaryIO) -> Salvage:
     """Parse a Salvage record from a binary stream.
-    
+
     Args:
         stream: Binary stream positioned at the start of a Salvage record
-        
+
     Returns:
         Parsed Salvage object
-        
+
     Raises:
         EOFError: If stream ends while reading
     """
@@ -78,13 +78,13 @@ def parse_salvage(stream: BinaryIO) -> Salvage:
 
 def parse_salvage_database(stream: BinaryIO) -> SalvageDatabase:
     """Parse a complete Salvage database file.
-    
+
     Args:
         stream: Binary stream positioned at the start of the database
-        
+
     Returns:
         Parsed SalvageDatabase object with all items
-        
+
     Raises:
         EOFError: If stream ends unexpectedly
         ValueError: If file format is invalid

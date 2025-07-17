@@ -23,13 +23,13 @@ class TextMhdFile:
 
 def detect_file_format(stream: BinaryIO) -> FileFormat:
     """Detect whether a file is binary or text format.
-    
+
     Args:
         stream: Binary stream to analyze
-        
+
     Returns:
         FileFormat enum indicating the detected format
-        
+
     Raises:
         EOFError: If stream is empty
     """
@@ -76,13 +76,13 @@ def detect_file_format(stream: BinaryIO) -> FileFormat:
 
 def parse_text_mhd(stream: BinaryIO) -> TextMhdFile:
     """Parse a text-based MHD file.
-    
+
     Args:
         stream: Binary stream containing text data
-        
+
     Returns:
         Parsed TextMhdFile object
-        
+
     Raises:
         ValueError: If file format cannot be determined
     """

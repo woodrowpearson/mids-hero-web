@@ -99,13 +99,13 @@ class EnhancementSet:
 
 def parse_s_effect(stream: BinaryIO) -> SEffect:
     """Parse an sEffect structure from a binary stream.
-    
+
     Args:
         stream: Binary stream positioned at the start of an sEffect
-        
+
     Returns:
         Parsed SEffect object
-        
+
     Raises:
         EOFError: If stream ends while reading
         NotImplementedError: If nested Effect FX parsing is required
@@ -150,13 +150,13 @@ def parse_s_effect(stream: BinaryIO) -> SEffect:
 
 def parse_enhancement(stream: BinaryIO) -> Enhancement:
     """Parse an Enhancement record from a binary stream.
-    
+
     Args:
         stream: Binary stream positioned at the start of an Enhancement
-        
+
     Returns:
         Parsed Enhancement object
-        
+
     Raises:
         EOFError: If stream ends while reading
     """
@@ -238,13 +238,13 @@ def parse_enhancement(stream: BinaryIO) -> Enhancement:
 
 def parse_enhancement_set(stream: BinaryIO) -> EnhancementSet:
     """Parse an EnhancementSet record from a binary stream.
-    
+
     Args:
         stream: Binary stream positioned at the start of an EnhancementSet
-        
+
     Returns:
         Parsed EnhancementSet object
-        
+
     Raises:
         EOFError: If stream ends while reading
     """

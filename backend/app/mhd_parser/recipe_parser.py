@@ -40,13 +40,13 @@ class RecipeDatabase:
 
 def parse_recipe(stream: BinaryIO) -> Recipe:
     """Parse a Recipe record from a binary stream.
-    
+
     Args:
         stream: Binary stream positioned at the start of a Recipe record
-        
+
     Returns:
         Parsed Recipe object
-        
+
     Raises:
         EOFError: If stream ends while reading
     """
@@ -91,13 +91,13 @@ def parse_recipe(stream: BinaryIO) -> Recipe:
 
 def parse_recipe_database(stream: BinaryIO) -> RecipeDatabase:
     """Parse a complete Recipe database file.
-    
+
     Args:
         stream: Binary stream positioned at the start of the database
-        
+
     Returns:
         Parsed RecipeDatabase object with all recipes
-        
+
     Raises:
         EOFError: If stream ends unexpectedly
         ValueError: If file format is invalid

@@ -49,7 +49,7 @@ health:
 # Run all tests
 test:
     @echo "🧪 Running all tests..."
-    cd backend && {{uv}} run pytest -v
+    cd backend && {{uv}} sync --group dev --group test && {{uv}} run pytest -v
     cd frontend && npm test -- --watchAll=false
 
 # Run tests in watch mode

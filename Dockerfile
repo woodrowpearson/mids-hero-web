@@ -34,7 +34,7 @@ WORKDIR /app/backend
 COPY backend/pyproject.toml backend/README.md backend/uv.lock ./
 
 # Create virtual environment and install dependencies
-RUN uv venv .venv && uv sync --no-dev
+RUN uv venv .venv && uv sync --group dev --group test
 
 # Production stage
 FROM python:3.11-slim AS production

@@ -70,6 +70,17 @@ Comprehensive test suite created covering:
 - Error cases
 - Nested data retrieval
 
+The tests reside in `backend/tests/` and include:
+
+- **conftest.py** – reusable database fixtures
+- **test_archetypes.py** – archetype endpoints and powerset listing
+- **test_enhancements.py** – enhancement and enhancement-set endpoints
+- **test_powers.py** – power lookup, search, and filtering
+- **test_powersets.py** – powerset retrieval with nested powers
+
+Use `just test` to automatically sync backend dependencies with uv (including
+FastAPI and pytest) before running the suite.
+
 ### GitHub Issues Updated
 
 - ✅ Closed Task 3.1 subtasks (#38-42)

@@ -75,19 +75,19 @@ def db():
     """Create a database session for tests."""
     # Create all tables
     Base.metadata.create_all(bind=engine)
-    
+
     # Create a new session for this test
     connection = engine.connect()
     transaction = connection.begin()
     session = TestingSessionLocal(bind=connection)
-    
+
     yield session
-    
+
     # Rollback the transaction and close everything
     session.close()
     transaction.rollback()
     connection.close()
-    
+
     # Drop all tables after test
     Base.metadata.drop_all(bind=engine)
 
@@ -98,12 +98,12 @@ def client(db):
     # Override the get_db dependency to use our test db
     def override_get_db():
         yield db
-    
+
     app.dependency_overrides[get_db] = override_get_db
-    
+
     with TestClient(app) as test_client:
         yield test_client
-    
+
     # Clear the override after the test
     app.dependency_overrides.clear()
 

@@ -48,6 +48,26 @@ MANIFEST
 
 # PyInstaller
 *.manifest
+
+# .NET / C# artifacts
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+*.user
+*.userosscache
+*.sln.docstates
+.vs/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Archive directory is tracked but ignored by Claude
+# See .claudeignore
+
+# External repositories
+external/
 *.spec
 
 # Installer logs

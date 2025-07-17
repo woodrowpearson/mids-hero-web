@@ -1,0 +1,40 @@
+# Claudeignore - Files and directories to exclude from Claude's context
+
+# Archive directory - contains deprecated code for reference only
+backend/archive/
+
+# Data files - large binary files
+data/
+
+# Build outputs
+build/
+dist/
+out/
+
+# Dependencies
+node_modules/
+.venv/
+
+# IDE and system files
+.idea/
+.vscode/
+.DS_Store
+
+# Temporary files
+*.tmp
+*.log
+*.cache
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# .NET build outputs
+DataExporter/bin/
+DataExporter/obj/
+
+# Test coverage
+.coverage
+htmlcov/
+.pytest_cache/

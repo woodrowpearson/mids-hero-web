@@ -1,27 +1,29 @@
 """Tests for JSON export functionality."""
 
-import io
 import json
 import tempfile
 from pathlib import Path
 
-import pytest
-
-from app.mhd_parser.json_exporter import MhdJsonExporter
-from app.mhd_parser.main_database_parser import MainDatabase, SummonedEntity
 from app.mhd_parser.archetype_parser import Archetype
-from app.mhd_parser.powerset_parser import Powerset, PowersetType
-from app.mhd_parser.power_parser import Power, PowerType, Requirement
 from app.mhd_parser.enhancement_database_parser import EnhancementDatabase
 from app.mhd_parser.enhancement_parser import Enhancement, EnhancementSet, SEffect
-from app.mhd_parser.salvage_parser import SalvageDatabase, Salvage, SalvageRarity, SalvageType
-from app.mhd_parser.recipe_parser import RecipeDatabase, Recipe, RecipeRarity
+from app.mhd_parser.json_exporter import MhdJsonExporter
+from app.mhd_parser.main_database_parser import MainDatabase, SummonedEntity
+from app.mhd_parser.power_parser import Power, PowerType, Requirement
+from app.mhd_parser.powerset_parser import Powerset, PowersetType
+from app.mhd_parser.recipe_parser import Recipe, RecipeDatabase, RecipeRarity
+from app.mhd_parser.salvage_parser import (
+    Salvage,
+    SalvageDatabase,
+    SalvageRarity,
+    SalvageType,
+)
 from app.mhd_parser.text_mhd_parser import TextMhdFile
 
 
 class TestJsonExporter:
     """Test cases for JSON export functionality."""
-    
+
     def test_export_main_database(self):
         """Test exporting main database to JSON."""
         # Create sample database
@@ -159,20 +161,20 @@ class TestJsonExporter:
                 )
             ]
         )
-        
+
         # Export to JSON
         with tempfile.TemporaryDirectory() as tmpdir:
             output_path = Path(tmpdir) / "main_db.json"
             exporter = MhdJsonExporter()
             exporter.export_main_database(db, output_path)
-            
+
             # Verify file exists
             assert output_path.exists()
-            
+
             # Load and verify JSON
-            with open(output_path, 'r') as f:
+            with open(output_path) as f:
                 data = json.load(f)
-            
+
             assert data["header"] == "Test Database"
             assert data["version"] == "1.0.0"
             assert data["date"] == 20231215
@@ -180,13 +182,13 @@ class TestJsonExporter:
             assert data["statistics"]["powerset_count"] == 1
             assert data["statistics"]["power_count"] == 1
             assert data["statistics"]["summon_count"] == 1
-            
+
             # Check specific data
             assert data["archetypes"][0]["display_name"] == "Blaster"
             assert data["powersets"][0]["display_name"] == "Fire Blast"
             assert data["powers"][0]["full_name"] == "Fire_Blast.Fire_Bolt"
             assert data["summons"][0]["uid"] == "Pet.FireImp"
-    
+
     def test_export_enhancement_database(self):
         """Test exporting enhancement database to JSON."""
         db = EnhancementDatabase(
@@ -247,20 +249,20 @@ class TestJsonExporter:
                 )
             ]
         )
-        
+
         with tempfile.TemporaryDirectory() as tmpdir:
             output_path = Path(tmpdir) / "enh_db.json"
             exporter = MhdJsonExporter()
             exporter.export_enhancement_database(db, output_path)
-            
-            with open(output_path, 'r') as f:
+
+            with open(output_path) as f:
                 data = json.load(f)
-            
+
             assert data["statistics"]["enhancement_count"] == 1
             assert data["statistics"]["enhancement_set_count"] == 1
             assert data["enhancements"][0]["name"] == "Accuracy IO"
             assert data["enhancement_sets"][0]["display_name"] == "Thunderstrike"
-    
+
     def test_export_salvage_database(self):
         """Test exporting salvage database to JSON."""
         db = SalvageDatabase(
@@ -276,19 +278,19 @@ class TestJsonExporter:
                 )
             ]
         )
-        
+
         with tempfile.TemporaryDirectory() as tmpdir:
             output_path = Path(tmpdir) / "salvage_db.json"
             exporter = MhdJsonExporter()
             exporter.export_salvage_database(db, output_path)
-            
-            with open(output_path, 'r') as f:
+
+            with open(output_path) as f:
                 data = json.load(f)
-            
+
             assert data["salvage_count"] == 1
             assert data["salvage_items"][0]["display_name"] == "Alchemical Silver"
             assert data["salvage_items"][0]["rarity"] == "COMMON"
-    
+
     def test_export_recipe_database(self):
         """Test exporting recipe database to JSON."""
         db = RecipeDatabase(
@@ -307,20 +309,20 @@ class TestJsonExporter:
                 )
             ]
         )
-        
+
         with tempfile.TemporaryDirectory() as tmpdir:
             output_path = Path(tmpdir) / "recipe_db.json"
             exporter = MhdJsonExporter()
             exporter.export_recipe_database(db, output_path)
-            
-            with open(output_path, 'r') as f:
+
+            with open(output_path) as f:
                 data = json.load(f)
-            
+
             assert data["recipe_count"] == 1
             assert data["recipes"][0]["name"] == "Accuracy IO"
             assert data["recipes"][0]["ingredients"] == ["Boresight", "Luck Charm"]
             assert data["recipes"][0]["quantities"] == [1, 2]
-    
+
     def test_export_text_mhd(self):
         """Test exporting text MHD file to JSON."""
         text_file = TextMhdFile(
@@ -332,15 +334,15 @@ class TestJsonExporter:
                 ["3", "337"]
             ]
         )
-        
+
         with tempfile.TemporaryDirectory() as tmpdir:
             output_path = Path(tmpdir) / "text_mhd.json"
             exporter = MhdJsonExporter()
             exporter.export_text_mhd(text_file, output_path)
-            
-            with open(output_path, 'r') as f:
+
+            with open(output_path) as f:
                 data = json.load(f)
-            
+
             assert data["version"] == "1.5.0"
             assert data["headers"] == ["Level", "Experience"]
             assert len(data["data"]) == 3

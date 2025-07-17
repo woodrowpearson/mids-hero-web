@@ -5,29 +5,29 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from app.database import Base
-from app.models import Archetype as ArchetypeModel
 from app.mhd_parser.archetype_parser import Archetype
 from app.mhd_parser.main_database_parser import MainDatabase
 from app.mhd_parser.powerset_parser import Powerset, PowersetType
+from app.models import Archetype as ArchetypeModel
 
 
 class TestSQLAlchemyIntegration:
     """Test integration between MHD parser and SQLAlchemy models."""
-    
+
     @pytest.fixture
     def db_session(self):
         """Create a test database session."""
         # Use in-memory SQLite for tests
         engine = create_engine("sqlite:///:memory:")
         Base.metadata.create_all(engine)
-        
+
         SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
         session = SessionLocal()
-        
+
         yield session
-        
+
         session.close()
-    
+
     def test_archetype_to_model_conversion(self, db_session):
         """Test converting parsed Archetype to SQLAlchemy model."""
         # Create parsed archetype
@@ -57,7 +57,7 @@ class TestSQLAlchemyIntegration:
             base_threat=1.0,
             perception_cap=1153.0
         )
-        
+
         # Convert to SQLAlchemy model
         model = ArchetypeModel(
             name=parsed.class_name,
@@ -69,21 +69,21 @@ class TestSQLAlchemyIntegration:
             secondary_group=parsed.secondary_group
             # Note: playable field doesn't exist in SQLAlchemy model
         )
-        
+
         # Save to database
         db_session.add(model)
         db_session.commit()
-        
+
         # Verify it was saved
         saved = db_session.query(ArchetypeModel).filter_by(
             name="Class_Blaster"
         ).first()
-        
+
         assert saved is not None
         assert saved.display_name == "Blaster"
         assert saved.hit_points_base == 1000
         assert saved.hit_points_max == 1606
-    
+
     def test_database_import_order(self, db_session):
         """Test that entities can be imported in dependency order."""
         # Create a minimal database
@@ -127,7 +127,7 @@ class TestSQLAlchemyIntegration:
             powers=[],
             summons=[]
         )
-        
+
         # Import archetypes first (no dependencies)
         for arch in db.archetypes:
             model = ArchetypeModel(
@@ -141,13 +141,13 @@ class TestSQLAlchemyIntegration:
                 playable=arch.playable
             )
             db_session.add(model)
-        
+
         db_session.commit()
-        
+
         # Verify import worked
         arch_count = db_session.query(ArchetypeModel).count()
         assert arch_count == 1
-    
+
     def test_index_reference_mapping(self):
         """Test mapping index-based references to database IDs."""
         # Create sample data with index references
@@ -181,17 +181,17 @@ class TestSQLAlchemyIntegration:
                 mutex_list=[]
             )
         ]
-        
+
         # Create index mapping
         archetype_id_map = {0: 1}  # Index 0 maps to database ID 1
-        
+
         # Map powersets to archetype IDs
         for ps in powersets:
             if ps.archetype_index >= 0:
                 db_arch_id = archetype_id_map.get(ps.archetype_index)
                 assert db_arch_id is not None
                 assert db_arch_id == 1
-    
+
     def test_data_validation(self):
         """Test validation of parsed data integrity."""
         # Test known relationships
@@ -250,21 +250,21 @@ class TestSQLAlchemyIntegration:
             powers=[],
             summons=[]
         )
-        
+
         # Validate Blaster has appropriate powersets
         blaster = next(a for a in db.archetypes if a.display_name == "Blaster")
         blaster_idx = db.archetypes.index(blaster)
-        
+
         # Find primary powersets for Blaster
         blaster_primaries = [
-            ps for ps in db.powersets 
-            if ps.archetype_index == blaster_idx 
+            ps for ps in db.powersets
+            if ps.archetype_index == blaster_idx
             and ps.set_type == PowersetType.PRIMARY
         ]
-        
+
         assert len(blaster_primaries) >= 1
         assert any("Fire" in ps.display_name for ps in blaster_primaries)
-        
+
         # Validate powerset groups match archetype groups
         for ps in blaster_primaries:
             assert ps.uid_trunk_set == blaster.primary_group

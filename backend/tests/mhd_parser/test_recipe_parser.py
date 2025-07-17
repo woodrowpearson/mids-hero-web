@@ -20,23 +20,23 @@ class TestRecipeParser:
         data = io.BytesIO()
 
         # Write recipe fields
-        data.write(b'\x0CRecipe_Acc_1')  # RecipeID/UID (12 chars)
-        data.write(b'\x0BAccuracy IO')  # Name (11 chars)
-        data.write(struct.pack('<i', 10))  # Level requirement
-        data.write(struct.pack('<i', 0))  # Rarity (Common)
+        data.write(b"\x0cRecipe_Acc_1")  # RecipeID/UID (12 chars)
+        data.write(b"\x0bAccuracy IO")  # Name (11 chars)
+        data.write(struct.pack("<i", 10))  # Level requirement
+        data.write(struct.pack("<i", 0))  # Rarity (Common)
 
         # Ingredients
-        data.write(struct.pack('<i', 2))  # Ingredient count
-        data.write(b'\x09Boresight')  # Salvage 1 (9 chars)
-        data.write(b'\x08Luck Gem')  # Salvage 2 (8 chars)
+        data.write(struct.pack("<i", 2))  # Ingredient count
+        data.write(b"\x09Boresight")  # Salvage 1 (9 chars)
+        data.write(b"\x08Luck Gem")  # Salvage 2 (8 chars)
 
         # Quantities (parallel array)
-        data.write(struct.pack('<i', 1))  # Quantity 1
-        data.write(struct.pack('<i', 2))  # Quantity 2
+        data.write(struct.pack("<i", 1))  # Quantity 1
+        data.write(struct.pack("<i", 2))  # Quantity 2
 
         # Cost and reward
-        data.write(struct.pack('<i', 10000))  # Crafting cost
-        data.write(b'\x0BAccuracy IO')  # Reward (11 chars)
+        data.write(struct.pack("<i", 10000))  # Crafting cost
+        data.write(b"\x0bAccuracy IO")  # Reward (11 chars)
 
         data.seek(0)
 
@@ -58,26 +58,26 @@ class TestRecipeParser:
         data = io.BytesIO()
 
         # Basic fields
-        data.write(b'\x0FRecipe_Hami_Dam')  # RecipeID (15 chars)
-        data.write(b'\x0EHamidon Damage')  # Name (14 chars)
-        data.write(struct.pack('<i', 50))  # Level 50
-        data.write(struct.pack('<i', 3))  # Very Rare
+        data.write(b"\x0fRecipe_Hami_Dam")  # RecipeID (15 chars)
+        data.write(b"\x0eHamidon Damage")  # Name (14 chars)
+        data.write(struct.pack("<i", 50))  # Level 50
+        data.write(struct.pack("<i", 3))  # Very Rare
 
         # 5 ingredients
-        data.write(struct.pack('<i', 5))  # Ingredient count
-        data.write(b'\x0BHamidon Goo')  # Salvage 1 (11 chars)
-        data.write(b'\x0FSynthetic HamiO')  # Salvage 2 (15 chars)
-        data.write(b'\x09Nucleolus')  # Salvage 3 (9 chars)
-        data.write(b'\x08Ribosome')  # Salvage 4 (8 chars)
-        data.write(b'\x0CMitochondria')  # Salvage 5 (12 chars)
+        data.write(struct.pack("<i", 5))  # Ingredient count
+        data.write(b"\x0bHamidon Goo")  # Salvage 1 (11 chars)
+        data.write(b"\x0fSynthetic HamiO")  # Salvage 2 (15 chars)
+        data.write(b"\x09Nucleolus")  # Salvage 3 (9 chars)
+        data.write(b"\x08Ribosome")  # Salvage 4 (8 chars)
+        data.write(b"\x0cMitochondria")  # Salvage 5 (12 chars)
 
         # Quantities
         for i in range(5):
-            data.write(struct.pack('<i', i + 1))  # 1, 2, 3, 4, 5
+            data.write(struct.pack("<i", i + 1))  # 1, 2, 3, 4, 5
 
         # Cost and reward
-        data.write(struct.pack('<i', 1000000))  # 1 million inf
-        data.write(b'\x0EHamidon Dam HO')  # Reward (14 chars)
+        data.write(struct.pack("<i", 1000000))  # 1 million inf
+        data.write(b"\x0eHamidon Dam HO")  # Reward (14 chars)
 
         data.seek(0)
 
@@ -102,13 +102,13 @@ class TestRecipeParser:
         for rarity_int, expected_rarity in test_cases:
             data = io.BytesIO()
 
-            data.write(b'\x04Test')  # RecipeID
-            data.write(b'\x04Test')  # Name
-            data.write(struct.pack('<i', 1))  # Level
-            data.write(struct.pack('<i', rarity_int))  # Rarity
-            data.write(struct.pack('<i', 0))  # No ingredients
-            data.write(struct.pack('<i', 0))  # Cost
-            data.write(b'\x04Test')  # Reward
+            data.write(b"\x04Test")  # RecipeID
+            data.write(b"\x04Test")  # Name
+            data.write(struct.pack("<i", 1))  # Level
+            data.write(struct.pack("<i", rarity_int))  # Rarity
+            data.write(struct.pack("<i", 0))  # No ingredients
+            data.write(struct.pack("<i", 0))  # Cost
+            data.write(b"\x04Test")  # Reward
 
             data.seek(0)
 
@@ -134,7 +134,7 @@ class TestRecipeDatabaseParser:
         data.write(version.encode())
 
         # Count
-        data.write(struct.pack('<i', 0))  # No recipes
+        data.write(struct.pack("<i", 0))  # No recipes
 
         data.seek(0)
 
@@ -159,33 +159,33 @@ class TestRecipeDatabaseParser:
         data.write(version.encode())
 
         # Count
-        data.write(struct.pack('<i', 2))  # 2 recipes
+        data.write(struct.pack("<i", 2))  # 2 recipes
 
         # Recipe 1: Simple common
-        data.write(b'\x08Recipe_1')  # RecipeID (8 chars)
-        data.write(b'\x08Training')  # Name (8 chars)
-        data.write(struct.pack('<i', 1))  # Level 1
-        data.write(struct.pack('<i', 0))  # Common
-        data.write(struct.pack('<i', 1))  # 1 ingredient
-        data.write(b'\x05Scrap')  # Salvage (5 chars)
-        data.write(struct.pack('<i', 1))  # Quantity
-        data.write(struct.pack('<i', 100))  # Cost
-        data.write(b'\x0BTraining IO')  # Reward (11 chars)
+        data.write(b"\x08Recipe_1")  # RecipeID (8 chars)
+        data.write(b"\x08Training")  # Name (8 chars)
+        data.write(struct.pack("<i", 1))  # Level 1
+        data.write(struct.pack("<i", 0))  # Common
+        data.write(struct.pack("<i", 1))  # 1 ingredient
+        data.write(b"\x05Scrap")  # Salvage (5 chars)
+        data.write(struct.pack("<i", 1))  # Quantity
+        data.write(struct.pack("<i", 100))  # Cost
+        data.write(b"\x0bTraining IO")  # Reward (11 chars)
 
         # Recipe 2: Complex rare
-        data.write(b'\x08Recipe_2')  # RecipeID
-        data.write(b'\x04Rare')  # Name (4 chars)
-        data.write(struct.pack('<i', 30))  # Level 30
-        data.write(struct.pack('<i', 2))  # Rare
-        data.write(struct.pack('<i', 3))  # 3 ingredients
-        data.write(b'\x06Silver')  # Salvage 1 (6 chars)
-        data.write(b'\x04Gold')  # Salvage 2 (4 chars)
-        data.write(b'\x08Platinum')  # Salvage 3 (8 chars)
-        data.write(struct.pack('<i', 2))  # Quantity 1
-        data.write(struct.pack('<i', 1))  # Quantity 2
-        data.write(struct.pack('<i', 1))  # Quantity 3
-        data.write(struct.pack('<i', 50000))  # Cost
-        data.write(b'\x07Rare IO')  # Reward (7 chars)
+        data.write(b"\x08Recipe_2")  # RecipeID
+        data.write(b"\x04Rare")  # Name (4 chars)
+        data.write(struct.pack("<i", 30))  # Level 30
+        data.write(struct.pack("<i", 2))  # Rare
+        data.write(struct.pack("<i", 3))  # 3 ingredients
+        data.write(b"\x06Silver")  # Salvage 1 (6 chars)
+        data.write(b"\x04Gold")  # Salvage 2 (4 chars)
+        data.write(b"\x08Platinum")  # Salvage 3 (8 chars)
+        data.write(struct.pack("<i", 2))  # Quantity 1
+        data.write(struct.pack("<i", 1))  # Quantity 2
+        data.write(struct.pack("<i", 1))  # Quantity 3
+        data.write(struct.pack("<i", 50000))  # Cost
+        data.write(b"\x07Rare IO")  # Reward (7 chars)
 
         data.seek(0)
 

@@ -22,7 +22,6 @@ __all__ = [
     "parse_recipe_database",
     "parse_text_mhd",
     "detect_file_format",
-
     # Data classes
     "MainDatabase",
     "EnhancementDatabase",
@@ -30,10 +29,8 @@ __all__ = [
     "RecipeDatabase",
     "TextMhdFile",
     "FileFormat",
-
     # Utilities
     "MhdJsonExporter",
-
     # Errors
     "MhdParseError",
     "MhdFormatError",

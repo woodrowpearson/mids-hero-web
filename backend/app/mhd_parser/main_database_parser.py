@@ -13,6 +13,7 @@ from .powerset_parser import Powerset, parse_powerset
 
 class DatabaseSection(Enum):
     """Database section markers."""
+
     ARCHETYPES = "BEGIN:ARCHETYPES"
     POWERSETS = "BEGIN:POWERSETS"
     POWERS = "BEGIN:POWERS"
@@ -89,7 +90,7 @@ def parse_summoned_entity(stream: BinaryIO) -> SummonedEntity:
             entity_type=entity_type,
             class_name=class_name,
             powerset_full_names=powerset_full_names,
-            upgrade_power_full_names=upgrade_power_full_names
+            upgrade_power_full_names=upgrade_power_full_names,
         )
 
     except EOFError as e:
@@ -105,7 +106,7 @@ def _parse_version(version_str: str) -> tuple:
     Returns:
         Tuple of (major, minor, patch, build)
     """
-    parts = version_str.split('.')
+    parts = version_str.split(".")
     if len(parts) != 4:
         return (0, 0, 0, 0)
 
@@ -192,14 +193,16 @@ def parse_main_database(stream: BinaryIO) -> MainDatabase:
             DatabaseSection.ARCHETYPES,
             DatabaseSection.POWERSETS,
             DatabaseSection.POWERS,
-            DatabaseSection.SUMMONS
+            DatabaseSection.SUMMONS,
         ]
 
         for expected_section in expected_sections:
             # Read section marker
             marker = reader.read_string()
             if marker != expected_section.value:
-                raise ValueError(f"Invalid section marker: expected {expected_section.value}, got {marker}")
+                raise ValueError(
+                    f"Invalid section marker: expected {expected_section.value}, got {marker}"
+                )
 
             # Read count
             count = reader.read_int32()
@@ -228,7 +231,7 @@ def parse_main_database(stream: BinaryIO) -> MainDatabase:
             archetypes=archetypes,
             powersets=powersets,
             powers=powers,
-            summons=summons
+            summons=summons,
         )
 
     except EOFError as e:

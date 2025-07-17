@@ -7,6 +7,7 @@ from typing import BinaryIO
 
 class FileFormat(Enum):
     """File format enumeration."""
+
     BINARY = "binary"
     TEXT_WITH_VERSION = "text_with_version"
     TEXT_TSV = "text_tsv"
@@ -52,14 +53,14 @@ def detect_file_format(stream: BinaryIO) -> FileFormat:
 
         # Check for text format
         try:
-            text = header.decode('utf-8', errors='strict')
+            text = header.decode("utf-8", errors="strict")
 
             # Check for version header
             if text.startswith("Version"):
                 return FileFormat.TEXT_WITH_VERSION
 
             # Check for tab delimiter (TSV format)
-            if '\t' in text:
+            if "\t" in text:
                 return FileFormat.TEXT_TSV
 
             # Default to version format for plain text
@@ -87,8 +88,8 @@ def parse_text_mhd(stream: BinaryIO) -> TextMhdFile:
         ValueError: If file format cannot be determined
     """
     # Read entire file as text
-    content = stream.read().decode('utf-8', errors='replace')
-    lines = content.strip().split('\n')
+    content = stream.read().decode("utf-8", errors="replace")
+    lines = content.strip().split("\n")
 
     if not lines:
         return TextMhdFile(version=None, headers=[], data=[])
@@ -110,18 +111,14 @@ def parse_text_mhd(stream: BinaryIO) -> TextMhdFile:
             continue
 
         # Check if this is a tab-delimited file
-        if '\t' in line:
+        if "\t" in line:
             # First line with tabs becomes headers
             if not headers and i == start_index:
-                headers = line.split('\t')
+                headers = line.split("\t")
             else:
-                data.append(line.split('\t'))
+                data.append(line.split("\t"))
         else:
             # Single column data
             data.append([line])
 
-    return TextMhdFile(
-        version=version,
-        headers=headers,
-        data=data
-    )
+    return TextMhdFile(version=version, headers=headers, data=data)

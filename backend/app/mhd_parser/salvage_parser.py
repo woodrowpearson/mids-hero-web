@@ -9,6 +9,7 @@ from .binary_reader import BinaryReader
 
 class SalvageRarity(IntEnum):
     """Salvage rarity enumeration."""
+
     COMMON = 0
     UNCOMMON = 1
     RARE = 2
@@ -17,6 +18,7 @@ class SalvageRarity(IntEnum):
 
 class SalvageType(IntEnum):
     """Salvage type enumeration."""
+
     COMPONENT = 0
     CATALYST = 1
     SPECIAL = 2
@@ -69,7 +71,7 @@ def parse_salvage(stream: BinaryIO) -> Salvage:
             display_name=display_name,
             rarity=rarity,
             salvage_type=salvage_type,
-            description=description
+            description=description,
         )
 
     except EOFError as e:
@@ -108,9 +110,7 @@ def parse_salvage_database(stream: BinaryIO) -> SalvageDatabase:
             salvage_items.append(parse_salvage(stream))
 
         return SalvageDatabase(
-            header=header,
-            version=version,
-            salvage_items=salvage_items
+            header=header, version=version, salvage_items=salvage_items
         )
 
     except EOFError as e:

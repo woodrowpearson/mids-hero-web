@@ -9,6 +9,7 @@ from .binary_reader import BinaryReader
 
 class PowerType(IntEnum):
     """Power activation type enumeration."""
+
     NONE = 0
     CLICK = 1
     TOGGLE = 2
@@ -17,6 +18,7 @@ class PowerType(IntEnum):
 
 class EffectType(IntEnum):
     """Effect type enumeration."""
+
     NONE = 0
     DAMAGE = 1
     HEAL = 2
@@ -256,7 +258,7 @@ def parse_requirement(stream: BinaryIO) -> Requirement:
             classes_required=classes_required,
             classes_disallowed=classes_disallowed,
             power_ids=power_ids,
-            power_ids_not=power_ids_not
+            power_ids_not=power_ids_not,
         )
 
     except EOFError as e:
@@ -433,7 +435,7 @@ def parse_effect(stream: BinaryIO) -> Effect:
             ignore_active_defense=ignore_active_defense,
             chain_ids=chain_ids,
             chains_require_primary_target=chains_require_primary_target,
-            ignore_strength=ignore_strength
+            ignore_strength=ignore_strength,
         )
 
     except EOFError as e:
@@ -650,7 +652,7 @@ def parse_power(stream: BinaryIO) -> Power:
             sort_override=sort_override,
             boost_boost_special_allowed=boost_boost_special_allowed,
             effects=effects,
-            hidden_power=hidden_power
+            hidden_power=hidden_power,
         )
 
     except EOFError as e:

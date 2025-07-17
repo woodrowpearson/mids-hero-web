@@ -106,7 +106,7 @@ class TestCLI:
 
         with tempfile.NamedTemporaryFile(suffix=".mhd", delete=False) as tmp:
             # Write invalid binary data
-            tmp.write(b"\xFF\xFF\xFF\xFF")
+            tmp.write(b"\xff\xff\xff\xff")
             tmp_path = Path(tmp.name)
 
         try:
@@ -115,30 +115,32 @@ class TestCLI:
         finally:
             tmp_path.unlink()
 
-    @patch('sys.argv', ['cli.py', 'parse', 'test.mhd', '--dry-run'])
-    @patch('pathlib.Path.is_file')
-    @patch('app.mhd_parser.cli.MhdParserCLI.parse_file')
+    @patch("sys.argv", ["cli.py", "parse", "test.mhd", "--dry-run"])
+    @patch("pathlib.Path.is_file")
+    @patch("app.mhd_parser.cli.MhdParserCLI.parse_file")
     def test_main_parse_file(self, mock_parse, mock_is_file):
         """Test main entry point for file parsing."""
         mock_is_file.return_value = True
         mock_parse.return_value = True
 
         from app.mhd_parser.cli import main
+
         with pytest.raises(SystemExit) as exc_info:
             main()
 
         assert exc_info.value.code == 0
         mock_parse.assert_called_once()
 
-    @patch('sys.argv', ['cli.py', '--log-level', 'DEBUG', 'validate', 'test.mhd'])
-    @patch('pathlib.Path.is_file')
-    @patch('app.mhd_parser.cli.MhdParserCLI.validate_file')
+    @patch("sys.argv", ["cli.py", "--log-level", "DEBUG", "validate", "test.mhd"])
+    @patch("pathlib.Path.is_file")
+    @patch("app.mhd_parser.cli.MhdParserCLI.validate_file")
     def test_main_validate_file(self, mock_validate, mock_is_file):
         """Test main entry point for file validation."""
         mock_is_file.return_value = True
         mock_validate.return_value = True
 
         from app.mhd_parser.cli import main
+
         with pytest.raises(SystemExit) as exc_info:
             main()
 

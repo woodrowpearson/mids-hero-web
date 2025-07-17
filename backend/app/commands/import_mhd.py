@@ -28,7 +28,7 @@ class DatabaseImporter:
         """Import main database file."""
         logger.info(f"Importing main database from {file_path}")
 
-        with open(file_path, 'rb') as f:
+        with open(file_path, "rb") as f:
             db = parse_main_database(f)
 
         # Import in dependency order
@@ -51,7 +51,7 @@ class DatabaseImporter:
                 max_hp=arch.hp_cap,
                 primary_category=arch.primary_group,
                 secondary_category=arch.secondary_group,
-                playable=arch.playable
+                playable=arch.playable,
             )
             self.session.add(model)
             await self.session.flush()  # Get the ID
@@ -76,17 +76,30 @@ class DatabaseImporter:
 
 
 @click.command()
-@click.argument('path', type=click.Path(exists=True))
-@click.option('--type', 'file_type',
-              type=click.Choice(['main', 'enhancement', 'salvage', 'recipe', 'auto']),
-              default='auto', help='Type of MHD file')
-@click.option('--dry-run', is_flag=True, help='Parse without importing')
-@click.option('--export-json', is_flag=True, help='Export to JSON')
-@click.option('--output', type=click.Path(), help='Output directory for JSON')
-@click.option('--log-level', default='INFO',
-              type=click.Choice(['DEBUG', 'INFO', 'WARNING', 'ERROR']))
-def import_mhd(path: str, file_type: str, dry_run: bool,
-               export_json: bool, output: str | None, log_level: str):
+@click.argument("path", type=click.Path(exists=True))
+@click.option(
+    "--type",
+    "file_type",
+    type=click.Choice(["main", "enhancement", "salvage", "recipe", "auto"]),
+    default="auto",
+    help="Type of MHD file",
+)
+@click.option("--dry-run", is_flag=True, help="Parse without importing")
+@click.option("--export-json", is_flag=True, help="Export to JSON")
+@click.option("--output", type=click.Path(), help="Output directory for JSON")
+@click.option(
+    "--log-level",
+    default="INFO",
+    type=click.Choice(["DEBUG", "INFO", "WARNING", "ERROR"]),
+)
+def import_mhd(
+    path: str,
+    file_type: str,
+    dry_run: bool,
+    export_json: bool,
+    output: str | None,
+    log_level: str,
+):
     """Import MHD files into the database.
 
     Examples:
@@ -96,7 +109,7 @@ def import_mhd(path: str, file_type: str, dry_run: bool,
     # Set up logging
     logging.basicConfig(
         level=getattr(logging, log_level),
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
 
     path_obj = Path(path)
@@ -106,12 +119,17 @@ def import_mhd(path: str, file_type: str, dry_run: bool,
         cli = MhdParserCLI()
 
         if path_obj.is_file():
-            cli.parse_file(path_obj, Path(output) if output else None,
-                          dry_run, export_json)
+            cli.parse_file(
+                path_obj, Path(output) if output else None, dry_run, export_json
+            )
         else:
-            cli.parse_directory(path_obj, "*.mhd",
-                              Path(output) if output else None,
-                              dry_run, export_json)
+            cli.parse_directory(
+                path_obj,
+                "*.mhd",
+                Path(output) if output else None,
+                dry_run,
+                export_json,
+            )
     else:
         # Real database import
         asyncio.run(_import_to_database(path_obj, file_type))
@@ -124,7 +142,9 @@ async def _import_to_database(path: Path, file_type: str):
 
         try:
             if path.is_file():
-                if file_type == 'main' or (file_type == 'auto' and 'i12' in path.name.lower()):
+                if file_type == "main" or (
+                    file_type == "auto" and "i12" in path.name.lower()
+                ):
                     await importer.import_main_database(path)
                 else:
                     logger.warning(f"Database import not implemented for {file_type}")

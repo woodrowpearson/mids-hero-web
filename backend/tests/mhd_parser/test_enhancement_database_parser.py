@@ -29,11 +29,11 @@ class TestEnhancementDatabaseParser:
         data.write(version.encode())
 
         # Date (Int32 format for old version)
-        data.write(struct.pack('<i', 20231215))
+        data.write(struct.pack("<i", 20231215))
 
         # Counts
-        data.write(struct.pack('<i', 0))  # Enhancement count
-        data.write(struct.pack('<i', 0))  # EnhancementSet count
+        data.write(struct.pack("<i", 0))  # Enhancement count
+        data.write(struct.pack("<i", 0))  # EnhancementSet count
 
         data.seek(0)
 
@@ -60,81 +60,81 @@ class TestEnhancementDatabaseParser:
         data.write(version.encode())
 
         # Date
-        data.write(struct.pack('<i', 20231215))
+        data.write(struct.pack("<i", 20231215))
 
         # Enhancement count
-        data.write(struct.pack('<i', 2))  # 2 enhancements
+        data.write(struct.pack("<i", 2))  # 2 enhancements
 
         # Enhancement 1: Simple IO
-        data.write(struct.pack('<i', 1))  # StaticIndex
-        data.write(b'\x0BAccuracy IO')  # Name
-        data.write(b'\x06Acc IO')  # ShortName
-        data.write(b'\x12Increases accuracy')  # Desc (length 18)
-        data.write(struct.pack('<i', 1))  # TypeID
-        data.write(struct.pack('<i', 0))  # SubTypeID
-        data.write(struct.pack('<i', 0))  # ClassID count
-        data.write(struct.pack('<i', -1))  # ClassID terminator
-        data.write(b'\x07acc.png')  # Image
-        data.write(struct.pack('<i', 0))  # nIDSet
-        data.write(b'\x00')  # UIDSet empty
-        data.write(struct.pack('<f', 100.0))  # EffectChance
-        data.write(struct.pack('<i', 10))  # LevelMin
-        data.write(struct.pack('<i', 50))  # LevelMax
-        data.write(struct.pack('<?', False))  # Unique
-        data.write(struct.pack('<i', 0))  # MutExID
-        data.write(struct.pack('<i', 0))  # BuffMode
+        data.write(struct.pack("<i", 1))  # StaticIndex
+        data.write(b"\x0bAccuracy IO")  # Name
+        data.write(b"\x06Acc IO")  # ShortName
+        data.write(b"\x12Increases accuracy")  # Desc (length 18)
+        data.write(struct.pack("<i", 1))  # TypeID
+        data.write(struct.pack("<i", 0))  # SubTypeID
+        data.write(struct.pack("<i", 0))  # ClassID count
+        data.write(struct.pack("<i", -1))  # ClassID terminator
+        data.write(b"\x07acc.png")  # Image
+        data.write(struct.pack("<i", 0))  # nIDSet
+        data.write(b"\x00")  # UIDSet empty
+        data.write(struct.pack("<f", 100.0))  # EffectChance
+        data.write(struct.pack("<i", 10))  # LevelMin
+        data.write(struct.pack("<i", 50))  # LevelMax
+        data.write(struct.pack("<?", False))  # Unique
+        data.write(struct.pack("<i", 0))  # MutExID
+        data.write(struct.pack("<i", 0))  # BuffMode
         # Effects
-        data.write(struct.pack('<i', 1))  # Effect count
-        data.write(struct.pack('<i', 1))  # Mode
-        data.write(struct.pack('<i', 0))  # BuffMode
-        data.write(struct.pack('<i', 1))  # Enhance.ID
-        data.write(struct.pack('<i', 0))  # Enhance.SubID
-        data.write(struct.pack('<i', 0))  # Schedule
-        data.write(struct.pack('<f', 0.3333))  # Multiplier
-        data.write(struct.pack('<?', False))  # No FX
+        data.write(struct.pack("<i", 1))  # Effect count
+        data.write(struct.pack("<i", 1))  # Mode
+        data.write(struct.pack("<i", 0))  # BuffMode
+        data.write(struct.pack("<i", 1))  # Enhance.ID
+        data.write(struct.pack("<i", 0))  # Enhance.SubID
+        data.write(struct.pack("<i", 0))  # Schedule
+        data.write(struct.pack("<f", 0.3333))  # Multiplier
+        data.write(struct.pack("<?", False))  # No FX
         # Final fields
-        data.write(b'\x06IO.Acc')  # UID
-        data.write(b'\x00')  # RecipeName
-        data.write(struct.pack('<?', False))  # Superior
-        data.write(struct.pack('<?', False))  # IsProc
-        data.write(struct.pack('<?', True))  # IsScalable
+        data.write(b"\x06IO.Acc")  # UID
+        data.write(b"\x00")  # RecipeName
+        data.write(struct.pack("<?", False))  # Superior
+        data.write(struct.pack("<?", False))  # IsProc
+        data.write(struct.pack("<?", True))  # IsScalable
 
         # Enhancement 2: Damage IO
-        data.write(struct.pack('<i', 2))  # StaticIndex
-        data.write(b'\x09Damage IO')  # Name
-        data.write(b'\x06Dam IO')  # ShortName
-        data.write(b'\x10Increases damage')  # Desc (length 16)
-        data.write(struct.pack('<i', 1))  # TypeID
-        data.write(struct.pack('<i', 0))  # SubTypeID
-        data.write(struct.pack('<i', 0))  # ClassID count
-        data.write(struct.pack('<i', -1))  # ClassID terminator
-        data.write(b'\x07dam.png')  # Image
-        data.write(struct.pack('<i', 0))  # nIDSet
-        data.write(b'\x00')  # UIDSet empty
-        data.write(struct.pack('<f', 100.0))  # EffectChance
-        data.write(struct.pack('<i', 10))  # LevelMin
-        data.write(struct.pack('<i', 50))  # LevelMax
-        data.write(struct.pack('<?', False))  # Unique
-        data.write(struct.pack('<i', 0))  # MutExID
-        data.write(struct.pack('<i', 0))  # BuffMode
+        data.write(struct.pack("<i", 2))  # StaticIndex
+        data.write(b"\x09Damage IO")  # Name
+        data.write(b"\x06Dam IO")  # ShortName
+        data.write(b"\x10Increases damage")  # Desc (length 16)
+        data.write(struct.pack("<i", 1))  # TypeID
+        data.write(struct.pack("<i", 0))  # SubTypeID
+        data.write(struct.pack("<i", 0))  # ClassID count
+        data.write(struct.pack("<i", -1))  # ClassID terminator
+        data.write(b"\x07dam.png")  # Image
+        data.write(struct.pack("<i", 0))  # nIDSet
+        data.write(b"\x00")  # UIDSet empty
+        data.write(struct.pack("<f", 100.0))  # EffectChance
+        data.write(struct.pack("<i", 10))  # LevelMin
+        data.write(struct.pack("<i", 50))  # LevelMax
+        data.write(struct.pack("<?", False))  # Unique
+        data.write(struct.pack("<i", 0))  # MutExID
+        data.write(struct.pack("<i", 0))  # BuffMode
         # Effects
-        data.write(struct.pack('<i', 1))  # Effect count
-        data.write(struct.pack('<i', 1))  # Mode
-        data.write(struct.pack('<i', 0))  # BuffMode
-        data.write(struct.pack('<i', 2))  # Enhance.ID (Damage)
-        data.write(struct.pack('<i', 0))  # Enhance.SubID
-        data.write(struct.pack('<i', 0))  # Schedule
-        data.write(struct.pack('<f', 0.3333))  # Multiplier
-        data.write(struct.pack('<?', False))  # No FX
+        data.write(struct.pack("<i", 1))  # Effect count
+        data.write(struct.pack("<i", 1))  # Mode
+        data.write(struct.pack("<i", 0))  # BuffMode
+        data.write(struct.pack("<i", 2))  # Enhance.ID (Damage)
+        data.write(struct.pack("<i", 0))  # Enhance.SubID
+        data.write(struct.pack("<i", 0))  # Schedule
+        data.write(struct.pack("<f", 0.3333))  # Multiplier
+        data.write(struct.pack("<?", False))  # No FX
         # Final fields
-        data.write(b'\x06IO.Dam')  # UID
-        data.write(b'\x00')  # RecipeName
-        data.write(struct.pack('<?', False))  # Superior
-        data.write(struct.pack('<?', False))  # IsProc
-        data.write(struct.pack('<?', True))  # IsScalable
+        data.write(b"\x06IO.Dam")  # UID
+        data.write(b"\x00")  # RecipeName
+        data.write(struct.pack("<?", False))  # Superior
+        data.write(struct.pack("<?", False))  # IsProc
+        data.write(struct.pack("<?", True))  # IsScalable
 
         # EnhancementSet count
-        data.write(struct.pack('<i', 0))  # No sets
+        data.write(struct.pack("<i", 0))  # No sets
 
         data.seek(0)
 
@@ -161,41 +161,41 @@ class TestEnhancementDatabaseParser:
         data.write(version.encode())
 
         # Date
-        data.write(struct.pack('<i', 20231215))
+        data.write(struct.pack("<i", 20231215))
 
         # Enhancement count (0 for this test)
-        data.write(struct.pack('<i', 0))
+        data.write(struct.pack("<i", 0))
 
         # EnhancementSet count
-        data.write(struct.pack('<i', 1))  # 1 set
+        data.write(struct.pack("<i", 1))  # 1 set
 
         # EnhancementSet 1
-        data.write(struct.pack('<i', 1))  # DisplayIndex
-        data.write(b'\x0DThunderstrike')  # DisplayName
-        data.write(b'\x07Thunder')  # ShortName
-        data.write(b'\x0CMelee damage')  # Desc
-        data.write(struct.pack('<i', 1))  # SetType
+        data.write(struct.pack("<i", 1))  # DisplayIndex
+        data.write(b"\x0dThunderstrike")  # DisplayName
+        data.write(b"\x07Thunder")  # ShortName
+        data.write(b"\x0cMelee damage")  # Desc
+        data.write(struct.pack("<i", 1))  # SetType
         # Enhancement indices
-        data.write(struct.pack('<i', 3))  # 3 pieces
-        data.write(struct.pack('<i', 100))
-        data.write(struct.pack('<i', 101))
-        data.write(struct.pack('<i', 102))
+        data.write(struct.pack("<i", 3))  # 3 pieces
+        data.write(struct.pack("<i", 100))
+        data.write(struct.pack("<i", 101))
+        data.write(struct.pack("<i", 102))
         # Bonuses
-        data.write(struct.pack('<i', 2))  # 2 bonuses
-        data.write(struct.pack('<i', 1000))  # Bonus 1
-        data.write(struct.pack('<i', 1001))  # Bonus 2
+        data.write(struct.pack("<i", 2))  # 2 bonuses
+        data.write(struct.pack("<i", 1000))  # Bonus 1
+        data.write(struct.pack("<i", 1001))  # Bonus 2
         # BonusMin
-        data.write(struct.pack('<i', 2))  # count
-        data.write(struct.pack('<i', 2))  # 2 pieces
-        data.write(struct.pack('<i', 3))  # 3 pieces
+        data.write(struct.pack("<i", 2))  # count
+        data.write(struct.pack("<i", 2))  # 2 pieces
+        data.write(struct.pack("<i", 3))  # 3 pieces
         # BonusMax
-        data.write(struct.pack('<i', 0))  # count
+        data.write(struct.pack("<i", 0))  # count
         # SpecialBonus
-        data.write(struct.pack('<i', 0))  # count
+        data.write(struct.pack("<i", 0))  # count
         # Final fields
-        data.write(b'\x0ASet.Thunder')  # UIDSet
-        data.write(struct.pack('<i', 10))  # LevelMin
-        data.write(struct.pack('<i', 50))  # LevelMax
+        data.write(b"\x0aSet.Thunder")  # UIDSet
+        data.write(struct.pack("<i", 10))  # LevelMin
+        data.write(struct.pack("<i", 50))  # LevelMax
 
         data.seek(0)
 
@@ -222,11 +222,11 @@ class TestEnhancementDatabaseParser:
         data.write(version.encode())
 
         # Date as Int64 (.NET ticks)
-        data.write(struct.pack('<q', 638229120000000000))
+        data.write(struct.pack("<q", 638229120000000000))
 
         # Counts
-        data.write(struct.pack('<i', 0))  # Enhancement count
-        data.write(struct.pack('<i', 0))  # EnhancementSet count
+        data.write(struct.pack("<i", 0))  # Enhancement count
+        data.write(struct.pack("<i", 0))  # EnhancementSet count
 
         data.seek(0)
 

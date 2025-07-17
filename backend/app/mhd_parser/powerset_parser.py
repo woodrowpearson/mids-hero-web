@@ -9,6 +9,7 @@ from .binary_reader import BinaryReader
 
 class PowersetType(IntEnum):
     """Powerset type enumeration."""
+
     PRIMARY = 0
     SECONDARY = 1
     POOL = 2
@@ -102,7 +103,7 @@ def parse_powerset(stream: BinaryIO) -> Powerset:
 
         # Read the extra entries (count+1 pattern)
         reader.read_string()  # Extra string
-        reader.read_int32()   # Extra int
+        reader.read_int32()  # Extra int
 
         return Powerset(
             display_name=display_name,
@@ -116,7 +117,7 @@ def parse_powerset(stream: BinaryIO) -> Powerset:
             at_class=at_class,
             uid_trunk_set=uid_trunk_set,
             uid_link_secondary=uid_link_secondary,
-            mutex_list=mutex_list
+            mutex_list=mutex_list,
         )
 
     except EOFError as e:

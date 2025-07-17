@@ -145,7 +145,7 @@ def parse_archetype(stream: BinaryIO) -> Archetype:
             base_recovery=base_recovery,
             base_regen=base_regen,
             base_threat=base_threat,
-            perception_cap=perception_cap
+            perception_cap=perception_cap,
         )
 
     except EOFError as e:

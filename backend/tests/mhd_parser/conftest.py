@@ -17,7 +17,7 @@ def binary_stream(request) -> BinaryIO:
         def test_something(binary_stream):
             # binary_stream is now a BytesIO object with the data
     """
-    data = request.param if hasattr(request, 'param') else b''
+    data = request.param if hasattr(request, "param") else b""
     return io.BytesIO(data)
 
 
@@ -34,6 +34,7 @@ def dotnet_string(text: str) -> bytes:
     .NET uses a 7-bit encoded integer for the length prefix,
     followed by UTF-8 encoded bytes.
     """
+
     def encode_7bit_int(value: int) -> bytes:
         """Encode an integer using .NET's 7-bit encoding."""
         result = bytearray()
@@ -44,9 +45,9 @@ def dotnet_string(text: str) -> bytes:
         return bytes(result)
 
     if not text:
-        return b'\x00'
+        return b"\x00"
 
-    utf8_bytes = text.encode('utf-8')
+    utf8_bytes = text.encode("utf-8")
     length_prefix = encode_7bit_int(len(utf8_bytes))
     return length_prefix + utf8_bytes
 
@@ -54,6 +55,7 @@ def dotnet_string(text: str) -> bytes:
 @pytest.fixture
 def create_binary_data():
     """Factory fixture for creating test binary data."""
+
     def _create(**kwargs) -> bytes:
         """Create binary data with various types.
 
@@ -68,22 +70,22 @@ def create_binary_data():
         data = bytearray()
 
         for key, value in kwargs.items():
-            if key == 'int32':
-                data.extend(struct.pack('<i', value))
-            elif key == 'uint32':
-                data.extend(struct.pack('<I', value))
-            elif key == 'int64':
-                data.extend(struct.pack('<q', value))
-            elif key == 'float32':
-                data.extend(struct.pack('<f', value))
-            elif key == 'bool':
-                data.extend(struct.pack('<?', value))
-            elif key == 'string':
+            if key == "int32":
+                data.extend(struct.pack("<i", value))
+            elif key == "uint32":
+                data.extend(struct.pack("<I", value))
+            elif key == "int64":
+                data.extend(struct.pack("<q", value))
+            elif key == "float32":
+                data.extend(struct.pack("<f", value))
+            elif key == "bool":
+                data.extend(struct.pack("<?", value))
+            elif key == "string":
                 # Use the dotnet_string logic inline
                 if not value:
                     data.append(0)
                 else:
-                    utf8_bytes = value.encode('utf-8')
+                    utf8_bytes = value.encode("utf-8")
                     length = len(utf8_bytes)
                     # 7-bit encode the length
                     while length >= 0x80:

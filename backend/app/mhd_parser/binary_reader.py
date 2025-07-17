@@ -71,10 +71,12 @@ def read_string(stream: BinaryIO) -> str:
     # Read the string data
     string_data = stream.read(length)
     if len(string_data) < length:
-        raise EOFError(f"String data truncated: expected {length} bytes, got {len(string_data)}")
+        raise EOFError(
+            f"String data truncated: expected {length} bytes, got {len(string_data)}"
+        )
 
     # Decode UTF-8
-    return string_data.decode('utf-8')
+    return string_data.decode("utf-8")
 
 
 def read_int32(stream: BinaryIO) -> int:
@@ -91,8 +93,10 @@ def read_int32(stream: BinaryIO) -> int:
     """
     data = stream.read(4)
     if len(data) < 4:
-        raise EOFError(f"Unexpected EOF while reading int32: expected 4 bytes, got {len(data)}")
-    return struct.unpack('<i', data)[0]
+        raise EOFError(
+            f"Unexpected EOF while reading int32: expected 4 bytes, got {len(data)}"
+        )
+    return struct.unpack("<i", data)[0]
 
 
 def read_uint32(stream: BinaryIO) -> int:
@@ -109,8 +113,10 @@ def read_uint32(stream: BinaryIO) -> int:
     """
     data = stream.read(4)
     if len(data) < 4:
-        raise EOFError(f"Unexpected EOF while reading uint32: expected 4 bytes, got {len(data)}")
-    return struct.unpack('<I', data)[0]
+        raise EOFError(
+            f"Unexpected EOF while reading uint32: expected 4 bytes, got {len(data)}"
+        )
+    return struct.unpack("<I", data)[0]
 
 
 def read_int64(stream: BinaryIO) -> int:
@@ -127,8 +133,10 @@ def read_int64(stream: BinaryIO) -> int:
     """
     data = stream.read(8)
     if len(data) < 8:
-        raise EOFError(f"Unexpected EOF while reading int64: expected 8 bytes, got {len(data)}")
-    return struct.unpack('<q', data)[0]
+        raise EOFError(
+            f"Unexpected EOF while reading int64: expected 8 bytes, got {len(data)}"
+        )
+    return struct.unpack("<q", data)[0]
 
 
 def read_float32(stream: BinaryIO) -> float:
@@ -145,8 +153,10 @@ def read_float32(stream: BinaryIO) -> float:
     """
     data = stream.read(4)
     if len(data) < 4:
-        raise EOFError(f"Unexpected EOF while reading float32: expected 4 bytes, got {len(data)}")
-    return struct.unpack('<f', data)[0]
+        raise EOFError(
+            f"Unexpected EOF while reading float32: expected 4 bytes, got {len(data)}"
+        )
+    return struct.unpack("<f", data)[0]
 
 
 def read_bool(stream: BinaryIO) -> bool:

@@ -55,7 +55,7 @@ class TestSQLAlchemyIntegration:
             base_recovery=1.0,
             base_regen=1.0,
             base_threat=1.0,
-            perception_cap=1153.0
+            perception_cap=1153.0,
         )
 
         # Convert to SQLAlchemy model
@@ -66,7 +66,7 @@ class TestSQLAlchemyIntegration:
             hit_points_base=parsed.hitpoints,
             hit_points_max=int(parsed.hp_cap),  # Convert float to int
             primary_group=parsed.primary_group,
-            secondary_group=parsed.secondary_group
+            secondary_group=parsed.secondary_group,
             # Note: playable field doesn't exist in SQLAlchemy model
         )
 
@@ -75,9 +75,7 @@ class TestSQLAlchemyIntegration:
         db_session.commit()
 
         # Verify it was saved
-        saved = db_session.query(ArchetypeModel).filter_by(
-            name="Class_Blaster"
-        ).first()
+        saved = db_session.query(ArchetypeModel).filter_by(name="Class_Blaster").first()
 
         assert saved is not None
         assert saved.display_name == "Blaster"
@@ -119,12 +117,12 @@ class TestSQLAlchemyIntegration:
                     base_recovery=1.0,
                     base_regen=1.0,
                     base_threat=1.0,
-                    perception_cap=1153.0
+                    perception_cap=1153.0,
                 )
             ],
             powersets=[],
             powers=[],
-            summons=[]
+            summons=[],
         )
 
         # Import archetypes first (no dependencies)
@@ -136,7 +134,7 @@ class TestSQLAlchemyIntegration:
                 hit_points_base=arch.hitpoints,
                 hit_points_max=int(arch.hp_cap),
                 primary_group=arch.primary_group,
-                secondary_group=arch.secondary_group
+                secondary_group=arch.secondary_group,
                 # Note: playable field doesn't exist in SQLAlchemy model
             )
             db_session.add(model)
@@ -163,7 +161,7 @@ class TestSQLAlchemyIntegration:
                 at_class="Blaster_Ranged",
                 uid_trunk_set="Ranged",
                 uid_link_secondary="",
-                mutex_list=[]
+                mutex_list=[],
             ),
             Powerset(
                 display_name="Energy Blast",
@@ -177,8 +175,8 @@ class TestSQLAlchemyIntegration:
                 at_class="Blaster_Ranged",
                 uid_trunk_set="Ranged",
                 uid_link_secondary="",
-                mutex_list=[]
-            )
+                mutex_list=[],
+            ),
         ]
 
         # Create index mapping
@@ -226,7 +224,7 @@ class TestSQLAlchemyIntegration:
                     base_recovery=1.0,
                     base_regen=1.0,
                     base_threat=1.0,
-                    perception_cap=1153.0
+                    perception_cap=1153.0,
                 )
             ],
             powersets=[
@@ -242,11 +240,11 @@ class TestSQLAlchemyIntegration:
                     at_class="Blaster_Ranged",
                     uid_trunk_set="Ranged_Damage",
                     uid_link_secondary="",
-                    mutex_list=[]
+                    mutex_list=[],
                 )
             ],
             powers=[],
-            summons=[]
+            summons=[],
         )
 
         # Validate Blaster has appropriate powersets
@@ -255,9 +253,9 @@ class TestSQLAlchemyIntegration:
 
         # Find primary powersets for Blaster
         blaster_primaries = [
-            ps for ps in db.powersets
-            if ps.archetype_index == blaster_idx
-            and ps.set_type == PowersetType.PRIMARY
+            ps
+            for ps in db.powersets
+            if ps.archetype_index == blaster_idx and ps.set_type == PowersetType.PRIMARY
         ]
 
         assert len(blaster_primaries) >= 1

@@ -17,42 +17,42 @@ class TestPowersetParser:
 
         # Write fields in order
         # 1. DisplayName
-        data.write(b'\x0BSword Melee')  # length 11
+        data.write(b"\x0bSword Melee")  # length 11
 
         # 2. nArchetype (Int32) - archetype index
-        data.write(struct.pack('<i', 0))  # Tanker
+        data.write(struct.pack("<i", 0))  # Tanker
 
         # 3. SetType (Int32 as enum)
-        data.write(struct.pack('<i', 0))  # Primary
+        data.write(struct.pack("<i", 0))  # Primary
 
         # 4. ImageName (string)
-        data.write(b'\x0FSword_Melee.png')  # length 15
+        data.write(b"\x0fSword_Melee.png")  # length 15
 
         # 5. FullName (string) - empty, should fallback
-        data.write(b'\x00')
+        data.write(b"\x00")
 
         # 6. SetName (string)
-        data.write(b'\x0BSword_Melee')
+        data.write(b"\x0bSword_Melee")
 
         # 7. Description (string)
-        data.write(b'\x1BSlashing attacks with sword')  # length 27
+        data.write(b"\x1bSlashing attacks with sword")  # length 27
 
         # 8. SubName (string)
-        data.write(b'\x00')  # empty
+        data.write(b"\x00")  # empty
 
         # 9. ATClass (string)
-        data.write(b'\x0CTanker_Melee')  # length 12
+        data.write(b"\x0cTanker_Melee")  # length 12
 
         # 10. UIDTrunkSet (string)
-        data.write(b'\x09Melee_Set')  # length 9
+        data.write(b"\x09Melee_Set")  # length 9
 
         # 11. UIDLinkSecondary (string)
-        data.write(b'\x00')  # empty
+        data.write(b"\x00")  # empty
 
         # 12. numMutex (Int32) + mutex arrays
-        data.write(struct.pack('<i', 0))  # no mutex
-        data.write(b'\x00')  # empty string (count+1)
-        data.write(struct.pack('<i', 0))  # empty int (count+1)
+        data.write(struct.pack("<i", 0))  # no mutex
+        data.write(b"\x00")  # empty string (count+1)
+        data.write(struct.pack("<i", 0))  # empty int (count+1)
 
         data.seek(0)
 
@@ -78,26 +78,28 @@ class TestPowersetParser:
         data = io.BytesIO()
 
         # Standard fields
-        data.write(b'\x0EWeapon Mastery')  # DisplayName
-        data.write(struct.pack('<i', 5))  # nArchetype - Scrapper
-        data.write(struct.pack('<i', 3))  # SetType - Epic
-        data.write(b'\x15Weapon_Mastery_01.png')  # ImageName
-        data.write(b'\x17Scrapper.Weapon_Mastery')  # FullName (no fallback needed) - length 23
-        data.write(b'\x0EWeapon_Mastery')  # SetName
-        data.write(b'\x20Master various weapon techniques')  # Description - length 32
-        data.write(b'\x04Epic')  # SubName
-        data.write(b'\x0DScrapper_Epic')  # ATClass - length 13
-        data.write(b'\x08Epic_Set')  # UIDTrunkSet
-        data.write(b'\x00')  # UIDLinkSecondary empty
+        data.write(b"\x0eWeapon Mastery")  # DisplayName
+        data.write(struct.pack("<i", 5))  # nArchetype - Scrapper
+        data.write(struct.pack("<i", 3))  # SetType - Epic
+        data.write(b"\x15Weapon_Mastery_01.png")  # ImageName
+        data.write(
+            b"\x17Scrapper.Weapon_Mastery"
+        )  # FullName (no fallback needed) - length 23
+        data.write(b"\x0eWeapon_Mastery")  # SetName
+        data.write(b"\x20Master various weapon techniques")  # Description - length 32
+        data.write(b"\x04Epic")  # SubName
+        data.write(b"\x0dScrapper_Epic")  # ATClass - length 13
+        data.write(b"\x08Epic_Set")  # UIDTrunkSet
+        data.write(b"\x00")  # UIDLinkSecondary empty
 
         # Mutex data - 2 mutually exclusive sets
-        data.write(struct.pack('<i', 2))  # numMutex = 2
-        data.write(b'\x0CBody_Mastery')  # mutex[0].name
-        data.write(struct.pack('<i', 101))  # mutex[0].index
-        data.write(b'\x0CSoul_Mastery')  # mutex[1].name
-        data.write(struct.pack('<i', 102))  # mutex[1].index
-        data.write(b'\x00')  # extra string (count+1)
-        data.write(struct.pack('<i', -1))  # extra int (count+1)
+        data.write(struct.pack("<i", 2))  # numMutex = 2
+        data.write(b"\x0cBody_Mastery")  # mutex[0].name
+        data.write(struct.pack("<i", 101))  # mutex[0].index
+        data.write(b"\x0cSoul_Mastery")  # mutex[1].name
+        data.write(struct.pack("<i", 102))  # mutex[1].index
+        data.write(b"\x00")  # extra string (count+1)
+        data.write(struct.pack("<i", -1))  # extra int (count+1)
 
         data.seek(0)
 
@@ -127,20 +129,20 @@ class TestPowersetParser:
             data = io.BytesIO()
 
             # Minimal data with focus on SetType
-            data.write(b'\x04Test')  # DisplayName
-            data.write(struct.pack('<i', 0))  # nArchetype
-            data.write(struct.pack('<i', set_type_int))  # SetType to test
-            data.write(b'\x08test.png')  # ImageName
-            data.write(b'\x00')  # FullName empty
-            data.write(b'\x04Test')  # SetName
-            data.write(b'\x00')  # Description empty
-            data.write(b'\x00')  # SubName empty
-            data.write(b'\x05Class')  # ATClass
-            data.write(b'\x04Uid1')  # UIDTrunkSet
-            data.write(b'\x00')  # UIDLinkSecondary empty
-            data.write(struct.pack('<i', 0))  # numMutex
-            data.write(b'\x00')  # mutex string
-            data.write(struct.pack('<i', 0))  # mutex int
+            data.write(b"\x04Test")  # DisplayName
+            data.write(struct.pack("<i", 0))  # nArchetype
+            data.write(struct.pack("<i", set_type_int))  # SetType to test
+            data.write(b"\x08test.png")  # ImageName
+            data.write(b"\x00")  # FullName empty
+            data.write(b"\x04Test")  # SetName
+            data.write(b"\x00")  # Description empty
+            data.write(b"\x00")  # SubName empty
+            data.write(b"\x05Class")  # ATClass
+            data.write(b"\x04Uid1")  # UIDTrunkSet
+            data.write(b"\x00")  # UIDLinkSecondary empty
+            data.write(struct.pack("<i", 0))  # numMutex
+            data.write(b"\x00")  # mutex string
+            data.write(struct.pack("<i", 0))  # mutex int
 
             data.seek(0)
 
@@ -152,20 +154,20 @@ class TestPowersetParser:
         data = io.BytesIO()
 
         # Write powerset with empty FullName
-        data.write(b'\x0FFlame Aura Test')  # DisplayName
-        data.write(struct.pack('<i', 2))  # nArchetype
-        data.write(struct.pack('<i', 0))  # SetType
-        data.write(b'\x09flame.png')  # ImageName
-        data.write(b'\x00')  # FullName empty - should trigger fallback
-        data.write(b'\x0AFlame_Aura')  # SetName
-        data.write(b'\x00')  # Description
-        data.write(b'\x00')  # SubName
-        data.write(b'\x05Class')  # ATClass
-        data.write(b'\x03Uid')  # UIDTrunkSet
-        data.write(b'\x00')  # UIDLinkSecondary
-        data.write(struct.pack('<i', 0))  # numMutex
-        data.write(b'\x00')  # mutex string
-        data.write(struct.pack('<i', 0))  # mutex int
+        data.write(b"\x0fFlame Aura Test")  # DisplayName
+        data.write(struct.pack("<i", 2))  # nArchetype
+        data.write(struct.pack("<i", 0))  # SetType
+        data.write(b"\x09flame.png")  # ImageName
+        data.write(b"\x00")  # FullName empty - should trigger fallback
+        data.write(b"\x0aFlame_Aura")  # SetName
+        data.write(b"\x00")  # Description
+        data.write(b"\x00")  # SubName
+        data.write(b"\x05Class")  # ATClass
+        data.write(b"\x03Uid")  # UIDTrunkSet
+        data.write(b"\x00")  # UIDLinkSecondary
+        data.write(struct.pack("<i", 0))  # numMutex
+        data.write(b"\x00")  # mutex string
+        data.write(struct.pack("<i", 0))  # mutex int
 
         data.seek(0)
 
@@ -180,37 +182,37 @@ class TestPowersetParser:
 
         # Unicode display name
         unicode_name = "Défense Élevée"
-        name_bytes = unicode_name.encode('utf-8')
+        name_bytes = unicode_name.encode("utf-8")
         data.write(bytes([len(name_bytes)]))
         data.write(name_bytes)
 
         # Standard fields
-        data.write(struct.pack('<i', 0))  # nArchetype
-        data.write(struct.pack('<i', 1))  # SetType
-        data.write(b'\x08icon.png')  # ImageName
+        data.write(struct.pack("<i", 0))  # nArchetype
+        data.write(struct.pack("<i", 1))  # SetType
+        data.write(b"\x08icon.png")  # ImageName
 
         # Unicode full name
         unicode_full = "Tanker.Défense"
-        full_bytes = unicode_full.encode('utf-8')
+        full_bytes = unicode_full.encode("utf-8")
         data.write(bytes([len(full_bytes)]))
         data.write(full_bytes)
 
         # Rest of fields
-        data.write(b'\x07Defense')  # SetName
+        data.write(b"\x07Defense")  # SetName
 
         # Unicode description
         unicode_desc = "Capacité défensive améliorée"
-        desc_bytes = unicode_desc.encode('utf-8')
+        desc_bytes = unicode_desc.encode("utf-8")
         data.write(bytes([len(desc_bytes)]))
         data.write(desc_bytes)
 
-        data.write(b'\x00')  # SubName
-        data.write(b'\x05Class')  # ATClass
-        data.write(b'\x03Uid')  # UIDTrunkSet
-        data.write(b'\x00')  # UIDLinkSecondary
-        data.write(struct.pack('<i', 0))  # numMutex
-        data.write(b'\x00')  # mutex string
-        data.write(struct.pack('<i', 0))  # mutex int
+        data.write(b"\x00")  # SubName
+        data.write(b"\x05Class")  # ATClass
+        data.write(b"\x03Uid")  # UIDTrunkSet
+        data.write(b"\x00")  # UIDLinkSecondary
+        data.write(struct.pack("<i", 0))  # numMutex
+        data.write(b"\x00")  # mutex string
+        data.write(struct.pack("<i", 0))  # mutex int
 
         data.seek(0)
 
@@ -224,8 +226,8 @@ class TestPowersetParser:
         """Test handling of EOF while parsing powerset."""
         # Create incomplete data
         data = io.BytesIO()
-        data.write(b'\x06Tanker')  # DisplayName
-        data.write(struct.pack('<i', 0))  # nArchetype
+        data.write(b"\x06Tanker")  # DisplayName
+        data.write(struct.pack("<i", 0))  # nArchetype
         # Missing rest of fields
 
         data.seek(0)
@@ -238,28 +240,28 @@ class TestPowersetParser:
         data = io.BytesIO()
 
         # Pool powerset data
-        data.write(b'\x06Flight')  # DisplayName
-        data.write(struct.pack('<i', -1))  # nArchetype = -1 for pools
-        data.write(struct.pack('<i', 2))  # SetType = Pool
-        data.write(b'\x0AFlight.png')  # ImageName
-        data.write(b'\x0BPool.Flight')  # FullName - length 11
-        data.write(b'\x06Flight')  # SetName
-        data.write(b'\x1ETravel power for flying around')  # Description - length 30
-        data.write(b'\x04Pool')  # SubName
-        data.write(b'\x04Pool')  # ATClass
-        data.write(b'\x08Pool_Set')  # UIDTrunkSet - length 8
-        data.write(b'\x00')  # UIDLinkSecondary
+        data.write(b"\x06Flight")  # DisplayName
+        data.write(struct.pack("<i", -1))  # nArchetype = -1 for pools
+        data.write(struct.pack("<i", 2))  # SetType = Pool
+        data.write(b"\x0aFlight.png")  # ImageName
+        data.write(b"\x0bPool.Flight")  # FullName - length 11
+        data.write(b"\x06Flight")  # SetName
+        data.write(b"\x1eTravel power for flying around")  # Description - length 30
+        data.write(b"\x04Pool")  # SubName
+        data.write(b"\x04Pool")  # ATClass
+        data.write(b"\x08Pool_Set")  # UIDTrunkSet - length 8
+        data.write(b"\x00")  # UIDLinkSecondary
 
         # Pools typically have mutex with other travel powers
-        data.write(struct.pack('<i', 3))  # numMutex = 3
-        data.write(b'\x05Speed')  # mutex[0]
-        data.write(struct.pack('<i', 201))
-        data.write(b'\x07Leaping')  # mutex[1]
-        data.write(struct.pack('<i', 202))
-        data.write(b'\x08Teleport')  # mutex[2]
-        data.write(struct.pack('<i', 203))
-        data.write(b'\x00')  # extra string
-        data.write(struct.pack('<i', -1))  # extra int
+        data.write(struct.pack("<i", 3))  # numMutex = 3
+        data.write(b"\x05Speed")  # mutex[0]
+        data.write(struct.pack("<i", 201))
+        data.write(b"\x07Leaping")  # mutex[1]
+        data.write(struct.pack("<i", 202))
+        data.write(b"\x08Teleport")  # mutex[2]
+        data.write(struct.pack("<i", 203))
+        data.write(b"\x00")  # extra string
+        data.write(struct.pack("<i", -1))  # extra int
 
         data.seek(0)
 
@@ -274,40 +276,43 @@ class TestPowersetParser:
         assert powerset.mutex_list[1][0] == "Leaping"
         assert powerset.mutex_list[2][0] == "Teleport"
 
-    @pytest.mark.parametrize("num_mutex,expected_count", [
-        (0, 0),    # No mutex
-        (1, 1),    # Single mutex
-        (5, 5),    # Multiple mutex
-        (10, 10),  # Many mutex
-    ])
+    @pytest.mark.parametrize(
+        "num_mutex,expected_count",
+        [
+            (0, 0),  # No mutex
+            (1, 1),  # Single mutex
+            (5, 5),  # Multiple mutex
+            (10, 10),  # Many mutex
+        ],
+    )
     def test_mutex_array_handling(self, num_mutex, expected_count):
         """Test that mutex array is handled correctly with count+1 pattern."""
         data = io.BytesIO()
 
         # Write minimal powerset data up to mutex
-        data.write(b'\x04Test')  # DisplayName
-        data.write(struct.pack('<i', 0))  # nArchetype
-        data.write(struct.pack('<i', 0))  # SetType
-        data.write(b'\x08test.png')  # ImageName
-        data.write(b'\x00')  # FullName
-        data.write(b'\x04Test')  # SetName
-        data.write(b'\x00')  # Description
-        data.write(b'\x00')  # SubName
-        data.write(b'\x05Class')  # ATClass
-        data.write(b'\x03Uid')  # UIDTrunkSet
-        data.write(b'\x00')  # UIDLinkSecondary
+        data.write(b"\x04Test")  # DisplayName
+        data.write(struct.pack("<i", 0))  # nArchetype
+        data.write(struct.pack("<i", 0))  # SetType
+        data.write(b"\x08test.png")  # ImageName
+        data.write(b"\x00")  # FullName
+        data.write(b"\x04Test")  # SetName
+        data.write(b"\x00")  # Description
+        data.write(b"\x00")  # SubName
+        data.write(b"\x05Class")  # ATClass
+        data.write(b"\x03Uid")  # UIDTrunkSet
+        data.write(b"\x00")  # UIDLinkSecondary
 
         # Write mutex data
-        data.write(struct.pack('<i', num_mutex))
+        data.write(struct.pack("<i", num_mutex))
         for i in range(num_mutex):
-            mutex_name = f'Mutex{i}'
+            mutex_name = f"Mutex{i}"
             data.write(bytes([len(mutex_name)]))
             data.write(mutex_name.encode())
-            data.write(struct.pack('<i', 100 + i))
+            data.write(struct.pack("<i", 100 + i))
 
         # Extra entries (count+1)
-        data.write(b'\x00')  # empty string
-        data.write(struct.pack('<i', -1))  # -1 int
+        data.write(b"\x00")  # empty string
+        data.write(struct.pack("<i", -1))  # -1 int
 
         data.seek(0)
 

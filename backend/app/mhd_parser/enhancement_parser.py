@@ -12,6 +12,7 @@ from .binary_reader import BinaryReader
 
 class EffectMode(IntEnum):
     """Enhancement effect mode enumeration."""
+
     NONE = 0
     ENHANCE = 1
     EFFECT = 2
@@ -141,7 +142,7 @@ def parse_s_effect(stream: BinaryIO) -> SEffect:
             enhance_sub_id=enhance_sub_id,
             schedule=schedule,
             multiplier=multiplier,
-            fx=fx
+            fx=fx,
         )
 
     except EOFError as e:
@@ -229,7 +230,7 @@ def parse_enhancement(stream: BinaryIO) -> Enhancement:
             recipe_name=recipe_name,
             superior=superior,
             is_proc=is_proc,
-            is_scalable=is_scalable
+            is_scalable=is_scalable,
         )
 
     except EOFError as e:
@@ -304,7 +305,7 @@ def parse_enhancement_set(stream: BinaryIO) -> EnhancementSet:
             special_bonuses=special_bonuses,
             uid_set=uid_set,
             level_min=level_min,
-            level_max=level_max
+            level_max=level_max,
         )
 
     except EOFError as e:

@@ -1,12 +1,15 @@
 """Enhanced error handling for MHD parser with context tracking."""
 
 
-
 class MhdParseError(Exception):
     """Base exception for MHD parsing errors."""
 
-    def __init__(self, message: str, position: int | None = None,
-                 context: list[str] | None = None):
+    def __init__(
+        self,
+        message: str,
+        position: int | None = None,
+        context: list[str] | None = None,
+    ):
         """Initialize parse error with context.
 
         Args:
@@ -28,26 +31,30 @@ class MhdParseError(Exception):
 
         error_parts.append(message)
 
-        super().__init__(' | '.join(error_parts))
+        super().__init__(" | ".join(error_parts))
 
 
 class MhdFormatError(MhdParseError):
     """Raised when file format is invalid or unexpected."""
+
     pass
 
 
 class MhdVersionError(MhdParseError):
     """Raised when file version is unsupported."""
+
     pass
 
 
 class MhdDataError(MhdParseError):
     """Raised when data values are invalid."""
+
     pass
 
 
-def format_parse_context(entity_type: str, entity_name: str | None = None,
-                        field: str | None = None) -> str:
+def format_parse_context(
+    entity_type: str, entity_name: str | None = None, field: str | None = None
+) -> str:
     """Format a parsing context string.
 
     Args:
@@ -66,4 +73,4 @@ def format_parse_context(entity_type: str, entity_name: str | None = None,
     if field:
         parts.append(f".{field}")
 
-    return ''.join(parts)
+    return "".join(parts)

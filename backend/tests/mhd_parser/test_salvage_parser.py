@@ -21,11 +21,11 @@ class TestSalvageParser:
         data = io.BytesIO()
 
         # Write salvage fields
-        data.write(b'\x11Alchemical Silver')  # InternalName (17 chars)
-        data.write(b'\x11Alchemical Silver')  # DisplayName (17 chars)
-        data.write(struct.pack('<i', 0))  # Rarity (Common)
-        data.write(struct.pack('<i', 0))  # Type (Component)
-        data.write(b'\x1DA rare metal used in crafting')  # Description (29 chars)
+        data.write(b"\x11Alchemical Silver")  # InternalName (17 chars)
+        data.write(b"\x11Alchemical Silver")  # DisplayName (17 chars)
+        data.write(struct.pack("<i", 0))  # Rarity (Common)
+        data.write(struct.pack("<i", 0))  # Type (Component)
+        data.write(b"\x1dA rare metal used in crafting")  # Description (29 chars)
 
         data.seek(0)
 
@@ -49,11 +49,11 @@ class TestSalvageParser:
         for rarity_int, expected_rarity in test_cases:
             data = io.BytesIO()
 
-            data.write(b'\x04Test')  # InternalName
-            data.write(b'\x04Test')  # DisplayName
-            data.write(struct.pack('<i', rarity_int))  # Rarity
-            data.write(struct.pack('<i', 0))  # Type
-            data.write(b'\x04Desc')  # Description
+            data.write(b"\x04Test")  # InternalName
+            data.write(b"\x04Test")  # DisplayName
+            data.write(struct.pack("<i", rarity_int))  # Rarity
+            data.write(struct.pack("<i", 0))  # Type
+            data.write(b"\x04Desc")  # Description
 
             data.seek(0)
 
@@ -71,11 +71,11 @@ class TestSalvageParser:
         for type_int, expected_type in test_cases:
             data = io.BytesIO()
 
-            data.write(b'\x04Test')  # InternalName
-            data.write(b'\x04Test')  # DisplayName
-            data.write(struct.pack('<i', 0))  # Rarity
-            data.write(struct.pack('<i', type_int))  # Type
-            data.write(b'\x04Desc')  # Description
+            data.write(b"\x04Test")  # InternalName
+            data.write(b"\x04Test")  # DisplayName
+            data.write(struct.pack("<i", 0))  # Rarity
+            data.write(struct.pack("<i", type_int))  # Type
+            data.write(b"\x04Desc")  # Description
 
             data.seek(0)
 
@@ -87,11 +87,13 @@ class TestSalvageParser:
         data = io.BytesIO()
 
         # Rare salvage example
-        data.write(b'\x0BHamidon Goo')  # InternalName (11 chars)
-        data.write(b'\x0BHamidon Goo')  # DisplayName (11 chars)
-        data.write(struct.pack('<i', 3))  # Rarity (Very Rare)
-        data.write(struct.pack('<i', 2))  # Type (Special)
-        data.write(b'\x27Goo extracted from Hamidon mitochondria')  # Description (39 chars)
+        data.write(b"\x0bHamidon Goo")  # InternalName (11 chars)
+        data.write(b"\x0bHamidon Goo")  # DisplayName (11 chars)
+        data.write(struct.pack("<i", 3))  # Rarity (Very Rare)
+        data.write(struct.pack("<i", 2))  # Type (Special)
+        data.write(
+            b"\x27Goo extracted from Hamidon mitochondria"
+        )  # Description (39 chars)
 
         data.seek(0)
 
@@ -122,7 +124,7 @@ class TestSalvageDatabaseParser:
         data.write(version.encode())
 
         # Count
-        data.write(struct.pack('<i', 0))  # No salvage items
+        data.write(struct.pack("<i", 0))  # No salvage items
 
         data.seek(0)
 
@@ -147,28 +149,28 @@ class TestSalvageDatabaseParser:
         data.write(version.encode())
 
         # Count
-        data.write(struct.pack('<i', 3))  # 3 salvage items
+        data.write(struct.pack("<i", 3))  # 3 salvage items
 
         # Salvage 1: Common component
-        data.write(b'\x09Boresight')  # InternalName (9 chars)
-        data.write(b'\x09Boresight')  # DisplayName (9 chars)
-        data.write(struct.pack('<i', 0))  # Rarity (Common)
-        data.write(struct.pack('<i', 0))  # Type (Component)
-        data.write(b'\x14Simple targeting aid')  # Description (20 chars)
+        data.write(b"\x09Boresight")  # InternalName (9 chars)
+        data.write(b"\x09Boresight")  # DisplayName (9 chars)
+        data.write(struct.pack("<i", 0))  # Rarity (Common)
+        data.write(struct.pack("<i", 0))  # Type (Component)
+        data.write(b"\x14Simple targeting aid")  # Description (20 chars)
 
         # Salvage 2: Uncommon catalyst
-        data.write(b'\x0ALuck Charm')  # InternalName (10 chars)
-        data.write(b'\x0ALuck Charm')  # DisplayName (10 chars)
-        data.write(struct.pack('<i', 1))  # Rarity (Uncommon)
-        data.write(struct.pack('<i', 1))  # Type (Catalyst)
-        data.write(b'\x18Increases fortune chance')  # Description (24 chars)
+        data.write(b"\x0aLuck Charm")  # InternalName (10 chars)
+        data.write(b"\x0aLuck Charm")  # DisplayName (10 chars)
+        data.write(struct.pack("<i", 1))  # Rarity (Uncommon)
+        data.write(struct.pack("<i", 1))  # Type (Catalyst)
+        data.write(b"\x18Increases fortune chance")  # Description (24 chars)
 
         # Salvage 3: Rare component
-        data.write(b'\x0FTemporal Tracer')  # InternalName (15 chars)
-        data.write(b'\x0FTemporal Tracer')  # DisplayName (15 chars)
-        data.write(struct.pack('<i', 2))  # Rarity (Rare)
-        data.write(struct.pack('<i', 0))  # Type (Component)
-        data.write(b'\x19Tracks temporal anomalies')  # Description (25 chars)
+        data.write(b"\x0fTemporal Tracer")  # InternalName (15 chars)
+        data.write(b"\x0fTemporal Tracer")  # DisplayName (15 chars)
+        data.write(struct.pack("<i", 2))  # Rarity (Rare)
+        data.write(struct.pack("<i", 0))  # Type (Component)
+        data.write(b"\x19Tracks temporal anomalies")  # Description (25 chars)
 
         data.seek(0)
 

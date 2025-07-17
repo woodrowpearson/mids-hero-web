@@ -24,31 +24,33 @@ class MhdJsonExporter:
         data = self._main_database_to_dict(db)
         self._write_json(data, output_path)
 
-    def export_enhancement_database(self, db: EnhancementDatabase,
-                                  output_path: str | Path) -> None:
+    def export_enhancement_database(
+        self, db: EnhancementDatabase, output_path: str | Path
+    ) -> None:
         """Export enhancement database to JSON file."""
         data = self._enhancement_database_to_dict(db)
         self._write_json(data, output_path)
 
-    def export_salvage_database(self, db: SalvageDatabase,
-                               output_path: str | Path) -> None:
+    def export_salvage_database(
+        self, db: SalvageDatabase, output_path: str | Path
+    ) -> None:
         """Export salvage database to JSON file."""
         data = self._salvage_database_to_dict(db)
         self._write_json(data, output_path)
 
-    def export_recipe_database(self, db: RecipeDatabase,
-                              output_path: str | Path) -> None:
+    def export_recipe_database(
+        self, db: RecipeDatabase, output_path: str | Path
+    ) -> None:
         """Export recipe database to JSON file."""
         data = self._recipe_database_to_dict(db)
         self._write_json(data, output_path)
 
-    def export_text_mhd(self, text_file: TextMhdFile,
-                       output_path: str | Path) -> None:
+    def export_text_mhd(self, text_file: TextMhdFile, output_path: str | Path) -> None:
         """Export text MHD file to JSON."""
         data = {
             "version": text_file.version,
             "headers": text_file.headers,
-            "data": text_file.data
+            "data": text_file.data,
         }
         self._write_json(data, output_path)
 
@@ -65,12 +67,12 @@ class MhdJsonExporter:
                 "archetype_count": len(db.archetypes),
                 "powerset_count": len(db.powersets),
                 "power_count": len(db.powers),
-                "summon_count": len(db.summons)
+                "summon_count": len(db.summons),
             },
             "archetypes": [self._archetype_to_dict(a) for a in db.archetypes],
             "powersets": [self._powerset_to_dict(ps) for ps in db.powersets],
             "powers": [self._power_to_dict(p) for p in db.powers],
-            "summons": [self._summon_to_dict(s) for s in db.summons]
+            "summons": [self._summon_to_dict(s) for s in db.summons],
         }
 
     def _archetype_to_dict(self, archetype) -> dict[str, Any]:
@@ -99,7 +101,7 @@ class MhdJsonExporter:
             "base_recovery": archetype.base_recovery,
             "base_regen": archetype.base_regen,
             "base_threat": archetype.base_threat,
-            "perception_cap": archetype.perception_cap
+            "perception_cap": archetype.perception_cap,
         }
 
     def _powerset_to_dict(self, powerset) -> dict[str, Any]:
@@ -117,7 +119,7 @@ class MhdJsonExporter:
             "at_class": powerset.at_class,
             "uid_trunk_set": powerset.uid_trunk_set,
             "uid_link_secondary": powerset.uid_link_secondary,
-            "mutex_list": [{"name": m[0], "index": m[1]} for m in powerset.mutex_list]
+            "mutex_list": [{"name": m[0], "index": m[1]} for m in powerset.mutex_list],
         }
 
     def _power_to_dict(self, power) -> dict[str, Any]:
@@ -135,7 +137,7 @@ class MhdJsonExporter:
                 "classes_required": power.requirement.classes_required,
                 "classes_disallowed": power.requirement.classes_disallowed,
                 "power_ids": power.requirement.power_ids,
-                "power_ids_not": power.requirement.power_ids_not
+                "power_ids_not": power.requirement.power_ids_not,
             },
             "power_type": power.power_type.name,
             "power_type_value": power.power_type.value,
@@ -171,7 +173,7 @@ class MhdJsonExporter:
             "level": power.level,
             "allow_front_loading": power.allow_front_loading,
             "forced_class": power.forced_class,
-            "hidden_power": power.hidden_power
+            "hidden_power": power.hidden_power,
         }
 
     def _summon_to_dict(self, summon) -> dict[str, Any]:
@@ -182,7 +184,7 @@ class MhdJsonExporter:
             "entity_type": summon.entity_type,
             "class_name": summon.class_name,
             "powerset_full_names": summon.powerset_full_names,
-            "upgrade_power_full_names": summon.upgrade_power_full_names
+            "upgrade_power_full_names": summon.upgrade_power_full_names,
         }
 
     def _enhancement_database_to_dict(self, db: EnhancementDatabase) -> dict[str, Any]:
@@ -193,10 +195,12 @@ class MhdJsonExporter:
             "date": self._serialize_date(db.date),
             "statistics": {
                 "enhancement_count": len(db.enhancements),
-                "enhancement_set_count": len(db.enhancement_sets)
+                "enhancement_set_count": len(db.enhancement_sets),
             },
             "enhancements": [self._enhancement_to_dict(e) for e in db.enhancements],
-            "enhancement_sets": [self._enhancement_set_to_dict(s) for s in db.enhancement_sets]
+            "enhancement_sets": [
+                self._enhancement_set_to_dict(s) for s in db.enhancement_sets
+            ],
         }
 
     def _enhancement_to_dict(self, enhancement) -> dict[str, Any]:
@@ -226,14 +230,15 @@ class MhdJsonExporter:
                     "enhance_sub_id": eff.enhance_sub_id,
                     "schedule": eff.schedule,
                     "multiplier": eff.multiplier,
-                    "has_fx": eff.fx is not None
-                } for eff in enhancement.effects
+                    "has_fx": eff.fx is not None,
+                }
+                for eff in enhancement.effects
             ],
             "uid": enhancement.uid,
             "recipe_name": enhancement.recipe_name,
             "superior": enhancement.superior,
             "is_proc": enhancement.is_proc,
-            "is_scalable": enhancement.is_scalable
+            "is_scalable": enhancement.is_scalable,
         }
 
     def _enhancement_set_to_dict(self, enh_set) -> dict[str, Any]:
@@ -251,7 +256,7 @@ class MhdJsonExporter:
             "special_bonuses": enh_set.special_bonuses,
             "uid_set": enh_set.uid_set,
             "level_min": enh_set.level_min,
-            "level_max": enh_set.level_max
+            "level_max": enh_set.level_max,
         }
 
     def _salvage_database_to_dict(self, db: SalvageDatabase) -> dict[str, Any]:
@@ -268,9 +273,10 @@ class MhdJsonExporter:
                     "rarity_value": s.rarity.value,
                     "salvage_type": s.salvage_type.name,
                     "salvage_type_value": s.salvage_type.value,
-                    "description": s.description
-                } for s in db.salvage_items
-            ]
+                    "description": s.description,
+                }
+                for s in db.salvage_items
+            ],
         }
 
     def _recipe_database_to_dict(self, db: RecipeDatabase) -> dict[str, Any]:
@@ -290,9 +296,10 @@ class MhdJsonExporter:
                     "ingredients": r.ingredients,
                     "quantities": r.quantities,
                     "crafting_cost": r.crafting_cost,
-                    "reward": r.reward
-                } for r in db.recipes
-            ]
+                    "reward": r.reward,
+                }
+                for r in db.recipes
+            ],
         }
 
     def _serialize_date(self, date: int | datetime) -> int | str:
@@ -306,5 +313,5 @@ class MhdJsonExporter:
         path = Path(output_path)
         path.parent.mkdir(parents=True, exist_ok=True)
 
-        with open(path, 'w', encoding='utf-8') as f:
+        with open(path, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=self.indent, ensure_ascii=False)

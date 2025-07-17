@@ -9,6 +9,7 @@ from .binary_reader import BinaryReader
 
 class RecipeRarity(IntEnum):
     """Recipe rarity enumeration."""
+
     COMMON = 0
     UNCOMMON = 1
     RARE = 2
@@ -82,7 +83,7 @@ def parse_recipe(stream: BinaryIO) -> Recipe:
             ingredients=ingredients,
             quantities=quantities,
             crafting_cost=crafting_cost,
-            reward=reward
+            reward=reward,
         )
 
     except EOFError as e:
@@ -120,11 +121,7 @@ def parse_recipe_database(stream: BinaryIO) -> RecipeDatabase:
         for _ in range(recipe_count):
             recipes.append(parse_recipe(stream))
 
-        return RecipeDatabase(
-            header=header,
-            version=version,
-            recipes=recipes
-        )
+        return RecipeDatabase(header=header, version=version, recipes=recipes)
 
     except EOFError as e:
         raise EOFError(f"Unexpected EOF while parsing recipe database: {str(e)}")

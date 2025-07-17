@@ -59,7 +59,7 @@ class TestJsonExporter:
                     base_recovery=1.0,
                     base_regen=1.0,
                     base_threat=1.0,
-                    perception_cap=1153.0
+                    perception_cap=1153.0,
                 )
             ],
             powersets=[
@@ -75,7 +75,7 @@ class TestJsonExporter:
                     at_class="Blaster_Ranged",
                     uid_trunk_set="Ranged_Damage",
                     uid_link_secondary="",
-                    mutex_list=[]
+                    mutex_list=[],
                 )
             ],
             powers=[
@@ -147,7 +147,7 @@ class TestJsonExporter:
                     sort_override=0,
                     boost_boost_special_allowed=False,
                     effects=[],
-                    hidden_power=False
+                    hidden_power=False,
                 )
             ],
             summons=[
@@ -157,9 +157,9 @@ class TestJsonExporter:
                     entity_type=1,
                     class_name="Pet_FireImp",
                     powerset_full_names=[],
-                    upgrade_power_full_names=[]
+                    upgrade_power_full_names=[],
                 )
-            ]
+            ],
         )
 
         # Export to JSON
@@ -221,14 +221,14 @@ class TestJsonExporter:
                             enhance_sub_id=0,
                             schedule=0,
                             multiplier=0.3333,
-                            fx=None
+                            fx=None,
                         )
                     ],
                     uid="IO.Acc",
                     recipe_name="",
                     superior=False,
                     is_proc=False,
-                    is_scalable=True
+                    is_scalable=True,
                 )
             ],
             enhancement_sets=[
@@ -245,9 +245,9 @@ class TestJsonExporter:
                     special_bonuses=[],
                     uid_set="Set.Thunderstrike",
                     level_min=10,
-                    level_max=50
+                    level_max=50,
                 )
-            ]
+            ],
         )
 
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -274,9 +274,9 @@ class TestJsonExporter:
                     display_name="Alchemical Silver",
                     rarity=SalvageRarity.COMMON,
                     salvage_type=SalvageType.COMPONENT,
-                    description="A rare metal"
+                    description="A rare metal",
                 )
-            ]
+            ],
         )
 
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -305,9 +305,9 @@ class TestJsonExporter:
                     ingredients=["Boresight", "Luck Charm"],
                     quantities=[1, 2],
                     crafting_cost=10000,
-                    reward="Accuracy IO"
+                    reward="Accuracy IO",
                 )
-            ]
+            ],
         )
 
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -328,11 +328,7 @@ class TestJsonExporter:
         text_file = TextMhdFile(
             version="1.5.0",
             headers=["Level", "Experience"],
-            data=[
-                ["1", "0"],
-                ["2", "106"],
-                ["3", "337"]
-            ]
+            data=[["1", "0"], ["2", "106"], ["3", "337"]],
         )
 
         with tempfile.TemporaryDirectory() as tmpdir:

@@ -36,7 +36,7 @@ def _parse_version(version_str: str) -> tuple:
     Returns:
         Tuple of (major, minor, patch, build)
     """
-    parts = version_str.split('.')
+    parts = version_str.split(".")
     if len(parts) != 4:
         return (0, 0, 0, 0)
 
@@ -124,7 +124,7 @@ def parse_enhancement_database(stream: BinaryIO) -> EnhancementDatabase:
             version=version,
             date=date,
             enhancements=enhancements,
-            enhancement_sets=enhancement_sets
+            enhancement_sets=enhancement_sets,
         )
 
     except EOFError as e:

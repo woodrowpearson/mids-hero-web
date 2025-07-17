@@ -20,22 +20,22 @@ class TestSummonedEntityParser:
         data = io.BytesIO()
 
         # UID
-        data.write(b'\x0BPet.FireImp')  # length 11
+        data.write(b"\x0bPet.FireImp")  # length 11
 
         # DisplayName
-        data.write(b'\x08Fire Imp')
+        data.write(b"\x08Fire Imp")
 
         # EntityType (Int32)
-        data.write(struct.pack('<i', 1))  # Pet
+        data.write(struct.pack("<i", 1))  # Pet
 
         # ClassName
-        data.write(b'\x0BPet_FireImp')
+        data.write(b"\x0bPet_FireImp")
 
         # PowersetFullName array
-        data.write(struct.pack('<i', 0))  # count
+        data.write(struct.pack("<i", 0))  # count
 
         # UpgradePowerFullName array
-        data.write(struct.pack('<i', 0))  # count
+        data.write(struct.pack("<i", 0))  # count
 
         data.seek(0)
 
@@ -53,19 +53,19 @@ class TestSummonedEntityParser:
         data = io.BytesIO()
 
         # Basic fields
-        data.write(b'\x0CPet.Phantasm')  # length 12
-        data.write(b'\x08Phantasm')
-        data.write(struct.pack('<i', 2))  # Illusion pet
-        data.write(b'\x0CPet_Phantasm')  # length 12
+        data.write(b"\x0cPet.Phantasm")  # length 12
+        data.write(b"\x08Phantasm")
+        data.write(struct.pack("<i", 2))  # Illusion pet
+        data.write(b"\x0cPet_Phantasm")  # length 12
 
         # PowersetFullName array
-        data.write(struct.pack('<i', 2))  # count
-        data.write(b'\x13Illusion.Pet_Attack')  # length 19
-        data.write(b'\x14Illusion.Pet_Defense')  # length 20 (0x14 is correct)
+        data.write(struct.pack("<i", 2))  # count
+        data.write(b"\x13Illusion.Pet_Attack")  # length 19
+        data.write(b"\x14Illusion.Pet_Defense")  # length 20 (0x14 is correct)
 
         # UpgradePowerFullName array
-        data.write(struct.pack('<i', 1))  # count
-        data.write(b'\x17Illusion.Phantasm_Boost')
+        data.write(struct.pack("<i", 1))  # count
+        data.write(b"\x17Illusion.Phantasm_Boost")
 
         data.seek(0)
 
@@ -98,33 +98,33 @@ class TestMainDatabaseParser:
         data.write(version.encode())
 
         # Date (using Int32 format for version < 3.0)
-        data.write(struct.pack('<i', 20230615))  # June 15, 2023
+        data.write(struct.pack("<i", 20230615))  # June 15, 2023
 
         # Issue info
-        data.write(struct.pack('<i', 27))  # Issue 27
-        data.write(struct.pack('<i', 7))   # PageVol
-        data.write(b'\x06Page 7')          # PageVolText
+        data.write(struct.pack("<i", 27))  # Issue 27
+        data.write(struct.pack("<i", 7))  # PageVol
+        data.write(b"\x06Page 7")  # PageVolText
 
         # Empty sections for minimal test
         marker = "BEGIN:ARCHETYPES"
         data.write(bytes([len(marker)]))
         data.write(marker.encode())
-        data.write(struct.pack('<i', 0))   # count
+        data.write(struct.pack("<i", 0))  # count
 
         marker = "BEGIN:POWERSETS"
         data.write(bytes([len(marker)]))
         data.write(marker.encode())
-        data.write(struct.pack('<i', 0))   # count
+        data.write(struct.pack("<i", 0))  # count
 
         marker = "BEGIN:POWERS"
         data.write(bytes([len(marker)]))
         data.write(marker.encode())
-        data.write(struct.pack('<i', 0))   # count
+        data.write(struct.pack("<i", 0))  # count
 
         marker = "BEGIN:SUMMONS"
         data.write(bytes([len(marker)]))
         data.write(marker.encode())
-        data.write(struct.pack('<i', 0))   # count
+        data.write(struct.pack("<i", 0))  # count
 
         data.seek(0)
 
@@ -156,19 +156,19 @@ class TestMainDatabaseParser:
         data.write(version.encode())
 
         # Date as Int64
-        data.write(struct.pack('<q', 638229120000000000))  # .NET ticks
+        data.write(struct.pack("<q", 638229120000000000))  # .NET ticks
 
         # Rest of header
-        data.write(struct.pack('<i', 27))
-        data.write(struct.pack('<i', 7))
-        data.write(b'\x06Page 7')
+        data.write(struct.pack("<i", 27))
+        data.write(struct.pack("<i", 7))
+        data.write(b"\x06Page 7")
 
         # Empty sections
-        for section in ['ARCHETYPES', 'POWERSETS', 'POWERS', 'SUMMONS']:
-            marker = f'BEGIN:{section}'
+        for section in ["ARCHETYPES", "POWERSETS", "POWERS", "SUMMONS"]:
+            marker = f"BEGIN:{section}"
             data.write(bytes([len(marker)]))
             data.write(marker.encode())
-            data.write(struct.pack('<i', 0))  # count
+            data.write(struct.pack("<i", 0))  # count
 
         data.seek(0)
 
@@ -189,10 +189,10 @@ class TestMainDatabaseParser:
         version = "2.9.0.0"
         data.write(bytes([len(version)]))
         data.write(version.encode())
-        data.write(struct.pack('<i', 20230615))
-        data.write(struct.pack('<i', 27))
-        data.write(struct.pack('<i', 7))
-        data.write(b'\x06Page 7')
+        data.write(struct.pack("<i", 20230615))
+        data.write(struct.pack("<i", 27))
+        data.write(struct.pack("<i", 7))
+        data.write(b"\x06Page 7")
 
         # Invalid section marker
         marker = "BEGIN:WRONGNAME"
@@ -215,44 +215,44 @@ class TestMainDatabaseParser:
         version = "2.9.0.0"
         data.write(bytes([len(version)]))
         data.write(version.encode())
-        data.write(struct.pack('<i', 20230615))
-        data.write(struct.pack('<i', 27))
-        data.write(struct.pack('<i', 7))
-        data.write(b'\x06Page 7')
+        data.write(struct.pack("<i", 20230615))
+        data.write(struct.pack("<i", 27))
+        data.write(struct.pack("<i", 7))
+        data.write(b"\x06Page 7")
 
         # Archetypes section
         marker = "BEGIN:ARCHETYPES"
         data.write(bytes([len(marker)]))
         data.write(marker.encode())
-        data.write(struct.pack('<i', 1))  # count
+        data.write(struct.pack("<i", 1))  # count
 
         # Minimal archetype
-        data.write(b'\x06Tanker')  # DisplayName
-        data.write(struct.pack('<i', 1000))  # Hitpoints
-        data.write(struct.pack('<f', 1500.0))  # HPCap
-        data.write(b'\x00')  # DescLong empty
-        data.write(struct.pack('<f', 90.0))  # ResCap
-        data.write(struct.pack('<i', 0))  # numOrigins
-        data.write(b'\x00')  # Origin[0]
-        data.write(b'\x0CClass_Tanker')  # ClassName
-        data.write(struct.pack('<i', 1))  # ClassType
-        data.write(struct.pack('<i', 0))  # Column
-        data.write(b'\x04Tank')  # DescShort
-        data.write(b'\x07Defense')  # PrimaryGroup
-        data.write(b'\x05Melee')  # SecondaryGroup
-        data.write(b'\x01')  # Playable
+        data.write(b"\x06Tanker")  # DisplayName
+        data.write(struct.pack("<i", 1000))  # Hitpoints
+        data.write(struct.pack("<f", 1500.0))  # HPCap
+        data.write(b"\x00")  # DescLong empty
+        data.write(struct.pack("<f", 90.0))  # ResCap
+        data.write(struct.pack("<i", 0))  # numOrigins
+        data.write(b"\x00")  # Origin[0]
+        data.write(b"\x0cClass_Tanker")  # ClassName
+        data.write(struct.pack("<i", 1))  # ClassType
+        data.write(struct.pack("<i", 0))  # Column
+        data.write(b"\x04Tank")  # DescShort
+        data.write(b"\x07Defense")  # PrimaryGroup
+        data.write(b"\x05Melee")  # SecondaryGroup
+        data.write(b"\x01")  # Playable
         for _ in range(7):  # Caps
-            data.write(struct.pack('<f', 100.0))
+            data.write(struct.pack("<f", 100.0))
         for _ in range(3):  # Base stats
-            data.write(struct.pack('<f', 1.0))
-        data.write(struct.pack('<f', 1000.0))  # PerceptionCap
+            data.write(struct.pack("<f", 1.0))
+        data.write(struct.pack("<f", 1000.0))  # PerceptionCap
 
         # Empty other sections
-        for section in ['POWERSETS', 'POWERS', 'SUMMONS']:
-            marker = f'BEGIN:{section}'
+        for section in ["POWERSETS", "POWERS", "SUMMONS"]:
+            marker = f"BEGIN:{section}"
             data.write(bytes([len(marker)]))
             data.write(marker.encode())
-            data.write(struct.pack('<i', 0))
+            data.write(struct.pack("<i", 0))
 
         data.seek(0)
 
@@ -267,18 +267,18 @@ class TestMainDatabaseParser:
         data = io.BytesIO()
 
         # Header
-        data.write(b'\x1CMids Reborn Powers Database')
-        data.write(b'\x082.9.0.0')
-        data.write(struct.pack('<i', 20230615))
-        data.write(struct.pack('<i', 27))
-        data.write(struct.pack('<i', 7))
-        data.write(b'\x06Page 7')
+        data.write(b"\x1cMids Reborn Powers Database")
+        data.write(b"\x082.9.0.0")
+        data.write(struct.pack("<i", 20230615))
+        data.write(struct.pack("<i", 27))
+        data.write(struct.pack("<i", 7))
+        data.write(b"\x06Page 7")
 
         # Only archetypes section, missing others
         marker = "BEGIN:ARCHETYPES"
         data.write(bytes([len(marker)]))
         data.write(marker.encode())
-        data.write(struct.pack('<i', 0))
+        data.write(struct.pack("<i", 0))
 
         # EOF instead of next section
         data.seek(0)
@@ -297,22 +297,24 @@ class TestMainDatabaseParser:
         version = "2.9.0.0"
         data.write(bytes([len(version)]))
         data.write(version.encode())
-        data.write(struct.pack('<i', 20230615))
-        data.write(struct.pack('<i', 27))
-        data.write(struct.pack('<i', 7))
-        data.write(b'\x06Page 7')
+        data.write(struct.pack("<i", 20230615))
+        data.write(struct.pack("<i", 27))
+        data.write(struct.pack("<i", 7))
+        data.write(b"\x06Page 7")
 
         # All sections present but empty
-        for section in ['ARCHETYPES', 'POWERSETS', 'POWERS', 'SUMMONS']:
-            marker = f'BEGIN:{section}'
+        for section in ["ARCHETYPES", "POWERSETS", "POWERS", "SUMMONS"]:
+            marker = f"BEGIN:{section}"
             data.write(bytes([len(marker)]))
             data.write(marker.encode())
-            data.write(struct.pack('<i', 0))  # count = 0
+            data.write(struct.pack("<i", 0))  # count = 0
 
         data.seek(0)
 
         db = parse_main_database(data)
 
         assert db.header == "Mids Reborn Powers Database"
-        assert all(len(getattr(db, section.lower())) == 0
-                  for section in ['archetypes', 'powersets', 'powers', 'summons'])
+        assert all(
+            len(getattr(db, section.lower())) == 0
+            for section in ["archetypes", "powersets", "powers", "summons"]
+        )

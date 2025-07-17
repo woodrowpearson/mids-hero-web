@@ -18,22 +18,22 @@ class TestFileFormatDetection:
     def test_detect_binary_format(self):
         """Test detecting binary MHD format."""
         # Binary file starts with a 7-bit encoded string length
-        data = io.BytesIO(b'\x1CMids Reborn Powers Database')
+        data = io.BytesIO(b"\x1cMids Reborn Powers Database")
         assert detect_file_format(data) == FileFormat.BINARY
 
     def test_detect_text_format_with_version(self):
         """Test detecting text format with version header."""
-        data = io.BytesIO(b'Version 1.0\nData line 1\nData line 2')
+        data = io.BytesIO(b"Version 1.0\nData line 1\nData line 2")
         assert detect_file_format(data) == FileFormat.TEXT_WITH_VERSION
 
     def test_detect_text_format_tsv(self):
         """Test detecting tab-delimited text format."""
-        data = io.BytesIO(b'Name\tValue\tDescription\nTest\t123\tA test value')
+        data = io.BytesIO(b"Name\tValue\tDescription\nTest\t123\tA test value")
         assert detect_file_format(data) == FileFormat.TEXT_TSV
 
     def test_detect_empty_file(self):
         """Test detecting empty file."""
-        data = io.BytesIO(b'')
+        data = io.BytesIO(b"")
         with pytest.raises(EOFError):
             detect_file_format(data)
 
@@ -109,7 +109,13 @@ Defender_Ranged"""
         data = io.BytesIO(content.encode())
         result = parse_text_mhd(data)
 
-        assert result.headers == ["Level", "Cost_Common", "Cost_Uncommon", "Cost_Rare", "Cost_VeryRare"]
+        assert result.headers == [
+            "Level",
+            "Cost_Common",
+            "Cost_Uncommon",
+            "Cost_Rare",
+            "Cost_VeryRare",
+        ]
         assert len(result.data) == 4
         assert result.data[0] == ["10", "1000", "2000", "5000", "10000"]
         assert result.data[3] == ["25", "2500", "5000", "12500", "25000"]

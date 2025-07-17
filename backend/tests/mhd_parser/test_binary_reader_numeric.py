@@ -24,7 +24,7 @@ class TestNumericTypeParsing:
         test_values = [0, 1, -1, 2147483647, -2147483648, 42, -42]
 
         for value in test_values:
-            data = struct.pack('<i', value)  # Little-endian signed int
+            data = struct.pack("<i", value)  # Little-endian signed int
             stream = io.BytesIO(data)
 
             result = read_int32(stream)
@@ -37,7 +37,7 @@ class TestNumericTypeParsing:
         test_values = [0, 1, 4294967295, 42, 1000000]
 
         for value in test_values:
-            data = struct.pack('<I', value)  # Little-endian unsigned int
+            data = struct.pack("<I", value)  # Little-endian unsigned int
             stream = io.BytesIO(data)
 
             result = read_uint32(stream)
@@ -48,14 +48,16 @@ class TestNumericTypeParsing:
     def test_read_int64(self):
         """Test reading 64-bit signed integers."""
         test_values = [
-            0, 1, -1,
+            0,
+            1,
+            -1,
             9223372036854775807,  # Max int64
             -9223372036854775808,  # Min int64
-            1234567890123456
+            1234567890123456,
         ]
 
         for value in test_values:
-            data = struct.pack('<q', value)  # Little-endian signed long
+            data = struct.pack("<q", value)  # Little-endian signed long
             stream = io.BytesIO(data)
 
             result = read_int64(stream)
@@ -68,7 +70,7 @@ class TestNumericTypeParsing:
         test_values = [0.0, 1.0, -1.0, 3.14159, -273.15, 1e-10, 1e10]
 
         for value in test_values:
-            data = struct.pack('<f', value)  # Little-endian float
+            data = struct.pack("<f", value)  # Little-endian float
             stream = io.BytesIO(data)
 
             result = read_float32(stream)
@@ -81,10 +83,10 @@ class TestNumericTypeParsing:
         """Test reading boolean values."""
         # .NET bool is 1 byte: 0 = false, non-zero = true
         test_cases = [
-            (b'\x00', False),
-            (b'\x01', True),
-            (b'\xFF', True),  # Any non-zero is true
-            (b'\x42', True),
+            (b"\x00", False),
+            (b"\x01", True),
+            (b"\xff", True),  # Any non-zero is true
+            (b"\x42", True),
         ]
 
         for data, expected in test_cases:
@@ -98,13 +100,13 @@ class TestNumericTypeParsing:
     def test_numeric_eof_handling(self):
         """Test EOF handling for numeric types."""
         # Empty stream
-        stream = io.BytesIO(b'')
+        stream = io.BytesIO(b"")
 
         with pytest.raises(EOFError, match="reading int32"):
             read_int32(stream)
 
         # Partial data
-        stream = io.BytesIO(b'\x01\x02\x03')  # Only 3 bytes for int32
+        stream = io.BytesIO(b"\x01\x02\x03")  # Only 3 bytes for int32
 
         with pytest.raises(EOFError, match="reading int32"):
             read_int32(stream)
@@ -113,10 +115,10 @@ class TestNumericTypeParsing:
         """Test reading multiple values in sequence."""
         # Pack multiple values
         data = io.BytesIO()
-        data.write(struct.pack('<i', 42))      # int32
-        data.write(struct.pack('<f', 3.14))    # float32
-        data.write(struct.pack('<?', True))    # bool
-        data.write(struct.pack('<q', 9999))    # int64
+        data.write(struct.pack("<i", 42))  # int32
+        data.write(struct.pack("<f", 3.14))  # float32
+        data.write(struct.pack("<?", True))  # bool
+        data.write(struct.pack("<q", 9999))  # int64
         data.seek(0)
 
         # Read them back
@@ -133,26 +135,26 @@ class TestBinaryReaderClass:
     def test_binary_reader_initialization(self):
         """Test BinaryReader initialization with various inputs."""
         # From bytes
-        reader = BinaryReader(b'Hello')
+        reader = BinaryReader(b"Hello")
         assert reader.tell() == 0
-        assert reader.read(5) == b'Hello'
+        assert reader.read(5) == b"Hello"
 
         # From file-like object
-        stream = io.BytesIO(b'World')
+        stream = io.BytesIO(b"World")
         reader = BinaryReader(stream)
         assert reader.tell() == 0
-        assert reader.read(5) == b'World'
+        assert reader.read(5) == b"World"
 
     def test_binary_reader_methods(self):
         """Test BinaryReader convenience methods."""
         data = io.BytesIO()
         # Write test data
-        data.write(b'\x05Hello')              # String
-        data.write(struct.pack('<i', -42))    # int32
-        data.write(struct.pack('<I', 42))     # uint32
-        data.write(struct.pack('<f', 2.718))  # float32
-        data.write(struct.pack('<?', False))  # bool
-        data.write(struct.pack('<q', 12345))  # int64
+        data.write(b"\x05Hello")  # String
+        data.write(struct.pack("<i", -42))  # int32
+        data.write(struct.pack("<I", 42))  # uint32
+        data.write(struct.pack("<f", 2.718))  # float32
+        data.write(struct.pack("<?", False))  # bool
+        data.write(struct.pack("<q", 12345))  # int64
         data.seek(0)
 
         reader = BinaryReader(data)
@@ -167,7 +169,7 @@ class TestBinaryReaderClass:
 
     def test_binary_reader_position_tracking(self):
         """Test that BinaryReader tracks position correctly."""
-        reader = BinaryReader(b'\x00\x01\x02\x03\x04\x05\x06\x07')
+        reader = BinaryReader(b"\x00\x01\x02\x03\x04\x05\x06\x07")
 
         assert reader.tell() == 0
         reader.read_int32()
@@ -177,7 +179,7 @@ class TestBinaryReaderClass:
 
     def test_binary_reader_eof_handling(self):
         """Test BinaryReader EOF handling."""
-        reader = BinaryReader(b'\x01\x02')  # Only 2 bytes
+        reader = BinaryReader(b"\x01\x02")  # Only 2 bytes
 
         # Should raise EOFError with position info
         with pytest.raises(EOFError) as exc_info:
@@ -187,14 +189,14 @@ class TestBinaryReaderClass:
 
     def test_binary_reader_seek(self):
         """Test seeking in BinaryReader."""
-        reader = BinaryReader(b'\x00\x01\x02\x03\x04\x05\x06\x07')
+        reader = BinaryReader(b"\x00\x01\x02\x03\x04\x05\x06\x07")
 
         # Seek to position
         reader.seek(4)
         assert reader.tell() == 4
-        assert reader.read_int32() == struct.unpack('<i', b'\x04\x05\x06\x07')[0]
+        assert reader.read_int32() == struct.unpack("<i", b"\x04\x05\x06\x07")[0]
 
         # Seek back
         reader.seek(0)
         assert reader.tell() == 0
-        assert reader.read_int32() == struct.unpack('<i', b'\x00\x01\x02\x03')[0]
+        assert reader.read_int32() == struct.unpack("<i", b"\x00\x01\x02\x03")[0]

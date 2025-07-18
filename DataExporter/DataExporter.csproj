@@ -2,22 +2,20 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows10.0.19041</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <!-- Uncomment the following line when MidsReborn reference is enabled -->
-    <!-- <DefineConstants>MIDSREBORN</DefineConstants> -->
+    <!-- Enable MidsReborn integration -->
+    <DefineConstants>MIDSREBORN</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
-  <!-- MidsReborn reference - uncomment to enable full MHD parsing (Windows only) -->
-  <!--
+  <!-- MidsReborn reference for MHD parsing -->
   <ItemGroup>
     <ProjectReference Include="..\external\MidsReborn\MidsReborn\MidsReborn.csproj" />
   </ItemGroup>
-  -->
 
 </Project>

@@ -46,10 +46,10 @@ This is a streamlined, production-ready guide for exporting City of Heroes MHD d
 2. **Download the repository**:
    ```powershell
    # Option A: Using Git (if installed)
-   git clone https://github.com/your-org/mids-hero-web.git
+   git clone https://github.com/woodrowpearson/mids-hero-web.git
    
    # Option B: Download as ZIP
-   # Go to: https://github.com/your-org/mids-hero-web
+   # Go to: https://github.com/woodrowpearson/mids-hero-web
    # Click "Code" → "Download ZIP"
    # Extract to C:\Users\Public\Documents\MidsExport\
    ```

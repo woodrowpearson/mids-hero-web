@@ -81,18 +81,41 @@ This is a streamlined, production-ready guide for exporting City of Heroes MHD d
    notepad DataExporter.csproj
    ```
    
-   Remove the comment markers around the MidsReborn reference:
+   Add the following lines before the closing `</Project>` tag:
    ```xml
+   <!-- Add this ItemGroup to reference MidsReborn -->
    <ItemGroup>
      <ProjectReference Include="..\external\MidsReborn\MidsReborn\MidsReborn.csproj" />
    </ItemGroup>
    ```
    
+   Your file should look like:
+   ```xml
+   <Project Sdk="Microsoft.NET.Sdk">
+     <PropertyGroup>
+       <OutputType>Exe</OutputType>
+       <TargetFramework>net8.0</TargetFramework>
+       <ImplicitUsings>enable</ImplicitUsings>
+       <Nullable>enable</Nullable>
+     </PropertyGroup>
+
+     <ItemGroup>
+       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+     </ItemGroup>
+
+     <!-- Add this to use MidsReborn -->
+     <ItemGroup>
+       <ProjectReference Include="..\external\MidsReborn\MidsReborn\MidsReborn.csproj" />
+     </ItemGroup>
+   </Project>
+   ```
+   
    Save and close Notepad.
 
 3. **For simple export** (no MidsReborn):
-   - Leave the file as-is (MidsReborn commented out)
-   - This will use SimpleMhdExporter
+   - Leave the file as-is (without adding MidsReborn reference)
+   - This will only copy existing JSON files (AttribMod.json, TypeGrades.json)
+   - **Note**: Without MidsReborn, MHD binary files cannot be parsed
 
 ## Step 5: Build DataExporter
 
@@ -124,23 +147,27 @@ dotnet run -- C:\Users\Public\Documents\MidsExport\MidsData\input C:\Users\Publi
 
 Expected output:
 ```
-Starting data export...
-Input directory: C:\Users\Public\Documents\MidsExport\MidsData\input
-Output directory: C:\Users\Public\Documents\MidsExport\MidsData\output
+[Without MidsReborn - Current default]
+Input folder: C:\Users\Public\Documents\MidsExport\MidsData\input
+Output folder: C:\Users\Public\Documents\MidsExport\MidsData\output
+Processed AttribMod.json -> C:\Users\Public\Documents\MidsExport\MidsData\output\AttribMod.json
+Processed TypeGrades.json -> C:\Users\Public\Documents\MidsExport\MidsData\output\TypeGrades.json
 
-[With MidsReborn enabled]
+Available .mhd files for future processing:
+  I12.mhd (30,426,938 bytes)
+  EnhDB.mhd (463,569 bytes)
+  Recipe.mhd (3,644,674 bytes)
+  ...
+
+Note: .mhd binary file processing requires cross-platform parser development
+Currently processing available JSON files only.
+
+[With MidsReborn enabled - After adding reference]
 Loading MidsReborn database...
 Exporting archetypes... Done! (61 exported)
 Exporting powersets... Done! (3665 exported)
 Exporting powers... Done! (10942 exported)
 ...
-
-[With SimpleMhdExporter]
-Using simplified exporter (MidsReborn not available)
-Creating placeholder JSON files...
-...
-
-Export complete!
 ```
 
 ## Step 7: Verify Output

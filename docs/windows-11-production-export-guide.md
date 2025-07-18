@@ -4,6 +4,8 @@
 
 This is a streamlined, production-ready guide for exporting City of Heroes MHD data files using Windows 11 Pro and PowerShell. The guide uses .NET 8.0 LTS for stability and long-term support.
 
+The project includes MidsReborn (located at `external\MidsReborn\`), which is the community-maintained parser for City of Heroes game data files. MidsReborn can read the binary MHD format and extract game data like archetypes, powers, enhancements, etc.
+
 ## Prerequisites
 
 - Windows 11 Pro VM or physical machine
@@ -54,6 +56,18 @@ This is a streamlined, production-ready guide for exporting City of Heroes MHD d
    # Extract to C:\Users\Public\Documents\MidsExport\
    ```
 
+3. **Verify MidsReborn is included**:
+   ```powershell
+   # Check that MidsReborn parser is present
+   dir mids-hero-web\external\MidsReborn\
+   
+   # You should see:
+   # MidsReborn.sln
+   # MidsReborn\ (project folder)
+   # MRBResourceLib\ 
+   # etc.
+   ```
+
 ## Step 3: Prepare MHD Data Files
 
 1. **Create data directories**:
@@ -69,6 +83,8 @@ This is a streamlined, production-ready guide for exporting City of Heroes MHD d
    - This includes: `I12.mhd`, `EnhDB.mhd`, `Recipe.mhd`, `Salvage.mhd`, and all other files
 
 ## Step 4: Configure DataExporter
+
+**Note**: The MidsReborn parser is already included in the repository at `mids-hero-web\external\MidsReborn\`. This is a complete City of Heroes data parser that can read MHD binary files.
 
 1. **Navigate to DataExporter**:
    ```powershell

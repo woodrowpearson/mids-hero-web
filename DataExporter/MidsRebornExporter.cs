@@ -204,8 +204,38 @@ namespace DataExporter
                 if (DatabaseAPI.SaveJsonDatabase(serializer))
                 {
                     Console.WriteLine("Built-in export successful!");
-                    // The built-in export creates a compressed archive
-                    // You may need to extract it
+                    
+                    // Check if an archive was created and extract it
+                    var possibleArchivePaths = new[]
+                    {
+                        exportPath,
+                        Path.ChangeExtension(exportPath, ".zip"),
+                        Path.Combine(_outputPath, "database.json"),
+                        Path.Combine(_outputPath, "database.zip")
+                    };
+
+                    foreach (var archivePath in possibleArchivePaths)
+                    {
+                        if (File.Exists(archivePath))
+                        {
+                            Console.WriteLine($"Found export archive: {archivePath}");
+                            if (JsonArchiveExtractor.ExtractArchive(archivePath, _outputPath))
+                            {
+                                Console.WriteLine("Archive extracted successfully!");
+                                return;
+                            }
+                        }
+                    }
+                    
+                    Console.WriteLine("No archive found, checking for direct JSON files...");
+                    
+                    // Check if files were exported directly
+                    var jsonFiles = Directory.GetFiles(_outputPath, "*.json");
+                    if (jsonFiles.Length > 0)
+                    {
+                        Console.WriteLine($"Found {jsonFiles.Length} JSON files in output directory");
+                        return;
+                    }
                 }
                 else
                 {

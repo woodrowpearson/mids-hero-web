@@ -68,6 +68,43 @@ The project includes MidsReborn (located at `external\MidsReborn\`), which is th
    # etc.
    ```
 
+## Expected File Structure
+
+After completing Step 2, your directory structure should look like this:
+
+```
+C:\Users\Public\Documents\MidsExport\
+├── mids-hero-web\
+│   ├── DataExporter\
+│   │   ├── DataExporter.csproj
+│   │   ├── Program.cs
+│   │   └── MidsRebornExporter.cs
+│   ├── external\
+│   │   └── MidsReborn\
+│   │       ├── MidsReborn.sln
+│   │       ├── MidsReborn\
+│   │       │   └── MidsReborn.csproj
+│   │       ├── MRBResourceLib\
+│   │       │   └── MRBResourceLib.csproj
+│   │       └── MRBLogging\
+│   │           └── MRBLogging.csproj
+│   ├── data\
+│   │   ├── Homecoming_2025-7-1111\
+│   │   │   ├── I12.mhd          (30MB - Main database)
+│   │   │   ├── EnhDB.mhd        (453KB - Enhancements)
+│   │   │   ├── Recipe.mhd       (3.5MB - Recipes)
+│   │   │   ├── Salvage.mhd      (5.4KB - Salvage)
+│   │   │   ├── AttribMod.json   (Required)
+│   │   │   ├── TypeGrades.json  (Required)
+│   │   │   └── ... (other MHD files)
+│   │   └── exported-json\       (Export destination)
+│   └── docs\
+│       └── windows-11-production-export-guide.md
+└── MidsData\                    (You will create this)
+    ├── input\                   (Copy MHD files here)
+    └── output\                  (Exported JSON files)
+```
+
 ## Step 3: Prepare MHD Data Files
 
 1. **Create data directories**:
@@ -201,6 +238,21 @@ You should see JSON files for:
 - `enhancement_sets.json`
 - `recipes.json`
 - `salvage.json`
+
+After successful export, your MidsData\output\ directory should look like:
+
+```
+C:\Users\Public\Documents\MidsExport\MidsData\output\
+├── archetypes.json         (61 records - Character classes)
+├── powersets.json          (3,665 records - Power groups)
+├── powers.json             (10,942 records - Individual powers)
+├── enhancements.json       (631 records - Enhancement items)
+├── enhancement_sets.json   (98 records - Set definitions)
+├── recipes.json            (10,244 records - Crafting recipes)
+├── salvage.json            (154 records - Salvage items)
+├── AttribMod.json          (Copied from input)
+└── TypeGrades.json         (Copied from input)
+```
 
 ## Step 8: Transfer Files Back
 

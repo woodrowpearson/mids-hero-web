@@ -81,39 +81,28 @@ This is a streamlined, production-ready guide for exporting City of Heroes MHD d
    notepad DataExporter.csproj
    ```
    
-   Add the following lines before the closing `</Project>` tag:
+   Find these lines near the bottom:
    ```xml
-   <!-- Add this ItemGroup to reference MidsReborn -->
+   <!-- MidsReborn reference - uncomment to enable full MHD parsing (Windows only) -->
+   <!--
+   <ItemGroup>
+     <ProjectReference Include="..\external\MidsReborn\MidsReborn\MidsReborn.csproj" />
+   </ItemGroup>
+   -->
+   ```
+   
+   Remove the comment markers (`<!--` and `-->`) so it looks like:
+   ```xml
+   <!-- MidsReborn reference - uncomment to enable full MHD parsing (Windows only) -->
    <ItemGroup>
      <ProjectReference Include="..\external\MidsReborn\MidsReborn\MidsReborn.csproj" />
    </ItemGroup>
    ```
    
-   Your file should look like:
-   ```xml
-   <Project Sdk="Microsoft.NET.Sdk">
-     <PropertyGroup>
-       <OutputType>Exe</OutputType>
-       <TargetFramework>net8.0</TargetFramework>
-       <ImplicitUsings>enable</ImplicitUsings>
-       <Nullable>enable</Nullable>
-     </PropertyGroup>
-
-     <ItemGroup>
-       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-     </ItemGroup>
-
-     <!-- Add this to use MidsReborn -->
-     <ItemGroup>
-       <ProjectReference Include="..\external\MidsReborn\MidsReborn\MidsReborn.csproj" />
-     </ItemGroup>
-   </Project>
-   ```
-   
    Save and close Notepad.
 
 3. **For simple export** (no MidsReborn):
-   - Leave the file as-is (without adding MidsReborn reference)
+   - Leave the MidsReborn reference commented out (default state)
    - This will only copy existing JSON files (AttribMod.json, TypeGrades.json)
    - **Note**: Without MidsReborn, MHD binary files cannot be parsed
 

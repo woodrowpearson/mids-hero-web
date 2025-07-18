@@ -11,4 +11,11 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
+  <!-- MidsReborn reference - uncomment to enable full MHD parsing (Windows only) -->
+  <!--
+  <ItemGroup>
+    <ProjectReference Include="..\external\MidsReborn\MidsReborn\MidsReborn.csproj" />
+  </ItemGroup>
+  -->
+
 </Project>

@@ -88,20 +88,63 @@ def export_powersets(powersets, archetype_map, output_dir):
     return powerset_data
 
 
-def export_powers(powers, powerset_map, output_dir):
-    """Export powers to JSON (placeholder for now)."""
+def export_powers(powers, powersets, output_dir):
+    """Export powers to JSON with proper database mapping."""
     print(f"Exporting {len(powers)} powers...")
     
-    # Power parsing is complex and not fully implemented
-    # For now, create a placeholder file
-    power_data = []
+    # Create powerset name to ID map
+    powerset_map = {}
+    for i, ps in enumerate(powersets):
+        powerset_map[ps.set_name] = i + 1  # 1-based IDs
     
-    # TODO: Implement full power parsing when MHDPower.from_reader is complete
+    power_data = []
+    powers_without_powerset = 0
+    
+    # Map power type enum to string
+    power_type_map = {
+        0: 'click',
+        1: 'toggle', 
+        2: 'auto',
+        3: 'passive',
+        4: 'inherent'
+    }
+    
+    for power in powers:
+        # Find powerset_id from power's set_name
+        powerset_id = None
+        if power.set_name:
+            powerset_id = powerset_map.get(power.set_name)
+            if not powerset_id:
+                powers_without_powerset += 1
+        
+        # Map power data to database schema
+        power_entry = {
+            'id': power.static_index + 1,  # 1-based ID
+            'name': power.power_name or power.full_name,
+            'display_name': power.display_name or power.power_name,
+            'description': power.desc_long or power.desc_short or "",
+            'powerset_id': powerset_id,
+            'level_available': power.available,
+            'power_type': power_type_map.get(power.power_type, 'click'),
+            'accuracy': float(power.accuracy) if power.accuracy else 1.0,
+            'endurance_cost': float(power.end_cost) if power.end_cost else 0.0,
+            'recharge_time': float(power.recharge_time) if power.recharge_time else 0.0,
+            'activation_time': float(power.cast_time) if power.cast_time else 0.0,
+            'range_feet': float(power.range) if power.range else 0.0
+        }
+        
+        power_data.append(power_entry)
+    
+    # Sort by ID for consistency
+    power_data.sort(key=lambda x: x['id'])
     
     output_file = output_dir / 'powers.json'
     with open(output_file, 'w') as f:
         json.dump(power_data, f, indent=2)
-    print(f"  Saved to {output_file} (placeholder)")
+    print(f"  Saved to {output_file}")
+    
+    if powers_without_powerset > 0:
+        print(f"  Warning: {powers_without_powerset} powers without powerset mapping")
     
     return power_data
 

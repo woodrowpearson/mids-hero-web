@@ -10,9 +10,9 @@
 /Users/w/code/mids-hero-web/DataExporter/obj/Debug/net8.0/DataExporter.AssemblyInfo.cs
 /Users/w/code/mids-hero-web/DataExporter/obj/Debug/net8.0/DataExporter.csproj.CoreCompileInputs.cache
 /Users/w/code/mids-hero-web/DataExporter/obj/Debug/net8.0/DataExporter.sourcelink.json
-/Users/w/code/mids-hero-web/DataExporter/obj/Debug/net8.0/DataExporter.csproj.CopyComplete
 /Users/w/code/mids-hero-web/DataExporter/obj/Debug/net8.0/DataExporter.dll
 /Users/w/code/mids-hero-web/DataExporter/obj/Debug/net8.0/refint/DataExporter.dll
 /Users/w/code/mids-hero-web/DataExporter/obj/Debug/net8.0/DataExporter.pdb
 /Users/w/code/mids-hero-web/DataExporter/obj/Debug/net8.0/DataExporter.genruntimeconfig.cache
 /Users/w/code/mids-hero-web/DataExporter/obj/Debug/net8.0/ref/DataExporter.dll
+/Users/w/code/mids-hero-web/DataExporter/obj/Debug/net8.0/DataExpo.E5081764.Up2Date

@@ -74,7 +74,9 @@
           "salvage": "Ready to export"
         }
       },
-      "blockers": [],
+      "blockers": [
+        "MidsReborn parser requires Windows - see issue #160"
+      ],
       "github_issues_closed": [
         "#24 Subtask 2.1.2: Translate design into SQLAlchemy models",
         "#25 Subtask 2.1.3: Run migrations to apply schema to Postgres database",
@@ -88,7 +90,8 @@
         "#156 Task 2.5.5: Implement recipe parser with TDD",
         "#157 Task 2.5.6: Implement salvage parser with TDD",
         "#158 Task 2.5.7: Fix powerset import constraints",
-        "#159 Task 2.5.8: Execute full data import pipeline"
+        "#159 Task 2.5.8: Execute full data import pipeline",
+        "#160 Task 2.5.9: Export MHD data using MidsReborn parser on Windows"
       ],
       "current_branch": "epic2-database-schema",
       "pull_request": "PR #149 - Epic 2 - Task 2.5: Implement MHD Parser with TDD"
@@ -119,6 +122,12 @@
     }
   },
   "recent_activities": [
+    {
+      "timestamp": "2025-07-17T22:45:00Z",
+      "branch": "epic3-backend-api",
+      "action": "epic2_dataexporter_windows_dependency",
+      "description": "Identified Windows dependency for MidsReborn parser. Created placeholder exporter and GitHub issue #160 for Windows-based data export. Python parser remains as cross-platform alternative."
+    },
     {
       "timestamp": "2025-07-17T12:00:00Z",
       "branch": "epic2-database-schema",

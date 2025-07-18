@@ -86,18 +86,18 @@ def parse_main_database(file_path: str) -> MHDDatabase:
         db.powers = []
         print(f"Loading {power_count} powers...")
         
-        # Note: Power parsing is simplified for now
-        # Full implementation would read all fields
+        # Parse all powers
         for i in range(power_count):
             if i % 1000 == 0:
                 print(f"  Loaded {i}/{power_count} powers...")
             try:
-                # For now, we'll skip power parsing as it's very complex
-                # In production, use MHDPower.from_reader(reader)
-                pass
+                db.powers.append(MHDPower.from_reader(reader))
             except Exception as e:
                 print(f"Error parsing power {i}: {e}")
-                break
+                # Continue parsing remaining powers
+                if i < 10:  # Only show first few errors
+                    import traceback
+                    traceback.print_exc()
         
         # Skip Summons/Entities section for now
         

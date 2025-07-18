@@ -75,23 +75,21 @@ This is a streamlined, production-ready guide for exporting City of Heroes MHD d
    cd C:\Users\Public\Documents\MidsExport\mids-hero-web\DataExporter
    ```
 
-2. **Enable MidsReborn** (if you want full export):
+2. **Enable MidsReborn** (if you want full MHD export):
    ```powershell
    # Open the project file in Notepad
    notepad DataExporter.csproj
    ```
    
-   Find these lines near the bottom:
+   Make TWO changes:
+   
+   **Change 1**: In the PropertyGroup section, uncomment the DefineConstants line:
    ```xml
-   <!-- MidsReborn reference - uncomment to enable full MHD parsing (Windows only) -->
-   <!--
-   <ItemGroup>
-     <ProjectReference Include="..\external\MidsReborn\MidsReborn\MidsReborn.csproj" />
-   </ItemGroup>
-   -->
+   <!-- Uncomment the following line when MidsReborn reference is enabled -->
+   <DefineConstants>MIDSREBORN</DefineConstants>
    ```
    
-   Remove the comment markers (`<!--` and `-->`) so it looks like:
+   **Change 2**: Near the bottom, uncomment the MidsReborn reference:
    ```xml
    <!-- MidsReborn reference - uncomment to enable full MHD parsing (Windows only) -->
    <ItemGroup>
@@ -139,6 +137,12 @@ Expected output:
 [Without MidsReborn - Current default]
 Input folder: C:\Users\Public\Documents\MidsExport\MidsData\input
 Output folder: C:\Users\Public\Documents\MidsExport\MidsData\output
+MidsReborn is not enabled. To enable:
+1. Uncomment the MidsReborn reference in DataExporter.csproj
+2. Add <DefineConstants>MIDSREBORN</DefineConstants> to the PropertyGroup
+3. Rebuild the project
+
+Falling back to JSON file processing...
 Processed AttribMod.json -> C:\Users\Public\Documents\MidsExport\MidsData\output\AttribMod.json
 Processed TypeGrades.json -> C:\Users\Public\Documents\MidsExport\MidsData\output\TypeGrades.json
 
@@ -148,15 +152,19 @@ Available .mhd files for future processing:
   Recipe.mhd (3,644,674 bytes)
   ...
 
-Note: .mhd binary file processing requires cross-platform parser development
-Currently processing available JSON files only.
-
-[With MidsReborn enabled - After adding reference]
+[With MidsReborn enabled - After uncommenting]
+Input folder: C:\Users\Public\Documents\MidsExport\MidsData\input
+Output folder: C:\Users\Public\Documents\MidsExport\MidsData\output
 Loading MidsReborn database...
 Exporting archetypes... Done! (61 exported)
-Exporting powersets... Done! (3665 exported)
-Exporting powers... Done! (10942 exported)
-...
+Exporting powersets... Done! (3,665 exported)
+Exporting powers... Done! (10,942 exported)
+Exporting enhancements... Done! (631 exported)
+Exporting enhancement sets... Done! (98 exported)
+Exporting recipes... Done! (10,244 exported)
+Exporting salvage... Done! (154 exported)
+
+Export complete!
 ```
 
 ## Step 7: Verify Output

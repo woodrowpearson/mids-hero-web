@@ -5,6 +5,8 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <!-- Uncomment the following line when MidsReborn reference is enabled -->
+    <!-- <DefineConstants>MIDSREBORN</DefineConstants> -->
   </PropertyGroup>
 
   <ItemGroup>

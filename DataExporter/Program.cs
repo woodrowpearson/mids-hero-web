@@ -33,12 +33,15 @@ namespace DataExporter
             Console.WriteLine($"Input folder: {inputPath}");
             Console.WriteLine($"Output folder: {outputPath}");
             
-            // Process JSON files that are already available
-            ProcessJsonFiles(inputPath, outputPath);
+            // Try to use MidsReborn exporter if available
+            var exporter = new MidsRebornExporter(inputPath, outputPath);
+            exporter.Export();
             
-            // TODO: Process .mhd files when cross-platform parser is available
-            Console.WriteLine("\nNote: .mhd binary file processing requires cross-platform parser development");
-            Console.WriteLine("Currently processing available JSON files only.");
+            // If MidsReborn is not available, fall back to JSON processing
+            #if !MIDSREBORN
+            Console.WriteLine("\nFalling back to JSON file processing...");
+            ProcessJsonFiles(inputPath, outputPath);
+            #endif
         }
 
         static void ProcessJsonFiles(string inputPath, string outputPath)

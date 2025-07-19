@@ -37,6 +37,7 @@ def test_db():
     engine.dispose()
     # Clean up the database file
     import os
+
     if os.path.exists(db_path):
         os.unlink(db_path)
 

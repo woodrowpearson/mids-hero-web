@@ -18,8 +18,12 @@ just build             # Build project
 
 ## 📦 Git Workflow
 ```bash
-just ucp "feat: message"    # Quick commit & push
-just update-progress        # Full update workflow
+just git-validate          # Check workflow status
+just git-feature NAME      # Create feature branch
+just git-fix NAME          # Create fix branch
+just ucp "feat: message"   # Quick commit & push
+just update-progress       # Full update workflow
+just git-pr                # Create pull request
 ```
 
 ## 🗄️ Database

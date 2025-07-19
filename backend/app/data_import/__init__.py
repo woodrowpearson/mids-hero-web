@@ -8,7 +8,11 @@ from .archetype_importer import ArchetypeImporter
 from .attribute_importer import AttributeImporter
 from .base_importer import BaseImporter
 from .enhancement_importer import EnhancementImporter
-from .i12_streaming_parser import I12StreamingParser, PowerDataProcessor, StreamingJsonReader
+from .i12_streaming_parser import (
+    I12StreamingParser,
+    PowerDataProcessor,
+    StreamingJsonReader,
+)
 from .power_importer import PowerImporter, PowersetImporter
 from .recipe_importer import RecipeImporter
 from .salvage_importer import SalvageImporter

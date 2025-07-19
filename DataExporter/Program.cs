@@ -33,9 +33,28 @@ namespace DataExporter
             Console.WriteLine($"Input folder: {inputPath}");
             Console.WriteLine($"Output folder: {outputPath}");
             
-            // Try to use MidsReborn exporter if available
-            var exporter = new MidsRebornExporter(inputPath, outputPath);
-            exporter.Export();
+            // Check for flags
+            bool useDirect = args.Length > 2 && args[2] == "--direct";
+            bool useMac = args.Length > 2 && args[2] == "--mac";
+            
+            if (useMac)
+            {
+                Console.WriteLine("Using Mac MidsReborn explorer...");
+                var macExplorer = new MacMidsExplorer(inputPath, outputPath);
+                macExplorer.ExploreAndExport();
+            }
+            else if (useDirect)
+            {
+                Console.WriteLine("Using direct data loader (no configuration)...");
+                var directLoader = new DirectDataLoader(inputPath, outputPath);
+                directLoader.Export();
+            }
+            else
+            {
+                // Try to use MidsReborn exporter if available
+                var exporter = new MidsRebornExporter(inputPath, outputPath);
+                exporter.Export();
+            }
             
             // If MidsReborn is not available, fall back to JSON processing
             #if !MIDSREBORN

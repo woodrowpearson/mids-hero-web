@@ -73,12 +73,9 @@ namespace DataExporter
                 // Initialize ConfigData without UI
                 ConfigData.Initialize();
                 
-                // Set the data path if needed
-                if (ConfigData.Current != null)
-                {
-                    ConfigData.Current.DataPath = _inputPath;
-                    Console.WriteLine($"Configuration initialized with data path: {_inputPath}");
-                }
+                // MidsReborn uses a different API structure
+                // ConfigData initialization is sufficient
+                Console.WriteLine($"Configuration initialized for data path: {_inputPath}");
             }
             catch (Exception ex)
             {
@@ -91,8 +88,8 @@ namespace DataExporter
         {
             try
             {
-                // Initialize the database
-                DatabaseAPI.Database = new Database();
+                // Database is accessed as a singleton, no need to set it
+                // DatabaseAPI.Database is read-only and returns Database.Instance
                 
                 // Load server data (if available)
                 Console.Write("Loading server data... ");
@@ -175,7 +172,7 @@ namespace DataExporter
                 Console.WriteLine($"Powersets: {DatabaseAPI.Database.Powersets?.Length ?? 0}");
                 Console.WriteLine($"Powers: {DatabaseAPI.Database.Power?.Length ?? 0}");
                 Console.WriteLine($"Enhancements: {DatabaseAPI.Database.Enhancements?.Length ?? 0}");
-                Console.WriteLine($"Enhancement Sets: {DatabaseAPI.Database.EnhancementSets?.Length ?? 0}");
+                Console.WriteLine($"Enhancement Sets: {DatabaseAPI.Database.EnhancementSets?.Count ?? 0}");
                 Console.WriteLine($"Recipes: {DatabaseAPI.Database.Recipes?.Length ?? 0}");
                 Console.WriteLine($"Salvage: {DatabaseAPI.Database.Salvage?.Length ?? 0}");
 
@@ -201,8 +198,10 @@ namespace DataExporter
                 
                 // Try to save using the built-in method
                 string exportPath = Path.Combine(_outputPath, "midsreborn_export.json");
-                if (DatabaseAPI.SaveJsonDatabase(serializer))
+                // SaveJsonDatabase is void, call it without checking return value
+                try
                 {
+                    DatabaseAPI.SaveJsonDatabase(serializer, false);
                     Console.WriteLine("Built-in export successful!");
                     
                     // Check if an archive was created and extract it
@@ -237,9 +236,10 @@ namespace DataExporter
                         return;
                     }
                 }
-                else
+                catch (Exception saveEx)
                 {
-                    Console.WriteLine("Built-in export failed, using custom export...");
+                    Console.WriteLine($"Built-in export failed: {saveEx.Message}");
+                    Console.WriteLine("Using custom export...");
                     CustomExportToJson();
                 }
             }

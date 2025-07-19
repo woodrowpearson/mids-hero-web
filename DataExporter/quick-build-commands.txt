@@ -1,0 +1,20 @@
+# Quick Build Commands - Copy/Paste These Into PowerShell
+# This avoids the C++ project that requires Visual Studio
+
+# Step 1: Build MidsReborn C# projects only
+cd C:\Users\Public\Documents\MidsExport\mids-hero-web\external\MidsReborn
+dotnet build MRBLogging\MRBLogging.csproj
+dotnet build MRBResourceLib\MRBResourceLib.csproj
+dotnet build MidsReborn\MidsReborn.csproj
+
+# Step 2: Build DataExporter
+cd C:\Users\Public\Documents\MidsExport\mids-hero-web\DataExporter
+dotnet clean
+dotnet restore
+dotnet build
+
+# Step 3: Run the export
+dotnet run -- C:\Users\Public\Documents\MidsExport\MidsData\input C:\Users\Public\Documents\MidsExport\MidsData\output
+
+# Alternative if dotnet run fails:
+.\bin\Debug\net8.0-windows10.0.19041\DataExporter.exe C:\Users\Public\Documents\MidsExport\MidsData\input C:\Users\Public\Documents\MidsExport\MidsData\output

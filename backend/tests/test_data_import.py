@@ -21,15 +21,24 @@ from app.models import Archetype, Salvage
 @pytest.fixture
 def test_db():
     """Create a test database."""
-    engine = create_engine("sqlite:///:memory:")
+    # Use a file-based SQLite database for testing to share across connections
+    db_path = tempfile.mktemp(suffix=".db")
+    db_url = f"sqlite:///{db_path}"
+    
+    engine = create_engine(db_url)
     Base.metadata.create_all(engine)
 
     SessionLocal = sessionmaker(bind=engine)
     session = SessionLocal()
 
-    yield session, "sqlite:///:memory:"
+    yield session, db_url
 
     session.close()
+    engine.dispose()
+    # Clean up the database file
+    import os
+    if os.path.exists(db_path):
+        os.unlink(db_path)
 
 
 @pytest.fixture
@@ -65,9 +74,9 @@ class TestArchetypeImporter:
         importer = ArchetypeImporter(db_url)
         result = importer.import_data(json_file)
 
-        # Verify import
-        assert result.records_imported == 2
-        assert result.errors == 0
+        # Verify import - check from importer directly to avoid detached session issues
+        assert importer.imported_count == 2
+        assert len(importer.errors) == 0
 
         # Check database
         archetypes = session.query(Archetype).all()
@@ -116,9 +125,9 @@ class TestSalvageImporter:
         importer = SalvageImporter(db_url)
         result = importer.import_data(json_file)
 
-        # Verify import
-        assert result.records_imported == 2
-        assert result.errors == 0
+        # Verify import - check from importer directly to avoid detached session issues
+        assert importer.imported_count == 2
+        assert len(importer.errors) == 0
 
         # Check database
         salvage_items = session.query(Salvage).all()

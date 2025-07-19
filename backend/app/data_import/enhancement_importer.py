@@ -103,12 +103,12 @@ class EnhancementImporter(BaseImporter):
 
         # Common patterns in descriptions
         patterns = {
-            "accuracy": r"(?:accuracy|acc)\s*\+?(\d+(?:\.\d+)?)",
-            "damage": r"(?:damage|dmg)\s*\+?(\d+(?:\.\d+)?)",
-            "endurance": r"(?:endurance|end)\s*(?:reduction|redux)?\s*\+?(\d+(?:\.\d+)?)",
-            "recharge": r"(?:recharge|rech)\s*\+?(\d+(?:\.\d+)?)",
-            "defense": r"(?:defense|def)\s*\+?(\d+(?:\.\d+)?)",
-            "resistance": r"(?:resistance|res)\s*\+?(\d+(?:\.\d+)?)",
+            "accuracy": r"(?:accuracy|acc)\s*(?:by\s*)?\+?(\d+(?:\.\d+)?)",
+            "damage": r"(?:damage|dmg)\s*(?:by\s*)?\+?(\d+(?:\.\d+)?)",
+            "endurance": r"(?:endurance|end)\s*(?:reduction|redux)?\s*(?:by\s*)?\+?(\d+(?:\.\d+)?)",
+            "recharge": r"(?:recharge|rech)\s*(?:by\s*)?\+?(\d+(?:\.\d+)?)",
+            "defense": r"(?:defense|def)\s*(?:by\s*)?\+?(\d+(?:\.\d+)?)",
+            "resistance": r"(?:resistance|res)\s*(?:by\s*)?\+?(\d+(?:\.\d+)?)",
         }
 
         desc_lower = description.lower()

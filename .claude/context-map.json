@@ -1,0 +1,134 @@
+{
+  "version": "1.0",
+  "description": "Claude context loading rules and token limits",
+  "last_updated": "2025-01-19",
+  
+  "token_limits": {
+    "total_max": 128000,
+    "warning_threshold": 90000,
+    "auto_prune_threshold": 110000,
+    "core_context_max": 10000,
+    "per_module_max": 15000,
+    "per_file_max": {
+      "core": 5000,
+      "module": 10000,
+      "workflow": 5000,
+      "reference": 8000
+    }
+  },
+  
+  "loading_rules": {
+    "always_load": {
+      "description": "Files loaded at session start",
+      "files": [
+        "CLAUDE.md",
+        ".claude/settings.json",
+        ".claude/context-map.json"
+      ],
+      "max_total_tokens": 10000
+    },
+    
+    "task_based_loading": {
+      "description": "Modules loaded based on declared task",
+      "triggers": {
+        "database": {
+          "keywords": ["database", "migration", "schema", "model", "sqlalchemy"],
+          "load_files": [
+            ".claude/modules/database/guide.md",
+            ".claude/modules/database/schema-reference.md"
+          ]
+        },
+        "import": {
+          "keywords": ["import", "i12", "data import", "mhd", "parser"],
+          "load_files": [
+            ".claude/modules/import/guide.md",
+            ".claude/modules/import/commands-reference.md"
+          ]
+        },
+        "api": {
+          "keywords": ["api", "endpoint", "fastapi", "rest", "crud"],
+          "load_files": [
+            ".claude/modules/api/guide.md",
+            ".claude/modules/api/specification.md"
+          ]
+        },
+        "frontend": {
+          "keywords": ["frontend", "react", "component", "ui", "typescript"],
+          "load_files": [
+            ".claude/modules/frontend/guide.md",
+            ".claude/modules/frontend/architecture.md"
+          ]
+        },
+        "testing": {
+          "keywords": ["test", "pytest", "jest", "testing", "tdd"],
+          "load_files": [
+            ".claude/modules/testing/guide.md",
+            ".claude/workflows/testing.md"
+          ]
+        }
+      }
+    },
+    
+    "reference_loading": {
+      "description": "Files loaded when explicitly referenced",
+      "patterns": {
+        "workflow": ".claude/workflows/*.md",
+        "automation": ".claude/automation/README.md",
+        "docs": ".claude/docs/*.md"
+      }
+    },
+    
+    "never_auto_load": {
+      "description": "Files that require explicit request",
+      "patterns": [
+        ".claude/state/*",
+        ".claude/automation/*.sh",
+        ".claude/docs/archive/*",
+        "**/.current-session",
+        "**/sessions/*"
+      ]
+    }
+  },
+  
+  "context_priorities": {
+    "description": "Loading priority when approaching token limit",
+    "order": [
+      "CLAUDE.md",
+      "Current task module",
+      "Active workflow",
+      "Related modules",
+      "Reference documentation"
+    ]
+  },
+  
+  "pruning_strategy": {
+    "description": "What to remove when over token limit",
+    "remove_order": [
+      "Old conversation history",
+      "Reference documentation",
+      "Non-active modules",
+      "Completed workflow sections",
+      "Verbose examples"
+    ],
+    "keep_always": [
+      "CLAUDE.md core sections",
+      "Current task context",
+      "Active file being edited"
+    ]
+  },
+  
+  "file_health_checks": {
+    "max_file_sizes": {
+      "CLAUDE.md": 5000,
+      "module_guide": 10000,
+      "workflow": 5000,
+      "reference": 8000
+    },
+    "required_files": [
+      "CLAUDE.md",
+      ".claude/README.md",
+      ".claude/settings.json",
+      ".claude/context-map.json"
+    ]
+  }
+}

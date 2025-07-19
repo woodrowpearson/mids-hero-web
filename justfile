@@ -281,6 +281,12 @@ ucp message:
     git commit -m "{{message}}"
     git push
 
+# Full update-progress workflow (update progress.json, commit, push)
+update-progress:
+    @echo "🔄 Running full update-progress workflow..."
+    @bash .claude/commands/update-progress.sh
+
+
 # Build for production
 build:
     @echo "🏗️ Building for production..."

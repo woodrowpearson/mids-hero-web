@@ -21,9 +21,13 @@ just test          # Run all tests
 For efficiency, use pre-approved custom commands in `.claude/commands/`:
 
 ```bash
-.claude/commands/update-progress.sh    # Full update, commit, push workflow
-.claude/commands/ucp.sh "message"      # Quick commit and push  
+just update-progress                   # Full update, commit, push workflow (RECOMMENDED)
+just ucp "message"                     # Quick commit and push
 .claude/commands/debug-session.sh      # Debug environment setup
+
+# Or use scripts directly:
+.claude/commands/update-progress.sh    # Full workflow script
+.claude/commands/ucp.sh "message"      # Quick commit script
 ```
 
 ### 📥 Data Import Commands
@@ -86,9 +90,10 @@ Mids Hero Web is a modern web-based character build planner for City of Heroes, 
 
 1. **Always use just** for all operations - NEVER run commands directly
 2. **Token limits**: Keep contexts under 50k tokens, alert at 90k/128k
-3. **Run `just health`** before starting any work session
-4. **Update progress** after completing tasks: `just progress-update`
+3. **REQUIRED: Run `just health`** before starting any work session on a GitHub issue
+4. **Update progress** after completing tasks: `just update-progress`
 5. **Use /clear** between unrelated tasks to prevent context pollution
+6. **Follow `.claude/development-workflow.md`** for session management and commits
 
 ### Code Standards
 

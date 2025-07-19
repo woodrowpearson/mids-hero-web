@@ -1,11 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0-windows10.0.19041</TargetFramework>
+    <TargetFramework Condition="Exists('..\external\MidsReborn\MidsReborn\MidsReborn.csproj')">net8.0-windows10.0.19041</TargetFramework>
+    <TargetFramework Condition="!Exists('..\external\MidsReborn\MidsReborn\MidsReborn.csproj')">net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
-    <DefineConstants>MIDSREBORN</DefineConstants>
+    <DefineConstants Condition="Exists('..\external\MidsReborn\MidsReborn\MidsReborn.csproj')">MIDSREBORN</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>

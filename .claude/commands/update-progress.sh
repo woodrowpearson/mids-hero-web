@@ -34,12 +34,12 @@ has_upstream() {
 
 # Function to update progress.json
 update_progress() {
-    if [[ -f ".claude/progress.json" ]] && command -v python3 &> /dev/null; then
+    if [[ -f ".claude/state/progress.json" ]] && command -v python3 &> /dev/null; then
         python3 -c "
 import json
 from datetime import datetime
 
-with open('.claude/progress.json', 'r') as f:
+with open('.claude/state/progress.json', 'r') as f:
     data = json.load(f)
 
 # Update timestamp
@@ -75,7 +75,7 @@ data['recent_activities'].insert(0, activity)
 # Keep only last 10 activities
 data['recent_activities'] = data['recent_activities'][:10]
 
-with open('.claude/progress.json', 'w') as f:
+with open('.claude/state/progress.json', 'w') as f:
     json.dump(data, f, indent=2)
 
 print('Progress updated successfully')
@@ -104,7 +104,7 @@ main() {
     update_progress
     
     # Stage the updated progress file
-    git add .claude/progress.json 2>/dev/null || true
+    git add .claude/state/progress.json 2>/dev/null || true
     
     # 3. Commit if there are staged changes
     if git diff --cached --quiet; then

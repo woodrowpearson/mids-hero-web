@@ -130,5 +130,53 @@
       ".claude/settings.json",
       ".claude/context-map.json"
     ]
+  },
+  
+  "tool_loadouts": {
+    "description": "Task-specific tool configurations",
+    "database": {
+      "focus": "Database operations and migrations",
+      "preferred_tools": ["Read", "Write", "Edit", "MultiEdit", "Bash", "LS"],
+      "preferred_commands": ["alembic", "psql", "just db-*"],
+      "avoid_tools": ["WebFetch", "WebSearch"],
+      "context_hints": "Focus on SQL, migrations, models"
+    },
+    "import": {
+      "focus": "Data import and processing",
+      "preferred_tools": ["Read", "Bash", "LS", "Grep"],
+      "preferred_commands": ["python", "just import-*", "just i12-*"],
+      "avoid_tools": ["Write", "Edit"],
+      "context_hints": "Read-heavy, monitoring focused"
+    },
+    "api": {
+      "focus": "FastAPI endpoint development",
+      "preferred_tools": ["Read", "Write", "Edit", "MultiEdit", "Bash"],
+      "preferred_commands": ["pytest", "uvicorn", "just test"],
+      "avoid_tools": ["WebSearch"],
+      "context_hints": "Focus on endpoints, schemas, testing"
+    },
+    "frontend": {
+      "focus": "React component development",
+      "preferred_tools": ["Read", "Write", "Edit", "MultiEdit", "Bash"],
+      "preferred_commands": ["npm", "jest", "just frontend-*"],
+      "avoid_tools": ["Bash(psql:*)"],
+      "context_hints": "TypeScript, React, component patterns"
+    },
+    "debugging": {
+      "focus": "Error investigation and fixes",
+      "preferred_tools": ["Read", "Bash", "LS", "Grep", "WebFetch"],
+      "preferred_commands": ["docker", "logs", "ps", "grep"],
+      "avoid_tools": [],
+      "context_hints": "Diagnostic focus, read-heavy"
+    }
+  },
+  
+  "context_offloading": {
+    "description": "External storage for working memory",
+    "scratchpad_location": ".claude/state/scratchpad.md",
+    "decision_log": ".claude/state/decisions.log",
+    "session_summaries": ".claude/state/summaries/",
+    "max_scratchpad_size": 10000,
+    "auto_summarize_at": 50000
   }
 }

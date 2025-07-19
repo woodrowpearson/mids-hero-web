@@ -1,0 +1,59 @@
+name: DataExporter Tests
+
+on:
+  push:
+    paths:
+      - 'DataExporter/**'
+      - 'DataExporter.Tests/**'
+      - '.github/workflows/dataexporter-tests.yml'
+  pull_request:
+    paths:
+      - 'DataExporter/**'
+      - 'DataExporter.Tests/**'
+
+jobs:
+  test:
+    name: Test DataExporter
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore dependencies
+      run: |
+        dotnet restore DataExporter/DataExporter.csproj
+        dotnet restore DataExporter.Tests/DataExporter.Tests.csproj
+
+    - name: Build
+      run: |
+        dotnet build DataExporter/DataExporter.csproj --configuration Release --no-restore
+        dotnet build DataExporter.Tests/DataExporter.Tests.csproj --configuration Release --no-restore
+
+    - name: Test
+      run: dotnet test DataExporter.Tests/DataExporter.Tests.csproj --configuration Release --no-build --verbosity normal --logger "console;verbosity=detailed"
+
+    - name: Performance Benchmarks
+      run: dotnet test DataExporter.Tests/DataExporter.Tests.csproj --configuration Release --no-build --filter "FullyQualifiedName~PerformanceBenchmarks" --logger "console;verbosity=normal"
+      continue-on-error: true
+
+    # Optional: Upload test results
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: test-results
+        path: |
+          **/TestResults/
+          **/test-results/
+        retention-days: 7

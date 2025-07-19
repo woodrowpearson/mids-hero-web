@@ -27,7 +27,11 @@ async def test_power(
         attrs = {}
         for col in power.__table__.columns:
             val = getattr(power, col.name)
-            if val is not None and hasattr(val, '__class__') and 'Decimal' in str(val.__class__):
+            if (
+                val is not None
+                and hasattr(val, "__class__")
+                and "Decimal" in str(val.__class__)
+            ):
                 attrs[col.name] = float(val)
             else:
                 attrs[col.name] = val
@@ -54,7 +58,11 @@ async def get_power(
     result = {}
     for col in power.__table__.columns:
         val = getattr(power, col.name)
-        if val is not None and hasattr(val, '__class__') and 'Decimal' in str(val.__class__):
+        if (
+            val is not None
+            and hasattr(val, "__class__")
+            and "Decimal" in str(val.__class__)
+        ):
             result[col.name] = float(val)
         else:
             result[col.name] = val

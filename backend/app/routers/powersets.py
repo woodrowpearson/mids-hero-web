@@ -28,7 +28,9 @@ async def get_powerset(
     return powerset
 
 
-@router.get("/powersets/{powerset_id}/detailed", response_model=schemas.PowersetWithPowers)
+@router.get(
+    "/powersets/{powerset_id}/detailed", response_model=schemas.PowersetWithPowers
+)
 async def get_powerset_detailed(
     powerset_id: int,
     db: Session = Depends(get_db),
@@ -56,7 +58,7 @@ async def get_powerset_detailed(
         "archetype_id": powerset.archetype_id,
         "created_at": powerset.created_at,
         "updated_at": powerset.updated_at,
-        "powers": powers
+        "powers": powers,
     }
 
     return powerset_dict

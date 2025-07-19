@@ -16,7 +16,9 @@ router = APIRouter()
 async def get_salvage(
     skip: int = Query(0, ge=0, description="Number of items to skip"),
     limit: int = Query(100, ge=1, le=1000, description="Number of items to return"),
-    rarity: str | None = Query(None, description="Filter by rarity (common, uncommon, rare)"),
+    rarity: str | None = Query(
+        None, description="Filter by rarity (common, uncommon, rare)"
+    ),
     db: Session = Depends(get_db),
 ):
     """
@@ -110,4 +112,3 @@ async def get_recipe_salvage(
         .all()
     )
     return salvage_requirements
-

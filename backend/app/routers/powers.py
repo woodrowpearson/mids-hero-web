@@ -11,43 +11,55 @@ from ..database import get_db
 router = APIRouter()
 
 
-class PowerWithPrerequisites(schemas.Power):
-    """Power schema with prerequisite information."""
+@router.get("/powers/test/{power_id}")
+async def test_power(
+    power_id: int,
+    db: Session = Depends(get_db),
+):
+    """Test endpoint to debug power retrieval."""
+    try:
+        power = crud.get_power(db, power_id=power_id)
+        if power is None:
+            return {"error": "Power not found"}
 
-    prerequisites: list[schemas.PowerPrerequisite] = []
+        # Return basic info without schema validation
+        # Get all attributes
+        attrs = {}
+        for col in power.__table__.columns:
+            val = getattr(power, col.name)
+            if val is not None and hasattr(val, '__class__') and 'Decimal' in str(val.__class__):
+                attrs[col.name] = float(val)
+            else:
+                attrs[col.name] = val
+        return attrs
+    except Exception as e:
+        return {"error": str(e)}
 
 
-@router.get("/powers/{power_id}", response_model=PowerWithPrerequisites)
+@router.get("/powers/{power_id}")
 async def get_power(
     power_id: int,
-    include_prerequisites: bool = True,
     db: Session = Depends(get_db),
 ):
     """
     Get a specific power by ID.
 
-    Returns detailed information about a power, optionally including prerequisites.
+    Returns detailed information about a power.
     """
     power = crud.get_power(db, power_id=power_id)
     if power is None:
         raise HTTPException(status_code=404, detail="Power not found")
 
-    # Convert to dict to add prerequisites
-    power_data = power.__dict__.copy()
+    # Convert decimals to floats manually
+    result = {}
+    for col in power.__table__.columns:
+        val = getattr(power, col.name)
+        if val is not None and hasattr(val, '__class__') and 'Decimal' in str(val.__class__):
+            result[col.name] = float(val)
+        else:
+            result[col.name] = val
 
-    # Include prerequisites if requested
-    if include_prerequisites:
-        # Get prerequisites for this power
-        prerequisites = (
-            db.query(models.PowerPrerequisite)
-            .filter(models.PowerPrerequisite.power_id == power_id)
-            .all()
-        )
-        power_data["prerequisites"] = prerequisites
-    else:
-        power_data["prerequisites"] = []
-
-    return PowerWithPrerequisites(**power_data)
+    return result
 
 
 @router.get("/powers", response_model=list[schemas.Power])

@@ -8,7 +8,7 @@ from datetime import datetime
 from decimal import Decimal
 from typing import Any
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, field_serializer
 
 
 # Base classes for common patterns
@@ -100,6 +100,13 @@ class PowerBase(BaseModel):
     effects: dict[str, Any] | None = None
     icon_path: str | None = None
     display_order: int | None = None
+    internal_name: str | None = None
+    requires_line_of_sight: bool = True
+    modes_required: str | None = None
+    modes_disallowed: str | None = None
+    ai_report: str | None = None
+    effect_groups: dict[str, Any] | None = None
+    display_info: dict[str, Any] | None = None
 
 
 class PowerCreate(PowerBase):
@@ -124,11 +131,26 @@ class PowerUpdate(BaseModel):
     effects: dict[str, Any] | None = None
     icon_path: str | None = None
     display_order: int | None = None
+    internal_name: str | None = None
+    requires_line_of_sight: bool | None = None
+    modes_required: str | None = None
+    modes_disallowed: str | None = None
+    ai_report: str | None = None
+    effect_groups: dict[str, Any] | None = None
+    display_info: dict[str, Any] | None = None
 
 
 class Power(PowerBase, TimestampedBase, BaseEntitySchema):
     id: int
     powerset_id: int
+
+    @field_serializer('accuracy', 'damage_scale', 'endurance_cost', 'recharge_time', 'activation_time', mode='wrap')
+    def serialize_decimal(self, value: Decimal | None, nxt) -> float | None:
+        if value is None:
+            return None
+        if isinstance(value, Decimal):
+            return float(value)
+        return nxt(value)
 
 
 # Power Prerequisite Schemas

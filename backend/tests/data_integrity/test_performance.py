@@ -344,7 +344,10 @@ class TestQueryOptimization:
                 .select_from(Power)  # Explicitly specify the FROM clause
                 .join(Powerset, Power.powerset_id == Powerset.id)
                 .join(Archetype, Powerset.archetype_id == Archetype.id)
-                .outerjoin(PowerEnhancementCompatibility, Power.id == PowerEnhancementCompatibility.power_id)
+                .outerjoin(
+                    PowerEnhancementCompatibility,
+                    Power.id == PowerEnhancementCompatibility.power_id,
+                )
                 .outerjoin(
                     Enhancement,
                     Enhancement.name == PowerEnhancementCompatibility.enhancement_type,

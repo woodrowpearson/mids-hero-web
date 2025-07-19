@@ -10,11 +10,15 @@ cd "$PROJECT_ROOT_DIR"
 # 2. Health check (MANDATORY)
 just health
 
-# 3. Start services
+# 3. Context validation (AUTOMATIC)
+just context-check  # Or happens automatically via hooks
+
+# 4. Start services
 just dev
 
-# 4. Begin session tracking
+# 5. Begin session tracking
 /project:session-start issue-123-description
+# This triggers session-start-hook.sh automatically
 ```
 
 ## 🔄 Development Cycle

@@ -75,6 +75,13 @@ pie title "128K Token Allocation"
 "I need to import I12 power data"
 ```
 
+**Context health checks:**
+```bash
+just context-check      # Full validation and analysis
+just context-validate   # Check structure and limits
+just token-analyze      # Analyze token usage
+```
+
 **Quick reference:**
 - See `CLAUDE.md` for project overview
 - See `.claude/core/quick-reference.md` for common commands
@@ -84,16 +91,54 @@ pie title "128K Token Allocation"
 
 1. **Start with task declaration** - Helps Claude load right context
 2. **Use /clear between tasks** - Prevents context pollution  
-3. **Check token usage** - Run when context feels heavy
+3. **Check token usage** - Run `just context-check` regularly
 4. **One task per session** - Maintains focus
+5. **Validate before commits** - Ensure context stays healthy
 
-### 🔧 Customization
+### 🤖 Automation Status
+
+```mermaid
+graph LR
+    subgraph "Available Now"
+        Manual[Manual Commands<br/>just context-check<br/>just token-analyze]
+    end
+    
+    subgraph "Prepared for Future"
+        Hooks[Session Hooks<br/>Start/Monitor/End]
+        Auto[Automatic Validation<br/>Token Monitoring]
+    end
+    
+    Manual -->|When Claude adds<br/>hook support| Auto
+    
+    style Manual fill:#99ff99
+    style Hooks fill:#ffcc99
+    style Auto fill:#ccccff
+```
+
+**Current**: Run commands manually during sessions  
+**Future**: Hooks will run automatically when Claude Code adds support
+
+### 🔧 Available Commands
+
+```bash
+# Context validation
+just context-check      # Full health check (validate + analyze)
+just context-validate   # Validate structure against limits
+just token-analyze      # Analyze token usage in directories
+
+# Manual hook execution (until automated)
+bash .claude/automation/hooks/session-start-hook.sh
+bash .claude/automation/hooks/session-end-hook.sh
+```
+
+### ⚙️ Customization
 
 Edit `.claude/context-map.json` to:
 - Adjust token limits
 - Change loading rules
 - Add new modules
 - Set file size limits
+- Configure tool loadouts per task
 
 ### ❓ Troubleshooting
 

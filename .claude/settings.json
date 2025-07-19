@@ -127,5 +127,21 @@
     "backup_before_major_changes": true,
     "validate_migrations": true,
     "test_before_deploy": true
+  },
+  
+  "automation_hooks": {
+    "session_start": ".claude/automation/hooks/session-start-hook.sh",
+    "context_monitor": ".claude/automation/hooks/context-monitor-hook.sh",
+    "session_end": ".claude/automation/hooks/session-end-hook.sh",
+    "pre_commit": "just quality",
+    "post_task": "just context-check"
+  },
+  
+  "context_automation": {
+    "validate_on_start": true,
+    "monitor_token_usage": true,
+    "auto_summarize": true,
+    "clear_scratchpad_on_start": true,
+    "log_sessions": true
   }
 }

@@ -43,6 +43,10 @@ just import-clear type file.json       # Clear and import
 just i12-import file.json              # Import 360K+ power records
 just i12-import-resume file.json 50000 # Resume from record 50000
 just i12-validate file.json            # Validate without importing
+
+# Direct CLI usage (backend/scripts/import_i12_data.py)
+python scripts/import_i12_data.py data.json --batch-size 1000 --memory-limit 1.0
+python scripts/import_i12_data.py data.json --resume-from 50000 --clear-cache
 ```
 
 **System Status & Performance:**
@@ -188,8 +192,15 @@ mids-hero-web/
 ### Recent Achievements
 
 1. **I12 Streaming Parser**: Production-ready parser for 360K+ power records
+   - `StreamingJsonReader`: Memory-efficient chunked JSON processing  
+   - `PowerDataProcessor`: I12 format transformation with validation
+   - `I12StreamingParser`: Main orchestrator with progress tracking
 2. **Performance Optimization**: <100ms queries, <1GB memory usage, multi-tier caching
+   - `PowerCacheService`: Multi-tier LRU + Redis caching for power queries
+   - Database optimizations via migration `0236d1f741c9`
 3. **Database Optimization**: Composite indexes, GIN indexes, materialized views
+   - Import logs table for tracking large data imports
+   - Power build summary materialized view for fast queries
 
 ## 🤖 AI Agent Guidelines
 

@@ -171,7 +171,7 @@ Examples:
             logger.warning("Errors details (first 10):")
             for i, error in enumerate(parser.errors[:10]):
                 logger.warning(
-                    f"  {i+1}. Record {error['record_index']}: {error['error']}"
+                    f"  {i + 1}. Record {error['record_index']}: {error['error']}"
                 )
 
         # Cache statistics

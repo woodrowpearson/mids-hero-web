@@ -95,27 +95,27 @@ context_management:
   warning_threshold: 0.9
   critical_threshold: 0.95
   claude_md_limit: 5000
-  
+
 memory_persistence:
   enabled: true
-  storage_path: ".claude/shared/memory/"
+  storage_path: ".claude/sessions/"
   sync_to_remote: false
   patterns_file: "patterns.json"
-  
+
 security:
   require_signed_commits: false
   allow_force_push: false
   protect_main_branch: true
   scan_for_secrets: true
   check_environment_vars: true
-  
+
 monitoring:
   track_metrics: true
   metrics_endpoint: null
   alert_on_failure: true
   context_health_checks: true
   epic_progress_tracking: true
-  
+
 # Mids Hero Web specific settings
 mids_hero_web:
   epic_tracking:
@@ -124,7 +124,7 @@ mids_hero_web:
     i12_parser_complete: true
     blocker_check: true
     epic_files_path: ".claude/epics/"
-  
+
   tech_stack:
     backend:
       framework: "FastAPI"
@@ -144,7 +144,7 @@ mids_hero_web:
       containerization: "Docker"
       orchestration: "Docker Compose"
       cloud_target: "Google Cloud Platform"
-  
+
   review_focus:
     - "Database model accuracy for City of Heroes data"
     - "I12 streaming parser performance and memory management"

@@ -91,9 +91,28 @@
     },
     "epic3": {
       "name": "Backend API",
-      "status": "planned",
-      "progress": 0,
-      "tasks": []
+      "status": "in_progress",
+      "progress": 25,
+      "tasks": [
+        "✅ Task 3.1: Core Data Endpoints (Read Operations) - Completed",
+        "✅ GET /api/archetypes endpoint verified",
+        "✅ GET /api/archetypes/{id} endpoint verified",
+        "✅ GET /api/powersets/{id} endpoint implemented",
+        "✅ GET /api/powersets/{id}/detailed endpoint added",
+        "✅ GET /api/powers/{id} endpoint fixed (decimal serialization)",
+        "✅ GET /api/enhancements endpoints verified",
+        "✅ GET /api/salvage endpoints implemented",
+        "✅ GET /api/recipes endpoints implemented",
+        "🚧 Task 3.2: Build Simulation & Calculation Endpoints - Pending",
+        "🚧 Task 3.3: Write/Modify Operations - Pending",
+        "🚧 Task 3.4: Testing the API - Pending"
+      ],
+      "github_issues_in_progress": [
+        "#36 Epic 3: Backend API Development",
+        "#37 Task 3.1: Core Data Endpoints (Read Operations)"
+      ],
+      "current_branch": "feature/issue-36-epic-3-api-endpoints",
+      "pull_request": "PR #193 - feat: Complete Epic 3 Task 3.1 - Core Data Endpoints"
     },
     "epic4": {
       "name": "Frontend",
@@ -115,6 +134,12 @@
     }
   },
   "recent_activities": [
+    {
+      "timestamp": "2025-07-19T19:30:00Z",
+      "branch": "feature/issue-36-epic-3-api-endpoints",
+      "action": "epic3_task31_api_endpoints",
+      "description": "Completed Epic 3 Task 3.1: Core Data Endpoints. Verified existing endpoints for archetypes, powersets, powers, and enhancements. Fixed decimal serialization issues in Power schema. Added Salvage and Recipe schemas. Created misc_data router for salvage/recipe endpoints. Updated tests to match API response format. Created PR #193 with all CI checks passing."
+    },
     {
       "timestamp": "2025-07-19T17:00:00Z",
       "branch": "feature/git-workflow-protection",
@@ -187,6 +212,6 @@
       "description": "Implemented specialized I12 streaming parser for 360K+ power data with memory optimization, multi-tier caching, database optimizations, and comprehensive error handling. Created PR #173."
     }
   ],
-  "commit_count": 143,
-  "files_modified": 12
+  "commit_count": 146,
+  "files_modified": 15
 }

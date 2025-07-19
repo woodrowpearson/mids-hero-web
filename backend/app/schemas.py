@@ -8,7 +8,7 @@ from datetime import datetime
 from decimal import Decimal
 from typing import Any
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, field_serializer
 
 
 # Base classes for common patterns
@@ -100,6 +100,13 @@ class PowerBase(BaseModel):
     effects: dict[str, Any] | None = None
     icon_path: str | None = None
     display_order: int | None = None
+    internal_name: str | None = None
+    requires_line_of_sight: bool = True
+    modes_required: str | None = None
+    modes_disallowed: str | None = None
+    ai_report: str | None = None
+    effect_groups: dict[str, Any] | None = None
+    display_info: dict[str, Any] | None = None
 
 
 class PowerCreate(PowerBase):
@@ -124,11 +131,33 @@ class PowerUpdate(BaseModel):
     effects: dict[str, Any] | None = None
     icon_path: str | None = None
     display_order: int | None = None
+    internal_name: str | None = None
+    requires_line_of_sight: bool | None = None
+    modes_required: str | None = None
+    modes_disallowed: str | None = None
+    ai_report: str | None = None
+    effect_groups: dict[str, Any] | None = None
+    display_info: dict[str, Any] | None = None
 
 
 class Power(PowerBase, TimestampedBase, BaseEntitySchema):
     id: int
     powerset_id: int
+
+    @field_serializer(
+        "accuracy",
+        "damage_scale",
+        "endurance_cost",
+        "recharge_time",
+        "activation_time",
+        mode="wrap",
+    )
+    def serialize_decimal(self, value: Decimal | None, nxt) -> float | None:
+        if value is None:
+            return None
+        if isinstance(value, Decimal):
+            return float(value)
+        return nxt(value)
 
 
 # Power Prerequisite Schemas
@@ -252,6 +281,61 @@ class PowerEnhancementCompatibility(
 ):
     id: int
     power_id: int
+    created_at: datetime
+
+
+# Salvage Schemas
+class SalvageBase(BaseModel):
+    internal_name: str
+    display_name: str
+    salvage_type: str | None = None  # common, uncommon, rare
+    origin: str | None = None  # tech, magic, natural
+    level_range: str | None = None  # 10-25, 26-40, 41-50
+    icon_path: str | None = None
+
+
+class SalvageCreate(SalvageBase):
+    pass
+
+
+class Salvage(SalvageBase, TimestampedBase, BaseEntitySchema):
+    id: int
+
+
+# Recipe Schemas
+class RecipeBase(BaseModel):
+    internal_name: str
+    display_name: str
+    enhancement_id: int | None = None
+    recipe_type: str | None = None  # common, uncommon, rare, very_rare
+    level_min: int = 10
+    level_max: int = 50
+    crafting_cost: int | None = None
+    crafting_cost_premium: int | None = None
+    memorized: bool = False
+
+
+class RecipeCreate(RecipeBase):
+    pass
+
+
+class Recipe(RecipeBase, TimestampedBase, BaseEntitySchema):
+    id: int
+
+
+# Recipe Salvage Schemas
+class RecipeSalvageBase(BaseModel):
+    recipe_id: int
+    salvage_id: int
+    quantity: int = 1
+
+
+class RecipeSalvageCreate(RecipeSalvageBase):
+    pass
+
+
+class RecipeSalvage(RecipeSalvageBase, BaseEntitySchema):
+    id: int
     created_at: datetime
 
 

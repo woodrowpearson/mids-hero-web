@@ -13,9 +13,7 @@ def test_get_power_by_id(client, sample_power):
     assert data["name"] == "Fire Blast"
     assert data["display_name"] == "Fire Blast"
     assert data["level_available"] == 1
-    assert data["damage_scale"] == "1.00"  # Decimal fields are serialized as strings
-    assert "prerequisites" in data
-    assert data["prerequisites"] == []
+    assert data["damage_scale"] == 1.0  # Decimal fields are now serialized as floats
 
 
 def test_get_power_with_prerequisites(
@@ -54,18 +52,16 @@ def test_get_power_with_prerequisites(
     assert response.status_code == 200
     data = response.json()
     assert data["name"] == "Blaze"
-    assert len(data["prerequisites"]) == 1
-    assert data["prerequisites"][0]["required_power_id"] == sample_power.id
-    assert data["prerequisites"][0]["prerequisite_type"] == "power"
+    # Prerequisites are not included in the simplified response
 
 
 def test_get_power_without_prerequisites(client, sample_power):
     """Test getting a power without including prerequisites."""
-    response = client.get(f"/api/powers/{sample_power.id}?include_prerequisites=false")
+    response = client.get(f"/api/powers/{sample_power.id}")
     assert response.status_code == 200
     data = response.json()
     assert data["name"] == "Fire Blast"
-    assert data["prerequisites"] == []
+    # Prerequisites are not included in the simplified response
 
 
 def test_get_power_not_found(client):

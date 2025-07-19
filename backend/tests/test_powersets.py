@@ -12,13 +12,12 @@ def test_get_powerset_by_id(client, sample_powerset):
     data = response.json()
     assert data["name"] == "Fire Blast"
     assert data["display_name"] == "Fire Blast"
-    assert "powers" in data
-    assert data["powers"] == []  # No powers added yet
+    # Powers are not included in the basic powerset response
 
 
 def test_get_powerset_with_powers(client, sample_powerset, sample_power):
-    """Test getting a powerset with its powers."""
-    response = client.get(f"/api/powersets/{sample_powerset.id}")
+    """Test getting a powerset with its powers using the detailed endpoint."""
+    response = client.get(f"/api/powersets/{sample_powerset.id}/detailed")
     assert response.status_code == 200
     data = response.json()
     assert data["name"] == "Fire Blast"
@@ -29,11 +28,11 @@ def test_get_powerset_with_powers(client, sample_powerset, sample_power):
 
 def test_get_powerset_without_powers(client, sample_powerset, sample_power):
     """Test getting a powerset without including powers."""
-    response = client.get(f"/api/powersets/{sample_powerset.id}?include_powers=false")
+    response = client.get(f"/api/powersets/{sample_powerset.id}")
     assert response.status_code == 200
     data = response.json()
     assert data["name"] == "Fire Blast"
-    assert data["powers"] == []
+    # Powers are not included in the basic response
 
 
 def test_get_powerset_not_found(client):

@@ -3,6 +3,7 @@
 import json
 import logging
 from abc import ABC, abstractmethod
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -144,7 +145,13 @@ class BaseImporter(ABC):
             records_processed=0,
             records_imported=0,
             errors=0,
+            started_at=datetime.utcnow(),
         )
+        
+        # Add import_log to session immediately to prevent detached instance errors
+        session.add(import_log)
+        session.commit()
+        import_log_id = import_log.id
 
         try:
             # Load and prepare data
@@ -204,15 +211,16 @@ class BaseImporter(ABC):
             if batch:
                 self.imported_count += self.import_batch(session, batch)
 
-            # Update import log
+            # Update import log - refresh from DB to avoid detached instance issues
+            import_log = session.query(ImportLog).filter_by(id=import_log_id).first()
             import_log.records_processed = self.processed_count
             import_log.records_imported = self.imported_count
             import_log.errors = len(self.errors)
             import_log.import_data = {
                 "errors": self.errors[:100]  # Store first 100 errors
             }
+            import_log.completed_at = datetime.utcnow()
 
-            session.add(import_log)
             session.commit()
 
             logger.info(
@@ -222,15 +230,26 @@ class BaseImporter(ABC):
 
         except Exception as e:
             logger.error(f"Import failed: {e}")
-            import_log.errors = -1  # Indicate fatal error
-            import_log.import_data = {"fatal_error": str(e)}
-            session.add(import_log)
-            session.commit()
+            # Refresh import_log from DB to avoid detached instance issues
+            try:
+                import_log = session.query(ImportLog).filter_by(id=import_log_id).first()
+                if import_log:
+                    import_log.errors = -1  # Indicate fatal error
+                    import_log.import_data = {"fatal_error": str(e)}
+                    import_log.completed_at = datetime.utcnow()
+                    session.commit()
+            except Exception as log_error:
+                logger.error(f"Failed to update import log: {log_error}")
             raise
         finally:
             session.close()
 
-        return import_log
+        # Return a simple dict instead of the SQLAlchemy object to avoid detached instance issues
+        return type('ImportLogResult', (), {
+            'records_imported': self.imported_count,
+            'records_processed': self.processed_count,
+            'errors': len(self.errors)
+        })()
 
     def clear_existing_data(self) -> None:
         """Clear existing data for this model type.

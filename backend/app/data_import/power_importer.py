@@ -114,14 +114,20 @@ class PowerImporter(BaseImporter):
             Dictionary ready for Power model creation
         """
         # Handle different data formats (I9 vs I12)
-        if "powerset" in raw_data:
+        if "powerset" in raw_data and isinstance(raw_data["powerset"], str):
+            # I12 format with direct powerset name
+            powerset_name = raw_data.get("powerset", "")
+            name = raw_data.get("display_name", "")
+            level = raw_data.get("level_available", 1)
+            power_data = raw_data
+        elif "powerset" in raw_data:
             # I9 format
             powerset_name = raw_data.get("powerset", "")
             power_data = raw_data.get("power", {})
             name = power_data.get("name", "")
             level = power_data.get("level", 1)
         else:
-            # I12 or other format
+            # Other format
             powerset_name = raw_data.get("powerset_name", "")
             name = raw_data.get("name", "")
             level = raw_data.get("level_available", 1)

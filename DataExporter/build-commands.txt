@@ -1,0 +1,43 @@
+# PowerShell Commands to Build DataExporter
+# Run these commands directly in PowerShell (no script needed)
+
+# Option 1: Temporarily allow script execution for current session only
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
+
+# Then run the script:
+.\test-build.ps1
+
+# ===== OR =====
+
+# Option 2: Run commands directly without a script
+# (Copy and paste these commands into PowerShell)
+
+Write-Host "Testing DataExporter build with MidsReborn fixes..." -ForegroundColor Cyan
+
+# Clean previous builds
+Write-Host "`nCleaning previous builds..." -ForegroundColor Yellow
+dotnet clean
+
+# Restore packages
+Write-Host "`nRestoring packages..." -ForegroundColor Yellow
+dotnet restore
+
+# Build the project
+Write-Host "`nBuilding DataExporter..." -ForegroundColor Yellow
+dotnet build
+
+# Check if build succeeded
+if ($LASTEXITCODE -eq 0) {
+    Write-Host "`nBuild succeeded!" -ForegroundColor Green
+    Write-Host "`nYou can now run the export with:"
+    Write-Host "dotnet run -- C:\Users\Public\Documents\MidsExport\MidsData\input C:\Users\Public\Documents\MidsExport\MidsData\output" -ForegroundColor Cyan
+} else {
+    Write-Host "`nBuild failed. Please check the errors above." -ForegroundColor Red
+}
+
+# ===== OR =====
+
+# Option 3: Simple build commands (easiest)
+dotnet clean
+dotnet restore
+dotnet build

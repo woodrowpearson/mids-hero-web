@@ -38,6 +38,7 @@ class Archetype(Base):
     hit_points_base = Column(Integer)
     hit_points_max = Column(Integer)
     inherent_power_id = Column(Integer, ForeignKey("powers.id"))
+    icon_path = Column(String(255))  # Added for archetype icons
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
@@ -117,9 +118,18 @@ class Power(Base):
     # Effects stored as JSONB for flexibility
     effects = Column(JSON)
 
+    # Additional power data fields
+    internal_name = Column(String(100))  # Internal power name from game data
+    requires_line_of_sight = Column(Boolean, default=True)
+    modes_required = Column(JSON)  # JSON array of required modes
+    modes_disallowed = Column(JSON)  # JSON array of disallowed modes
+    ai_report = Column(String(50))  # AI behavior type
+    effect_groups = Column(JSON)  # Detailed effect group data
+
     # UI information
     icon_path = Column(String(255))
     display_order = Column(Integer)
+    display_info = Column(JSON)  # Additional display information
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
@@ -198,7 +208,9 @@ class Enhancement(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(100), nullable=False, index=True)
-    display_name = Column(String(100))
+    display_name = Column(String(200))  # Increased size based on data
+    short_name = Column(String(50))  # Added for enhancement abbreviations
+    description = Column(Text)  # Added for enhancement descriptions
     enhancement_type = Column(
         String(50), index=True
     )  # IO, SO, DO, TO, HamiO, set_piece
@@ -218,6 +230,8 @@ class Enhancement(Base):
     other_bonuses = Column(JSON)
     unique_enhancement = Column(Boolean, default=False)
     icon_path = Column(String(255))
+    recipe_name = Column(String(100))  # Added for recipe references
+    salvage_name = Column(String(100))  # Added for salvage references
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
@@ -363,6 +377,134 @@ class BuildEnhancement(Base):
     __table_args__ = (
         Index("idx_build_enh_power", "build_power_id"),
         Index("idx_build_enh_enhancement", "enhancement_id"),
+    )
+
+
+# Game Data Models
+
+
+class Salvage(Base):
+    """Salvage model representing crafting materials."""
+
+    __tablename__ = "salvage"
+
+    id = Column(Integer, primary_key=True, index=True)
+    internal_name = Column(String(100), unique=True, nullable=False, index=True)
+    display_name = Column(String(200), nullable=False)
+    salvage_type = Column(String(50))  # common, uncommon, rare
+    origin = Column(String(50))  # tech, magic, natural
+    level_range = Column(String(20))  # 10-25, 26-40, 41-50
+    icon_path = Column(String(255))
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    # Relationships
+    recipes = relationship("RecipeSalvage", back_populates="salvage")
+
+    __table_args__ = (Index("idx_salvage_type", "salvage_type", "origin"),)
+
+
+class Recipe(Base):
+    """Recipe model representing enhancement crafting recipes."""
+
+    __tablename__ = "recipes"
+
+    id = Column(Integer, primary_key=True, index=True)
+    internal_name = Column(String(100), unique=True, nullable=False, index=True)
+    display_name = Column(String(200), nullable=False)
+    enhancement_id = Column(Integer, ForeignKey("enhancements.id"))
+    recipe_type = Column(String(50))  # common, uncommon, rare, very_rare
+    level_min = Column(Integer, default=10)
+    level_max = Column(Integer, default=50)
+    crafting_cost = Column(Integer)  # Influence/Infamy cost
+    crafting_cost_premium = Column(Integer)  # Premium recipe cost
+    memorized = Column(Boolean, default=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    # Relationships
+    enhancement = relationship("Enhancement")
+    salvage_requirements = relationship("RecipeSalvage", back_populates="recipe")
+
+    __table_args__ = (Index("idx_recipe_level", "level_min", "level_max"),)
+
+
+class RecipeSalvage(Base):
+    """Recipe salvage requirements junction table."""
+
+    __tablename__ = "recipe_salvage"
+
+    id = Column(Integer, primary_key=True, index=True)
+    recipe_id = Column(Integer, ForeignKey("recipes.id"), nullable=False)
+    salvage_id = Column(Integer, ForeignKey("salvage.id"), nullable=False)
+    quantity = Column(Integer, default=1)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    # Relationships
+    recipe = relationship("Recipe", back_populates="salvage_requirements")
+    salvage = relationship("Salvage", back_populates="recipes")
+
+    __table_args__ = (
+        UniqueConstraint("recipe_id", "salvage_id", name="uq_recipe_salvage"),
+        Index("idx_recipe_salvage_recipe", "recipe_id"),
+        Index("idx_recipe_salvage_salvage", "salvage_id"),
+    )
+
+
+class AttributeModifier(Base):
+    """Attribute modifier model for detailed power effects."""
+
+    __tablename__ = "attribute_modifiers"
+
+    id = Column(Integer, primary_key=True, index=True)
+    power_id = Column(Integer, ForeignKey("powers.id"))
+    enhancement_id = Column(Integer, ForeignKey("enhancements.id"))
+    attribute_name = Column(String(100), nullable=False, index=True)
+    attribute_type = Column(String(50))  # magnitude, duration, etc.
+    modifier_table = Column(String(100))  # Reference to modifier table
+    scale = Column(Numeric(10, 4))
+    aspect = Column(String(50))  # Current, Max, Strength, etc.
+    application_type = Column(String(50))  # OnTick, OnActivate, etc.
+    target_type = Column(String(50))  # Self, Enemy, Ally, etc.
+    effect_area = Column(String(50))  # SingleTarget, Cone, Sphere, etc.
+    flags = Column(JSON)  # Various flags as JSON
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    # Relationships
+    power = relationship("Power")
+    enhancement = relationship("Enhancement")
+
+    __table_args__ = (
+        Index("idx_attribmod_power", "power_id"),
+        Index("idx_attribmod_enhancement", "enhancement_id"),
+        Index("idx_attribmod_attribute", "attribute_name"),
+    )
+
+
+class TypeGrade(Base):
+    """Type grade model for archetype-specific modifiers."""
+
+    __tablename__ = "type_grades"
+
+    id = Column(Integer, primary_key=True, index=True)
+    archetype_id = Column(Integer, ForeignKey("archetypes.id"))
+    attribute_name = Column(String(100), nullable=False)
+    grade_type = Column(String(50))  # melee_damage, ranged_damage, etc.
+    modifier_value = Column(Numeric(10, 4))
+    level_scaling = Column(JSON)  # Level-based scaling data
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    # Relationships
+    archetype = relationship("Archetype")
+
+    __table_args__ = (
+        UniqueConstraint(
+            "archetype_id", "attribute_name", "grade_type", name="uq_type_grade"
+        ),
+        Index("idx_type_grade_archetype", "archetype_id"),
+        Index("idx_type_grade_attribute", "attribute_name"),
     )
 
 

@@ -100,6 +100,11 @@ def db():
             conn.execute(text("DROP TABLE IF EXISTS build_powers CASCADE"))
             conn.execute(text("DROP TABLE IF EXISTS build_enhancements CASCADE"))
             conn.execute(text("DROP TABLE IF EXISTS builds CASCADE"))
+            conn.execute(text("DROP TABLE IF EXISTS recipe_salvage CASCADE"))
+            conn.execute(text("DROP TABLE IF EXISTS recipes CASCADE"))
+            conn.execute(text("DROP TABLE IF EXISTS salvage CASCADE"))
+            conn.execute(text("DROP TABLE IF EXISTS attribute_modifiers CASCADE"))
+            conn.execute(text("DROP TABLE IF EXISTS type_grades CASCADE"))
             conn.execute(text("DROP TABLE IF EXISTS set_bonuses CASCADE"))
             conn.execute(
                 text("DROP TABLE IF EXISTS power_enhancement_compatibility CASCADE")

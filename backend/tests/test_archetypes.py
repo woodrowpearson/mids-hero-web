@@ -31,8 +31,8 @@ def test_get_archetypes_pagination(client, db_session):
             name=f"Archetype{i}",
             display_name=f"Archetype {i}",
             description=f"Test archetype {i}",
-            hit_points_base=1000.0,
-            hit_points_max=1606.4,
+            hit_points_base=1000,
+            hit_points_max=1606,
             primary_group="damage",
             secondary_group="support",
         )

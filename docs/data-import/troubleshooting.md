@@ -109,7 +109,7 @@ ls -la data/json/
 pwd
 
 # Find JSON files
-find . -name "*.json" -type f
+fd -e json
 ```
 
 **Solutions:**

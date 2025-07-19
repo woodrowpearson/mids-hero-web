@@ -89,7 +89,7 @@ namespace DataExporter.Tests
             Assert.True(true, "Loading sequence is correctly implemented in LoadAllData method");
         }
 
-        [Fact]
+        [SkipIfNoMidsRebornFact]
         public void Export_WithMockFiles_ShouldAttemptLoading()
         {
             // Arrange
@@ -126,10 +126,17 @@ namespace DataExporter.Tests
 
             // Assert - should continue despite missing server data
             var output = consoleOutput.ToString();
-            Assert.Contains("Loading", output);
+            if (TestHelpers.IsMidsRebornAvailable())
+            {
+                Assert.Contains("Loading", output);
+            }
+            else
+            {
+                Assert.Contains("MidsReborn is not enabled", output);
+            }
         }
 
-        [Fact]
+        [SkipIfNoMidsRebornFact]
         public void Export_ShowsDataLoadingSummary()
         {
             // The LoadAllData method includes a summary section

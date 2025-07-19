@@ -76,7 +76,7 @@ namespace DataExporter.Tests
                 $"Export took too long: {stopwatch.ElapsedMilliseconds}ms");
         }
 
-        [Theory]
+        [SkipIfNoMidsRebornTheory]
         [InlineData("Happy Path", true, true, true)]
         [InlineData("Missing Main DB", false, true, true)]
         [InlineData("Missing Enhancements", true, false, true)]

@@ -1,6 +1,6 @@
-}# Development Workflow
+# Development Workflow
 
-This document outlines the standard development workflow for the Mids Hero Web project, integrating `just` commands and Claude custom commands.
+This document outlines the modern development workflow for the Mids Hero Web project using Claude Code with progressive context loading and automated workflow management.
 
 ## 🎯 Starting a New Work Session
 
@@ -16,40 +16,43 @@ just health          # Verify environment
 just dev             # Start all services
 ```
 
-### 2. Session Management (RECOMMENDED)
+### 2. Context Loading & Task Declaration
 
-Use Claude session commands to track your work:
+**Tell Claude what you're working on** to load the right context:
 
 ```bash
-# Start a new development session
-/project:session-start issue-123-feature-name
+# For Epic 2 completion (loads import + database modules)
+"I need to complete Epic 2 data import tasks"
 
-# Or use the debug session script
-.claude/commands/debug-session.sh
+# For Epic 3 API work (loads api + database modules)  
+"I need to work on Epic 3 API development"
+
+# For database work (loads database module)
+"I need to work on database migrations"
+
+# For frontend work (loads frontend module)
+"I need to build React components"
 ```
 
-### 3. Before Starting Work
+### 3. Branch Creation & Issue Selection
 
-- Check current epic status: `just epic-status`
-- Review blockers in CLAUDE.md
-- Update local branches: `git pull origin main`
-- Review import system status: `just import-status`
+```bash
+# Create feature branch for specific issue
+git checkout -b feature/issue-153-data-import
+
+# Pull latest changes
+git pull origin main
+
+# Check project status
+just health
+```
 
 ## 📝 Development Cycle
-
-### Creating Feature Branch
-
-```bash
-# Create feature branch following naming convention
-git checkout -b feature/issue-123-description
-# Or for epic work
-git checkout -b feature/epic-2-component-name
-```
 
 ### Active Development
 
 ```bash
-# Run tests while coding
+# Run tests while coding (if available)
 just test-watch
 
 # Fix linting issues as you go
@@ -57,31 +60,38 @@ just lint-fix
 
 # Check code quality frequently
 just quality
-
-# Update session progress
-/project:session-update "Implemented authentication logic"
 ```
+
+### Working with Claude Code
+
+**Tell Claude your specific task:**
+```bash
+# Be specific about what you want to implement
+"I want to implement GitHub issue #153 - Execute data import and populate database"
+
+"I want to create the authentication API endpoints for Epic 3"
+
+"I want to fix the database migration issue in issue #xyz"
+```
+
+**Claude will automatically:**
+- Load relevant context (database, import, api, frontend modules)
+- Apply appropriate tool restrictions based on task type
+- Monitor token usage and suggest context optimization
+- Log all activities for session tracking
 
 ### Committing Changes
 
-#### Option 1: Quick Commit & Push
-
+**Quick Commit & Push:**
 ```bash
 # Using just command (recommended)
 just ucp "feat: add authentication middleware"
-
-# Or using Claude custom command
-.claude/commands/ucp.sh "feat: add authentication middleware"
 ```
 
-#### Option 2: Full Progress Update & Push
-
+**Full Progress Update & Push:**
 ```bash
-# Complete workflow: update progress, commit, push (RECOMMENDED)
+# Complete workflow: update progress, commit, push
 just update-progress
-
-# Or use the script directly
-.claude/commands/update-progress.sh
 ```
 
 ### Code Quality Gates
@@ -92,7 +102,6 @@ Before pushing or creating PR:
 just quality         # Run all checks
 just test           # Ensure tests pass
 just build          # Verify build works
-just type-check     # TypeScript/Python type checking
 ```
 
 ## 🔧 Data Import Workflows (Epic 2)
@@ -140,29 +149,54 @@ just perf-bench         # Run benchmarks
 
 ## 📋 Epic-Specific Workflows
 
-### Epic 2: Data Import (Current - 95% Complete)
+### Epic 2: Data Import Completion (95% Complete - 5% Remaining)
 
-1. Run import health check: `just import-health`
-2. Import I12 data: `just i12-import file.json`
-3. Monitor progress and handle errors
-4. Verify with: `just import-stats`
-5. Document in session: `/project:session-update`
+**Remaining Tasks:**
+- Issue #153: Execute data import and populate database
+- Issue #170: Document data import process
 
-### Epic 3: Backend API
+**Workflow:**
+```bash
+# 1. Declare Epic 2 work to Claude
+"I need to complete Epic 2 data import tasks"
 
-1. Define Pydantic schemas
-2. Implement CRUD operations
-3. Add API endpoints
-4. Write comprehensive tests
-5. Update API documentation
+# 2. Check system status
+just import-health
 
-### Epic 4: Frontend
+# 3. Execute data import (main remaining task)
+just i12-import file.json
 
-1. Create component structure
-2. Implement state management
-3. Connect to backend API
-4. Add responsive design
-5. Test user workflows
+# 4. Verify completion
+just import-stats
+
+# 5. Document and close issues
+```
+
+### Epic 3: Backend API Development (Ready to Start)
+
+**Phase 1 (Can start immediately):**
+```bash
+# 1. Declare Epic 3 work to Claude  
+"I need to work on Epic 3 API development"
+
+# 2. Implement authentication system
+# 3. Create Pydantic schemas
+# 4. Build basic CRUD endpoints
+# 5. Set up testing framework
+```
+
+**Phase 2 (After Epic 2 completion):**
+- Build calculation engine
+- Advanced search and filtering
+- Import/Export integration
+- Performance optimization
+
+### Epic 2.5: Context Management (Optional Infrastructure)
+
+**Claude Code workflow improvements - not required for Epic 3:**
+- Session summarization
+- Agent-based context quarantine  
+- RAG documentation indexing
 
 ## Testing Strategy
 
@@ -203,24 +237,17 @@ npm run test:e2e                  # E2E with Cypress
 
 ## 🐛 Debugging
 
-### Quick Debug Session
-
-```bash
-# Start comprehensive debug session
-.claude/commands/debug-session.sh
-```
-
 ### Backend Debugging
 
 ```bash
 # View logs
-just logs backend       # Or: docker-compose logs -f backend
+just logs backend
 
 # Interactive Python shell
-just backend-shell      # Or: docker-compose exec backend python
+just backend-shell
 
 # Database queries
-just db-shell          # Or: docker-compose exec db psql -U postgres mids_web
+just db-shell
 
 # Check import errors
 just import-health
@@ -232,6 +259,18 @@ just import-health
 - React Developer Tools extension
 - Network tab for API calls
 - Console for runtime errors
+
+### Claude Code Debugging
+
+```bash
+# Check context health
+# (Context validation happens automatically via hooks)
+
+# Monitor token usage
+# (Automatic warnings at 90K tokens)
+
+# Use /clear between unrelated tasks to prevent context pollution
+```
 
 ## Performance Monitoring
 
@@ -258,10 +297,7 @@ just test
 just build
 
 # Update progress and documentation
-.claude/commands/update-progress.sh
-
-# End development session
-/project:session-end
+just update-progress
 ```
 
 ### Deployment Checklist
@@ -270,14 +306,13 @@ Before deploying:
 
 1. [ ] All tests passing: `just test`
 2. [ ] No linting errors: `just lint`
-3. [ ] Type checking passes: `just type-check`
-4. [ ] Database migrations tested: `just db-migrate`
-5. [ ] API documentation updated
-6. [ ] Frontend build optimized: `just build`
-7. [ ] Import system healthy: `just import-health`
-8. [ ] Environment variables configured
-9. [ ] Docker images built and tagged
-10. [ ] Health checks verified: `just health`
+3. [ ] Database migrations tested: `just db-migrate`
+4. [ ] API documentation updated
+5. [ ] Frontend build optimized: `just build`
+6. [ ] Import system healthy: `just import-health`
+7. [ ] Environment variables configured
+8. [ ] Docker images built and tagged
+9. [ ] Health checks verified: `just health`
 
 ## Troubleshooting
 
@@ -308,16 +343,27 @@ Before deploying:
 
 ## 💡 Best Practices
 
-### Session Management
+### Working with Claude Code
 
-1. **Always start work sessions**: Use `/project:session-start` or `just health`
-2. **Update progress regularly**: Use `/project:session-update` during work
-3. **End sessions properly**: Use `/project:session-end` when done
+1. **Declare your task clearly**: 
+   ```bash
+   "I need to work on Epic 2 data import completion"
+   "I want to implement GitHub issue #153"
+   "I need to create authentication API endpoints"
+   ```
+
+2. **Let Claude load appropriate context**:
+   - Epic 2 work → Loads import + database modules
+   - Epic 3 work → Loads api + database modules
+   - Database work → Loads database module only
+   - Frontend work → Loads frontend module only
+
+3. **Use /clear between unrelated tasks** to prevent context pollution
 
 ### Commit Workflow
 
-1. **Quick commits**: `just ucp "message"` or `.claude/commands/ucp.sh`
-2. **Full updates**: `.claude/commands/update-progress.sh`
+1. **Quick commits**: `just ucp "message"`
+2. **Full updates**: `just update-progress`
 3. **Conventional commits**:
    - `feat:` New features
    - `fix:` Bug fixes
@@ -329,40 +375,53 @@ Before deploying:
 
 ### Branch Management
 
-1. **Naming convention**: `type/issue-number-description`
-   - `feature/issue-168-i12-handler`
-   - `fix/issue-203-auth-bug`
-   - `docs/epic-2-import-guide`
+**Naming convention**: `feature/issue-number-description`
+- `feature/issue-153-data-import`
+- `feature/epic-3-authentication`
+- `fix/issue-203-auth-bug`
 
 ### Code Quality
 
-1. **Pre-push checklist**:
+**Pre-push checklist**:
+```bash
+just quality        # All checks
+just test          # Test suite
+just lint-fix      # Auto-fix issues
+```
 
-   ```bash
-   just quality        # All checks
-   just test          # Test suite
-   just lint-fix      # Auto-fix issues
-   ```
+**Data import checks** (Epic 2 work):
+```bash
+just import-health  # System health
+just import-stats   # Verify counts
+```
 
-2. **Import system checks** (when working on data):
-   ```bash
-   just import-health  # System health
-   just import-stats   # Verify counts
-   just cache-stats    # Performance
-   ```
+### Context Management
 
-### Token Management
+1. **Progressive loading**: Claude automatically loads only relevant modules
+2. **Token monitoring**: Automatic warnings at 90K tokens
+3. **Activity logging**: All tool usage automatically tracked
+4. **One task per session**: Maintains focus and context clarity
 
-1. **Monitor usage**: Check context size regularly
-2. **Use /clear**: Between unrelated tasks
-3. **Keep focused**: One issue per session
+## 🔄 Modern Claude Code Integration
 
-## 🔄 Workflow Integration with CLAUDE.md
+This workflow leverages Claude Code's advanced features:
 
-This workflow is designed to work with CLAUDE.md requirements:
+- **Progressive context loading** based on task declaration
+- **Automated hook system** for validation and logging
+- **Tool loadouts** that restrict tools based on task type
+- **Token management** with automatic warnings and optimization
+- **Activity tracking** for session continuity
 
-- Always run `just health` at session start
-- Use pre-approved commands in `.claude/commands/`
-- Update progress after completing tasks
-- Follow the just command patterns
-- Reference documentation in `.claude/` directory
+### Key Changes from Legacy Workflow
+
+❌ **Removed obsolete features**:
+- `/project:session-start` commands (not needed)
+- `.claude/commands/debug-session.sh` (deprecated)
+- Manual context management
+- Complex session tracking scripts
+
+✅ **New modern approach**:
+- Task declaration for automatic context loading
+- Automatic hook-based activity logging
+- Progressive module loading system
+- Simplified just-based commands

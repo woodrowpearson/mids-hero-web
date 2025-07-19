@@ -1,15 +1,15 @@
 {
   "version": "1.0",
   "description": "Claude Code settings for Mids Hero Web project",
-  "last_updated": "2025-01-19",
-  
+  "last_updated": "2025-07-19",
+
   "project": {
     "name": "mids-hero-web",
     "type": "web-application",
     "primary_languages": ["python", "typescript", "sql"],
     "context_strategy": "progressive-loading"
   },
-  
+
   "permissions": {
     "allowed_commands": [
       "Bash(git:*)",
@@ -47,7 +47,7 @@
       "Bash(wget * | bash:*)"
     ]
   },
-  
+
   "context_management": {
     "always_include": [
       "CLAUDE.md",
@@ -64,7 +64,7 @@
     "context_pruning_enabled": true,
     "prefer_concise_responses": true
   },
-  
+
   "chat_preferences": {
     "response_style": "concise",
     "code_style": "explicit",
@@ -72,7 +72,7 @@
     "emoji_usage": "disabled",
     "progress_indicators": true
   },
-  
+
   "tool_preferences": {
     "prefer_just_commands": true,
     "batch_operations": true,
@@ -80,7 +80,7 @@
     "error_recovery": "automatic",
     "validation_before_execution": true
   },
-  
+
   "custom_commands": {
     "shortcuts": {
       "dev": "just dev",
@@ -96,14 +96,14 @@
       "current": "/project:session-current"
     }
   },
-  
+
   "monitoring": {
     "track_token_usage": true,
     "alert_on_high_usage": true,
     "log_command_execution": true,
     "track_error_patterns": true
   },
-  
+
   "debug_mode": {
     "enabled": false,
     "stricter_limits": {
@@ -114,21 +114,21 @@
     "additional_logging": true,
     "verbose_errors": true
   },
-  
+
   "workspace_preferences": {
     "auto_save": true,
     "format_on_save": true,
     "organize_imports": true,
     "fix_on_save": true
   },
-  
+
   "safety_features": {
     "confirm_destructive_operations": true,
     "backup_before_major_changes": true,
     "validate_migrations": true,
     "test_before_deploy": true
   },
-  
+
   "hooks": {
     "UserPromptSubmit": [
       {
@@ -197,7 +197,7 @@
         "matcher": "",
         "hooks": [
           {
-            "type": "command", 
+            "type": "command",
             "command": "python3 -c \"import json; from pathlib import Path; stats_file = Path('.claude/state/session-stats.json'); stats = json.loads(stats_file.read_text()) if stats_file.exists() else {}; print(f'Session summary: {stats.get(\\\"tool_usage\\\", {})} tools used, {stats.get(\\\"files_modified\\\", 0)} files modified, {stats.get(\\\"commands_run\\\", 0)} commands run')\"",
             "timeout_seconds": 5,
             "run_in_background": true

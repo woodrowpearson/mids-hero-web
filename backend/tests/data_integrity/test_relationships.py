@@ -311,13 +311,13 @@ class TestDataIntegrity:
         )
 
         # Salvage rarity
-        valid_rarities = ["Common", "Uncommon", "Rare"]
+        valid_rarities = ["common", "uncommon", "rare"]
         invalid_salvage = (
-            db.query(Salvage).filter(~Salvage.rarity.in_(valid_rarities)).count()
+            db.query(Salvage).filter(~Salvage.salvage_type.in_(valid_rarities)).count()
         )
 
         # Salvage origin
-        valid_origins = ["Tech", "Magic", "Natural"]
+        valid_origins = ["tech", "magic", "natural"]
         invalid_origins = (
             db.query(Salvage).filter(~Salvage.origin.in_(valid_origins)).count()
         )

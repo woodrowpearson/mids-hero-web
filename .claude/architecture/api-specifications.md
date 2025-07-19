@@ -24,15 +24,15 @@ graph TB
         subgraph "Builds"
             GET_Builds[GET /builds]
             POST_Build[POST /builds]
-            GET_Build[GET /builds/{id}]
-            PUT_Build[PUT /builds/{id}]
-            DELETE_Build[DELETE /builds/{id}]
+            GET_Build["GET /builds/{id}"]
+            PUT_Build["PUT /builds/{id}"]
+            DELETE_Build["DELETE /builds/{id}"]
         end
         
         subgraph "Import/Export"
             POST_Import[POST /import]
-            GET_Export[GET /export/{id}]
-            GET_ImportStatus[GET /import/status/{job_id}]
+            GET_Export["GET /export/{id}"]
+            GET_ImportStatus["GET /import/status/{job_id}"]
         end
     end
     
@@ -296,7 +296,7 @@ sequenceDiagram
 
 ```mermaid
 graph TD
-    Request[GET /builds/{id}]
+    Request["GET /builds/{id}"]
     Auth{Authorized?}
     CheckOwner{Is Owner?}
     CheckPublic{Is Public?}

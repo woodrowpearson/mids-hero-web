@@ -2,6 +2,7 @@
 Test game logic and rule validation.
 """
 
+import pytest
 from sqlalchemy.orm import Session
 
 from app.models import (

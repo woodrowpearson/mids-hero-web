@@ -104,11 +104,11 @@ class TestEnhancementCalculations:
     def test_enhancement_values(self, db: Session):
         """Test that enhancement values follow ED (Enhancement Diversification) rules."""
         # Standard IO enhancement values
-        standard_values = {
-            "Common": 0.333,  # 33.3%
-            "Uncommon": 0.375,  # 37.5%
-            "Rare": 0.417,  # 41.7%
-        }
+        # standard_values = {
+        #     "Common": 0.333,  # 33.3%
+        #     "Uncommon": 0.375,  # 37.5%
+        #     "Rare": 0.417,  # 41.7%
+        # }
 
         enhancements = (
             db.query(Enhancement)

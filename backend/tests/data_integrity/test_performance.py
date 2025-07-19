@@ -7,7 +7,7 @@ import time
 
 import psutil
 import pytest
-from sqlalchemy import text
+from sqlalchemy import func, text
 from sqlalchemy.orm import Session
 
 from app.models import (
@@ -33,7 +33,7 @@ class TestDatabasePerformance:
             ("Powers by level", "SELECT * FROM powers WHERE level_available = 1"),
             (
                 "Enhancements by set",
-                "SELECT * FROM enhancements WHERE enhancement_set_id = 1",
+                "SELECT * FROM enhancements WHERE set_id = 1",
             ),
             (
                 "Recipes by enhancement",
@@ -77,7 +77,7 @@ class TestDatabasePerformance:
         start = time.time()
         enhancements = (
             db.query(Enhancement)
-            .filter(Enhancement.enhancement_set_id.isnot(None))
+            .filter(Enhancement.set_id.isnot(None))
             .all()
         )
         duration = time.time() - start
@@ -166,11 +166,11 @@ class TestImportPerformance:
             test_data.append(
                 {
                     "id": 90000 + i,
-                    "name": f"test_salvage_{i}",
+                    "internal_name": f"test_salvage_{i}",
                     "display_name": f"Test Salvage {i}",
-                    "rarity": "Common",
-                    "origin": "Tech",
-                    "sell_price": 100,
+                    "salvage_type": "common",
+                    "origin": "tech",
+                    "level_range": "10-25",
                 }
             )
 
@@ -312,7 +312,7 @@ class TestQueryOptimization:
         start_count = query_count
         _ = (
             db.query(
-                Powerset.id, Powerset.name, db.func.count(Power.id).label("power_count")
+                Powerset.id, Powerset.name, func.count(Power.id).label("power_count")
             )
             .outerjoin(Power)
             .group_by(Powerset.id)
@@ -341,7 +341,7 @@ class TestQueryOptimization:
                     Power.name,
                     Powerset.name,
                     Archetype.name,
-                    db.func.count(Enhancement.id),
+                    func.count(Enhancement.id),
                 )
                 .join(Powerset)
                 .join(Archetype)
@@ -415,7 +415,7 @@ class TestScalabilityBenchmarks:
             elif query_id % 3 == 1:
                 _ = (
                     db.query(Enhancement)
-                    .filter(Enhancement.enhancement_set_id.isnot(None))
+                    .filter(Enhancement.set_id.isnot(None))
                     .limit(50)
                     .all()
                 )

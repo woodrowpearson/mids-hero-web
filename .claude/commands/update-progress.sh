@@ -17,6 +17,12 @@ cd "$PROJECT_ROOT"
 
 echo -e "${BLUE}🔄 Updating project progress, committing, and pushing...${NC}"
 
+# Validate Git workflow first
+if ! bash "$PROJECT_ROOT/.claude/commands/validate-git-workflow.sh"; then
+    echo -e "${RED}❌ Git workflow validation failed. Please fix issues before proceeding.${NC}"
+    exit 1
+fi
+
 # Function to check if there are uncommitted changes
 has_changes() {
     [[ -n $(git status --porcelain) ]]

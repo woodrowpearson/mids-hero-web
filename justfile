@@ -48,6 +48,7 @@ dev:
 # Run health checks
 health:
     @echo "🏥 Running health checks..."
+    @bash .claude/commands/validate-git-workflow.sh || true
     {{python}} scripts/dev.py setup
     @echo "✅ Health checks passed"
 
@@ -355,6 +356,25 @@ frontend-dev:
 backend-dev:
     cd backend && {{uv}} run uvicorn main:app --reload --host 0.0.0.0 --port 8000
 
+# Git workflow commands
+git-validate:
+    @bash .claude/commands/validate-git-workflow.sh
+
+git-feature name:
+    @echo "🌿 Creating feature branch..."
+    @git checkout -b feature/{{name}}
+    @echo "✅ Created branch: feature/{{name}}"
+
+git-fix name:
+    @echo "🔧 Creating fix branch..."
+    @git checkout -b fix/{{name}}
+    @echo "✅ Created branch: fix/{{name}}"
+
+git-pr:
+    @echo "🔀 Creating pull request..."
+    @bash .claude/commands/validate-git-workflow.sh || exit 1
+    @gh pr create
+
 # Help - show this message
 help:
     @echo "Mids Hero Web Development Commands"
@@ -363,6 +383,12 @@ help:
     @echo "🚀 Quick Start:"
     @echo "  just quickstart           # Initial setup"
     @echo "  just dev                  # Start all services"
+    @echo ""
+    @echo "🌿 Git Workflow:"
+    @echo "  just git-validate         # Check Git workflow"
+    @echo "  just git-feature NAME     # Create feature branch"
+    @echo "  just git-fix NAME         # Create fix branch"
+    @echo "  just git-pr               # Create pull request"
     @echo ""
     @echo "📥 Data Import (All Parsers):"
     @echo "  just import-all DIR       # Import all data from directory"

@@ -46,9 +46,12 @@ just test          # Run tests
 just lint-fix      # Fix issues
 just quality       # All checks
 
-# Git workflow  
-just ucp "message"      # Quick commit
-just update-progress    # Full update
+# Git workflow (ALWAYS use feature branches!)
+git checkout -b feature/issue-XXX  # Create branch FIRST
+just ucp "message"                 # Quick commit
+just update-progress               # Full update
+git push -u origin feature/...     # Push branch
+gh pr create                       # Create PR
 
 # Database
 just db-migrate         # Run migrations
@@ -69,9 +72,11 @@ just i12-import file   # Import powers
 
 1. **ALWAYS use `just`** - Never run commands directly
 2. **Run `just health`** before starting work
-3. **One task per session** - Use `/clear` between
-4. **Update progress** - `just update-progress`
-5. **Check tokens** - Warning at 90K
+3. **NEVER commit to main** - Always create feature branch first
+4. **One task per session** - Use `/clear` between
+5. **Update progress** - `just update-progress`
+6. **Check tokens** - Warning at 90K
+7. **Create PR for changes** - Use `gh pr create` after pushing
 
 ## 📁 Key Locations
 

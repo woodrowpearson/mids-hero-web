@@ -147,7 +147,7 @@ class BaseImporter(ABC):
             errors=0,
             started_at=datetime.utcnow(),
         )
-        
+
         # Add import_log to session immediately to prevent detached instance errors
         session.add(import_log)
         session.commit()
@@ -232,7 +232,9 @@ class BaseImporter(ABC):
             logger.error(f"Import failed: {e}")
             # Refresh import_log from DB to avoid detached instance issues
             try:
-                import_log = session.query(ImportLog).filter_by(id=import_log_id).first()
+                import_log = (
+                    session.query(ImportLog).filter_by(id=import_log_id).first()
+                )
                 if import_log:
                     import_log.errors = -1  # Indicate fatal error
                     import_log.import_data = {"fatal_error": str(e)}
@@ -245,11 +247,15 @@ class BaseImporter(ABC):
             session.close()
 
         # Return a simple dict instead of the SQLAlchemy object to avoid detached instance issues
-        return type('ImportLogResult', (), {
-            'records_imported': self.imported_count,
-            'records_processed': self.processed_count,
-            'errors': len(self.errors)
-        })()
+        return type(
+            "ImportLogResult",
+            (),
+            {
+                "records_imported": self.imported_count,
+                "records_processed": self.processed_count,
+                "errors": len(self.errors),
+            },
+        )()
 
     def clear_existing_data(self) -> None:
         """Clear existing data for this model type.

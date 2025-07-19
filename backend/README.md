@@ -121,6 +121,9 @@ just import-powers /path/to/I9_structured.json
 # High-performance I12 import (360K+ records)
 just i12-import /path/to/I12_powers.json
 
+# Parse I12 text format to JSON
+python scripts/parse_i12_text.py I12_extracted.txt I12_powers.json
+
 # Check system status
 just import-health
 just import-stats
@@ -137,6 +140,28 @@ uv run python -m app.data_import.cli powers /path/to/powers.json
 # High-performance I12 import
 uv run python scripts/import_i12_data.py /path/to/I12_data.json
 ```
+
+### Import System Architecture
+
+**Base Importer (`app.data_import.base_importer`):**
+- Abstract base class for all data importers
+- Handles session management with automatic recovery from DetachedInstanceError
+- Provides batch processing, validation, and error tracking
+- Returns simple result objects instead of SQLAlchemy instances
+- Key methods:
+  - `import_data()`: Main import method with resume capability
+  - `transform_data()`: Abstract method for data transformation
+  - `validate_data()`: Data validation before import
+  - `import_batch()`: Batch import with automatic rollback on errors
+
+**I12 Text Parser (`scripts/parse_i12_text.py`):**
+- Converts I12_extracted.txt format to importable JSON
+- Handles powerset name mapping (e.g., Arachnos_Soldiers.Arachnos_Soldier → Arachnos_Soldier)
+- Parses 68,417+ power records from text format
+- Functions:
+  - `parse_i12_text_file()`: Main entry point
+  - `parse_powers_section()`: Extracts powers from I12 text
+  - `parse_single_power()`: Parses individual power data
 
 ### Performance Features
 

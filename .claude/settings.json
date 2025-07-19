@@ -126,7 +126,26 @@
     "confirm_destructive_operations": true,
     "backup_before_major_changes": true,
     "validate_migrations": true,
-    "test_before_deploy": true
+    "test_before_deploy": true,
+    "prevent_main_commits": true,
+    "require_feature_branches": true,
+    "enforce_pr_workflow": true
+  },
+
+  "git_workflow": {
+    "protected_branches": ["main", "master"],
+    "branch_naming_pattern": "^(feature|fix|docs|test|chore|refactor|perf)/.*",
+    "require_pull_requests": true,
+    "auto_create_branch": true,
+    "branch_prefix_mapping": {
+      "feat": "feature",
+      "fix": "fix",
+      "docs": "docs",
+      "test": "test",
+      "chore": "chore",
+      "refactor": "refactor",
+      "perf": "perf"
+    }
   },
 
   "hooks": {
@@ -166,6 +185,17 @@
             "type": "command",
             "command": "python3 .claude/hooks/activity-logger.py",
             "run_in_background": true
+          }
+        ]
+      },
+      {
+        "matcher": "Bash(git commit:*)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/git-commit-hook.sh",
+            "timeout_seconds": 10,
+            "continue_on_error": false
           }
         ]
       },

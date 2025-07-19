@@ -8,25 +8,40 @@
 
 Claude doesn't need everything at once. We load context progressively based on your task:
 
-```
-Always Loaded (10K tokens):
-├── CLAUDE.md              # Project overview & critical rules
-└── .claude/settings.json  # Configuration
-
-Loaded on Task:
-├── Database work  → .claude/modules/database/
-├── Import work    → .claude/modules/import/
-├── API work       → .claude/modules/api/
-└── Frontend work  → .claude/modules/frontend/
+```mermaid
+graph TD
+    Start[Claude Session Start] --> Core[Load Core Context<br/>~10K tokens]
+    Core --> CLAUDE[CLAUDE.md<br/>~2K tokens]
+    Core --> Settings[settings.json<br/>~3K tokens]
+    Core --> Map[context-map.json<br/>~2K tokens]
+    
+    User[User declares task] --> Detect{Detect Keywords}
+    Detect -->|"database"| DB[Load Database Module<br/>+15K tokens]
+    Detect -->|"import"| Import[Load Import Module<br/>+15K tokens]
+    Detect -->|"api"| API[Load API Module<br/>+15K tokens]
+    Detect -->|"frontend"| FE[Load Frontend Module<br/>+15K tokens]
+    
+    style Core fill:#99ff99
+    style DB fill:#ffcc99
+    style Import fill:#ffcc99
+    style API fill:#ffcc99
+    style FE fill:#ffcc99
 ```
 
 ### 📊 Token Budget Management
 
-Total context limit: 128K tokens
-- Core context: ~10K (always loaded)
-- Active modules: ~20-40K (task-specific)
-- Working memory: ~40-80K (conversation)
-- Safety reserve: ~8K
+```mermaid
+pie title "128K Token Allocation"
+    "Core Context (Always)" : 10
+    "Active Module (Task)" : 15
+    "Working Memory (Conversation)" : 80
+    "Safety Reserve" : 23
+```
+
+- **Core context**: ~10K (always loaded)
+- **Active modules**: ~20-40K (task-specific)
+- **Working memory**: ~40-80K (conversation)
+- **Safety reserve**: ~8K
 
 **Warnings at 90K, auto-pruning at 110K**
 

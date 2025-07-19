@@ -293,6 +293,22 @@ build:
     cd frontend && npm run build
     cd backend && {{uv}} build
 
+# Context Management Commands
+context-validate:
+    @echo "🔍 Validating Claude context structure..."
+    {{python}} scripts/context/validate_context.py
+
+token-analyze path=".claude/":
+    @echo "📊 Analyzing token usage in {{path}}..."
+    {{python}} scripts/context/analyze_token_usage.py {{path}}
+
+context-check:
+    @echo "🏥 Claude Context Full Check"
+    @just context-validate
+    @echo "\n📊 Token Usage Analysis:"
+    @just token-analyze .claude/core/
+    @just token-analyze .claude/modules/
+
 # Docker commands
 docker-up:
     docker-compose up -d

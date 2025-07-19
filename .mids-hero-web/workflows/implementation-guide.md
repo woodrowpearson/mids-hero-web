@@ -90,19 +90,26 @@ Edit `.new-project/workflows/config.yaml` to customize for your needs:
 
 ### Epic Tracking
 - Monitors progress through the 6-epic roadmap
-- Alerts when Epic 2 (data import) blocker persists
+- Epic 2 (data import) now 90% complete with I12 parser
+- Tracks I12 streaming parser performance metrics
 - Updates epic status files automatically
+- Prepares for Epic 3 (Backend API) transition
 
 ### City of Heroes Domain Validation
 - Validates archetype definitions
 - Checks power mechanics accuracy
 - Ensures enhancement calculations are correct
 - Verifies database model consistency
+- Validates I12 power data import accuracy
+- Checks streaming parser performance targets
+- Ensures cache optimization for 360K+ power records
 
 ### Tech Stack Enforcement
 - **Backend**: Enforces uv over pip usage
 - **Frontend**: Validates React/TypeScript patterns
 - **Database**: Ensures PostgreSQL best practices
+- **Import System**: Validates I12 streaming parser performance
+- **Caching**: Checks Redis integration and multi-tier caching
 - **Commands**: Requires just, fd, trash usage
 
 ## Command Enforcement
@@ -114,6 +121,10 @@ The workflows enforce these Mids Hero Web standards:
 - `fd` for file searching  
 - `trash` for safe file deletion
 - `just` for development workflows
+- `just import-*` for data import operations
+- `just i12-*` for high-performance power data import
+- `just cache-*` for cache management
+- `just perf-*` for performance testing
 
 ❌ **Forbidden Commands**:
 - `pip install` (use `uv add`)

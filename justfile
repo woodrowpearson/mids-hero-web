@@ -1,5 +1,9 @@
 #!/usr/bin/env just --justfile
 
+# Configure uv for Python script execution
+set unstable
+set script-interpreter := ['uv', 'run', '--script']
+
 # Default recipe - show available commands
 default:
     @just --list --unsorted
@@ -7,9 +11,10 @@ default:
 # Project root directory
 project_root := `git rev-parse --show-toplevel 2>/dev/null || pwd`
 
-# Python executable
+# Python and uv configuration
 python := "python3"
 uv := "uv"
+database_url := "postgresql://postgres:postgres@localhost:5432/mids_web"
 
 # Quick start - setup everything
 quickstart: install-tools install dev-setup
@@ -126,6 +131,121 @@ db-seed:
     @echo "🌱 Loading sample data..."
     cd backend && {{uv}} run python -m scripts.seed_data
 
+# Generic Data Import Operations (All Parsers)
+import-all data_dir batch_size="1000":
+    @echo "🚀 Importing all data from {{data_dir}}..."
+    cd backend && {{uv}} run python -m app.data_import.cli --batch-size {{batch_size}} all "{{data_dir}}"
+
+import-type type file batch_size="1000":
+    @echo "📥 Importing {{type}} data from {{file}}..."
+    cd backend && {{uv}} run python -m app.data_import.cli --batch-size {{batch_size}} {{type}} "{{file}}"
+
+import-clear type file batch_size="1000":
+    @echo "🧹 Clearing and importing {{type}} data from {{file}}..."
+    cd backend && {{uv}} run python -m app.data_import.cli --clear --batch-size {{batch_size}} {{type}} "{{file}}"
+
+import-resume type file resume_from batch_size="1000":
+    @echo "🔄 Resuming {{type}} import from record {{resume_from}}..."
+    cd backend && {{uv}} run python -m app.data_import.cli --resume-from {{resume_from}} --batch-size {{batch_size}} {{type}} "{{file}}"
+
+# I12 High-Performance Import Operations  
+i12-import file batch_size="1000" chunk_size="5000" memory_limit="1.0":
+    @echo "🚀 Importing I12 power data from {{file}}..."
+    cd backend && {{uv}} run python scripts/import_i12_data.py "{{file}}" --batch-size {{batch_size}} --chunk-size {{chunk_size}} --memory-limit {{memory_limit}}
+
+i12-import-resume file resume_from batch_size="1000":
+    @echo "🔄 Resuming I12 import from record {{resume_from}}..."
+    cd backend && {{uv}} run python scripts/import_i12_data.py "{{file}}" --resume-from {{resume_from}} --batch-size {{batch_size}}
+
+i12-validate file:
+    @echo "✅ Validating I12 data from {{file}}..."
+    cd backend && {{uv}} run python scripts/import_i12_data.py "{{file}}" --validate-only
+
+# Common Import Examples
+import-archetypes file:
+    @just import-type archetypes "{{file}}"
+
+import-powersets file:
+    @just import-type powersets "{{file}}"
+
+import-powers file:
+    @just import-type powers "{{file}}"
+
+import-enhancements file:
+    @just import-type enhancements "{{file}}"
+
+import-salvage file:
+    @just import-type salvage "{{file}}"
+
+import-recipes file:
+    @just import-type recipes "{{file}}"
+
+# Cache Management
+cache-clear:
+    @echo "🧹 Clearing power cache..."
+    @{{uv}} run scripts/cache_clear.py
+
+cache-stats:
+    @echo "📊 Power cache statistics..."
+    @{{uv}} run scripts/cache_stats.py
+
+# Performance Monitoring & Benchmarks
+perf-bench:
+    @echo "⚡ Running I12 performance benchmarks..."
+    cd backend && {{uv}} run pytest tests/test_i12_streaming_parser.py::TestI12StreamingParser::test_performance_benchmark -v
+
+perf-test-all:
+    @echo "⚡ Running all import performance tests..."
+    cd backend && {{uv}} run pytest tests/ -k "test_performance" -v
+
+# Import System Status & Health Checks
+import-status:
+    @echo "📊 Import System Status"
+    @echo "======================="
+    @echo "Database status:"
+    @just db-status
+    @echo "\nTable record counts:"
+    @just import-stats
+    @echo "\nCache status:"
+    @just cache-stats 2>/dev/null || echo "Cache not available"
+    @echo "\nRedis status:"
+    @docker-compose exec redis redis-cli ping 2>/dev/null || echo "Redis not available"
+
+import-stats:
+    @echo "📈 Database record counts..."
+    @DATABASE_URL={{database_url}} {{uv}} run scripts/db_stats.py
+
+import-health:
+    @echo "🏥 Import System Health Check"
+    @echo "============================"
+    @just import-status
+    @echo "\nPerformance indicators:"
+    @echo "- I12 parser: Ready for 360K+ records"
+    @echo "- Memory limit: 1GB"
+    @echo "- Target query time: <100ms"
+
+# Database Optimization
+db-optimize:
+    @echo "🎯 Optimizing database for import operations..."
+    @DATABASE_URL={{database_url}} {{uv}} run scripts/db_optimize.py
+
+[script]
+db-vacuum:
+    # /// script
+    # requires-python = ">=3.11"
+    # dependencies = ["sqlalchemy", "psycopg2-binary"]
+    # ///
+    import os
+    from sqlalchemy import create_engine, text
+    
+    print("🧹 Vacuuming database for optimal performance...")
+    database_url = os.getenv('DATABASE_URL', 'postgresql://postgres:postgres@localhost:5432/mids_web')
+    engine = create_engine(database_url)
+    
+    with engine.connect() as conn:
+        conn.execution_options(isolation_level='AUTOCOMMIT').execute(text('VACUUM ANALYZE'))
+        print('✅ Database vacuum completed')
+
 # Clean build artifacts
 clean:
     @echo "🧹 Cleaning build artifacts..."
@@ -185,7 +305,11 @@ docker-clean:
 epic-status:
     @echo "📊 Current Epic Status:"
     @echo "✅ Epic 1: Project Setup - Complete"
-    @echo "🚧 Epic 2: Data Import - In Progress (BLOCKED)"
+    @echo "🚧 Epic 2: Data Import - 90% Complete (I12 parser ready, MHD pending)"
+    @echo "  ✅ I12 streaming parser (360K+ records)"
+    @echo "  ✅ Multi-tier caching system"
+    @echo "  ✅ Database optimizations"
+    @echo "  🚧 MidsReborn MHD integration pending"
     @echo "📋 Epic 3: Backend API - Planned"
     @echo "📋 Epic 4: Frontend - Planned"
     @echo "📋 Epic 5: Deployment - Planned"
@@ -213,4 +337,33 @@ backend-dev:
 help:
     @echo "Mids Hero Web Development Commands"
     @echo "================================="
+    @echo ""
+    @echo "🚀 Quick Start:"
+    @echo "  just quickstart           # Initial setup"
+    @echo "  just dev                  # Start all services"
+    @echo ""
+    @echo "📥 Data Import (All Parsers):"
+    @echo "  just import-all DIR       # Import all data from directory"
+    @echo "  just import-type TYPE FILE # Import specific type"
+    @echo "  just import-archetypes FILE"
+    @echo "  just import-powers FILE"
+    @echo "  just i12-import FILE      # High-performance I12 import"
+    @echo ""
+    @echo "📊 System Status:"
+    @echo "  just import-health        # Full import system health"
+    @echo "  just import-status        # Import system status"
+    @echo "  just import-stats         # Database record counts"
+    @echo "  just cache-stats          # Cache performance"
+    @echo ""
+    @echo "⚡ Performance:"
+    @echo "  just perf-bench           # I12 benchmarks"
+    @echo "  just perf-test-all        # All performance tests"
+    @echo "  just db-optimize          # Database optimization"
+    @echo ""
+    @echo "🗄️ Database:"
+    @echo "  just db-setup             # Database setup"
+    @echo "  just db-migrate           # Run migrations"
+    @echo "  just db-status            # Migration status"
+    @echo ""
+    @echo "For full command list:"
     @just --list

@@ -2,11 +2,12 @@
 
 import logging
 from pathlib import Path
-from typing import Any, Dict, Type, Optional
+from typing import Any
 
 from sqlalchemy.orm import Session
 
-from app.models import AttributeModifier, TypeGrade, Power, Enhancement, Archetype
+from app.models import Archetype, AttributeModifier, Enhancement, Power, TypeGrade
+
 from .base_importer import BaseImporter
 
 logger = logging.getLogger(__name__)
@@ -17,14 +18,14 @@ class AttributeModifierImporter(BaseImporter):
 
     def __init__(self, database_url: str, batch_size: int = 1000):
         super().__init__(database_url, batch_size)
-        self._power_cache: Dict[str, int] = {}
-        self._enhancement_cache: Dict[str, int] = {}
+        self._power_cache: dict[str, int] = {}
+        self._enhancement_cache: dict[str, int] = {}
 
     def get_import_type(self) -> str:
         """Get the type of import for logging."""
         return "attribute_modifiers"
 
-    def get_model_class(self) -> Type[AttributeModifier]:
+    def get_model_class(self) -> type[AttributeModifier]:
         """Get the SQLAlchemy model class for this importer."""
         return AttributeModifier
 
@@ -42,7 +43,7 @@ class AttributeModifierImporter(BaseImporter):
             self._enhancement_cache = {e.name: e.id for e in enhancements}
             logger.info(f"Loaded {len(self._enhancement_cache)} enhancements into cache")
 
-    def transform_data(self, raw_data: Dict[str, Any]) -> Dict[str, Any]:
+    def transform_data(self, raw_data: dict[str, Any]) -> dict[str, Any]:
         """Transform raw attribute modifier data to model-compatible format.
 
         Args:
@@ -54,26 +55,26 @@ class AttributeModifierImporter(BaseImporter):
         # Extract power or enhancement reference
         power_name = raw_data.get("power_name") or raw_data.get("power_internal_name")
         enhancement_name = raw_data.get("enhancement_name")
-        
+
         power_id = None
         enhancement_id = None
-        
+
         if power_name:
             power_id = self._power_cache.get(power_name)
-        
+
         if enhancement_name:
             enhancement_id = self._enhancement_cache.get(enhancement_name)
-        
+
         # Skip if neither power nor enhancement found
         if not power_id and not enhancement_id:
-            raise ValueError(f"No valid power or enhancement reference found")
-        
+            raise ValueError("No valid power or enhancement reference found")
+
         # Extract attribute data
         attribute_name = raw_data.get("attribute", raw_data.get("attribute_name", ""))
-        
+
         # Parse modifier table reference
         modifier_table = raw_data.get("table", raw_data.get("modifier_table", ""))
-        
+
         # Parse scale value
         scale = raw_data.get("scale", raw_data.get("modifier_scale", 0.0))
         if isinstance(scale, str):
@@ -81,7 +82,7 @@ class AttributeModifierImporter(BaseImporter):
                 scale = float(scale)
             except ValueError:
                 scale = 0.0
-        
+
         transformed = {
             "power_id": power_id,
             "enhancement_id": enhancement_id,
@@ -95,21 +96,21 @@ class AttributeModifierImporter(BaseImporter):
             "effect_area": raw_data.get("area", raw_data.get("effect_area", "SingleTarget")),
             "flags": raw_data.get("flags", {}),
         }
-        
+
         return transformed
 
-    def validate_data(self, data: Dict[str, Any]) -> bool:
+    def validate_data(self, data: dict[str, Any]) -> bool:
         """Validate transformed attribute modifier data."""
         # Must have either power_id or enhancement_id
         if not data.get("power_id") and not data.get("enhancement_id"):
             logger.error("Must have either power_id or enhancement_id")
             return False
-        
+
         # Check required fields
         if not data.get("attribute_name"):
             logger.error("Missing required field: attribute_name")
             return False
-        
+
         # Validate scale
         if data.get("scale") is not None:
             try:
@@ -117,7 +118,7 @@ class AttributeModifierImporter(BaseImporter):
             except (TypeError, ValueError):
                 logger.error(f"Invalid scale value: {data.get('scale')}")
                 return False
-        
+
         return True
 
     def import_data(self, file_path: Path, resume_from: int = 0) -> None:
@@ -128,7 +129,7 @@ class AttributeModifierImporter(BaseImporter):
             self._load_enhancement_cache(session)
         finally:
             session.close()
-        
+
         return super().import_data(file_path, resume_from)
 
 
@@ -137,13 +138,13 @@ class TypeGradeImporter(BaseImporter):
 
     def __init__(self, database_url: str, batch_size: int = 1000):
         super().__init__(database_url, batch_size)
-        self._archetype_cache: Dict[str, int] = {}
+        self._archetype_cache: dict[str, int] = {}
 
     def get_import_type(self) -> str:
         """Get the type of import for logging."""
         return "type_grades"
 
-    def get_model_class(self) -> Type[TypeGrade]:
+    def get_model_class(self) -> type[TypeGrade]:
         """Get the SQLAlchemy model class for this importer."""
         return TypeGrade
 
@@ -154,7 +155,7 @@ class TypeGradeImporter(BaseImporter):
             self._archetype_cache = {a.name: a.id for a in archetypes}
             logger.info(f"Loaded {len(self._archetype_cache)} archetypes into cache")
 
-    def transform_data(self, raw_data: Dict[str, Any]) -> Dict[str, Any]:
+    def transform_data(self, raw_data: dict[str, Any]) -> dict[str, Any]:
         """Transform raw type grade data to model-compatible format.
 
         Args:
@@ -166,14 +167,14 @@ class TypeGradeImporter(BaseImporter):
         # Extract archetype reference
         archetype_name = raw_data.get("archetype", raw_data.get("archetype_name", ""))
         archetype_id = self._archetype_cache.get(archetype_name)
-        
+
         if not archetype_id:
             raise ValueError(f"Unknown archetype: {archetype_name}")
-        
+
         # Extract attribute and grade info
         attribute_name = raw_data.get("attribute", raw_data.get("attribute_name", ""))
         grade_type = raw_data.get("grade_type", raw_data.get("type", ""))
-        
+
         # Parse modifier value
         modifier_value = raw_data.get("modifier", raw_data.get("modifier_value", 1.0))
         if isinstance(modifier_value, str):
@@ -181,7 +182,7 @@ class TypeGradeImporter(BaseImporter):
                 modifier_value = float(modifier_value)
             except ValueError:
                 modifier_value = 1.0
-        
+
         # Parse level scaling data
         level_scaling = raw_data.get("level_scaling", raw_data.get("scaling", {}))
         if isinstance(level_scaling, str):
@@ -189,9 +190,9 @@ class TypeGradeImporter(BaseImporter):
             try:
                 import json
                 level_scaling = json.loads(level_scaling)
-            except:
+            except (json.JSONDecodeError, TypeError):
                 level_scaling = {}
-        
+
         transformed = {
             "archetype_id": archetype_id,
             "attribute_name": attribute_name,
@@ -199,24 +200,24 @@ class TypeGradeImporter(BaseImporter):
             "modifier_value": modifier_value,
             "level_scaling": level_scaling,
         }
-        
+
         return transformed
 
-    def validate_data(self, data: Dict[str, Any]) -> bool:
+    def validate_data(self, data: dict[str, Any]) -> bool:
         """Validate transformed type grade data."""
         # Check required fields
         if not data.get("archetype_id"):
             logger.error("Missing required field: archetype_id")
             return False
-        
+
         if not data.get("attribute_name"):
             logger.error("Missing required field: attribute_name")
             return False
-        
+
         if not data.get("grade_type"):
             logger.error("Missing required field: grade_type")
             return False
-        
+
         # Validate modifier value
         if data.get("modifier_value") is not None:
             try:
@@ -227,7 +228,7 @@ class TypeGradeImporter(BaseImporter):
             except (TypeError, ValueError):
                 logger.error(f"Invalid modifier_value: {data.get('modifier_value')}")
                 return False
-        
+
         return True
 
     def import_data(self, file_path: Path, resume_from: int = 0) -> None:
@@ -237,22 +238,22 @@ class TypeGradeImporter(BaseImporter):
             self._load_archetype_cache(session)
         finally:
             session.close()
-        
+
         return super().import_data(file_path, resume_from)
 
 
 # Combined importer for convenience
 class AttributeImporter:
     """Combined importer for both AttributeModifier and TypeGrade data."""
-    
+
     def __init__(self, database_url: str, batch_size: int = 1000):
         self.attribute_modifier_importer = AttributeModifierImporter(database_url, batch_size)
         self.type_grade_importer = TypeGradeImporter(database_url, batch_size)
-    
+
     def import_attribute_modifiers(self, file_path: Path, resume_from: int = 0):
         """Import attribute modifier data."""
         return self.attribute_modifier_importer.import_data(file_path, resume_from)
-    
+
     def import_type_grades(self, file_path: Path, resume_from: int = 0):
         """Import type grade data."""
         return self.type_grade_importer.import_data(file_path, resume_from)

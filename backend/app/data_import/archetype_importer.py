@@ -1,9 +1,10 @@
 """Importer for Archetype data."""
 
 import logging
-from typing import Any, Dict, Type
+from typing import Any
 
 from app.models import Archetype
+
 from .base_importer import BaseImporter
 
 logger = logging.getLogger(__name__)
@@ -16,11 +17,11 @@ class ArchetypeImporter(BaseImporter):
         """Get the type of import for logging."""
         return "archetypes"
 
-    def get_model_class(self) -> Type[Archetype]:
+    def get_model_class(self) -> type[Archetype]:
         """Get the SQLAlchemy model class for this importer."""
         return Archetype
 
-    def transform_data(self, raw_data: Dict[str, Any]) -> Dict[str, Any]:
+    def transform_data(self, raw_data: dict[str, Any]) -> dict[str, Any]:
         """Transform raw archetype data to model-compatible format.
 
         Args:
@@ -29,10 +30,9 @@ class ArchetypeImporter(BaseImporter):
         Returns:
             Dictionary ready for Archetype model creation
         """
-        # Extract archetype name and origins
+        # Extract archetype name
         name = raw_data.get("name", "")
-        origins = raw_data.get("origins", [])
-        
+
         # Map archetype names to primary/secondary groups
         # Based on City of Heroes archetype classifications
         archetype_groups = {
@@ -52,11 +52,11 @@ class ArchetypeImporter(BaseImporter):
             "Arachnos Widow": ("damage", "defense"),
             "Sentinel": ("damage", "defense"),
         }
-        
+
         primary_group, secondary_group = archetype_groups.get(
             name, ("damage", "support")  # Default values
         )
-        
+
         # Map archetype names to hit point values
         # These are approximate base values from the game
         hp_values = {
@@ -76,9 +76,9 @@ class ArchetypeImporter(BaseImporter):
             "Arachnos Widow": (1070, 2088),
             "Sentinel": (1184, 1807),
         }
-        
+
         hit_points_base, hit_points_max = hp_values.get(name, (1000, 1500))
-        
+
         # Build the transformed data
         transformed = {
             "name": name,
@@ -90,10 +90,10 @@ class ArchetypeImporter(BaseImporter):
             "hit_points_max": hit_points_max,
             "icon_path": f"archetypes/{name.lower().replace(' ', '_')}.png",
         }
-        
+
         return transformed
 
-    def validate_data(self, data: Dict[str, Any]) -> bool:
+    def validate_data(self, data: dict[str, Any]) -> bool:
         """Validate transformed archetype data.
 
         Args:
@@ -108,24 +108,24 @@ class ArchetypeImporter(BaseImporter):
             if not data.get(field):
                 logger.error(f"Missing required field: {field}")
                 return False
-        
+
         # Validate group values
         valid_groups = ["damage", "control", "defense", "support"]
         if data["primary_group"] not in valid_groups:
             logger.error(f"Invalid primary_group: {data['primary_group']}")
             return False
-        
+
         if data["secondary_group"] not in valid_groups:
             logger.error(f"Invalid secondary_group: {data['secondary_group']}")
             return False
-        
+
         # Validate hit points
         if data.get("hit_points_base", 0) <= 0:
             logger.error(f"Invalid hit_points_base: {data.get('hit_points_base')}")
             return False
-        
+
         if data.get("hit_points_max", 0) <= data.get("hit_points_base", 0):
-            logger.error(f"hit_points_max must be greater than hit_points_base")
+            logger.error("hit_points_max must be greater than hit_points_base")
             return False
-        
+
         return True

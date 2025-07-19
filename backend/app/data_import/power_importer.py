@@ -1,12 +1,13 @@
 """Importer for Power and Powerset data."""
 
 import logging
-from typing import Any, Dict, List, Type, Optional
 from pathlib import Path
+from typing import Any
 
 from sqlalchemy.orm import Session
 
-from app.models import Power, Powerset, Archetype, PowerPrerequisite
+from app.models import Archetype, Power, Powerset
+
 from .base_importer import BaseImporter
 
 logger = logging.getLogger(__name__)
@@ -17,13 +18,13 @@ class PowersetImporter(BaseImporter):
 
     def __init__(self, database_url: str, batch_size: int = 1000):
         super().__init__(database_url, batch_size)
-        self._archetype_cache: Dict[str, int] = {}
+        self._archetype_cache: dict[str, int] = {}
 
     def get_import_type(self) -> str:
         """Get the type of import for logging."""
         return "powersets"
 
-    def get_model_class(self) -> Type[Powerset]:
+    def get_model_class(self) -> type[Powerset]:
         """Get the SQLAlchemy model class for this importer."""
         return Powerset
 
@@ -34,7 +35,7 @@ class PowersetImporter(BaseImporter):
             self._archetype_cache = {arch.name: arch.id for arch in archetypes}
             logger.info(f"Loaded {len(self._archetype_cache)} archetypes into cache")
 
-    def transform_data(self, raw_data: Dict[str, Any]) -> Dict[str, Any]:
+    def transform_data(self, raw_data: dict[str, Any]) -> dict[str, Any]:
         """Transform raw powerset data to model-compatible format.
 
         Args:
@@ -46,19 +47,19 @@ class PowersetImporter(BaseImporter):
         # Extract archetype and powerset info
         archetype_name = raw_data.get("archetype", "")
         powerset_info = raw_data.get("powerset", {})
-        
+
         # Get archetype ID from cache
         archetype_id = self._archetype_cache.get(archetype_name)
         if not archetype_id:
             raise ValueError(f"Unknown archetype: {archetype_name}")
-        
+
         name = powerset_info.get("name", "")
         powerset_type = powerset_info.get("type", "primary")
-        
+
         # Normalize powerset type
         if powerset_type not in ["primary", "secondary", "pool", "epic", "incarnate"]:
             powerset_type = "primary"  # Default
-        
+
         transformed = {
             "name": name,
             "display_name": name,
@@ -67,7 +68,7 @@ class PowersetImporter(BaseImporter):
             "powerset_type": powerset_type,
             "icon_path": f"powersets/{name.lower().replace(' ', '_')}.png",
         }
-        
+
         return transformed
 
     def import_data(self, file_path: Path, resume_from: int = 0) -> None:
@@ -77,7 +78,7 @@ class PowersetImporter(BaseImporter):
             self._load_archetype_cache(session)
         finally:
             session.close()
-        
+
         return super().import_data(file_path, resume_from)
 
 
@@ -86,13 +87,13 @@ class PowerImporter(BaseImporter):
 
     def __init__(self, database_url: str, batch_size: int = 1000):
         super().__init__(database_url, batch_size)
-        self._powerset_cache: Dict[str, int] = {}
+        self._powerset_cache: dict[str, int] = {}
 
     def get_import_type(self) -> str:
         """Get the type of import for logging."""
         return "powers"
 
-    def get_model_class(self) -> Type[Power]:
+    def get_model_class(self) -> type[Power]:
         """Get the SQLAlchemy model class for this importer."""
         return Power
 
@@ -103,7 +104,7 @@ class PowerImporter(BaseImporter):
             self._powerset_cache = {ps.name: ps.id for ps in powersets}
             logger.info(f"Loaded {len(self._powerset_cache)} powersets into cache")
 
-    def transform_data(self, raw_data: Dict[str, Any]) -> Dict[str, Any]:
+    def transform_data(self, raw_data: dict[str, Any]) -> dict[str, Any]:
         """Transform raw power data to model-compatible format.
 
         Args:
@@ -125,13 +126,13 @@ class PowerImporter(BaseImporter):
             name = raw_data.get("name", "")
             level = raw_data.get("level_available", 1)
             power_data = raw_data
-        
+
         # Get powerset ID from cache
         powerset_id = self._powerset_cache.get(powerset_name)
         if not powerset_id:
             # Skip powers without valid powerset
             raise ValueError(f"Unknown powerset: {powerset_name}")
-        
+
         # Extract power attributes with defaults
         transformed = {
             "name": name,
@@ -160,10 +161,10 @@ class PowerImporter(BaseImporter):
             "effect_groups": power_data.get("effect_groups"),
             "display_info": power_data.get("display_info"),
         }
-        
+
         return transformed
 
-    def _determine_power_type(self, power_data: Dict[str, Any]) -> str:
+    def _determine_power_type(self, power_data: dict[str, Any]) -> str:
         """Determine the power type based on power data."""
         # Simple heuristic based on power attributes
         if power_data.get("damage_scale", 0) > 0:
@@ -186,30 +187,30 @@ class PowerImporter(BaseImporter):
             self._load_powerset_cache(session)
         finally:
             session.close()
-        
+
         return super().import_data(file_path, resume_from)
 
-    def validate_data(self, data: Dict[str, Any]) -> bool:
+    def validate_data(self, data: dict[str, Any]) -> bool:
         """Validate transformed power data."""
         # Check required fields
         if not data.get("name"):
             logger.error("Missing required field: name")
             return False
-        
+
         if not data.get("powerset_id"):
             logger.error("Missing required field: powerset_id")
             return False
-        
+
         # Validate numeric fields
         numeric_fields = [
-            "level_available", "accuracy", "endurance_cost", 
+            "level_available", "accuracy", "endurance_cost",
             "recharge_time", "activation_time"
         ]
-        
+
         for field in numeric_fields:
             value = data.get(field)
             if value is not None and value < 0:
                 logger.error(f"Invalid {field}: {value} (must be >= 0)")
                 return False
-        
+
         return True

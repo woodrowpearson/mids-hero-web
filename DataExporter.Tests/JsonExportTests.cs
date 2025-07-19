@@ -137,12 +137,19 @@ namespace DataExporter.Tests
 
             // Assert - should mention export attempt
             var output = consoleOutput.ToString();
-            // Either built-in or custom export should be attempted
-            Assert.True(
-                output.Contains("MidsReborn MHD to JSON Export") ||
-                output.Contains("export"),
-                "Export process should be attempted"
-            );
+            if (TestHelpers.IsMidsRebornAvailable())
+            {
+                // Either built-in or custom export should be attempted
+                Assert.True(
+                    output.Contains("MidsReborn MHD to JSON Export") ||
+                    output.Contains("export"),
+                    "Export process should be attempted"
+                );
+            }
+            else
+            {
+                Assert.Contains("MidsReborn is not enabled", output);
+            }
         }
     }
 }

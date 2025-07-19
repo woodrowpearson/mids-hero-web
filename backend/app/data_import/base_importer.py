@@ -147,7 +147,7 @@ class BaseImporter(ABC):
             errors=0,
             started_at=datetime.utcnow(),
         )
-        
+
         # Add import_log to session immediately to prevent detached instance errors
         session.add(import_log)
         session.commit()

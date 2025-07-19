@@ -110,6 +110,34 @@ just quality        # Code quality checks
 just lint-fix       # Auto-fix linting issues
 ```
 
+#### Data Import Commands
+
+**Generic Import (All Data Types):**
+```bash
+just import-all data-directory         # Import all City of Heroes data
+just import-type powers data.json      # Import specific data type
+just import-archetypes data.json       # Import character archetypes
+just import-powersets data.json        # Import powersets
+just import-enhancements data.json     # Import enhancements/IO sets
+just import-salvage data.json          # Import crafting salvage
+just import-recipes data.json          # Import enhancement recipes
+```
+
+**High-Performance I12 Import:**
+```bash
+just i12-import data.json              # Import I12 power data (360K+ records)
+just i12-validate data.json            # Validate data before import  
+just i12-import-resume data.json 50000 # Resume from specific record
+```
+
+**System Monitoring:**
+```bash
+just import-health                     # Full import system health check
+just import-status                     # Import system status
+just import-stats                      # Database record counts
+just cache-stats                       # Cache performance metrics
+```
+
 #### Database Operations
 
 ```bash
@@ -159,10 +187,12 @@ cd frontend && npm start
 - GitHub Actions CI/CD pipeline
 - AI-powered workflows
 
-**🚧 Epic 2: Data Import** - In Progress (BLOCKED)
-- Need City of Heroes game data files (.mhd)
-- Database migrations pending
-- Import scripts to be created
+**🚧 Epic 2: Data Import** - 90% Complete
+- ✅ I12 streaming parser for 360K+ power data  
+- ✅ Multi-tier caching system (LRU + Redis)
+- ✅ Database performance optimizations
+- ✅ CLI import tool with resume capability
+- 🚧 MidsReborn MHD integration (final phase)
 
 **📋 Epics 3-6**: Backend API, Frontend, Deployment, Optimization - Planned
 
@@ -175,6 +205,15 @@ This project features AI-assisted development workflows:
 - **Context health monitoring** to prevent token limit issues
 - **Command compliance checks** (uv over pip, fd over find, etc.)
 - **Epic progress tracking** and documentation synthesis
+
+### I12 Data Import Features ✅
+
+- ✅ **High-Performance Import**: Process 360K+ power records within 1GB memory
+- ✅ **Streaming JSON Parser**: Memory-efficient chunked processing
+- ✅ **Multi-tier Caching**: LRU + Redis for <100ms query performance
+- ✅ **Database Optimization**: Composite indexes, GIN indexes, materialized views
+- ✅ **Error Recovery**: Resume capability and comprehensive error handling
+- ✅ **CLI Tool**: User-friendly command-line interface with progress tracking
 
 ### Planned Features
 

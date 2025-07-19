@@ -26,8 +26,12 @@ services:
     command: uv run uvicorn main:app --host 0.0.0.0 --port 8000 --reload
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/mids_web
+      - REDIS_URL=redis://redis:6379/0
       - CORS_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
       - DEBUG=true
+      - I12_MEMORY_LIMIT_GB=1.0
+      - I12_BATCH_SIZE=1000
+      - I12_CHUNK_SIZE=5000
     ports:
       - "8000:8000"
     volumes:
@@ -35,6 +39,8 @@ services:
       - backend_venv:/app/backend/.venv
     depends_on:
       db:
+        condition: service_healthy
+      redis:
         condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/ping"]
@@ -60,7 +66,7 @@ services:
     stdin_open: true
     tty: true
 
-  # Optional: Redis for caching (future enhancement)
+  # Redis for I12 power data caching
   redis:
     image: redis:7-alpine
     ports:

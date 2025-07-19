@@ -13,6 +13,10 @@ doc_synthesis:
     - "docker-compose.yml"
     - "Dockerfile"
     - "justfile"
+    - "scripts/**/*.py"
+    - "backend/alembic/versions/*.py"
+    - "backend/app/data_import/*.py"
+    - "backend/app/services/*.py"
   exclude_patterns:
     - "**/node_modules/**"
     - "backend/.venv/**"
@@ -67,6 +71,9 @@ ai_pr_review:
       check_power_mechanics: true
       check_enhancement_calculations: true
       validate_database_models: true
+      check_i12_import_performance: true
+      validate_streaming_parser: true
+      check_cache_optimization: true
     documentation:
       check_docstrings: true
       check_readme_updates: true
@@ -113,6 +120,8 @@ monitoring:
 mids_hero_web:
   epic_tracking:
     current_epic: 2
+    epic_2_progress: 90
+    i12_parser_complete: true
     blocker_check: true
     epic_files_path: ".claude/epics/"
   
@@ -123,6 +132,9 @@ mids_hero_web:
       package_manager: "uv"
       database: "PostgreSQL"
       orm: "SQLAlchemy"
+      caching: "Redis"
+      import_system: "I12 Streaming Parser"
+      performance_target: "<100ms queries"
     frontend:
       framework: "React 19"
       language: "TypeScript"
@@ -135,12 +147,15 @@ mids_hero_web:
   
   review_focus:
     - "Database model accuracy for City of Heroes data"
+    - "I12 streaming parser performance and memory management"
+    - "Multi-tier caching optimization (LRU + Redis)"
     - "API endpoint consistency and validation"
     - "React component patterns and state management"
     - "Build calculation correctness"
-    - "Epic 2 blocker resolution progress"
+    - "Epic 2 completion and Epic 3 preparation"
     - "Command compliance (uv, fd, trash, just)"
     - "Context management (token limits)"
+    - "Import system performance (<100ms queries, <1GB memory)"
 
 feature_flags:
   enable_auto_merge: false

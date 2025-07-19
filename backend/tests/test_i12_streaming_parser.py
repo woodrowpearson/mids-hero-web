@@ -36,6 +36,7 @@ def test_db():
     engine.dispose()
     # Clean up the database file
     import os
+
     if os.path.exists(db_path):
         os.unlink(db_path)
 
@@ -74,28 +75,31 @@ def sample_i12_power_data():
                         "Modifier": "kDamage",
                         "Scale": 1.0,
                         "nMagnitude": -1.0,
-                        "nDuration": 0.0
+                        "nDuration": 0.0,
                     }
-                ]
+                ],
             }
         ],
-        "Requirements": {
-            "Level": 1,
-            "PowersRequired": [],
-            "PowersDisallowed": []
-        },
-        "EnhancementTypes": ["Accuracy", "Damage", "EnduranceReduction", "Range", "Recharge"]
+        "Requirements": {"Level": 1, "PowersRequired": [], "PowersDisallowed": []},
+        "EnhancementTypes": [
+            "Accuracy",
+            "Damage",
+            "EnduranceReduction",
+            "Range",
+            "Recharge",
+        ],
     }
 
 
 @pytest.fixture
 def large_json_test_file():
     """Create a large JSON file for streaming tests."""
+
     def _create_file(num_records: int = 1000) -> Path:
         """Create a test JSON file with specified number of records."""
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
             # Write opening bracket and first record
-            f.write('[\n')
+            f.write("[\n")
 
             for i in range(num_records):
                 power_data = {
@@ -117,14 +121,14 @@ def large_json_test_file():
                     "MaxTargets": 1,
                     "Effects": [],
                     "Requirements": {"Level": (i % 50) + 1},
-                    "EnhancementTypes": ["Accuracy", "Damage"]
+                    "EnhancementTypes": ["Accuracy", "Damage"],
                 }
 
                 if i > 0:
-                    f.write(',\n')
+                    f.write(",\n")
                 json.dump(power_data, f, indent=2)
 
-            f.write('\n]')
+            f.write("\n]")
             return Path(f.name)
 
     return _create_file
@@ -165,7 +169,9 @@ class TestStreamingJsonReader:
         def progress_callback(processed: int, total: int, percentage: float):
             progress_calls.append((processed, total, percentage))
 
-        chunks = list(reader.read_chunks(json_file, progress_callback=progress_callback))
+        chunks = list(
+            reader.read_chunks(json_file, progress_callback=progress_callback)
+        )
 
         # Verify chunks
         assert len(chunks) == 5  # 50 records / 10 per chunk
@@ -181,8 +187,8 @@ class TestStreamingJsonReader:
 
     def test_read_empty_file(self):
         """Test handling of empty JSON file."""
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
-            f.write('[]')
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
+            f.write("[]")
             empty_file = Path(f.name)
 
         reader = StreamingJsonReader()
@@ -195,7 +201,7 @@ class TestStreamingJsonReader:
 
     def test_read_malformed_json(self):
         """Test handling of malformed JSON file."""
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
             f.write('{"invalid": json,}')
             malformed_file = Path(f.name)
 
@@ -243,7 +249,7 @@ class TestPowerDataProcessor:
         attack_data = {
             "PowerType": "Click",
             "TargetType": "Enemy",
-            "Effects": [{"EffectType": "Damage"}]
+            "Effects": [{"EffectType": "Damage"}],
         }
         assert processor._determine_power_type(attack_data) == "attack"
 
@@ -251,7 +257,7 @@ class TestPowerDataProcessor:
         defense_data = {
             "PowerType": "Toggle",
             "TargetType": "Self",
-            "Effects": [{"EffectType": "Defense"}]
+            "Effects": [{"EffectType": "Defense"}],
         }
         assert processor._determine_power_type(defense_data) == "defense"
 
@@ -259,7 +265,7 @@ class TestPowerDataProcessor:
         control_data = {
             "PowerType": "Click",
             "TargetType": "Enemy",
-            "Effects": [{"EffectType": "Hold"}]
+            "Effects": [{"EffectType": "Hold"}],
         }
         assert processor._determine_power_type(control_data) == "control"
 
@@ -275,7 +281,7 @@ class TestPowerDataProcessor:
             "accuracy": 1.0,
             "endurance_cost": 5.0,
             "recharge_time": 4.0,
-            "activation_time": 1.0
+            "activation_time": 1.0,
         }
         assert processor.validate_data(valid_data) is True
 
@@ -287,7 +293,7 @@ class TestPowerDataProcessor:
         invalid_numeric = {
             "name": "Test Power",
             "powerset_id": 1,
-            "level_available": -1  # Invalid
+            "level_available": -1,  # Invalid
         }
         assert processor.validate_data(invalid_numeric) is False
 
@@ -313,7 +319,7 @@ class TestI12StreamingParser:
             name="Test Powerset 0",
             display_name="Test Powerset 0",
             archetype_id=archetype.id,
-            powerset_type="primary"
+            powerset_type="primary",
         )
         session.add(powerset)
         session.commit()
@@ -324,7 +330,7 @@ class TestI12StreamingParser:
         parser = I12StreamingParser(db_url, batch_size=100, chunk_size=50)
 
         # Track memory usage (mock for testing)
-        with patch('psutil.Process') as mock_process:
+        with patch("psutil.Process") as mock_process:
             mock_memory_info = Mock()
             mock_memory_info.memory_info.return_value.rss = 500 * 1024 * 1024  # 500MB
             mock_process.return_value = mock_memory_info
@@ -351,7 +357,7 @@ class TestI12StreamingParser:
             name="Test Powerset 0",
             display_name="Test Powerset 0",
             archetype_id=archetype.id,
-            powerset_type="primary"
+            powerset_type="primary",
         )
         session.add(powerset)
         session.commit()
@@ -381,7 +387,7 @@ class TestI12StreamingParser:
         session, db_url = test_db
 
         # Create mixed valid/invalid test data
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
             test_data = [
                 # Valid record
                 {
@@ -396,7 +402,7 @@ class TestI12StreamingParser:
                     "Accuracy": 1.0,
                     "EnduranceCost": 5.0,
                     "RechargeTime": 4.0,
-                    "ActivationTime": 1.0
+                    "ActivationTime": 1.0,
                 },
                 # Invalid record (missing required fields)
                 {
@@ -416,8 +422,8 @@ class TestI12StreamingParser:
                     "Accuracy": 1.0,
                     "EnduranceCost": 3.0,
                     "RechargeTime": 2.0,
-                    "ActivationTime": 1.0
-                }
+                    "ActivationTime": 1.0,
+                },
             ]
             json.dump(test_data, f, indent=2)
             error_test_file = Path(f.name)
@@ -431,7 +437,7 @@ class TestI12StreamingParser:
             name="Valid Powerset",
             display_name="Valid Powerset",
             archetype_id=archetype.id,
-            powerset_type="primary"
+            powerset_type="primary",
         )
         session.add(powerset)
         session.commit()
@@ -463,12 +469,18 @@ class TestI12StreamingParser:
 
         # Setup test data - create all required archetypes and powersets
         for i in range(3):  # 3 archetypes for i % 3
-            archetype = Archetype(name=f"Test Archetype {i}", display_name=f"Test Archetype {i}")
+            archetype = Archetype(
+                name=f"Test Archetype {i}", display_name=f"Test Archetype {i}"
+            )
             session.add(archetype)
         session.commit()
 
         # Get the first archetype for creating powersets
-        archetype = session.query(Archetype).filter(Archetype.name == "Test Archetype 0").first()
+        archetype = (
+            session.query(Archetype)
+            .filter(Archetype.name == "Test Archetype 0")
+            .first()
+        )
 
         # Create all required powersets (0-9 for i % 10)
         for i in range(10):
@@ -476,7 +488,7 @@ class TestI12StreamingParser:
                 name=f"Test Powerset {i}",
                 display_name=f"Test Powerset {i}",
                 archetype_id=archetype.id,
-                powerset_type="primary"
+                powerset_type="primary",
             )
             session.add(powerset)
         session.commit()
@@ -491,7 +503,9 @@ class TestI12StreamingParser:
         end_time = time.time()
 
         import_time = end_time - start_time
-        records_per_second = parser.imported_count / import_time if import_time > 0 else 0
+        records_per_second = (
+            parser.imported_count / import_time if import_time > 0 else 0
+        )
 
         # Performance assertions (adjust based on requirements)
         assert import_time < 30.0  # Should complete within 30 seconds
@@ -503,4 +517,3 @@ class TestI12StreamingParser:
 
         # Cleanup
         json_file.unlink()
-

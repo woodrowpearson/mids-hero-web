@@ -43,6 +43,41 @@ just db-reset     # Reset database
 just db-status    # Check migration status
 just db-connect   # Connect to database
 just db-seed      # Load sample data
+just db-optimize  # Database optimization (materialized views)
+just db-vacuum    # Database maintenance
+```
+
+## Data Import (All Parsers)
+
+```bash
+# Generic Import (All Data Types)
+just import-all data-dir                    # Import all City of Heroes data
+just import-type powers data.json           # Import specific data type
+just import-archetypes data.json            # Import archetypes
+just import-powersets data.json             # Import powersets
+just import-enhancements data.json          # Import enhancements
+just import-clear type data.json            # Clear and import
+just import-resume type data.json 1000     # Resume from record 1000
+
+# I12 High-Performance Import (360K+ records)
+just i12-import data.json                   # Import I12 power data
+just i12-import-resume data.json 50000      # Resume from record 50000
+just i12-validate data.json                 # Validate without importing
+
+# System Status & Performance
+just import-health                          # Full import system health
+just import-status                          # Import system status
+just import-stats                           # Database record counts
+just cache-stats                            # Cache performance metrics
+just perf-bench                             # I12 benchmarks
+just perf-test-all                          # All performance tests
+```
+
+## Cache Management
+
+```bash
+just cache-clear                            # Clear power cache
+just cache-stats                            # Cache performance statistics
 ```
 
 ## Docker

@@ -29,7 +29,7 @@ class PowerCacheService:
         # Cache TTL settings (in seconds)
         self.ttl_power_detail = 3600  # 1 hour
         self.ttl_powerset_list = 1800  # 30 minutes
-        self.ttl_build_summary = 600   # 10 minutes
+        self.ttl_build_summary = 600  # 10 minutes
 
         # Cache hit/miss statistics
         self.stats = {
@@ -37,7 +37,7 @@ class PowerCacheService:
             "memory_misses": 0,
             "redis_hits": 0,
             "redis_misses": 0,
-            "db_queries": 0
+            "db_queries": 0,
         }
 
     def _generate_cache_key(self, prefix: str, *args, **kwargs) -> str:
@@ -96,11 +96,7 @@ class PowerCacheService:
             return
 
         try:
-            self.redis_client.setex(
-                key,
-                ttl,
-                json.dumps(value, default=str)
-            )
+            self.redis_client.setex(key, ttl, json.dumps(value, default=str))
         except Exception as e:
             logger.warning(f"Redis set error for key {key}: {e}")
 
@@ -139,9 +135,15 @@ class PowerCacheService:
             "target_type": power.target_type,
             "accuracy": float(power.accuracy) if power.accuracy else None,
             "damage_scale": float(power.damage_scale) if power.damage_scale else None,
-            "endurance_cost": float(power.endurance_cost) if power.endurance_cost else None,
-            "recharge_time": float(power.recharge_time) if power.recharge_time else None,
-            "activation_time": float(power.activation_time) if power.activation_time else None,
+            "endurance_cost": (
+                float(power.endurance_cost) if power.endurance_cost else None
+            ),
+            "recharge_time": (
+                float(power.recharge_time) if power.recharge_time else None
+            ),
+            "activation_time": (
+                float(power.activation_time) if power.activation_time else None
+            ),
             "range_feet": power.range_feet,
             "radius_feet": power.radius_feet,
             "max_targets": power.max_targets,
@@ -153,7 +155,7 @@ class PowerCacheService:
             "modes_required": power.modes_required,
             "modes_disallowed": power.modes_disallowed,
             "ai_report": power.ai_report,
-            "display_info": power.display_info
+            "display_info": power.display_info,
         }
 
         # Cache the result
@@ -163,16 +165,11 @@ class PowerCacheService:
         return power_dict
 
     def get_powers_by_powerset(
-        self,
-        session: Session,
-        powerset_id: int,
-        level_filter: int | None = None
+        self, session: Session, powerset_id: int, level_filter: int | None = None
     ) -> list[dict[str, Any]]:
         """Get powers by powerset with optional level filtering."""
         cache_key = self._generate_cache_key(
-            "powerset_powers",
-            powerset_id,
-            level=level_filter
+            "powerset_powers", powerset_id, level=level_filter
         )
 
         # Try cache layers
@@ -205,10 +202,16 @@ class PowerCacheService:
                 "power_type": power.power_type,
                 "target_type": power.target_type,
                 "accuracy": float(power.accuracy) if power.accuracy else None,
-                "damage_scale": float(power.damage_scale) if power.damage_scale else None,
-                "endurance_cost": float(power.endurance_cost) if power.endurance_cost else None,
-                "recharge_time": float(power.recharge_time) if power.recharge_time else None,
-                "icon_path": power.icon_path
+                "damage_scale": (
+                    float(power.damage_scale) if power.damage_scale else None
+                ),
+                "endurance_cost": (
+                    float(power.endurance_cost) if power.endurance_cost else None
+                ),
+                "recharge_time": (
+                    float(power.recharge_time) if power.recharge_time else None
+                ),
+                "icon_path": power.icon_path,
             }
             powers_list.append(power_dict)
 
@@ -223,14 +226,14 @@ class PowerCacheService:
         session: Session,
         archetype_id: int | None = None,
         powerset_id: int | None = None,
-        max_level: int | None = None
+        max_level: int | None = None,
     ) -> list[dict[str, Any]]:
         """Get build summary data with caching."""
         cache_key = self._generate_cache_key(
             "build_summary",
             archetype=archetype_id,
             powerset=powerset_id,
-            max_level=max_level
+            max_level=max_level,
         )
 
         # Try cache layers
@@ -271,7 +274,9 @@ class PowerCacheService:
             summary_data = [dict(row) for row in result]
 
         except Exception as e:
-            logger.warning(f"Materialized view query failed, falling back to regular query: {e}")
+            logger.warning(
+                f"Materialized view query failed, falling back to regular query: {e}"
+            )
 
             # Fallback to regular query
             query = session.query(
@@ -280,7 +285,7 @@ class PowerCacheService:
                 Power.internal_name,
                 Power.display_name,
                 Power.powerset_id,
-                Powerset.name.label('powerset_name'),
+                Powerset.name.label("powerset_name"),
                 Powerset.archetype_id,
                 Power.level_available,
                 Power.power_type,
@@ -293,7 +298,7 @@ class PowerCacheService:
                 Power.range_feet,
                 Power.max_targets,
                 Power.icon_path,
-                Power.display_order
+                Power.display_order,
             ).join(Powerset)
 
             if archetype_id:
@@ -309,27 +314,37 @@ class PowerCacheService:
 
             summary_data = []
             for row in results:
-                summary_data.append({
-                    "id": row.id,
-                    "name": row.name,
-                    "internal_name": row.internal_name,
-                    "display_name": row.display_name,
-                    "powerset_id": row.powerset_id,
-                    "powerset_name": row.powerset_name,
-                    "archetype_id": row.archetype_id,
-                    "level_available": row.level_available,
-                    "power_type": row.power_type,
-                    "target_type": row.target_type,
-                    "accuracy": float(row.accuracy) if row.accuracy else None,
-                    "damage_scale": float(row.damage_scale) if row.damage_scale else None,
-                    "endurance_cost": float(row.endurance_cost) if row.endurance_cost else None,
-                    "recharge_time": float(row.recharge_time) if row.recharge_time else None,
-                    "activation_time": float(row.activation_time) if row.activation_time else None,
-                    "range_feet": row.range_feet,
-                    "max_targets": row.max_targets,
-                    "icon_path": row.icon_path,
-                    "display_order": row.display_order
-                })
+                summary_data.append(
+                    {
+                        "id": row.id,
+                        "name": row.name,
+                        "internal_name": row.internal_name,
+                        "display_name": row.display_name,
+                        "powerset_id": row.powerset_id,
+                        "powerset_name": row.powerset_name,
+                        "archetype_id": row.archetype_id,
+                        "level_available": row.level_available,
+                        "power_type": row.power_type,
+                        "target_type": row.target_type,
+                        "accuracy": float(row.accuracy) if row.accuracy else None,
+                        "damage_scale": (
+                            float(row.damage_scale) if row.damage_scale else None
+                        ),
+                        "endurance_cost": (
+                            float(row.endurance_cost) if row.endurance_cost else None
+                        ),
+                        "recharge_time": (
+                            float(row.recharge_time) if row.recharge_time else None
+                        ),
+                        "activation_time": (
+                            float(row.activation_time) if row.activation_time else None
+                        ),
+                        "range_feet": row.range_feet,
+                        "max_targets": row.max_targets,
+                        "icon_path": row.icon_path,
+                        "display_order": row.display_order,
+                    }
+                )
 
         # Cache the result
         self._set_to_memory(cache_key, summary_data)
@@ -367,8 +382,11 @@ class PowerCacheService:
                 logger.warning(f"Redis batch delete error: {e}")
 
         # Clear memory cache entries (simple approach: clear all)
-        keys_to_remove = [k for k in self._memory_cache
-                         if k.startswith(f"powerset_powers:{powerset_id}:")]
+        keys_to_remove = [
+            k
+            for k in self._memory_cache
+            if k.startswith(f"powerset_powers:{powerset_id}:")
+        ]
         for key in keys_to_remove:
             del self._memory_cache[key]
 
@@ -389,28 +407,20 @@ class PowerCacheService:
 
     def get_cache_stats(self) -> dict[str, Any]:
         """Get cache performance statistics."""
-        total_requests = (
-            self.stats["memory_hits"] +
-            self.stats["memory_misses"]
-        )
+        total_requests = self.stats["memory_hits"] + self.stats["memory_misses"]
 
-        redis_requests = (
-            self.stats["redis_hits"] +
-            self.stats["redis_misses"]
-        )
+        redis_requests = self.stats["redis_hits"] + self.stats["redis_misses"]
 
         return {
             "memory_cache_size": len(self._memory_cache),
             "memory_hit_rate": (
-                self.stats["memory_hits"] / total_requests
-                if total_requests > 0 else 0
+                self.stats["memory_hits"] / total_requests if total_requests > 0 else 0
             ),
             "redis_hit_rate": (
-                self.stats["redis_hits"] / redis_requests
-                if redis_requests > 0 else 0
+                self.stats["redis_hits"] / redis_requests if redis_requests > 0 else 0
             ),
             "total_db_queries": self.stats["db_queries"],
-            "stats": self.stats
+            "stats": self.stats,
         }
 
 
@@ -439,12 +449,16 @@ def init_power_cache(redis_client=None, max_memory_cache_size: int = 1000) -> No
 # Decorator for caching function results
 def cached_power_query(ttl: int = 300):
     """Decorator for caching power query results."""
+
     def decorator(func):
         def wrapper(*args, **kwargs):
             # Generate cache key from function name and arguments
-            cache_key = f"query:{func.__name__}:" + hashlib.md5(
-                str(args + tuple(sorted(kwargs.items()))).encode()
-            ).hexdigest()
+            cache_key = (
+                f"query:{func.__name__}:"
+                + hashlib.md5(
+                    str(args + tuple(sorted(kwargs.items()))).encode()
+                ).hexdigest()
+            )
 
             cache = get_power_cache()
 
@@ -466,5 +480,5 @@ def cached_power_query(ttl: int = 300):
             return result
 
         return wrapper
-    return decorator
 
+    return decorator

@@ -21,11 +21,11 @@ def setup_logging(verbose: bool = False) -> None:
     level = logging.DEBUG if verbose else logging.INFO
     logging.basicConfig(
         level=level,
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
         handlers=[
             logging.StreamHandler(sys.stdout),
-            logging.FileHandler('i12_import.log')
-        ]
+            logging.FileHandler("i12_import.log"),
+        ],
     )
 
 
@@ -47,66 +47,58 @@ Examples:
 
   # Test run with validation only (no database writes)
   python import_i12_data.py /path/to/i12_data.json --validate-only
-        """
+        """,
     )
 
-    parser.add_argument(
-        'json_file',
-        type=Path,
-        help='Path to I12 JSON data file'
-    )
+    parser.add_argument("json_file", type=Path, help="Path to I12 JSON data file")
 
     parser.add_argument(
-        '--database-url',
+        "--database-url",
         type=str,
-        default=os.getenv('DATABASE_URL', 'postgresql://localhost/mids_web'),
-        help='Database connection URL (default: from DATABASE_URL env var)'
+        default=os.getenv("DATABASE_URL", "postgresql://localhost/mids_web"),
+        help="Database connection URL (default: from DATABASE_URL env var)",
     )
 
     parser.add_argument(
-        '--batch-size',
+        "--batch-size",
         type=int,
         default=1000,
-        help='Number of records to process in each batch (default: 1000)'
+        help="Number of records to process in each batch (default: 1000)",
     )
 
     parser.add_argument(
-        '--chunk-size',
+        "--chunk-size",
         type=int,
         default=5000,
-        help='Number of records to read from file at once (default: 5000)'
+        help="Number of records to read from file at once (default: 5000)",
     )
 
     parser.add_argument(
-        '--memory-limit',
+        "--memory-limit",
         type=float,
         default=1.0,
-        help='Memory limit in GB before forcing garbage collection (default: 1.0)'
+        help="Memory limit in GB before forcing garbage collection (default: 1.0)",
     )
 
     parser.add_argument(
-        '--resume-from',
+        "--resume-from",
         type=int,
         default=0,
-        help='Record number to resume import from (default: 0)'
+        help="Record number to resume import from (default: 0)",
     )
 
     parser.add_argument(
-        '--validate-only',
-        action='store_true',
-        help='Validate data without importing to database'
+        "--validate-only",
+        action="store_true",
+        help="Validate data without importing to database",
     )
 
     parser.add_argument(
-        '--clear-cache',
-        action='store_true',
-        help='Clear power cache before import'
+        "--clear-cache", action="store_true", help="Clear power cache before import"
     )
 
     parser.add_argument(
-        '--verbose', '-v',
-        action='store_true',
-        help='Enable verbose logging'
+        "--verbose", "-v", action="store_true", help="Enable verbose logging"
     )
 
     args = parser.parse_args()
@@ -120,7 +112,7 @@ Examples:
         logger.error(f"Input file does not exist: {args.json_file}")
         sys.exit(1)
 
-    if not args.json_file.suffix.lower() == '.json':
+    if not args.json_file.suffix.lower() == ".json":
         logger.error(f"Input file must be a JSON file: {args.json_file}")
         sys.exit(1)
 
@@ -147,7 +139,7 @@ Examples:
         database_url=args.database_url,
         batch_size=args.batch_size,
         chunk_size=args.chunk_size,
-        memory_limit_gb=args.memory_limit
+        memory_limit_gb=args.memory_limit,
     )
 
     # Progress callback
@@ -166,7 +158,7 @@ Examples:
             parser.import_data(
                 file_path=args.json_file,
                 resume_from=args.resume_from,
-                progress_callback=progress_callback
+                progress_callback=progress_callback,
             )
 
         # Display final statistics
@@ -178,7 +170,9 @@ Examples:
         if parser.errors:
             logger.warning("Errors details (first 10):")
             for i, error in enumerate(parser.errors[:10]):
-                logger.warning(f"  {i+1}. Record {error['record_index']}: {error['error']}")
+                logger.warning(
+                    f"  {i+1}. Record {error['record_index']}: {error['error']}"
+                )
 
         # Cache statistics
         cache = get_power_cache()
@@ -200,6 +194,5 @@ Examples:
         sys.exit(1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
-

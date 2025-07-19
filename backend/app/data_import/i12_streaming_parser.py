@@ -31,7 +31,7 @@ class StreamingJsonReader:
     def read_chunks(
         self,
         file_path: Path,
-        progress_callback: Callable[[int, int, float], None] | None = None
+        progress_callback: Callable[[int, int, float], None] | None = None,
     ) -> Generator[list[dict[str, Any]], None, None]:
         """Read JSON file in chunks to control memory usage.
 
@@ -43,7 +43,7 @@ class StreamingJsonReader:
             Lists of records (chunks)
         """
         try:
-            with open(file_path, encoding='utf-8') as f:
+            with open(file_path, encoding="utf-8") as f:
                 # Load the entire JSON first to get total count
                 # This is a trade-off for progress tracking
                 data = json.load(f)
@@ -56,7 +56,7 @@ class StreamingJsonReader:
 
                 # Process in chunks
                 for i in range(0, total_records, self.chunk_size):
-                    chunk = data[i:i + self.chunk_size]
+                    chunk = data[i : i + self.chunk_size]
                     processed += len(chunk)
 
                     # Call progress callback if provided
@@ -160,10 +160,10 @@ class PowerDataProcessor:
             "display_info": {
                 "enhancement_types": enhancement_types,
                 "power_category": raw_data.get("PowerCategory"),
-                "icon_name": raw_data.get("IconName")
+                "icon_name": raw_data.get("IconName"),
             },
             "icon_path": f"powers/{name.lower().replace(' ', '_')}.png",
-            "display_order": raw_data.get("DisplayOrder", level)
+            "display_order": raw_data.get("DisplayOrder", level),
         }
 
         return transformed
@@ -182,7 +182,14 @@ class PowerDataProcessor:
                 return "attack"
             elif effect_type in ["defense", "resistance", "defenseovertime"]:
                 return "defense"
-            elif effect_type in ["hold", "immobilize", "stun", "sleep", "confuse", "fear"]:
+            elif effect_type in [
+                "hold",
+                "immobilize",
+                "stun",
+                "sleep",
+                "confuse",
+                "fear",
+            ]:
                 return "control"
             elif effect_type in ["heal", "healovertime", "endurancerecovery"]:
                 return "support"
@@ -212,7 +219,9 @@ class PowerDataProcessor:
 
         return "self"  # Default
 
-    def _extract_effect_groups(self, effects: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    def _extract_effect_groups(
+        self, effects: list[dict[str, Any]]
+    ) -> list[dict[str, Any]]:
         """Extract and organize effect groups from effects list."""
         groups = {}
 
@@ -227,8 +236,8 @@ class PowerDataProcessor:
                         "count": 0,
                         "avg_scale": 0.0,
                         "avg_duration": 0.0,
-                        "avg_chance": 0.0
-                    }
+                        "avg_chance": 0.0,
+                    },
                 }
 
             groups[effect_type]["effects"].append(effect)
@@ -243,9 +252,15 @@ class PowerDataProcessor:
             chance = effect.get("Chance", 1.0)
 
             count = summary["count"]
-            summary["avg_scale"] = ((summary["avg_scale"] * (count - 1)) + scale) / count
-            summary["avg_duration"] = ((summary["avg_duration"] * (count - 1)) + duration) / count
-            summary["avg_chance"] = ((summary["avg_chance"] * (count - 1)) + chance) / count
+            summary["avg_scale"] = (
+                (summary["avg_scale"] * (count - 1)) + scale
+            ) / count
+            summary["avg_duration"] = (
+                (summary["avg_duration"] * (count - 1)) + duration
+            ) / count
+            summary["avg_chance"] = (
+                (summary["avg_chance"] * (count - 1)) + chance
+            ) / count
 
         return list(groups.values())
 
@@ -264,7 +279,7 @@ class PowerDataProcessor:
             ("accuracy", 0.0, 10.0),
             ("endurance_cost", 0.0, 100.0),
             ("recharge_time", 0.0, 10000.0),
-            ("activation_time", 0.0, 60.0)
+            ("activation_time", 0.0, 60.0),
         ]
 
         for field, min_val, max_val in numeric_fields:
@@ -274,7 +289,9 @@ class PowerDataProcessor:
                     logger.error(f"Field {field} must be numeric, got {type(value)}")
                     return False
                 if value < min_val or value > max_val:
-                    logger.error(f"Field {field} value {value} out of range [{min_val}, {max_val}]")
+                    logger.error(
+                        f"Field {field} value {value} out of range [{min_val}, {max_val}]"
+                    )
                     return False
 
         return True
@@ -288,7 +305,7 @@ class I12StreamingParser(BaseImporter):
         database_url: str,
         batch_size: int = 1000,
         chunk_size: int = 5000,
-        memory_limit_gb: float = 1.0
+        memory_limit_gb: float = 1.0,
     ):
         """Initialize streaming parser.
 
@@ -331,7 +348,7 @@ class I12StreamingParser(BaseImporter):
         self,
         file_path: Path,
         resume_from: int = 0,
-        progress_callback: Callable[[int, int, float], None] | None = None
+        progress_callback: Callable[[int, int, float], None] | None = None,
     ) -> None:
         """Import I12 power data with streaming and progress tracking.
 
@@ -382,7 +399,9 @@ class I12StreamingParser(BaseImporter):
                         if self.validate_data(transformed):
                             chunk_records.append(transformed)
                         else:
-                            self._record_error(global_record_idx, "Validation failed", raw_record)
+                            self._record_error(
+                                global_record_idx, "Validation failed", raw_record
+                            )
 
                     except Exception as e:
                         self._record_error(global_record_idx, str(e), raw_record)
@@ -435,7 +454,7 @@ class I12StreamingParser(BaseImporter):
     def _count_records(self, file_path: Path) -> int:
         """Count total records in JSON file."""
         try:
-            with open(file_path, encoding='utf-8') as f:
+            with open(file_path, encoding="utf-8") as f:
                 data = json.load(f)
                 return len(data) if isinstance(data, list) else 0
         except Exception as e:
@@ -456,7 +475,9 @@ class I12StreamingParser(BaseImporter):
         finally:
             session.close()
 
-    def _record_error(self, record_idx: int, error_msg: str, raw_data: dict[str, Any]) -> None:
+    def _record_error(
+        self, record_idx: int, error_msg: str, raw_data: dict[str, Any]
+    ) -> None:
         """Record an error for later analysis."""
         self.error_count += 1
         error_info = {
@@ -464,7 +485,7 @@ class I12StreamingParser(BaseImporter):
             "error": error_msg,
             "power_name": raw_data.get("Name", "Unknown"),
             "powerset_name": raw_data.get("PowersetName", "Unknown"),
-            "timestamp": time.time()
+            "timestamp": time.time(),
         }
         self.errors.append(error_info)
 
@@ -487,6 +508,7 @@ class I12StreamingParser(BaseImporter):
                     f"{self.memory_limit_bytes / (1024**3):.2f}GB, forcing garbage collection"
                 )
                 import gc
+
                 gc.collect()
 
                 # Check memory again after GC
@@ -498,4 +520,3 @@ class I12StreamingParser(BaseImporter):
 
         except Exception as e:
             logger.warning(f"Memory check failed: {e}")
-

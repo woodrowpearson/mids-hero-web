@@ -194,9 +194,9 @@ class TestImportPerformance:
         improvement = single_time / batch_time
         print(f"Batch insert {improvement:.1f}x faster than single inserts")
 
-        assert improvement > 10, (
-            f"Batch insert not efficient enough: only {improvement:.1f}x faster"
-        )
+        assert (
+            improvement > 10
+        ), f"Batch insert not efficient enough: only {improvement:.1f}x faster"
 
         # Clean up
         db.query(Salvage).filter(Salvage.id >= 90000).delete()
@@ -223,9 +223,9 @@ class TestImportPerformance:
         print(f"Memory increase: {memory_increase:.1f} MB for 10K items")
 
         # Should not use more than 100MB for 10MB of data
-        assert memory_increase < 100, (
-            f"Excessive memory usage: {memory_increase:.1f} MB"
-        )
+        assert (
+            memory_increase < 100
+        ), f"Excessive memory usage: {memory_increase:.1f} MB"
 
         # Clean up
         del large_data
@@ -433,6 +433,6 @@ class TestScalabilityBenchmarks:
         print(f"Concurrent queries - Avg: {avg_time:.3f}s, Max: {max_time:.3f}s")
 
         # Maximum query time should not be more than 2x average
-        assert max_time < avg_time * 2, (
-            f"High variance in concurrent performance: max={max_time:.3f}s, avg={avg_time:.3f}s"
-        )
+        assert (
+            max_time < avg_time * 2
+        ), f"High variance in concurrent performance: max={max_time:.3f}s, avg={avg_time:.3f}s"

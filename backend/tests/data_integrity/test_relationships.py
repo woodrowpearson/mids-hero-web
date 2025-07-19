@@ -88,12 +88,12 @@ class TestRelationships:
             .count()
         )
 
-        assert orphaned_required == 0, (
-            f"Found {orphaned_required} prerequisites with invalid required_power_id"
-        )
-        assert orphaned_power == 0, (
-            f"Found {orphaned_power} prerequisites with invalid power_id"
-        )
+        assert (
+            orphaned_required == 0
+        ), f"Found {orphaned_required} prerequisites with invalid required_power_id"
+        assert (
+            orphaned_power == 0
+        ), f"Found {orphaned_power} prerequisites with invalid power_id"
 
     def test_enhancement_set_relationships(self, db: Session):
         """Test enhancement to enhancement set relationships."""
@@ -104,9 +104,9 @@ class TestRelationships:
             .count()
         )
 
-        assert orphaned == 0, (
-            f"Found {orphaned} enhancements with invalid enhancement_set_id"
-        )
+        assert (
+            orphaned == 0
+        ), f"Found {orphaned} enhancements with invalid enhancement_set_id"
 
     def test_recipe_enhancement_relationships(self, db: Session):
         """Test that all recipes reference valid enhancements."""
@@ -137,12 +137,12 @@ class TestRelationships:
             .count()
         )
 
-        assert orphaned_recipes == 0, (
-            f"Found {orphaned_recipes} recipe_salvage with invalid recipe_id"
-        )
-        assert orphaned_salvage == 0, (
-            f"Found {orphaned_salvage} recipe_salvage with invalid salvage_id"
-        )
+        assert (
+            orphaned_recipes == 0
+        ), f"Found {orphaned_recipes} recipe_salvage with invalid recipe_id"
+        assert (
+            orphaned_salvage == 0
+        ), f"Found {orphaned_salvage} recipe_salvage with invalid salvage_id"
 
     def test_no_orphaned_records(self, db: Session):
         """Test for orphaned records across all tables."""
@@ -184,9 +184,9 @@ class TestRelationships:
             if reverse:
                 circular_count += 1
 
-        assert circular_count == 0, (
-            f"Found {circular_count} circular dependencies in power prerequisites"
-        )
+        assert (
+            circular_count == 0
+        ), f"Found {circular_count} circular dependencies in power prerequisites"
 
     def test_referential_integrity_on_delete(self, db: Session):
         """Test that CASCADE and SET NULL constraints are properly configured."""
@@ -224,9 +224,9 @@ class TestDataIntegrity:
             .all()
         )
 
-        assert not duplicate_archetypes, (
-            f"Duplicate archetype names: {duplicate_archetypes}"
-        )
+        assert (
+            not duplicate_archetypes
+        ), f"Duplicate archetype names: {duplicate_archetypes}"
 
         # Check power names within powersets are unique
         from sqlalchemy import func
@@ -238,9 +238,9 @@ class TestDataIntegrity:
             .all()
         )
 
-        assert not duplicate_powers, (
-            f"Duplicate power names in same powerset: {duplicate_powers}"
-        )
+        assert (
+            not duplicate_powers
+        ), f"Duplicate power names in same powerset: {duplicate_powers}"
 
     def test_required_fields_not_null(self, db: Session):
         """Test that required fields are not null."""
@@ -273,13 +273,13 @@ class TestDataIntegrity:
             .count()
         )
 
-        assert null_archetypes == 0, (
-            f"Found {null_archetypes} archetypes with null required fields"
-        )
+        assert (
+            null_archetypes == 0
+        ), f"Found {null_archetypes} archetypes with null required fields"
         assert null_powers == 0, f"Found {null_powers} powers with null required fields"
-        assert null_enhancements == 0, (
-            f"Found {null_enhancements} enhancements with null required fields"
-        )
+        assert (
+            null_enhancements == 0
+        ), f"Found {null_enhancements} enhancements with null required fields"
 
     def test_data_type_constraints(self, db: Session):
         """Test that numeric fields have valid ranges."""
@@ -322,12 +322,12 @@ class TestDataIntegrity:
             db.query(Salvage).filter(~Salvage.origin.in_(valid_origins)).count()
         )
 
-        assert invalid_set_types == 0, (
-            f"Found {invalid_set_types} powersets with invalid set_type"
-        )
-        assert invalid_salvage == 0, (
-            f"Found {invalid_salvage} salvage with invalid rarity"
-        )
-        assert invalid_origins == 0, (
-            f"Found {invalid_origins} salvage with invalid origin"
-        )
+        assert (
+            invalid_set_types == 0
+        ), f"Found {invalid_set_types} powersets with invalid set_type"
+        assert (
+            invalid_salvage == 0
+        ), f"Found {invalid_salvage} salvage with invalid rarity"
+        assert (
+            invalid_origins == 0
+        ), f"Found {invalid_origins} salvage with invalid origin"

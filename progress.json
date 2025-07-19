@@ -19,7 +19,7 @@
     "epic2": {
       "title": "Data Model & Database Integration",
       "status": "in_progress",
-      "progress": 85,
+      "progress": 90,
       "completedTasks": [
         "Database schema design",
         "SQLAlchemy models implementation",
@@ -30,12 +30,19 @@
         "MHD file parsing to JSON",
         "Export of latest Homecoming data (2025-7-1111)",
         "Verify SQLAlchemy models match JSON structure (#166)",
-        "Create data import scripts (#167)"
+        "Create data import scripts (#167)",
+        "Enhancement database parser implementation (#155)",
+        "Power parser implementation (#156)",
+        "Recipe parser implementation (#157)",
+        "Salvage parser implementation (#158)",
+        "MidsReborn DatabaseAPI loading sequence (#162)",
+        "MHD to JSON pipeline integration tests (#164)"
       ],
       "currentTasks": [
-        "Handle I12 power data import (#168)"
+        "Handle I12 power data import (#154, #168)"
       ],
       "nextTasks": [
+        "Parser implementation tracking documentation (#159)",
         "Data integrity testing (#169)",
         "Import process documentation (#170)"
       ]
@@ -62,6 +69,18 @@
     }
   },
   "recentAchievements": [
+    {
+      "date": "2025-01-19",
+      "description": "Completed major Epic 2 milestones with DataExporter implementation",
+      "details": [
+        "Closed 6 Epic 2 issues (#155, #156, #157, #158, #162, #164)",
+        "DataExporter successfully implements all MHD parsing via MidsReborn API",
+        "Enhancement, Power, Recipe, and Salvage parsers all functional",
+        "MidsReborn DatabaseAPI loading sequence fully implemented",
+        "Comprehensive integration tests merged via PR #165",
+        "Epic 2 now 90% complete with only documentation tasks remaining"
+      ]
+    },
     {
       "date": "2025-01-19",
       "description": "Implemented comprehensive data import system for City of Heroes data",
@@ -123,7 +142,7 @@
       "midsRebornVersion": "3.7.14"
     }
   },
-  "issuesClosed": [132, 137, 152, 160, 163, 166, 167],
+  "issuesClosed": [132, 137, 152, 155, 156, 157, 158, 160, 162, 163, 164, 166, 167],
   "issuesCreated": [166, 167, 168, 169, 170],
   "nextSteps": [
     "Parse and import the large I12 power dataset (#168)",

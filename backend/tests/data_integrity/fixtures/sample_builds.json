@@ -1,0 +1,209 @@
+{
+  "test_builds": [
+    {
+      "name": "Fire/Fire Blaster - Standard DPS",
+      "archetype": "Blaster",
+      "primary_powerset": "Fire Blast",
+      "secondary_powerset": "Fire Manipulation",
+      "level": 50,
+      "powers": [
+        {
+          "name": "Fire Bolt",
+          "level_taken": 1,
+          "slots": [
+            {"level": 1, "enhancement": "Accuracy IO", "value": 0.333},
+            {"level": 3, "enhancement": "Damage IO", "value": 0.333},
+            {"level": 5, "enhancement": "Damage IO", "value": 0.333},
+            {"level": 7, "enhancement": "Recharge IO", "value": 0.333},
+            {"level": 9, "enhancement": "Endurance IO", "value": 0.333},
+            {"level": 11, "enhancement": "Damage IO", "value": 0.333}
+          ]
+        },
+        {
+          "name": "Fire Ball", 
+          "level_taken": 2,
+          "slots": [
+            {"level": 2, "enhancement": "Accuracy IO", "value": 0.333},
+            {"level": 13, "enhancement": "Positron's Blast: Acc/Dmg", "value": 0.263},
+            {"level": 15, "enhancement": "Positron's Blast: Dmg/End", "value": 0.263},
+            {"level": 17, "enhancement": "Positron's Blast: Dmg/Rech", "value": 0.263},
+            {"level": 19, "enhancement": "Positron's Blast: Dmg/Rng", "value": 0.263},
+            {"level": 21, "enhancement": "Positron's Blast: Acc/Dmg/End", "value": 0.263}
+          ]
+        }
+      ],
+      "expected_stats": {
+        "hit_points": 1606.4,
+        "endurance": 100,
+        "recovery": 2.08,
+        "damage_bonus": 0.95,
+        "accuracy_bonus": 0.15,
+        "recharge_bonus": 0.075,
+        "defense": {
+          "melee": 0.0,
+          "ranged": 0.0,
+          "aoe": 0.0
+        },
+        "resistance": {
+          "smashing": 0.0,
+          "lethal": 0.0,
+          "fire": 0.0,
+          "cold": 0.0,
+          "energy": 0.0,
+          "negative": 0.0,
+          "psionic": 0.0
+        }
+      },
+      "set_bonuses": [
+        {
+          "set_name": "Positron's Blast",
+          "bonus_count": 2,
+          "bonus_type": "Recovery",
+          "value": 0.025
+        },
+        {
+          "set_name": "Positron's Blast", 
+          "bonus_count": 3,
+          "bonus_type": "Resistance",
+          "attribute": "Fire,Cold",
+          "value": 0.0225
+        },
+        {
+          "set_name": "Positron's Blast",
+          "bonus_count": 4,
+          "bonus_type": "Accuracy",
+          "value": 0.09
+        },
+        {
+          "set_name": "Positron's Blast",
+          "bonus_count": 5,
+          "bonus_type": "Recharge",
+          "value": 0.075
+        }
+      ]
+    },
+    {
+      "name": "Inv/SS Tanker - Max Defense",
+      "archetype": "Tanker",
+      "primary_powerset": "Invulnerability", 
+      "secondary_powerset": "Super Strength",
+      "level": 50,
+      "powers": [
+        {
+          "name": "Temp Invulnerability",
+          "level_taken": 1,
+          "slots": [
+            {"level": 1, "enhancement": "Resistance IO", "value": 0.333},
+            {"level": 25, "enhancement": "Steadfast Protection: Res/Def", "value": 0.3}
+          ]
+        },
+        {
+          "name": "Unyielding",
+          "level_taken": 2,
+          "slots": [
+            {"level": 2, "enhancement": "Resistance IO", "value": 0.333},
+            {"level": 27, "enhancement": "Aegis: Res", "value": 0.333},
+            {"level": 29, "enhancement": "Aegis: Res/End", "value": 0.263},
+            {"level": 31, "enhancement": "Aegis: Res/Rech", "value": 0.263},
+            {"level": 31, "enhancement": "Aegis: End/Rech", "value": 0.263},
+            {"level": 33, "enhancement": "Aegis: Res/End/Rech", "value": 0.263}
+          ]
+        }
+      ],
+      "expected_stats": {
+        "hit_points": 3212.8,
+        "endurance": 100,
+        "recovery": 1.95,
+        "defense": {
+          "melee": 0.15,
+          "ranged": 0.15,
+          "aoe": 0.15
+        },
+        "resistance": {
+          "smashing": 0.70,
+          "lethal": 0.70,
+          "fire": 0.20,
+          "cold": 0.20,
+          "energy": 0.35,
+          "negative": 0.35,
+          "psionic": 0.00
+        },
+        "resistance_cap": 0.90
+      },
+      "set_bonuses": [
+        {
+          "set_name": "Steadfast Protection",
+          "bonus_count": 2,
+          "bonus_type": "Defense",
+          "attribute": "All",
+          "value": 0.03
+        },
+        {
+          "set_name": "Aegis",
+          "bonus_count": 2,
+          "bonus_type": "Defense", 
+          "attribute": "Fire,Cold",
+          "value": 0.025
+        },
+        {
+          "set_name": "Aegis",
+          "bonus_count": 3,
+          "bonus_type": "HP",
+          "value": 0.03
+        },
+        {
+          "set_name": "Aegis",
+          "bonus_count": 4,
+          "bonus_type": "Defense",
+          "attribute": "AOE",
+          "value": 0.035
+        }
+      ]
+    }
+  ],
+  "test_enhancements": [
+    {
+      "name": "Accuracy IO",
+      "type": "Common",
+      "level": 50,
+      "value": 0.4263,
+      "ed_value": 0.4263
+    },
+    {
+      "name": "Damage IO",
+      "type": "Common", 
+      "level": 50,
+      "value": 0.4263,
+      "ed_capped_3_slots": 0.999,
+      "ed_capped_3_slots_actual": 0.906
+    },
+    {
+      "name": "Crushing Impact: Acc/Dmg",
+      "type": "Set",
+      "set_name": "Crushing Impact",
+      "level": 50,
+      "values": {
+        "accuracy": 0.2688,
+        "damage": 0.2688
+      }
+    }
+  ],
+  "test_powersets": [
+    {
+      "name": "Fire Blast",
+      "archetype": "Blaster",
+      "type": "Primary",
+      "powers": [
+        {"name": "Fire Bolt", "level": 1, "required": false},
+        {"name": "Fire Ball", "level": 1, "required": false},
+        {"name": "Rain of Fire", "level": 2, "required": false},
+        {"name": "Fire Breath", "level": 6, "required": false},
+        {"name": "Aim", "level": 8, "required": false},
+        {"name": "Blaze", "level": 12, "required": false},
+        {"name": "Blazing Bolt", "level": 18, "required": false},
+        {"name": "Inferno", "level": 26, "required": false},
+        {"name": "Fire Blast", "level": 32, "required": false}
+      ]
+    }
+  ]
+}

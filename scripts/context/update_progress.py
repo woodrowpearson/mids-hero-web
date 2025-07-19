@@ -9,7 +9,7 @@ from datetime import datetime
 
 def load_progress():
     """Load current progress from file."""
-    progress_file = Path(".claude/progress.json")
+    progress_file = Path(".claude/state/progress.json")
     if progress_file.exists():
         return json.loads(progress_file.read_text())
     return {
@@ -26,7 +26,7 @@ def load_progress():
 
 def save_progress(progress):
     """Save progress to file."""
-    progress_file = Path(".claude/progress.json")
+    progress_file = Path(".claude/state/progress.json")
     progress_file.parent.mkdir(exist_ok=True)
     progress["last_updated"] = datetime.now().isoformat()
     progress_file.write_text(json.dumps(progress, indent=2))

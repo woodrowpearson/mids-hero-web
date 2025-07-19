@@ -1,236 +1,103 @@
-# CLAUDE.md - Mids Hero Web Development Guide
+# CLAUDE.md - Mids Hero Web AI Assistant Guide
 
-This file provides essential guidance for AI-assisted development of the Mids Hero Web project.
+> **This is your entry point**. Claude loads this file automatically. Keep it under 5K tokens.
 
-## 🚀 Quick Start
+## 🎯 Project: Modern City of Heroes Build Planner
+
+Replacing legacy Windows Forms app with React/FastAPI web application.
+
+## ⚡ Quick Start
 
 ```bash
-# Set project root and navigate
 export PROJECT_ROOT_DIR=$(git rev-parse --show-toplevel)
 cd "$PROJECT_ROOT_DIR"
-
-# Development workflow
-just quickstart     # Initial setup
-just dev           # Start all services
-just health        # Run health checks
-just test          # Run all tests
+just health    # REQUIRED before any work
+just dev       # Start services
 ```
 
-## 🚀 Claude Custom Commands
+## 📍 Context System
 
-For efficiency, use pre-approved custom commands in `.claude/commands/`:
+Claude uses **progressive context loading** based on your task:
+
+```
+Always Loaded:
+├── CLAUDE.md (this file)        # ~2K tokens
+├── .claude/settings.json        # Configuration
+└── .claude/context-map.json     # Loading rules
+
+Task-Based Loading:
+├── Database → .claude/modules/database/
+├── Import   → .claude/modules/import/
+├── API      → .claude/modules/api/
+├── Frontend → .claude/modules/frontend/
+└── Testing  → .claude/modules/testing/
+```
+
+**Tell Claude your task** to load the right context:
+- "I need to work on database migrations" 
+- "Help me import I12 power data"
+- "Let's build an API endpoint"
+
+## 🚀 Essential Commands
 
 ```bash
-just update-progress                   # Full update, commit, push workflow (RECOMMENDED)
-just ucp "message"                     # Quick commit and push
-.claude/commands/debug-session.sh      # Debug environment setup
+# Development
+just test          # Run tests
+just lint-fix      # Fix issues
+just quality       # All checks
 
-# Or use scripts directly:
-.claude/commands/update-progress.sh    # Full workflow script
-.claude/commands/ucp.sh "message"      # Quick commit script
+# Git workflow  
+just ucp "message"      # Quick commit
+just update-progress    # Full update
+
+# Database
+just db-migrate         # Run migrations
+just db-shell          # PostgreSQL
+
+# Import
+just import-health     # Check system
+just i12-import file   # Import powers
 ```
 
-### 📥 Data Import Commands
+## 📊 Current Status
 
-**Generic Import (All Parsers):**
-```bash
-just import-all data-dir               # Import all data types
-just import-type powers file.json      # Import specific type  
-just import-archetypes file.json       # Import archetypes
-just import-powersets file.json        # Import powersets
-just import-enhancements file.json     # Import enhancements
-just import-clear type file.json       # Clear and import
-```
+- **Epic 1**: ✅ Complete (Setup, CI/CD)
+- **Epic 2**: 🚧 95% (I12 parser done, MHD pending)
+- **Epic 3-6**: 📋 Planned (API, Frontend, Deploy)
 
-**High-Performance I12 Import:**
-```bash
-just i12-import file.json              # Import 360K+ power records
-just i12-import-resume file.json 50000 # Resume from record 50000
-just i12-validate file.json            # Validate without importing
+## 🛠️ Critical Rules
 
-# Direct CLI usage (backend/scripts/import_i12_data.py)
-python scripts/import_i12_data.py data.json --batch-size 1000 --memory-limit 1.0
-python scripts/import_i12_data.py data.json --resume-from 50000 --clear-cache
-```
+1. **ALWAYS use `just`** - Never run commands directly
+2. **Run `just health`** before starting work
+3. **One task per session** - Use `/clear` between
+4. **Update progress** - `just update-progress`
+5. **Check tokens** - Warning at 90K
 
-**System Status & Performance:**
-```bash
-just import-health                     # Full system health check
-just import-status                     # Import system status
-just import-stats                      # Database record counts
-just cache-stats                       # Cache performance
-just perf-bench                        # I12 benchmarks
-just perf-test-all                     # All performance tests
-```
+## 📁 Key Locations
 
-See `.claude/commands/README.md` for detailed usage.
+- **Core Guide**: `.claude/core/project-guide.md`
+- **Quick Ref**: `.claude/core/quick-reference.md`
+- **Workflows**: `.claude/workflows/daily.md`
+- **Modules**: `.claude/modules/{task}/guide.md`
 
-## 📋 Project Overview
+## 🔧 For Specific Work
 
-Mids Hero Web is a modern web-based character build planner for City of Heroes, replacing the legacy Windows Forms application with a React/FastAPI stack.
+| Task | Say This | Loads |
+|------|----------|-------|
+| Database | "work on database" | `.claude/modules/database/` |
+| Import | "import data" | `.claude/modules/import/` |
+| API | "build API" | `.claude/modules/api/` |
+| Frontend | "React component" | `.claude/modules/frontend/` |
+| Debug | "fix error" | `.claude/workflows/troubleshooting.md` |
 
-### Core Functionality
+## ⚠️ Remember
 
-- Character archetype and powerset selection
-- Power selection with level/prerequisite validation
-- Enhancement slotting with set bonus calculations
-- Build statistics computation and validation
-- Import/export of character builds
-- Real-time updates from game servers
-
-### Tech Stack
-
-- **Frontend**: React 19 + TypeScript, Material-UI (planned)
-- **Backend**: FastAPI + Python 3.11, SQLAlchemy, PostgreSQL
-- **DevOps**: Docker, uv package manager, GCP (planned)
-
-## 🛠️ Development Standards
-
-### Critical Rules
-
-1. **Always use just** for all operations - NEVER run commands directly
-2. **Token limits**: Keep contexts under 50k tokens, alert at 90k/128k
-3. **REQUIRED: Run `just health`** before starting any work session on a GitHub issue
-4. **Update progress** after completing tasks: `just update-progress`
-5. **Use /clear** between unrelated tasks to prevent context pollution
-6. **Follow `.claude/development-workflow.md`** for session management and commits
-
-### Code Standards
-
-- **Python**: Follow PEP 8, use type hints, async/await patterns
-- **TypeScript**: Strict mode enabled, proper interface definitions
-- **Database**: Always use migrations, never modify schema directly
-- **API**: RESTful conventions, Pydantic schemas for validation
-- **Testing**: TDD approach, maintain >80% coverage
-
-## 📊 Current Development State
-
-Following the 6-epic roadmap (see `.claude/epics/` for details):
-
-**✅ Epic 1: Project Setup** - Complete (All 20 GitHub issues closed)
-
-- Git repository and project structure established
-- React 19 frontend scaffold with TypeScript
-- FastAPI backend with proper Python structure  
-- Docker environment configuration
-- GitHub Actions CI/CD pipeline
-- AI-powered workflows with @claude integration
-
-**🚧 Epic 2: Data Import** - In Progress (90% Complete)
-
-- ✅ Database schema design completed
-- ✅ Comprehensive SQLAlchemy models implemented  
-- ✅ Alembic migration framework set up
-- ✅ Initial database migration created and applied
-- ✅ Database schema deployment successful
-- ✅ I12 streaming parser for 360K+ power data (#168)
-- ✅ Multi-tier caching system (LRU + Redis)
-- ✅ Database performance optimizations
-- ✅ CLI import tool with resume capability
-- 🚧 MidsReborn MHD integration (remaining work)
-- 🚧 Full data pipeline completion
-
-**📋 Epic 3-6**: Backend API, Frontend, Deployment, Optimization - Planned
-
-## 🔧 Common Workflows
-
-### Daily Development
-
-```bash
-just dev            # Start all services
-just db-migrate     # Run pending migrations
-just test-watch     # Run tests in watch mode
-just lint-fix       # Auto-fix code issues
-```
-
-### Data Import Operations
-
-```bash
-just import-all data-dir                # Import all data types
-just import-health                      # System health check
-just import-stats                       # Database record counts
-just i12-import data.json               # High-performance power data
-just cache-stats                        # Check cache performance
-just db-optimize                        # Database optimizations
-```
-
-### Database Operations
-
-```bash
-just db-migration-create "description"  # Create new migration
-just db-reset                          # Reset database
-just db-seed                           # Load sample data
-```
-
-### Code Quality
-
-```bash
-just quality        # Run all checks
-just format         # Format code
-just type-check     # Type checking
-```
-
-## 📁 Project Structure
-
-```
-mids-hero-web/
-├── .claude/              # AI development context
-│   ├── agents/          # Specialized AI agents
-│   ├── epics/           # Roadmap epic details
-│   └── shared/          # Shared context
-├── backend/             # FastAPI application
-│   ├── app/            # Application code
-│   └── pyproject.toml  # Dependencies
-├── frontend/            # React application
-├── scripts/            # Helper scripts
-├── docker-compose.yml  # Local development
-└── justfile           # Development commands
-```
-
-## ⚠️ Important Notes
-
-### Current Blockers
-
-1. **MidsReborn integration**: Epic 2 requires MidsReborn MHD parser completion  
-2. **I12 data files**: Need actual I12 power data files for production import
-
-### Recent Achievements
-
-1. **I12 Streaming Parser**: Production-ready parser for 360K+ power records
-   - `StreamingJsonReader`: Memory-efficient chunked JSON processing  
-   - `PowerDataProcessor`: I12 format transformation with validation
-   - `I12StreamingParser`: Main orchestrator with progress tracking
-2. **Performance Optimization**: <100ms queries, <1GB memory usage, multi-tier caching
-   - `PowerCacheService`: Multi-tier LRU + Redis caching for power queries
-   - Database optimizations via migration `0236d1f741c9`
-3. **Database Optimization**: Composite indexes, GIN indexes, materialized views
-   - Import logs table for tracking large data imports
-   - Power build summary materialized view for fast queries
-
-## 🤖 AI Agent Guidelines
-
-When creating specialized agents:
-
-- **Database Agent**: Focus on migrations, models, import scripts
-- **API Agent**: Handle endpoint creation, schemas, testing
-- **Frontend Agent**: Component development, state management
-- **DevOps Agent**: Docker, deployment, monitoring
-
-Always reference `.claude/agents/` for agent-specific context.
-
-## 📚 Documentation
-
-- **Quick Commands**: `.claude/quick-commands.md` - Essential commands reference
-- **Custom Commands**: `.claude/commands/` - Pre-approved automated workflows
-- **Roadmap**: `.claude/epics/` - Detailed epic breakdowns  
-- **Architecture**: `.claude/shared/architecture.md`
-- **Database**: `.claude/shared/database-design.md`
-
-## Important
-
-- Use `fd` instead of `find` - NEVER use `find` command [[memory:905944]]
-- Use `trash` instead of `rm -rf` - NEVER use `rm -rf` [[memory:648882]]
+- Use `fd` not `find`
+- Use `trash` not `rm -rf`  
+- Keep sessions focused
+- Load only what you need
 
 ---
 
-Remember: This is a community project recreating a beloved tool. Quality and accuracy are paramount - the City of Heroes community depends on precise build calculations.
+*Claude's context system explained: `.claude/README.md`*  
+*Full documentation: `.claude/docs/`*

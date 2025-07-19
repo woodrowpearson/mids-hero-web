@@ -131,7 +131,7 @@ class TestEnhancementCalculations:
                 expected = 0.333  # Default expected value
 
                 # Set enhancements may have different values
-                if enh.enhancement_set_id:
+                if enh.set_id:
                     # Set IOs typically range from 18% to 53%
                     if magnitude < 0.18 or magnitude > 0.53:
                         issues.append(
@@ -234,11 +234,7 @@ class TestSetBonusCalculations:
         # that the data supports this rule
 
         # Get all unique bonus combinations
-        bonuses = (
-            db.query(SetBonus.bonus_type, SetBonus.bonus_amount)
-            .distinct()
-            .all()
-        )
+        bonuses = db.query(SetBonus.bonus_type, SetBonus.bonus_amount).distinct().all()
 
         # Group by type and magnitude to find stackable bonuses
         bonus_groups = {}
@@ -300,7 +296,9 @@ class TestCombatMechanics:
         # For now, we verify the data structure supports it
         # Skip this test if no powers have effects data
         # This avoids PostgreSQL JSON LIKE issues
-        powers_with_defense = db.query(Power).filter(Power.effects.isnot(None)).limit(50).all()
+        powers_with_defense = (
+            db.query(Power).filter(Power.effects.isnot(None)).limit(50).all()
+        )
 
         issues = []
         for power in powers_with_defense:
@@ -331,7 +329,9 @@ class TestCombatMechanics:
 
         # Skip this test if no powers have effects data
         # This avoids PostgreSQL JSON LIKE issues
-        powers_with_resistance = db.query(Power).filter(Power.effects.isnot(None)).limit(50).all()
+        powers_with_resistance = (
+            db.query(Power).filter(Power.effects.isnot(None)).limit(50).all()
+        )
 
         issues = []
         for power in powers_with_resistance:

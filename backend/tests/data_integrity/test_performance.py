@@ -76,9 +76,7 @@ class TestDatabasePerformance:
         # Test 2: Load all enhancements with set bonuses
         start = time.time()
         enhancements = (
-            db.query(Enhancement)
-            .filter(Enhancement.set_id.isnot(None))
-            .all()
+            db.query(Enhancement).filter(Enhancement.set_id.isnot(None)).all()
         )
         duration = time.time() - start
         benchmarks.append(("Load set enhancements", len(enhancements), duration))

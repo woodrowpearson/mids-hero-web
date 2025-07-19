@@ -19,6 +19,7 @@ Mids Hero Web follows a modern three-tier architecture with clear separation of 
 ## Frontend Architecture
 
 ### Technology Stack
+
 - **React 19.1.0** - UI framework
 - **TypeScript** - Type safety
 - **React Router** - Client-side routing
@@ -26,6 +27,7 @@ Mids Hero Web follows a modern three-tier architecture with clear separation of 
 - **Material-UI** (planned) - Component library
 
 ### Component Structure
+
 ```
 frontend/src/
 ├── components/          # UI components
@@ -40,6 +42,7 @@ frontend/src/
 ```
 
 ### Design Patterns
+
 - **Container/Presentational** - Smart vs dumb components
 - **Custom Hooks** - Reusable logic
 - **Context API** - Cross-cutting concerns
@@ -48,6 +51,7 @@ frontend/src/
 ## Backend Architecture
 
 ### Technology Stack
+
 - **FastAPI** - Modern async web framework
 - **SQLAlchemy 2.0** - ORM with async support
 - **Alembic** - Database migrations
@@ -55,6 +59,7 @@ frontend/src/
 - **asyncpg** - Async PostgreSQL driver
 
 ### Application Structure
+
 ```
 backend/app/
 ├── routers/        # API endpoints
@@ -67,6 +72,7 @@ backend/app/
 ```
 
 ### API Design Principles
+
 - **RESTful** - Standard HTTP methods
 - **Versioned** - `/api/v1/` prefix
 - **Consistent** - Predictable patterns
@@ -75,6 +81,7 @@ backend/app/
 ## Database Architecture
 
 ### Schema Design
+
 ```sql
 -- Core entities
 archetypes
@@ -95,18 +102,20 @@ enhancements
 └── bonuses (accuracy, damage, etc.)
 
 set_bonuses
-├── id, enhancement_set_id
+├── id, set_id
 ├── pieces_required
 └── bonus_effects
 ```
 
 ### Relationships
+
 - **Archetype** → has many → **Powersets**
 - **Powerset** → has many → **Powers**
 - **Power** → can slot → **Enhancements**
 - **Enhancement Set** → provides → **Set Bonuses**
 
 ### Performance Considerations
+
 - Indexed foreign keys
 - Composite indexes for common queries
 - Materialized views for calculations
@@ -115,24 +124,26 @@ set_bonuses
 ## Data Flow
 
 ### Character Build Creation
+
 ```
 1. User selects archetype
    └─> GET /api/v1/archetypes/{id}
-   
+
 2. User picks powersets
    └─> GET /api/v1/powersets?archetype_id={id}
-   
+
 3. User selects powers
    └─> GET /api/v1/powers?powerset_id={id}
-   
+
 4. User slots enhancements
    └─> GET /api/v1/enhancements?power_id={id}
-   
+
 5. Calculate build stats
    └─> POST /api/v1/builds/calculate
 ```
 
 ### State Management
+
 ```
 Frontend State Tree:
 {
@@ -159,12 +170,14 @@ Frontend State Tree:
 ## Security Architecture
 
 ### Authentication & Authorization
+
 - JWT tokens for API access
 - Role-based permissions (future)
 - Secure password hashing with bcrypt
 - CORS configuration for frontend
 
 ### Data Validation
+
 - Pydantic schemas for input validation
 - SQL injection prevention via ORM
 - XSS protection in React
@@ -173,18 +186,19 @@ Frontend State Tree:
 ## Deployment Architecture
 
 ### Container Strategy
+
 ```yaml
 services:
   frontend:
     - Multi-stage build
     - Nginx for serving
     - Optimized bundle size
-    
+
   backend:
     - Python 3.11 slim
     - Uvicorn with workers
     - Health checks
-    
+
   database:
     - PostgreSQL 15
     - Persistent volumes
@@ -192,6 +206,7 @@ services:
 ```
 
 ### Scaling Considerations
+
 - Horizontal scaling for backend
 - CDN for static assets
 - Database read replicas
@@ -200,7 +215,9 @@ services:
 ## Integration Points
 
 ### External Systems
+
 1. **Game Data Sources**
+
    - Homecoming update server
    - Manual .mhd file imports
    - Community data contributions
@@ -211,6 +228,7 @@ services:
    - Community build databases
 
 ### Internal APIs
+
 - RESTful HTTP for frontend-backend
 - WebSocket for real-time updates (planned)
 - PostgreSQL for data persistence
@@ -219,13 +237,16 @@ services:
 ## Performance Architecture
 
 ### Optimization Strategies
+
 1. **Frontend**
+
    - Code splitting
    - Lazy loading
    - Memoization
    - Virtual scrolling
 
 2. **Backend**
+
    - Async operations
    - Connection pooling
    - Query optimization
@@ -238,6 +259,7 @@ services:
    - Materialized views
 
 ### Monitoring
+
 - Application metrics (Prometheus format)
 - Error tracking (Sentry planned)
 - Performance monitoring

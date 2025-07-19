@@ -172,7 +172,9 @@ class TestGameRules:
 
     def test_pool_power_restrictions(self, db: Session):
         """Test pool power availability and restrictions."""
-        pool_powersets = db.query(Powerset).filter(Powerset.powerset_type == "pool").all()
+        pool_powersets = (
+            db.query(Powerset).filter(Powerset.powerset_type == "pool").all()
+        )
 
         issues = []
         for pool in pool_powersets:
@@ -199,7 +201,9 @@ class TestGameRules:
 
     def test_epic_power_restrictions(self, db: Session):
         """Test epic/ancillary power restrictions."""
-        epic_powersets = db.query(Powerset).filter(Powerset.powerset_type == "epic").all()
+        epic_powersets = (
+            db.query(Powerset).filter(Powerset.powerset_type == "epic").all()
+        )
 
         issues = []
         for epic in epic_powersets:
@@ -314,8 +318,7 @@ class TestEnhancementSetBonuses:
         for bonus in set_bonuses:
             if bonus.pieces_required < 2 or bonus.pieces_required > 6:
                 issues.append(
-                    f"Set {bonus.set_id} has bonus at "
-                    f"{bonus.pieces_required} pieces"
+                    f"Set {bonus.set_id} has bonus at {bonus.pieces_required} pieces"
                 )
 
         assert not issues, f"Invalid set bonus thresholds: {issues}"
@@ -357,9 +360,7 @@ class TestEnhancementSetBonuses:
         issues = []
         for enh_set in enhancement_sets:
             enhancements = (
-                db.query(Enhancement)
-                .filter(Enhancement.set_id == enh_set.id)
-                .all()
+                db.query(Enhancement).filter(Enhancement.set_id == enh_set.id).all()
             )
 
             # Check for reasonable number of enhancements per set

@@ -128,33 +128,23 @@ C:\Users\Public\Documents\MidsExport\
    cd C:\Users\Public\Documents\MidsExport\mids-hero-web\DataExporter
    ```
 
-2. **Enable MidsReborn** (if you want full MHD export):
+2. **Verify MidsReborn is enabled** (automatic in Windows with MidsReborn present):
    ```powershell
-   # Open the project file in Notepad
-   notepad DataExporter.csproj
+   # Check the project file to confirm MidsReborn is detected
+   type DataExporter.csproj | findstr MIDSREBORN
    ```
    
-   Make TWO changes:
-   
-   **Change 1**: In the PropertyGroup section, uncomment the DefineConstants line:
+   You should see:
    ```xml
-   <!-- Uncomment the following line when MidsReborn reference is enabled -->
-   <DefineConstants>MIDSREBORN</DefineConstants>
+   <!-- Enable MidsReborn integration (only when MidsReborn is available) -->
+   <DefineConstants Condition="Exists('..\external\MidsReborn\MidsReborn\MidsReborn.csproj')">MIDSREBORN</DefineConstants>
    ```
    
-   **Change 2**: Near the bottom, uncomment the MidsReborn reference:
-   ```xml
-   <!-- MidsReborn reference - uncomment to enable full MHD parsing (Windows only) -->
-   <ItemGroup>
-     <ProjectReference Include="..\external\MidsReborn\MidsReborn\MidsReborn.csproj" />
-   </ItemGroup>
-   ```
-   
-   Save and close Notepad.
+   **Note**: MidsReborn is automatically enabled when the external\MidsReborn folder exists. No manual editing required!
 
-3. **For simple export** (no MidsReborn):
-   - Leave the MidsReborn reference commented out (default state)
-   - This will only copy existing JSON files (AttribMod.json, TypeGrades.json)
+3. **For simple export** (if MidsReborn is not available):
+   - The project automatically detects if MidsReborn is missing
+   - Will only copy existing JSON files (AttribMod.json, TypeGrades.json)
    - **Note**: Without MidsReborn, MHD binary files cannot be parsed
 
 ## Step 5: Build DataExporter
@@ -181,43 +171,56 @@ dotnet build
 # Run the exporter
 dotnet run -- C:\Users\Public\Documents\MidsExport\MidsData\input C:\Users\Public\Documents\MidsExport\MidsData\output
 
-# Or use the built executable directly
-.\bin\Debug\net8.0\DataExporter.exe C:\Users\Public\Documents\MidsExport\MidsData\input C:\Users\Public\Documents\MidsExport\MidsData\output
+# Or use the built executable directly (path may vary based on Windows version)
+.\bin\Debug\net8.0-windows10.0.19041\DataExporter.exe C:\Users\Public\Documents\MidsExport\MidsData\input C:\Users\Public\Documents\MidsExport\MidsData\output
 ```
 
 Expected output:
-```
-[Without MidsReborn - Current default]
-Input folder: C:\Users\Public\Documents\MidsExport\MidsData\input
-Output folder: C:\Users\Public\Documents\MidsExport\MidsData\output
+
+```text
+[With MidsReborn enabled - Automatic when MidsReborn folder exists]
+=== MidsReborn MHD to JSON Export ===
+Input path: C:\Users\Public\Documents\MidsExport\MidsData\input
+Output path: C:\Users\Public\Documents\MidsExport\MidsData\output
+
+Initializing MidsReborn configuration...
+Configuration initialized with data path: C:\Users\Public\Documents\MidsExport\MidsData\input
+
+Loading MHD data files...
+Loading server data... Skipped (not critical): Could not find file 'C:\Users\Public\Documents\MidsExport\MidsData\input\SData.mhd'.
+Loading attribute modifiers... OK
+Loading type grades... OK
+Loading level tables... OK
+Loading main database (I12.mhd)... OK - Loaded 10942 powers
+Loading math tables... OK
+Loading effect IDs... OK
+Loading enhancement classes... OK
+Loading enhancement database... OK - Loaded 631 enhancements
+Loading origins... OK
+Loading salvage... OK - Loaded 154 salvage items
+Loading recipes... OK - Loaded 10244 recipes
+Performing post-load setup... OK
+
+=== Data Loading Summary ===
+Archetypes: 61
+Powersets: 3665
+Powers: 10942
+Enhancements: 631
+Enhancement Sets: 98
+Recipes: 10244
+Salvage: 154
+
+Exporting to JSON...
+Attempting to use MidsReborn's built-in JSON export...
+Built-in export successful!
+
+=== Export Complete! ===
+
+[Without MidsReborn - If MidsReborn folder is missing]
 MidsReborn is not enabled. To enable:
 1. Uncomment the MidsReborn reference in DataExporter.csproj
 2. Add <DefineConstants>MIDSREBORN</DefineConstants> to the PropertyGroup
 3. Rebuild the project
-
-Falling back to JSON file processing...
-Processed AttribMod.json -> C:\Users\Public\Documents\MidsExport\MidsData\output\AttribMod.json
-Processed TypeGrades.json -> C:\Users\Public\Documents\MidsExport\MidsData\output\TypeGrades.json
-
-Available .mhd files for future processing:
-  I12.mhd (30,426,938 bytes)
-  EnhDB.mhd (463,569 bytes)
-  Recipe.mhd (3,644,674 bytes)
-  ...
-
-[With MidsReborn enabled - After uncommenting]
-Input folder: C:\Users\Public\Documents\MidsExport\MidsData\input
-Output folder: C:\Users\Public\Documents\MidsExport\MidsData\output
-Loading MidsReborn database...
-Exporting archetypes... Done! (61 exported)
-Exporting powersets... Done! (3,665 exported)
-Exporting powers... Done! (10,942 exported)
-Exporting enhancements... Done! (631 exported)
-Exporting enhancement sets... Done! (98 exported)
-Exporting recipes... Done! (10,244 exported)
-Exporting salvage... Done! (154 exported)
-
-Export complete!
 ```
 
 ## Step 7: Verify Output
@@ -287,7 +290,9 @@ git push
 
 3. **Build errors with MidsReborn**:
    - MidsReborn requires Windows-specific components
-   - If it fails, comment out the MidsReborn reference and use SimpleMhdExporter
+   - The project automatically adjusts target framework based on MidsReborn availability
+   - If MidsReborn is present: targets net8.0-windows10.0.19041
+   - If MidsReborn is missing: targets net8.0 (cross-platform)
 
 4. **"Access denied" errors**:
    - Run PowerShell as Administrator
@@ -328,4 +333,4 @@ If you encounter issues:
 1. Check the exact error message
 2. Verify all prerequisites are installed
 3. Ensure paths are correct (no typos)
-4. Try SimpleMhdExporter if MidsReborn fails
+4. Try running without MidsReborn if parsing fails

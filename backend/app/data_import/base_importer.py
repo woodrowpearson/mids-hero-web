@@ -73,7 +73,9 @@ class BaseImporter(ABC):
         with open(file_path, encoding="utf-8") as f:
             data = json.load(f)
 
-        logger.info(f"Loaded {len(data) if isinstance(data, list) else 'object'} from {file_path}")
+        logger.info(
+            f"Loaded {len(data) if isinstance(data, list) else 'object'} from {file_path}"
+        )
         return data
 
     def validate_data(self, data: dict[str, Any]) -> bool:
@@ -120,10 +122,7 @@ class BaseImporter(ABC):
                     imported += 1
                 except Exception as record_error:
                     session.rollback()
-                    self.errors.append({
-                        "record": record,
-                        "error": str(record_error)
-                    })
+                    self.errors.append({"record": record, "error": str(record_error)})
                     logger.error(f"Failed to import record: {record_error}")
 
         return imported
@@ -144,7 +143,7 @@ class BaseImporter(ABC):
             source_file=str(file_path),
             records_processed=0,
             records_imported=0,
-            errors=0
+            errors=0,
         )
 
         try:
@@ -178,7 +177,9 @@ class BaseImporter(ABC):
                 # Log progress every 10%
                 if self.processed_count % max(1, total_items // 10) == 0:
                     progress = (self.processed_count / total_items) * 100
-                    logger.info(f"Progress: {progress:.1f}% ({self.processed_count}/{total_items})")
+                    logger.info(
+                        f"Progress: {progress:.1f}% ({self.processed_count}/{total_items})"
+                    )
 
                 # Transform and validate
                 try:
@@ -186,15 +187,11 @@ class BaseImporter(ABC):
                     if self.validate_data(transformed):
                         batch.append(transformed)
                     else:
-                        self.errors.append({
-                            "record": item,
-                            "error": "Validation failed"
-                        })
+                        self.errors.append(
+                            {"record": item, "error": "Validation failed"}
+                        )
                 except Exception as e:
-                    self.errors.append({
-                        "record": item,
-                        "error": str(e)
-                    })
+                    self.errors.append({"record": item, "error": str(e)})
                     logger.error(f"Failed to transform record: {e}")
                     continue
 
@@ -246,7 +243,9 @@ class BaseImporter(ABC):
             count = session.query(model_class).count()
 
             if count > 0:
-                logger.warning(f"Deleting {count} existing {model_class.__name__} records")
+                logger.warning(
+                    f"Deleting {count} existing {model_class.__name__} records"
+                )
                 session.query(model_class).delete()
                 session.commit()
                 logger.info(f"Deleted {count} records")

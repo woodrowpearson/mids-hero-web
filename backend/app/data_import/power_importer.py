@@ -143,13 +143,25 @@ class PowerImporter(BaseImporter):
             "power_type": self._determine_power_type(power_data),
             "target_type": power_data.get("target_type", "self"),
             "accuracy": float(power_data.get("accuracy", 1.0)),
-            "damage_scale": float(power_data.get("damage_scale", 0.0)) if power_data.get("damage_scale") else None,
+            "damage_scale": (
+                float(power_data.get("damage_scale", 0.0))
+                if power_data.get("damage_scale")
+                else None
+            ),
             "endurance_cost": float(power_data.get("endurance_cost", 0.0)),
             "recharge_time": float(power_data.get("recharge_time", 0.0)),
             "activation_time": float(power_data.get("activation_time", 0.0)),
-            "range_feet": int(power_data.get("range", 0)) if power_data.get("range") else None,
-            "radius_feet": int(power_data.get("radius", 0)) if power_data.get("radius") else None,
-            "max_targets": int(power_data.get("max_targets", 1)) if power_data.get("max_targets") else None,
+            "range_feet": (
+                int(power_data.get("range", 0)) if power_data.get("range") else None
+            ),
+            "radius_feet": (
+                int(power_data.get("radius", 0)) if power_data.get("radius") else None
+            ),
+            "max_targets": (
+                int(power_data.get("max_targets", 1))
+                if power_data.get("max_targets")
+                else None
+            ),
             "icon_path": f"powers/{name.lower().replace(' ', '_')}.png",
             "display_order": int(power_data.get("display_order", level)),
             "internal_name": power_data.get("internal_name", name),
@@ -203,8 +215,11 @@ class PowerImporter(BaseImporter):
 
         # Validate numeric fields
         numeric_fields = [
-            "level_available", "accuracy", "endurance_cost",
-            "recharge_time", "activation_time"
+            "level_available",
+            "accuracy",
+            "endurance_cost",
+            "recharge_time",
+            "activation_time",
         ]
 
         for field in numeric_fields:

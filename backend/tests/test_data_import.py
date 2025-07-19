@@ -35,8 +35,9 @@ def test_db():
 @pytest.fixture
 def temp_json_file():
     """Create temporary JSON file for testing."""
+
     def _create_file(data):
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
             json.dump(data, f)
             return Path(f.name)
 
@@ -53,14 +54,8 @@ class TestArchetypeImporter:
         # Create test data
         test_data = {
             "archetypes": [
-                {
-                    "name": "Blaster",
-                    "origins": ["Magic", "Science", "Technology"]
-                },
-                {
-                    "name": "Controller",
-                    "origins": ["Magic", "Science", "Technology"]
-                }
+                {"name": "Blaster", "origins": ["Magic", "Science", "Technology"]},
+                {"name": "Controller", "origins": ["Magic", "Science", "Technology"]},
             ]
         }
 
@@ -87,10 +82,7 @@ class TestArchetypeImporter:
         """Test archetype data transformation."""
         importer = ArchetypeImporter("sqlite:///:memory:")
 
-        raw_data = {
-            "name": "Scrapper",
-            "origins": ["Natural", "Magic"]
-        }
+        raw_data = {"name": "Scrapper", "origins": ["Natural", "Magic"]}
 
         transformed = importer.transform_data(raw_data)
 
@@ -114,7 +106,7 @@ class TestSalvageImporter:
                 "S_InanimateCarbonRod",
                 "Inanimate Carbon Rod",
                 "S_HumanBloodSample",
-                "Human Blood Sample"
+                "Human Blood Sample",
             ]
         }
 
@@ -142,13 +134,22 @@ class TestSalvageImporter:
         importer = SalvageImporter("sqlite:///:memory:")
 
         # Test common salvage
-        assert importer._determine_salvage_type("Simple Chemical", "S_SimpleChemical") == "common"
+        assert (
+            importer._determine_salvage_type("Simple Chemical", "S_SimpleChemical")
+            == "common"
+        )
 
         # Test uncommon salvage
-        assert importer._determine_salvage_type("Complex Chemical", "S_ComplexChemical") == "uncommon"
+        assert (
+            importer._determine_salvage_type("Complex Chemical", "S_ComplexChemical")
+            == "uncommon"
+        )
 
         # Test rare salvage
-        assert importer._determine_salvage_type("Synthetic Enzyme", "S_SyntheticEnzyme") == "rare"
+        assert (
+            importer._determine_salvage_type("Synthetic Enzyme", "S_SyntheticEnzyme")
+            == "rare"
+        )
 
 
 class TestEnhancementImporter:
@@ -159,14 +160,19 @@ class TestEnhancementImporter:
         importer = EnhancementImporter("sqlite:///:memory:")
 
         assert importer._determine_enhancement_type("Invention: Damage") == "IO"
-        assert importer._determine_enhancement_type("Devastation: Accuracy/Damage") == "set_piece"
+        assert (
+            importer._determine_enhancement_type("Devastation: Accuracy/Damage")
+            == "set_piece"
+        )
         assert importer._determine_enhancement_type("Hamidon Enhancement") == "HamiO"
 
     def test_parse_bonus_values(self):
         """Test parsing bonus values from description."""
         importer = EnhancementImporter("sqlite:///:memory:")
 
-        bonuses = importer._parse_bonus_values("Increases accuracy by 26.5% and damage by 26.5%")
+        bonuses = importer._parse_bonus_values(
+            "Increases accuracy by 26.5% and damage by 26.5%"
+        )
         assert bonuses.get("accuracy") == 26.5
         assert bonuses.get("damage") == 26.5
 
@@ -184,7 +190,10 @@ class TestRecipeImporter:
         assert importer._determine_recipe_type("Common IO Recipe", None) == "common"
         assert importer._determine_recipe_type("Rare Recipe", None) == "rare"
         assert importer._determine_recipe_type("Purple Recipe", None) == "very_rare"
-        assert importer._determine_recipe_type("Recipe", "Devastation: Damage") == "very_rare"
+        assert (
+            importer._determine_recipe_type("Recipe", "Devastation: Damage")
+            == "very_rare"
+        )
 
     def test_parse_crafting_cost(self):
         """Test crafting cost calculation."""

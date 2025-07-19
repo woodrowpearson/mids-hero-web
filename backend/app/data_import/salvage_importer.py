@@ -28,16 +28,40 @@ class SalvageImporter(BaseImporter):
 
         # Rare salvage patterns
         rare_keywords = [
-            "diamond", "platinum", "enriched", "synthetic", "pangaean",
-            "deific", "prophecy", "essence", "soulbound", "dimensional",
-            "chronal", "photonic", "positronic", "rikti", "mu", "incarnate"
+            "diamond",
+            "platinum",
+            "enriched",
+            "synthetic",
+            "pangaean",
+            "deific",
+            "prophecy",
+            "essence",
+            "soulbound",
+            "dimensional",
+            "chronal",
+            "photonic",
+            "positronic",
+            "rikti",
+            "mu",
+            "incarnate",
         ]
 
         # Uncommon salvage patterns
         uncommon_keywords = [
-            "titanium", "steel", "alloy", "compound", "extract",
-            "advanced", "complex", "refined", "modified", "enhanced",
-            "mutant", "psychic", "magical", "technological"
+            "titanium",
+            "steel",
+            "alloy",
+            "compound",
+            "extract",
+            "advanced",
+            "complex",
+            "refined",
+            "modified",
+            "enhanced",
+            "mutant",
+            "psychic",
+            "magical",
+            "technological",
         ]
 
         # Check for rare
@@ -57,23 +81,55 @@ class SalvageImporter(BaseImporter):
 
         # Tech salvage patterns
         tech_keywords = [
-            "circuit", "computer", "cybernetic", "technological",
-            "mechanical", "electronic", "hydraulic", "titanium",
-            "steel", "alloy", "polymer", "ceramic", "carbon"
+            "circuit",
+            "computer",
+            "cybernetic",
+            "technological",
+            "mechanical",
+            "electronic",
+            "hydraulic",
+            "titanium",
+            "steel",
+            "alloy",
+            "polymer",
+            "ceramic",
+            "carbon",
         ]
 
         # Magic salvage patterns
         magic_keywords = [
-            "spell", "scroll", "mystic", "magical", "arcane",
-            "rune", "essence", "soul", "spirit", "demon",
-            "blood", "bone", "dust", "amulet", "charm"
+            "spell",
+            "scroll",
+            "mystic",
+            "magical",
+            "arcane",
+            "rune",
+            "essence",
+            "soul",
+            "spirit",
+            "demon",
+            "blood",
+            "bone",
+            "dust",
+            "amulet",
+            "charm",
         ]
 
         # Natural salvage patterns
         natural_keywords = [
-            "blood", "tissue", "sample", "dna", "genetic",
-            "protein", "enzyme", "chemical", "compound",
-            "extract", "serum", "venom", "mutant"
+            "blood",
+            "tissue",
+            "sample",
+            "dna",
+            "genetic",
+            "protein",
+            "enzyme",
+            "chemical",
+            "compound",
+            "extract",
+            "serum",
+            "venom",
+            "mutant",
         ]
 
         # Count keyword matches

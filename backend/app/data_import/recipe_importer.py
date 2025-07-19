@@ -36,7 +36,9 @@ class RecipeImporter(BaseImporter):
         if not self._enhancement_cache:
             enhancements = session.query(Enhancement.id, Enhancement.name).all()
             self._enhancement_cache = {enh.name: enh.id for enh in enhancements}
-            logger.info(f"Loaded {len(self._enhancement_cache)} enhancements into cache")
+            logger.info(
+                f"Loaded {len(self._enhancement_cache)} enhancements into cache"
+            )
 
     def _load_salvage_cache(self, session: Session) -> None:
         """Load salvage internal name to ID mapping."""
@@ -70,10 +72,12 @@ class RecipeImporter(BaseImporter):
             i = 3
             while i < len(entry):
                 if i + 1 < len(entry) and str(entry[i]).startswith("S_"):
-                    salvage_reqs.append({
-                        "salvage_name": str(entry[i]),
-                        "quantity": 1  # Default quantity
-                    })
+                    salvage_reqs.append(
+                        {
+                            "salvage_name": str(entry[i]),
+                            "quantity": 1,  # Default quantity
+                        }
+                    )
                 i += 1
 
             if salvage_reqs:
@@ -90,7 +94,10 @@ class RecipeImporter(BaseImporter):
 
         if enhancement_name:
             enh_lower = enhancement_name.lower()
-            if any(x in enh_lower for x in ["devastation", "apocalypse", "armageddon", "obliteration"]):
+            if any(
+                x in enh_lower
+                for x in ["devastation", "apocalypse", "armageddon", "obliteration"]
+            ):
                 return "very_rare"
             elif "invention:" in enh_lower:
                 return "common"
@@ -155,7 +162,9 @@ class RecipeImporter(BaseImporter):
         crafting_cost, crafting_cost_premium = self._parse_crafting_cost(recipe_data)
 
         # Extract level range
-        level_match = re.search(r"(?:level|lvl)\s*(\d+)(?:\s*-\s*(\d+))?", display_name.lower())
+        level_match = re.search(
+            r"(?:level|lvl)\s*(\d+)(?:\s*-\s*(\d+))?", display_name.lower()
+        )
         if level_match:
             level_min = int(level_match.group(1))
             level_max = int(level_match.group(2)) if level_match.group(2) else level_min
@@ -190,11 +199,13 @@ class RecipeImporter(BaseImporter):
 
                 salvage_id = self._salvage_cache.get(salvage_name)
                 if salvage_id:
-                    self._recipe_salvage_mappings.append({
-                        "recipe_internal_name": internal_name,
-                        "salvage_id": salvage_id,
-                        "quantity": req.get("quantity", 1),
-                    })
+                    self._recipe_salvage_mappings.append(
+                        {
+                            "recipe_internal_name": internal_name,
+                            "salvage_id": salvage_id,
+                            "quantity": req.get("quantity", 1),
+                        }
+                    )
 
         return transformed
 
@@ -246,7 +257,9 @@ class RecipeImporter(BaseImporter):
 
         # Now import recipe-salvage mappings
         if self._recipe_salvage_mappings:
-            logger.info(f"Importing {len(self._recipe_salvage_mappings)} recipe-salvage mappings")
+            logger.info(
+                f"Importing {len(self._recipe_salvage_mappings)} recipe-salvage mappings"
+            )
 
             session = self.SessionLocal()
             try:
@@ -259,11 +272,13 @@ class RecipeImporter(BaseImporter):
                 for mapping in self._recipe_salvage_mappings:
                     recipe_id = recipe_map.get(mapping["recipe_internal_name"])
                     if recipe_id:
-                        batch.append({
-                            "recipe_id": recipe_id,
-                            "salvage_id": mapping["salvage_id"],
-                            "quantity": mapping["quantity"],
-                        })
+                        batch.append(
+                            {
+                                "recipe_id": recipe_id,
+                                "salvage_id": mapping["salvage_id"],
+                                "quantity": mapping["quantity"],
+                            }
+                        )
 
                     if len(batch) >= self.batch_size:
                         session.bulk_insert_mappings(RecipeSalvage, batch)

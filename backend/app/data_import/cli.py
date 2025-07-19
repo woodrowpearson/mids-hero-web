@@ -26,7 +26,9 @@ logger = logging.getLogger(__name__)
 def get_database_url() -> str:
     """Get database URL from environment or use default."""
     load_dotenv()
-    return os.getenv("DATABASE_URL", "postgresql://postgres:postgres@localhost:5432/mids_web")
+    return os.getenv(
+        "DATABASE_URL", "postgresql://postgres:postgres@localhost:5432/mids_web"
+    )
 
 
 def import_archetypes(args: argparse.Namespace) -> None:

@@ -41,7 +41,9 @@ class AttributeModifierImporter(BaseImporter):
         if not self._enhancement_cache:
             enhancements = session.query(Enhancement.id, Enhancement.name).all()
             self._enhancement_cache = {e.name: e.id for e in enhancements}
-            logger.info(f"Loaded {len(self._enhancement_cache)} enhancements into cache")
+            logger.info(
+                f"Loaded {len(self._enhancement_cache)} enhancements into cache"
+            )
 
     def transform_data(self, raw_data: dict[str, Any]) -> dict[str, Any]:
         """Transform raw attribute modifier data to model-compatible format.
@@ -87,13 +89,19 @@ class AttributeModifierImporter(BaseImporter):
             "power_id": power_id,
             "enhancement_id": enhancement_id,
             "attribute_name": attribute_name,
-            "attribute_type": raw_data.get("type", raw_data.get("attribute_type", "magnitude")),
+            "attribute_type": raw_data.get(
+                "type", raw_data.get("attribute_type", "magnitude")
+            ),
             "modifier_table": modifier_table,
             "scale": scale,
             "aspect": raw_data.get("aspect", "Current"),
-            "application_type": raw_data.get("application", raw_data.get("application_type", "OnActivate")),
+            "application_type": raw_data.get(
+                "application", raw_data.get("application_type", "OnActivate")
+            ),
             "target_type": raw_data.get("target", raw_data.get("target_type", "Self")),
-            "effect_area": raw_data.get("area", raw_data.get("effect_area", "SingleTarget")),
+            "effect_area": raw_data.get(
+                "area", raw_data.get("effect_area", "SingleTarget")
+            ),
             "flags": raw_data.get("flags", {}),
         }
 
@@ -189,6 +197,7 @@ class TypeGradeImporter(BaseImporter):
             # Try to parse as JSON if it's a string
             try:
                 import json
+
                 level_scaling = json.loads(level_scaling)
             except (json.JSONDecodeError, TypeError):
                 level_scaling = {}
@@ -247,7 +256,9 @@ class AttributeImporter:
     """Combined importer for both AttributeModifier and TypeGrade data."""
 
     def __init__(self, database_url: str, batch_size: int = 1000):
-        self.attribute_modifier_importer = AttributeModifierImporter(database_url, batch_size)
+        self.attribute_modifier_importer = AttributeModifierImporter(
+            database_url, batch_size
+        )
         self.type_grade_importer = TypeGradeImporter(database_url, batch_size)
 
     def import_attribute_modifiers(self, file_path: Path, resume_from: int = 0):

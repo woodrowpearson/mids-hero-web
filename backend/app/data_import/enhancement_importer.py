@@ -28,7 +28,9 @@ class EnhancementImporter(BaseImporter):
         """Get the SQLAlchemy model class for this importer."""
         return Enhancement
 
-    def _parse_enhancement_line(self, line: str) -> tuple[str, str, str, str, str | None, str | None]:
+    def _parse_enhancement_line(
+        self, line: str
+    ) -> tuple[str, str, str, str, str | None, str | None]:
         """Parse an enhancement line from the raw data.
 
         The format appears to be:
@@ -46,8 +48,8 @@ class EnhancementImporter(BaseImporter):
         display_name = parts[0]
 
         # Parse short name and description
-        if ';' in parts[1]:
-            short_name, description = parts[1].split(';', 1)
+        if ";" in parts[1]:
+            short_name, description = parts[1].split(";", 1)
         else:
             short_name = parts[1][:10]  # Take first 10 chars as short name
             description = parts[1]
@@ -56,7 +58,14 @@ class EnhancementImporter(BaseImporter):
         recipe_name = parts[3] if len(parts) > 3 else None
         salvage_name = parts[4] if len(parts) > 4 else None
 
-        return display_name, short_name, description, icon_path, recipe_name, salvage_name
+        return (
+            display_name,
+            short_name,
+            description,
+            icon_path,
+            recipe_name,
+            salvage_name,
+        )
 
     def _determine_enhancement_type(self, name: str) -> str:
         """Determine the enhancement type based on the name."""
@@ -64,7 +73,10 @@ class EnhancementImporter(BaseImporter):
 
         if "invention:" in name_lower:
             return "IO"
-        elif any(x in name_lower for x in ["devastation:", "apocalypse:", "armageddon:", "obliteration:"]):
+        elif any(
+            x in name_lower
+            for x in ["devastation:", "apocalypse:", "armageddon:", "obliteration:"]
+        ):
             return "set_piece"
         elif "hamidon" in name_lower or "hamio" in name_lower:
             return "HamiO"
@@ -119,7 +131,14 @@ class EnhancementImporter(BaseImporter):
         # Handle different input formats
         if isinstance(raw_data, str):
             # Parse the enhancement line
-            display_name, short_name, description, icon_path, recipe_name, salvage_name = self._parse_enhancement_line(raw_data)
+            (
+                display_name,
+                short_name,
+                description,
+                icon_path,
+                recipe_name,
+                salvage_name,
+            ) = self._parse_enhancement_line(raw_data)
         else:
             # Assume dict format
             display_name = raw_data.get("display_name", raw_data.get("name", ""))
@@ -159,8 +178,19 @@ class EnhancementImporter(BaseImporter):
             "recharge_bonus": bonuses.get("recharge"),
             "defense_bonus": bonuses.get("defense"),
             "resistance_bonus": bonuses.get("resistance"),
-            "other_bonuses": {k: v for k, v in bonuses.items()
-                            if k not in ["accuracy", "damage", "endurance", "recharge", "defense", "resistance"]},
+            "other_bonuses": {
+                k: v
+                for k, v in bonuses.items()
+                if k
+                not in [
+                    "accuracy",
+                    "damage",
+                    "endurance",
+                    "recharge",
+                    "defense",
+                    "resistance",
+                ]
+            },
             "unique_enhancement": is_unique,
             "icon_path": f"enhancements/{icon_path}" if icon_path else None,
             "recipe_name": recipe_name,
@@ -184,7 +214,7 @@ class EnhancementImporter(BaseImporter):
                     display_name=set_name,
                     description=f"{set_name} enhancement set",
                     min_level=10,
-                    max_level=50
+                    max_level=50,
                 )
                 session.add(enh_set)
                 session.commit()
@@ -215,8 +245,12 @@ class EnhancementImporter(BaseImporter):
 
         # Validate bonus values (should be positive if present)
         bonus_fields = [
-            "accuracy_bonus", "damage_bonus", "endurance_bonus",
-            "recharge_bonus", "defense_bonus", "resistance_bonus"
+            "accuracy_bonus",
+            "damage_bonus",
+            "endurance_bonus",
+            "recharge_bonus",
+            "defense_bonus",
+            "resistance_bonus",
         ]
 
         for field in bonus_fields:

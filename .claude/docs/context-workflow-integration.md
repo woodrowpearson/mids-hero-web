@@ -20,33 +20,35 @@
    - Settings.json includes automation_hooks section
    - Context-map.json defines all rules and limits
 
-### ⚠️ What's NOT Integrated (Yet)
+### ✅ What's NOW Integrated
 
-**Claude Code doesn't automatically run these hooks** because:
-- Claude Code (as of January 2025) doesn't have a native hook system
-- The hooks are prepared for future integration
-- They can be run manually or via CI/CD
+**Claude Code DOES have hooks support** as of 2025! Our implementation includes:
+- **UserPromptSubmit**: Validates context on each user input
+- **PreToolUse**: Enforces token limits and logs activity
+- **PostToolUse**: Tracks file modifications
+- **Stop**: Generates session summaries
 
 ### 📋 Current Workflow
 
-#### Manual Integration (Available Now)
+#### Automated Integration (ACTIVE NOW) ✨
+1. **On user prompt** → Runs context validation automatically
+2. **Before file edits** → Checks token limits and blocks if exceeded
+3. **During work** → Logs all tool usage automatically
+4. **After file changes** → Records modifications
+5. **At session end** → Generates activity summary
+
+#### Manual Commands (Still Available)
 ```bash
-# Start of session
-just health              # Regular health check
-just context-check       # NEW: Validate context
+# Manual health checks (optional)
+just context-check       # Full validation and analysis
+just context-validate    # Structure validation
+just token-analyze       # Token usage analysis
 
-# During work
-just token-analyze       # Check token usage
-
-# End of session
-bash .claude/automation/hooks/session-end-hook.sh
+# View logs
+cat .claude/state/logs/activity.jsonl      # Tool usage
+cat .claude/state/logs/file-changes.log    # File modifications
+cat .claude/state/session-stats.json       # Session statistics
 ```
-
-#### Automated Integration (Future)
-When Claude Code supports hooks:
-1. Session start → Runs validation automatically
-2. Every 10 minutes → Monitors token usage
-3. Session end → Saves notes, generates summary
 
 ## How to Use Context Management Today
 

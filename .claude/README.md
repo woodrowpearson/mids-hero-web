@@ -99,24 +99,25 @@ just token-analyze      # Analyze token usage
 
 ```mermaid
 graph LR
-    subgraph "Available Now"
+    subgraph "ACTIVE NOW ✨"
+        Hooks[Claude Code Hooks<br/>UserPromptSubmit<br/>PreToolUse<br/>PostToolUse<br/>Stop]
+        Auto[Automatic Validation<br/>Token Limiting<br/>Activity Logging]
+    end
+    
+    subgraph "Manual Backup"
         Manual[Manual Commands<br/>just context-check<br/>just token-analyze]
     end
     
-    subgraph "Prepared for Future"
-        Hooks[Session Hooks<br/>Start/Monitor/End]
-        Auto[Automatic Validation<br/>Token Monitoring]
-    end
+    Hooks --> Auto
+    Auto --> Manual
     
-    Manual -->|When Claude adds<br/>hook support| Auto
-    
-    style Manual fill:#99ff99
-    style Hooks fill:#ffcc99
-    style Auto fill:#ccccff
+    style Hooks fill:#99ff99
+    style Auto fill:#99ff99
+    style Manual fill:#ccccff
 ```
 
-**Current**: Run commands manually during sessions  
-**Future**: Hooks will run automatically when Claude Code adds support
+**Current**: ✅ Hooks run automatically on every Claude interaction  
+**Backup**: Manual commands available for debugging and analysis
 
 ### 🔧 Available Commands
 

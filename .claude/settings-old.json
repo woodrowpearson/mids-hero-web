@@ -136,7 +136,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 .claude/hooks/context-validator.py",
+            "command": "bash .claude/automation/hooks/session-start-hook.sh 2>&1 | head -10",
             "timeout_seconds": 10,
             "run_in_background": true
           }
@@ -149,13 +149,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 .claude/hooks/token-limiter.py",
-            "timeout_seconds": 5
-          },
-          {
-            "type": "command",
-            "command": "python3 .claude/hooks/activity-logger.py",
-            "run_in_background": true
+            "command": "python3 -c \"import json, sys, tiktoken; data=json.load(sys.stdin); path=data.get('tool_input',{}).get('file_path',''); enc=tiktoken.get_encoding('cl100k_base'); limit=10000 if 'modules' in path else 5000; content=data.get('tool_input',{}).get('content','') or data.get('tool_input',{}).get('new_string',''); tokens=len(enc.encode(content)); sys.exit(2 if tokens > limit else 0)\" 2>/dev/null || true"
           }
         ]
       },
@@ -164,17 +158,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 .claude/hooks/activity-logger.py",
-            "run_in_background": true
-          }
-        ]
-      },
-      {
-        "matcher": "Read",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 .claude/hooks/activity-logger.py",
+            "command": "jq -r '\"[\(.timestamp | strftime(\"%Y-%m-%d %H:%M:%S\"))] \(.tool_input.command)\"' >> .claude/state/logs/bash-commands.log 2>/dev/null || true",
             "run_in_background": true
           }
         ]
@@ -186,7 +170,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"$(date '+%Y-%m-%d %H:%M:%S') File modified: $CLAUDE_FILE_PATHS\" >> .claude/state/logs/file-changes.log",
+            "command": "echo \"File modified: $CLAUDE_FILE_PATHS\" >> .claude/state/logs/file-changes.log 2>/dev/null || true",
             "run_in_background": true
           }
         ]
@@ -197,9 +181,21 @@
         "matcher": "",
         "hooks": [
           {
-            "type": "command", 
-            "command": "python3 -c \"import json; from pathlib import Path; stats_file = Path('.claude/state/session-stats.json'); stats = json.loads(stats_file.read_text()) if stats_file.exists() else {}; print(f'Session summary: {stats.get(\\\"tool_usage\\\", {})} tools used, {stats.get(\\\"files_modified\\\", 0)} files modified, {stats.get(\\\"commands_run\\\", 0)} commands run')\"",
+            "type": "command",
+            "command": "bash .claude/automation/hooks/context-monitor-hook.sh 2>&1 | tail -5",
             "timeout_seconds": 5,
+            "run_in_background": true
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"[$(date +%Y-%m-%d\\ %H:%M:%S)] Notification: $CLAUDE_NOTIFICATION\" >> .claude/state/logs/notifications.log 2>/dev/null || true",
             "run_in_background": true
           }
         ]

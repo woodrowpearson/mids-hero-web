@@ -54,7 +54,8 @@ class ArchetypeImporter(BaseImporter):
         }
 
         primary_group, secondary_group = archetype_groups.get(
-            name, ("damage", "support")  # Default values
+            name,
+            ("damage", "support"),  # Default values
         )
 
         # Map archetype names to hit point values

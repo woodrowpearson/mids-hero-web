@@ -313,4 +313,4 @@ class TestArchetypeParser:
         assert len(archetype.origins) == expected_count
         if expected_count > 0:
             assert archetype.origins[0] == "Origin0"
-            assert archetype.origins[-1] == f"Origin{expected_count-1}"
+            assert archetype.origins[-1] == f"Origin{expected_count - 1}"

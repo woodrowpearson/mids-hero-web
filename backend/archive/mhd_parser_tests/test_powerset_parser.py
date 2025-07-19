@@ -323,5 +323,5 @@ class TestPowersetParser:
             assert powerset.mutex_list[0][0] == "Mutex0"
             assert powerset.mutex_list[0][1] == 100
             if expected_count > 1:
-                assert powerset.mutex_list[-1][0] == f"Mutex{expected_count-1}"
+                assert powerset.mutex_list[-1][0] == f"Mutex{expected_count - 1}"
                 assert powerset.mutex_list[-1][1] == 100 + expected_count - 1

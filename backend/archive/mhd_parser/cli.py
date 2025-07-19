@@ -208,13 +208,12 @@ class MhdParserCLI:
                     elif "salvage" in filename_lower:
                         result = parse_salvage_database(f)
                         self.logger.info(
-                            f"Valid salvage database: "
-                            f"{len(result.salvage_items)} items"
+                            f"Valid salvage database: {len(result.salvage_items)} items"
                         )
                     elif "recipe" in filename_lower:
                         result = parse_recipe_database(f)
                         self.logger.info(
-                            f"Valid recipe database: " f"{len(result.recipes)} recipes"
+                            f"Valid recipe database: {len(result.recipes)} recipes"
                         )
                     else:
                         self.logger.warning(f"Unknown file type: {file_path.name}")

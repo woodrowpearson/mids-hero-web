@@ -445,7 +445,7 @@ Natural"""
             name = f"Thunderstrike: {['Acc/Dmg', 'Dmg/End', 'Dmg/Rech', 'Acc/End/Rech', 'Acc/Dmg/End/Rech', 'Dmg/End/Rech'][i]}"
             stream.write(bytes([len(name)]))
             stream.write(name.encode())
-            short = f"TS:{i+1}"
+            short = f"TS:{i + 1}"
             stream.write(bytes([len(short)]))
             stream.write(short.encode())
             stream.write(b"\x04Desc")

@@ -1,6 +1,7 @@
 """
 Test performance benchmarks for data operations.
 """
+
 import os
 import time
 
@@ -30,8 +31,14 @@ class TestDatabasePerformance:
             ("Power by name", "SELECT * FROM powers WHERE name = 'Fire Bolt'"),
             ("Powers by powerset", "SELECT * FROM powers WHERE powerset_id = 1"),
             ("Powers by level", "SELECT * FROM powers WHERE level_available = 1"),
-            ("Enhancements by set", "SELECT * FROM enhancements WHERE enhancement_set_id = 1"),
-            ("Recipes by enhancement", "SELECT * FROM recipes WHERE enhancement_id = 1"),
+            (
+                "Enhancements by set",
+                "SELECT * FROM enhancements WHERE enhancement_set_id = 1",
+            ),
+            (
+                "Recipes by enhancement",
+                "SELECT * FROM recipes WHERE enhancement_id = 1",
+            ),
         ]
 
         issues = []
@@ -40,14 +47,14 @@ class TestDatabasePerformance:
             explain = db.execute(text(f"EXPLAIN ANALYZE {query}")).fetchall()
 
             # Check if using index scan vs sequential scan
-            plan_text = '\n'.join([str(row) for row in explain])
+            plan_text = "\n".join([str(row) for row in explain])
 
-            if 'Seq Scan' in plan_text and 'Index' not in plan_text:
+            if "Seq Scan" in plan_text and "Index" not in plan_text:
                 # Extract execution time
                 exec_time = None
                 for row in explain:
-                    if 'Execution Time' in str(row):
-                        exec_time = float(str(row).split(':')[-1].split()[0])
+                    if "Execution Time" in str(row):
+                        exec_time = float(str(row).split(":")[-1].split()[0])
 
                 if exec_time and exec_time > 10.0:  # 10ms threshold
                     issues.append(
@@ -62,28 +69,31 @@ class TestDatabasePerformance:
 
         # Test 1: Load all powers for an archetype
         start = time.time()
-        powers = db.query(Power).join(Powerset).filter(
-            Powerset.archetype_id == 1
-        ).all()
+        powers = db.query(Power).join(Powerset).filter(Powerset.archetype_id == 1).all()
         duration = time.time() - start
-        benchmarks.append(('Load archetype powers', len(powers), duration))
+        benchmarks.append(("Load archetype powers", len(powers), duration))
 
         # Test 2: Load all enhancements with set bonuses
         start = time.time()
-        enhancements = db.query(Enhancement).filter(
-            Enhancement.enhancement_set_id.isnot(None)
-        ).all()
+        enhancements = (
+            db.query(Enhancement)
+            .filter(Enhancement.enhancement_set_id.isnot(None))
+            .all()
+        )
         duration = time.time() - start
-        benchmarks.append(('Load set enhancements', len(enhancements), duration))
+        benchmarks.append(("Load set enhancements", len(enhancements), duration))
 
         # Test 3: Complex join query
         start = time.time()
-        result = db.query(Power).join(Powerset).join(Archetype).filter(
-            Archetype.name == 'Blaster',
-            Power.level_available <= 20
-        ).all()
+        result = (
+            db.query(Power)
+            .join(Powerset)
+            .join(Archetype)
+            .filter(Archetype.name == "Blaster", Power.level_available <= 20)
+            .all()
+        )
         duration = time.time() - start
-        benchmarks.append(('Complex join query', len(result), duration))
+        benchmarks.append(("Complex join query", len(result), duration))
 
         # Check performance thresholds
         issues = []
@@ -93,14 +103,14 @@ class TestDatabasePerformance:
                 rps = count / duration
                 ms_per_record = (duration * 1000) / count
 
-                print(f"{test_name}: {count} records in {duration:.3f}s "
-                      f"({rps:.0f} rec/s, {ms_per_record:.2f}ms/rec)")
+                print(
+                    f"{test_name}: {count} records in {duration:.3f}s "
+                    f"({rps:.0f} rec/s, {ms_per_record:.2f}ms/rec)"
+                )
 
                 # Performance thresholds
                 if ms_per_record > 1.0:  # More than 1ms per record
-                    issues.append(
-                        f"{test_name} slow: {ms_per_record:.2f}ms per record"
-                    )
+                    issues.append(f"{test_name} slow: {ms_per_record:.2f}ms per record")
 
         assert not issues, f"Performance threshold violations: {issues}"
 
@@ -128,9 +138,7 @@ class TestDatabasePerformance:
         cursor_times = []
         for _page in range(5):
             start = time.time()
-            powers = db.query(Power).filter(
-                Power.id > last_id
-            ).limit(page_size).all()
+            powers = db.query(Power).filter(Power.id > last_id).limit(page_size).all()
             duration = time.time() - start
             cursor_times.append(duration)
 
@@ -155,14 +163,16 @@ class TestImportPerformance:
         # Create test data
         test_data = []
         for i in range(1000):
-            test_data.append({
-                'id': 90000 + i,
-                'name': f'test_salvage_{i}',
-                'display_name': f'Test Salvage {i}',
-                'rarity': 'Common',
-                'origin': 'Tech',
-                'sell_price': 100
-            })
+            test_data.append(
+                {
+                    "id": 90000 + i,
+                    "name": f"test_salvage_{i}",
+                    "display_name": f"Test Salvage {i}",
+                    "rarity": "Common",
+                    "origin": "Tech",
+                    "sell_price": 100,
+                }
+            )
 
         # Test single inserts (bad practice)
         start = time.time()
@@ -186,8 +196,9 @@ class TestImportPerformance:
         improvement = single_time / batch_time
         print(f"Batch insert {improvement:.1f}x faster than single inserts")
 
-        assert improvement > 10, \
+        assert improvement > 10, (
             f"Batch insert not efficient enough: only {improvement:.1f}x faster"
+        )
 
         # Clean up
         db.query(Salvage).filter(Salvage.id >= 90000).delete()
@@ -203,11 +214,9 @@ class TestImportPerformance:
         # Simulate large data processing
         large_data = []
         for i in range(10000):
-            large_data.append({
-                'id': i,
-                'name': f'item_{i}',
-                'data': 'x' * 1000  # 1KB per item
-            })
+            large_data.append(
+                {"id": i, "name": f"item_{i}", "data": "x" * 1000}  # 1KB per item
+            )
 
         # Check memory after loading
         current_memory = process.memory_info().rss / 1024 / 1024  # MB
@@ -216,8 +225,9 @@ class TestImportPerformance:
         print(f"Memory increase: {memory_increase:.1f} MB for 10K items")
 
         # Should not use more than 100MB for 10MB of data
-        assert memory_increase < 100, \
+        assert memory_increase < 100, (
             f"Excessive memory usage: {memory_increase:.1f} MB"
+        )
 
         # Clean up
         del large_data
@@ -230,18 +240,20 @@ class TestCachePerformance:
         """Test performance improvement from caching."""
         # First query (cache miss)
         start = time.time()
-        _ = db.query(Archetype).filter_by(name='Blaster').first()
+        _ = db.query(Archetype).filter_by(name="Blaster").first()
         miss_time = time.time() - start
 
         # Second query (should hit cache if implemented)
         start = time.time()
-        _ = db.query(Archetype).filter_by(name='Blaster').first()
+        _ = db.query(Archetype).filter_by(name="Blaster").first()
         hit_time = time.time() - start
 
         # Cache hit should be faster (assuming caching is implemented)
         # This test documents the need for caching even if not yet implemented
-        print(f"First query: {miss_time*1000:.2f}ms, "
-              f"Second query: {hit_time*1000:.2f}ms")
+        print(
+            f"First query: {miss_time * 1000:.2f}ms, "
+            f"Second query: {hit_time * 1000:.2f}ms"
+        )
 
         # If caching is implemented, hit should be much faster
         if hit_time < miss_time * 0.5:
@@ -263,7 +275,7 @@ class TestCachePerformance:
 
         while memory_used < max_cache_size_mb * 1024 * 1024:
             key = f"cache_key_{entries_added}"
-            value = 'x' * entry_size
+            value = "x" * entry_size
             cache_data[key] = value
             memory_used += entry_size
             entries_added += 1
@@ -291,20 +303,22 @@ class TestQueryOptimization:
         powersets = db.query(Powerset).limit(10).all()
         for powerset in powersets:
             # This triggers additional query for each powerset
-            _ = db.query(Power).filter(
-                Power.powerset_id == powerset.id
-            ).count()
+            _ = db.query(Power).filter(Power.powerset_id == powerset.id).count()
             query_count += 1
 
         n_plus_one_queries = query_count - start_count
 
         # Good pattern: Single query with join
         start_count = query_count
-        _ = db.query(
-            Powerset.id,
-            Powerset.name,
-            db.func.count(Power.id).label('power_count')
-        ).outerjoin(Power).group_by(Powerset.id).limit(10).all()
+        _ = (
+            db.query(
+                Powerset.id, Powerset.name, db.func.count(Power.id).label("power_count")
+            )
+            .outerjoin(Power)
+            .group_by(Powerset.id)
+            .limit(10)
+            .all()
+        )
 
         single_query = query_count - start_count + 1
 
@@ -321,24 +335,25 @@ class TestQueryOptimization:
         start = time.time()
 
         try:
-            _ = db.query(
-                Power.id,
-                Power.name,
-                Powerset.name,
-                Archetype.name,
-                db.func.count(Enhancement.id)
-            ).join(
-                Powerset
-            ).join(
-                Archetype
-            ).outerjoin(
-                PowerEnhancementCompatibility
-            ).outerjoin(
-                Enhancement,
-                Enhancement.name == PowerEnhancementCompatibility.enhancement_type
-            ).group_by(
-                Power.id, Power.name, Powerset.name, Archetype.name
-            ).limit(100).all()
+            _ = (
+                db.query(
+                    Power.id,
+                    Power.name,
+                    Powerset.name,
+                    Archetype.name,
+                    db.func.count(Enhancement.id),
+                )
+                .join(Powerset)
+                .join(Archetype)
+                .outerjoin(PowerEnhancementCompatibility)
+                .outerjoin(
+                    Enhancement,
+                    Enhancement.name == PowerEnhancementCompatibility.enhancement_type,
+                )
+                .group_by(Power.id, Power.name, Powerset.name, Archetype.name)
+                .limit(100)
+                .all()
+            )
 
             duration = time.time() - start
 
@@ -360,9 +375,9 @@ class TestScalabilityBenchmarks:
         recipe_count = db.query(Recipe).count()
 
         benchmarks = {
-            'powers': power_count,
-            'enhancements': enhancement_count,
-            'recipes': recipe_count
+            "powers": power_count,
+            "enhancements": enhancement_count,
+            "recipes": recipe_count,
         }
 
         print("\nDataset sizes:")
@@ -396,13 +411,14 @@ class TestScalabilityBenchmarks:
 
             # Different query patterns
             if query_id % 3 == 0:
-                _ = db.query(Power).filter(
-                    Power.level_available <= 20
-                ).limit(50).all()
+                _ = db.query(Power).filter(Power.level_available <= 20).limit(50).all()
             elif query_id % 3 == 1:
-                _ = db.query(Enhancement).filter(
-                    Enhancement.enhancement_set_id.isnot(None)
-                ).limit(50).all()
+                _ = (
+                    db.query(Enhancement)
+                    .filter(Enhancement.enhancement_set_id.isnot(None))
+                    .limit(50)
+                    .all()
+                )
             else:
                 _ = db.query(Recipe).limit(50).all()
 
@@ -419,5 +435,6 @@ class TestScalabilityBenchmarks:
         print(f"Concurrent queries - Avg: {avg_time:.3f}s, Max: {max_time:.3f}s")
 
         # Maximum query time should not be more than 2x average
-        assert max_time < avg_time * 2, \
+        assert max_time < avg_time * 2, (
             f"High variance in concurrent performance: max={max_time:.3f}s, avg={avg_time:.3f}s"
+        )

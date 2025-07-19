@@ -24,7 +24,7 @@ def test_db():
     # Use a file-based SQLite database for testing to share across connections
     db_path = tempfile.mktemp(suffix=".db")
     db_url = f"sqlite:///{db_path}"
-    
+
     engine = create_engine(db_url)
     Base.metadata.create_all(engine)
 
@@ -72,7 +72,7 @@ class TestArchetypeImporter:
 
         # Import data
         importer = ArchetypeImporter(db_url)
-        result = importer.import_data(json_file)
+        importer.import_data(json_file)
 
         # Verify import - check from importer directly to avoid detached session issues
         assert importer.imported_count == 2
@@ -123,7 +123,7 @@ class TestSalvageImporter:
 
         # Import data
         importer = SalvageImporter(db_url)
-        result = importer.import_data(json_file)
+        importer.import_data(json_file)
 
         # Verify import - check from importer directly to avoid detached session issues
         assert importer.imported_count == 2

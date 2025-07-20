@@ -5,13 +5,14 @@ Enhancement API endpoints for Mids-Web backend.
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
-from .. import crud, models, schemas
+from .. import crud, models
+from .. import schemas as app_schemas
 from ..database import get_db
 
 router = APIRouter()
 
 
-@router.get("/enhancements", response_model=list[schemas.Enhancement])
+@router.get("/enhancements", response_model=list[app_schemas.Enhancement])
 async def get_enhancements(
     skip: int = Query(0, ge=0, description="Number of items to skip"),
     limit: int = Query(100, ge=1, le=1000, description="Number of items to return"),
@@ -38,7 +39,7 @@ async def get_enhancements(
     return enhancements
 
 
-@router.get("/enhancements/{enhancement_id}", response_model=schemas.Enhancement)
+@router.get("/enhancements/{enhancement_id}", response_model=app_schemas.Enhancement)
 async def get_enhancement(
     enhancement_id: int,
     db: Session = Depends(get_db),
@@ -54,7 +55,7 @@ async def get_enhancement(
     return enhancement
 
 
-@router.get("/enhancement-sets", response_model=list[schemas.EnhancementSet])
+@router.get("/enhancement-sets", response_model=list[app_schemas.EnhancementSet])
 async def get_enhancement_sets(
     skip: int = Query(0, ge=0, description="Number of items to skip"),
     limit: int = Query(100, ge=1, le=1000, description="Number of items to return"),
@@ -69,11 +70,11 @@ async def get_enhancement_sets(
     return sets
 
 
-class EnhancementSetWithBonuses(schemas.EnhancementSet):
+class EnhancementSetWithBonuses(app_schemas.EnhancementSet):
     """Enhancement set schema with bonuses and enhancements."""
 
-    enhancements: list[schemas.Enhancement] = []
-    set_bonuses: list[schemas.SetBonus] = []
+    enhancements: list[app_schemas.Enhancement] = []
+    set_bonuses: list[app_schemas.SetBonus] = []
 
 
 @router.get("/enhancement-sets/{set_id}", response_model=EnhancementSetWithBonuses)

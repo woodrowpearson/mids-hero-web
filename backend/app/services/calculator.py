@@ -6,14 +6,17 @@ This module coordinates all calculation logic for character builds.
 import logging
 from datetime import datetime
 
+from sqlalchemy.orm import Session
+
+from app import models
 from app.config.constants import (
     ARCHETYPE_CAPS,
     BASE_ENDURANCE,
     BASE_MOVEMENT,
     BASE_STEALTH_PERCEPTION,
 )
-from app.schemas.build import BuildPayload
-from app.schemas.response import (
+from app.calc_schemas.build import BuildPayload
+from app.calc_schemas.response import (
     AggregateStats,
     CalcResponse,
     CombatTotals,
@@ -33,7 +36,7 @@ from app.schemas.response import (
 logger = logging.getLogger(__name__)
 
 
-def run_calculations(build: BuildPayload) -> CalcResponse:
+def run_calculations(build: BuildPayload, db: Session) -> CalcResponse:
     """Run all calculations for a character build.
 
     This is the main orchestration function that coordinates:
@@ -45,6 +48,7 @@ def run_calculations(build: BuildPayload) -> CalcResponse:
 
     Args:
         build: Complete build configuration
+        db: Database session for querying power/enhancement data
 
     Returns:
         Complete calculation results
@@ -63,7 +67,13 @@ def run_calculations(build: BuildPayload) -> CalcResponse:
 
     # Process each power
     for power_data in build.powers:
-        power_stats = _calculate_power_stats(power_data, build.global_buffs)
+        power_stats = _calculate_power_stats(
+            power_data, 
+            build.global_buffs, 
+            db,
+            archetype,
+            build.build.level
+        )
         per_power_stats.append(power_stats)
 
     # Calculate aggregate stats
@@ -91,43 +101,76 @@ def run_calculations(build: BuildPayload) -> CalcResponse:
     return response
 
 
-def _calculate_power_stats(power_data, global_buffs) -> PerPowerStats:
+def _calculate_power_stats(
+    power_data, 
+    global_buffs, 
+    db: Session,
+    archetype: str,
+    level: int
+) -> PerPowerStats:
     """Calculate enhanced statistics for a single power.
 
     Uses the actual calculation modules for accurate results.
     """
-    from app.calc.damage import calc_final_damage
+    from app.calc.damage import calc_damage_scale_to_damage, calc_final_damage
     from app.calc.endurance import calc_end_cost
     from app.calc.recharge import calc_recharge
 
-    # TODO: Get actual base stats from database
-    # For now, use placeholder values
-    base_stats = PowerStatBlock(
-        damage=50.0,
-        endurance_cost=10.0,
-        recharge_time=10.0,
-        accuracy=1.0,
-        activation_time=1.5,
-        range=80.0,
-        radius=0.0,
-    )
+    # Get actual power data from database
+    # Handle both string and integer IDs
+    power_id = power_data.id
+    if isinstance(power_id, str) and power_id.isdigit():
+        power_id = int(power_id)
+    
+    power = db.query(models.Power).filter(
+        models.Power.id == power_id
+    ).first()
+    
+    if not power:
+        # Fallback to placeholder values if power not found
+        logger.warning(f"Power {power_data.id} not found in database, using defaults")
+        base_stats = PowerStatBlock(
+            damage=50.0,
+            endurance_cost=10.0,
+            recharge_time=10.0,
+            accuracy=1.0,
+            activation_time=1.5,
+            range=80.0,
+            radius=0.0,
+        )
+    else:
+        # Use actual power data from database
+        # Convert damage scale to actual damage using archetype modifiers
+        damage_value = 0.0
+        if power.damage_scale:
+            # Determine power type from power data (simplified)
+            power_type = "ranged" if power.range_feet and power.range_feet > 7 else "melee"
+            damage_value = calc_damage_scale_to_damage(
+                float(power.damage_scale),
+                archetype,
+                level,
+                power_type
+            )
+        
+        base_stats = PowerStatBlock(
+            damage=damage_value,
+            endurance_cost=float(power.endurance_cost or 10.0),
+            recharge_time=float(power.recharge_time or 10.0),
+            accuracy=float(power.accuracy or 1.0),
+            activation_time=float(power.activation_time or 1.5),
+            range=float(power.range_feet or 80),
+            radius=float(power.radius_feet or 0),
+        )
 
-    # TODO: Calculate enhancement values from slot data
-    # For now, use common values
-    enhancement_values = {
-        "damage": 0.95,  # 95% damage enhancement
-        "accuracy": 0.95,  # 95% accuracy enhancement
-        "endurance": 0.50,  # 50% endurance reduction
-        "recharge": 0.50,  # 50% recharge reduction
-        "range": 0.0,  # No range enhancement
-    }
+    # Calculate enhancement values from slot data
+    enhancement_values = _calculate_enhancement_values(power_data.slots, db)
 
     # Calculate enhanced values using actual formulas
     enhanced_damage = calc_final_damage(
         base_stats.damage,
         enhancement_values["damage"],
         global_buffs.damage / 100.0,  # Convert percentage to decimal
-        "Blaster",  # TODO: Get from build data
+        archetype,
     )
 
     enhanced_end_cost = calc_end_cost(
@@ -284,6 +327,83 @@ def _calculate_aggregate_stats(
         damage_buff=damage_buff_totals,
         set_bonuses=_calculate_set_bonuses(build),
     )
+
+
+def _calculate_enhancement_values(
+    slots: list,
+    db: Session
+) -> dict[str, float]:
+    """Calculate total enhancement values from slotted enhancements.
+    
+    Args:
+        slots: List of enhancement slots for the power
+        db: Database session
+        
+    Returns:
+        Dictionary of enhancement type to total percentage value
+    """
+    enhancement_totals = {
+        "damage": 0.0,
+        "accuracy": 0.0,
+        "endurance": 0.0,
+        "recharge": 0.0,
+        "range": 0.0,
+        "defense": 0.0,
+        "resistance": 0.0,
+    }
+    
+    for slot in slots:
+        # Handle both string and integer enhancement IDs
+        enh_id = slot.enhancement_id
+        if isinstance(enh_id, int) or (isinstance(enh_id, str) and enh_id.isdigit()):
+            # Query enhancement by numeric ID
+            if isinstance(enh_id, str):
+                enh_id = int(enh_id)
+            enhancement = db.query(models.Enhancement).filter(
+                models.Enhancement.id == enh_id
+            ).first()
+        else:
+            # Query enhancement by name/internal name
+            enhancement = db.query(models.Enhancement).filter(
+                models.Enhancement.name == enh_id
+            ).first()
+        
+        if not enhancement:
+            logger.warning(f"Enhancement {slot.enhancement_id} not found in database")
+            continue
+            
+        # Calculate enhancement value based on level
+        # Basic formula: base_value * (1 + (level - 1) * 0.02)
+        # This gives ~100% at level 50 for SOs
+        level_modifier = 1.0 + (slot.enhancement_level - 1) * 0.02
+        
+        # Add bonuses from the enhancement
+        if enhancement.damage_bonus:
+            base_value = float(enhancement.damage_bonus) / 100.0  # Convert percentage
+            enhancement_totals["damage"] += base_value * level_modifier
+            
+        if enhancement.accuracy_bonus:
+            base_value = float(enhancement.accuracy_bonus) / 100.0
+            enhancement_totals["accuracy"] += base_value * level_modifier
+            
+        if enhancement.endurance_bonus:
+            base_value = float(enhancement.endurance_bonus) / 100.0
+            enhancement_totals["endurance"] += base_value * level_modifier
+            
+        if enhancement.recharge_bonus:
+            base_value = float(enhancement.recharge_bonus) / 100.0
+            enhancement_totals["recharge"] += base_value * level_modifier
+            
+        # TODO: Handle boosted (+5 levels) and catalyzed (attuned) enhancements
+        if slot.boosted:
+            # Boosted adds 5 levels worth of enhancement
+            pass
+            
+        if slot.catalyzed:
+            # Catalyzed scales with character level
+            pass
+    
+    return enhancement_totals
 
 
 def _calculate_set_bonuses(build: BuildPayload) -> list[SetBonusDetail]:  # noqa: ARG001

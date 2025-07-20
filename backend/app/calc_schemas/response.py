@@ -36,7 +36,7 @@ class EnhancementValues(BaseModel):
 class PerPowerStats(BaseModel):
     """Per-power calculation results."""
 
-    power_id: str = Field(..., description="Power unique identifier")
+    power_id: str | int = Field(..., description="Power unique identifier")
     power_name: str = Field(..., description="Power display name")
     base_stats: PowerStatBlock = Field(..., description="Base power statistics")
     enhanced_stats: PowerStatBlock = Field(

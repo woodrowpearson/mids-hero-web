@@ -5,7 +5,8 @@ Power API endpoints for Mids-Web backend.
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
-from .. import crud, models, schemas
+from .. import crud, models
+from .. import schemas as app_schemas
 from ..database import get_db
 
 router = APIRouter()
@@ -70,7 +71,7 @@ async def get_power(
     return result
 
 
-@router.get("/powers", response_model=list[schemas.Power])
+@router.get("/powers", response_model=list[app_schemas.Power])
 async def search_powers(
     name: str | None = Query(None, description="Search by power name"),
     power_type: str | None = Query(None, description="Filter by power type"),

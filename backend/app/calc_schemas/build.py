@@ -25,7 +25,7 @@ class BuildEnhancementSlot(BaseModel):
     """Enhancement slot configuration."""
 
     slot_index: int = Field(..., ge=0, le=5, description="Slot index (0-5)")
-    enhancement_id: str = Field(..., description="Enhancement unique identifier")
+    enhancement_id: str | int = Field(..., description="Enhancement unique identifier")
     enhancement_level: int = Field(
         ..., ge=1, le=53, description="Enhancement level (1-53)"
     )
@@ -38,7 +38,7 @@ class BuildEnhancementSlot(BaseModel):
 class BuildPowerData(BaseModel):
     """Power configuration within a build."""
 
-    id: str = Field(..., description="Power unique identifier")
+    id: str | int = Field(..., description="Power unique identifier")
     power_name: str = Field(..., description="Power display name")
     powerset: str = Field(..., description="Powerset name")
     level_taken: int = Field(..., ge=1, le=50, description="Level when power was taken")

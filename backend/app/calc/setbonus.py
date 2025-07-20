@@ -4,8 +4,12 @@ Implements set bonus aggregation and stacking rules for enhancement sets.
 """
 
 from collections import defaultdict
+from typing import TYPE_CHECKING
 
 from app.config.constants import SET_BONUS_RULES
+
+if TYPE_CHECKING:
+    from sqlalchemy.orm import Session
 
 
 class SetBonusInfo:
@@ -26,6 +30,7 @@ class SetBonusInfo:
 
 def gather_set_bonuses(
     enhancement_sets: list[dict[str, any]],
+    db=None,
 ) -> tuple[list[SetBonusInfo], dict[str, float]]:
     """Gather all set bonuses from slotted enhancement sets.
 
@@ -60,7 +65,7 @@ def gather_set_bonuses(
         set_counts[set_name] += 1
 
         # Get bonuses for this set at this piece count
-        set_bonuses = _get_bonuses_for_set(set_name, piece_count)
+        set_bonuses = _get_bonuses_for_set(set_name, piece_count, db)
 
         for bonus in set_bonuses:
             # Create unique key for this bonus
@@ -99,20 +104,50 @@ def aggregate_bonuses(bonuses: list[SetBonusInfo]) -> dict[str, float]:
     return dict(totals)
 
 
-def _get_bonuses_for_set(set_name: str, piece_count: int) -> list[SetBonusInfo]:
+def _get_bonuses_for_set(set_name: str, piece_count: int, db=None) -> list[SetBonusInfo]:
     """Get bonuses for a specific set at a given piece count.
-
-    This is a stub implementation. In a real system, this would
-    query the database or use cached set bonus data.
 
     Args:
         set_name: Name of the enhancement set
         piece_count: Number of pieces slotted
+        db: Database session (optional)
 
     Returns:
         List of bonuses provided at this piece count
     """
-    # Example set bonus data (would come from database)
+    # If database session provided, query from database
+    if db:
+        # Import here to avoid circular imports
+        from app.models import EnhancementSet, SetBonus
+        
+        # Get the enhancement set
+        enh_set = db.query(EnhancementSet).filter(
+            EnhancementSet.name == set_name
+        ).first()
+        
+        if not enh_set:
+            return []
+            
+        # Get all bonuses for this set up to piece_count
+        bonuses = db.query(SetBonus).filter(
+            SetBonus.set_id == enh_set.id,
+            SetBonus.pieces_required <= piece_count
+        ).order_by(SetBonus.pieces_required).all()
+        
+        # Convert to SetBonusInfo objects
+        all_bonuses = []
+        for bonus in bonuses:
+            all_bonuses.append(SetBonusInfo(
+                set_name=set_name,
+                pieces_required=bonus.pieces_required,
+                bonus_type=bonus.bonus_type,
+                bonus_value=float(bonus.bonus_amount or 0),
+                bonus_description=bonus.bonus_description or ""
+            ))
+        
+        return all_bonuses
+    
+    # Fallback to example data if no database
     example_sets = {
         "Devastation": {
             2: [SetBonusInfo("Devastation", 2, "hp", 12.0, "+1.13% HP")],
@@ -149,6 +184,7 @@ def _get_bonuses_for_set(set_name: str, piece_count: int) -> list[SetBonusInfo]:
 
 def calculate_set_bonus_totals(
     build_slots: list[dict[str, any]],
+    db=None,
 ) -> dict[str, any]:
     """Calculate total set bonuses for a build.
 
@@ -182,7 +218,7 @@ def calculate_set_bonus_totals(
             })
 
     # Gather bonuses
-    active_bonuses, totals = gather_set_bonuses(enhancement_sets)
+    active_bonuses, totals = gather_set_bonuses(enhancement_sets, db)
 
     # Format for response
     bonus_details = []

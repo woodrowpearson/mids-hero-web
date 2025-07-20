@@ -94,7 +94,7 @@ def run_calculations(build: BuildPayload, db: Session) -> CalcResponse:
 
     # Calculate aggregate stats
     aggregate_stats = _calculate_aggregate_stats(
-        build, archetype_data, validation_warnings
+        build, archetype_data, validation_warnings, db
     )
 
     # Create response
@@ -229,6 +229,7 @@ def _calculate_aggregate_stats(
     build: BuildPayload,
     archetype_data: dict,
     validation_warnings: list[ValidationWarning],
+    db: Session,
 ) -> AggregateStats:
     """Calculate aggregate statistics for the entire build."""
     # Base HP calculation
@@ -341,7 +342,7 @@ def _calculate_aggregate_stats(
         defense=defense_totals,
         resistance=resistance_totals,
         damage_buff=damage_buff_totals,
-        set_bonuses=_calculate_set_bonuses(build),
+        set_bonuses=_calculate_set_bonuses(build, db),
     )
 
 
@@ -427,13 +428,61 @@ def _calculate_enhancement_values(
     return enhancement_totals
 
 
-def _calculate_set_bonuses(build: BuildPayload) -> list[SetBonusDetail]:  # noqa: ARG001
-    """Calculate set bonuses from slotted enhancements."""
-    # TODO: This is a stub implementation
-    # In a real system, we would:
-    # 1. Extract enhancement sets from power slots
-    # 2. Apply stacking rules
-    # 3. Return active bonuses
-
-    # For now, return empty list
-    return []
+def _calculate_set_bonuses(build: BuildPayload, db: Session) -> list[SetBonusDetail]:
+    """Calculate set bonuses from slotted enhancements.
+    
+    Args:
+        build: Build configuration 
+        db: Database session
+        
+    Returns:
+        List of active set bonuses
+    """
+    from app.calc.setbonus import calculate_set_bonus_totals
+    
+    # Collect all enhancement slots from all powers
+    all_slots = []
+    for power in build.powers:
+        for slot in power.slots:
+            # Get enhancement details to find set membership
+            enh_id = slot.enhancement_id
+            if isinstance(enh_id, str) and enh_id.isdigit():
+                enh_id = int(enh_id)
+                
+            enhancement = None
+            if isinstance(enh_id, int):
+                enhancement = db.query(models.Enhancement).filter(
+                    models.Enhancement.id == enh_id
+                ).first()
+            else:
+                enhancement = db.query(models.Enhancement).filter(
+                    models.Enhancement.name == enh_id
+                ).first()
+                
+            if enhancement and enhancement.set_id:
+                # Get the enhancement set
+                enh_set = db.query(models.EnhancementSet).filter(
+                    models.EnhancementSet.id == enhancement.set_id
+                ).first()
+                
+                if enh_set:
+                    all_slots.append({
+                        "power_id": power.id,
+                        "set_name": enh_set.name,
+                        "enhancement_id": enhancement.id,
+                    })
+    
+    # Calculate bonuses using the setbonus module
+    result = calculate_set_bonus_totals(all_slots, db)
+    
+    # Convert to response format
+    bonus_details = []
+    for detail in result.get("details", []):
+        bonus_details.append(SetBonusDetail(
+            set_name=detail["set_name"],
+            bonus_tier=detail["bonus_tier"],
+            bonus_description=detail["bonus_description"],
+            bonus_values=detail["bonus_values"]
+        ))
+    
+    return bonus_details

@@ -4,8 +4,6 @@ All constants are based on Homecoming 2025.7.1111 data.
 These values can be overridden for testing.
 """
 
-from decimal import Decimal
-from typing import Dict
 
 # Enhancement Diversification (ED) Schedules
 ED_SCHEDULES = {
@@ -264,7 +262,7 @@ def get_archetype_cap(archetype: str, cap_type: str) -> float:
     return at_caps.get(cap_type, GLOBAL_CAPS.get(cap_type, 0.0))
 
 
-def get_ed_schedule(enhancement_type: str) -> Dict[str, list]:
+def get_ed_schedule(enhancement_type: str) -> dict[str, list]:
     """Get the ED schedule for a given enhancement type.
 
     Args:

@@ -11,7 +11,15 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from app.database import close_database_pool, create_database_pool
-from app.routers import archetypes, builds, calc, enhancements, misc_data, powers, powersets
+from app.routers import (
+    archetypes,
+    builds,
+    calc,
+    enhancements,
+    misc_data,
+    powers,
+    powersets,
+)
 
 
 # Application lifecycle management

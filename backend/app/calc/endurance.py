@@ -28,18 +28,18 @@ def calc_end_cost(
     """
     # Apply ED to endurance reduction
     ed_endurance = apply_ed("A", endurance_reduction)
-    
+
     # Calculate total reduction
     total_reduction = 1.0 + ed_endurance + global_endurance_reduction
-    
+
     # Calculate final cost
     final_cost = base_cost / total_reduction
-    
+
     # Apply minimum cost floor (10% of base)
     min_cost = base_cost * GLOBAL_CAPS["endurance_min_cost_factor"]
     if final_cost < min_cost:
         final_cost = min_cost
-    
+
     return final_cost
 
 
@@ -62,11 +62,11 @@ def calc_endurance_per_second(
     """
     # Total cycle time is recharge + activation
     cycle_time = recharge_time + activation_time
-    
+
     # Avoid division by zero
     if cycle_time <= 0:
         return 0.0
-    
+
     return endurance_cost / cycle_time
 
 
@@ -89,11 +89,11 @@ def calc_toggle_endurance(
     """
     # Calculate cost per tick
     cost_per_tick = calc_end_cost(base_cost, endurance_reduction)
-    
+
     # Convert to cost per second
     if tick_rate > 0:
         return cost_per_tick / tick_rate
-    
+
     return cost_per_tick
 
 
@@ -114,11 +114,11 @@ def calc_endurance_recovery(
     """
     # Apply recovery bonus
     total_recovery = base_recovery * (1.0 + recovery_bonus)
-    
+
     # Recovery is based on max endurance
     # Base recovery is 1.67% of max end per second
     recovery_rate = (total_recovery / 100.0) * max_endurance
-    
+
     return recovery_rate
 
 
@@ -158,5 +158,5 @@ def can_sustain_toggles(
     """
     total_toggle_cost = sum(toggle_costs)
     required_recovery = total_toggle_cost * (1.0 + safety_margin)
-    
+
     return recovery_rate >= required_recovery

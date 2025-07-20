@@ -4,7 +4,7 @@ This module contains Python equivalents of the C# enums from MidsReborn,
 focusing on those needed for build calculations.
 """
 
-from enum import Enum, IntEnum, auto
+from enum import Enum, IntEnum
 
 
 class Alignment(Enum):
@@ -48,7 +48,7 @@ class DamageType(IntEnum):
     PSIONIC = 7
     SPECIAL = 8
     UNIQUE = 9
-    
+
     @classmethod
     def from_string(cls, value: str) -> "DamageType":
         """Convert string to DamageType."""
@@ -298,7 +298,7 @@ class EffectType(IntEnum):
     NPC_CREATE_PET = 203
     NPC_CLEARTARGET = 204
     REFRESH_TOHIT = 205
-    
+
     @classmethod
     def get_name(cls, value: int) -> str:
         """Get the name of an effect type by its value."""
@@ -317,7 +317,7 @@ class EnhancementType(Enum):
     SET_IO = "Set IO"
     HAMIO = "Hamidon Origin"
     SPECIAL = "Special"
-    
+
     @property
     def grade_modifier(self) -> float:
         """Get the base effectiveness modifier for this enhancement type."""
@@ -340,8 +340,8 @@ class PowerType(IntEnum):
     TOGGLE = 2
     BOOST = 3
     INSPIRATION = 4
-    
-    
+
+
 class TargetType(IntEnum):
     """Target types for powers."""
     NONE = 0

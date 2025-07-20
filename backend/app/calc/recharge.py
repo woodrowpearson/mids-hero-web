@@ -28,23 +28,23 @@ def calc_recharge(
     """
     # Apply ED to recharge enhancement
     ed_recharge = apply_ed("A", recharge_enhancement)
-    
+
     # Calculate total recharge bonus
     total_recharge_bonus = ed_recharge + global_recharge
-    
+
     # Apply recharge cap (+500% = 5.0)
     recharge_cap = GLOBAL_CAPS["recharge_cap"]
     if total_recharge_bonus > recharge_cap:
         total_recharge_bonus = recharge_cap
-    
+
     # Calculate final recharge time
     final_recharge = base_recharge / (1.0 + total_recharge_bonus)
-    
+
     # Apply minimum recharge time
     min_recharge = POWER_MINIMUMS["recharge_time"]
     if final_recharge < min_recharge:
         final_recharge = min_recharge
-    
+
     return final_recharge
 
 
@@ -64,7 +64,7 @@ def calc_chain_time(
     total_animation = 0.0
     max_recharge = 0.0
     chain_powers = []
-    
+
     for power in powers:
         # Calculate enhanced recharge
         final_recharge = calc_recharge(
@@ -72,24 +72,24 @@ def calc_chain_time(
             power.get("recharge_enhancement", 0.0),
             global_recharge,
         )
-        
+
         # Track animation time
         activation = power.get("activation_time", 0.0)
         total_animation += activation
-        
+
         # Track longest recharge
         if final_recharge > max_recharge:
             max_recharge = final_recharge
-        
+
         chain_powers.append({
             "name": power.get("name", "Unknown"),
             "recharge": final_recharge,
             "activation": activation,
         })
-    
+
     # Chain can repeat when longest recharge is ready
     chain_gap = max(0.0, max_recharge - total_animation)
-    
+
     return {
         "powers": chain_powers,
         "total_animation": total_animation,
@@ -114,7 +114,7 @@ def calc_perma_status(
     """
     # Power is perma if duration >= recharge
     is_perma = duration >= recharge
-    
+
     # Calculate overlap or gap
     if is_perma:
         overlap = duration - recharge
@@ -122,7 +122,7 @@ def calc_perma_status(
     else:
         overlap = 0.0
         uptime_percent = (duration / recharge) * 100.0 if recharge > 0 else 0.0
-    
+
     # Calculate how much more recharge is needed for perma
     if not is_perma and duration > 0:
         # recharge_needed = base / (1 + bonus) = duration
@@ -133,7 +133,7 @@ def calc_perma_status(
     else:
         current_bonus = 0.0
         needed_bonus = 0.0
-    
+
     return {
         "is_perma": is_perma,
         "uptime_percent": min(100.0, uptime_percent),
@@ -161,12 +161,12 @@ def calc_activation_time(
     """
     # Apply animation bonus (if any)
     final_activation = base_activation * (1.0 - animation_bonus)
-    
+
     # Apply minimum activation time (arcanatime minimum)
     min_activation = POWER_MINIMUMS.get("activation_time", 0.132)
     if final_activation < min_activation:
         final_activation = min_activation
-    
+
     return final_activation
 
 
@@ -187,9 +187,9 @@ def calc_dps_with_recharge(
     """
     # Total cycle time
     cycle_time = recharge_time + activation_time
-    
+
     # Avoid division by zero
     if cycle_time <= 0:
         return 0.0
-    
+
     return damage / cycle_time

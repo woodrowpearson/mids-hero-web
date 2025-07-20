@@ -3,7 +3,6 @@
 import pytest
 from fastapi.testclient import TestClient
 
-from app.schemas.build import BuildPayload
 from main import app
 
 client = TestClient(app)
@@ -54,7 +53,7 @@ class TestCalculationAPI:
 
         response = client.post("/api/calculate", json=payload)
         assert response.status_code == 200
-        
+
         data = response.json()
         assert data["build_name"] == "Test Blaster"
         assert data["archetype"] == "Blaster"
@@ -117,10 +116,10 @@ class TestCalculationAPI:
 
         response = client.post("/api/calculate", json=payload)
         assert response.status_code == 200
-        
+
         data = response.json()
         power_stats = data["per_power_stats"][0]
-        
+
         # Check that damage was enhanced
         assert power_stats["enhanced_stats"]["damage"] > power_stats["base_stats"]["damage"]
         # Check ED was applied (3 SOs should give ~95% after ED)
@@ -160,13 +159,13 @@ class TestCalculationAPI:
 
         response = client.post("/api/calculate", json=payload)
         assert response.status_code == 200
-        
+
         data = response.json()
-        
+
         # Check defense values
         assert data["aggregate_stats"]["defense"]["melee"] == 45.0
         assert data["aggregate_stats"]["defense"]["ranged"] == 30.0
-        
+
         # Check resistance values (should be capped at 90% for Tanker)
         assert data["aggregate_stats"]["resistance"]["smashing"] == 90.0
         assert data["aggregate_stats"]["resistance"]["lethal"] == 90.0
@@ -205,12 +204,12 @@ class TestCalculationAPI:
 
         response = client.post("/api/calculate", json=payload)
         assert response.status_code == 200
-        
+
         data = response.json()
-        
+
         # Check that warnings were generated
         assert len(data["validation_warnings"]) > 0
-        
+
         # Check that values were capped
         assert data["aggregate_stats"]["defense"]["melee"] == 95.0  # Hard cap
         assert data["aggregate_stats"]["resistance"]["smashing"] == 75.0  # Blaster cap

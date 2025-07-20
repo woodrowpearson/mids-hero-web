@@ -19,7 +19,7 @@ class TestRechargeCalculations:
         base = 10.0
         enhancement = 0.0
         global_rech = 0.0
-        
+
         result = calc_recharge(base, enhancement, global_rech)
         assert result == 10.0
 
@@ -28,7 +28,7 @@ class TestRechargeCalculations:
         base = 10.0
         enhancement = 0.95  # 95% recharge (at ED cap)
         global_rech = 0.0
-        
+
         result = calc_recharge(base, enhancement, global_rech)
         assert result == pytest.approx(5.13, rel=0.01)  # 10 / 1.95
 
@@ -37,7 +37,7 @@ class TestRechargeCalculations:
         base = 10.0
         enhancement = 0.95
         global_rech = 0.70  # 70% global (Hasten + sets)
-        
+
         result = calc_recharge(base, enhancement, global_rech)
         # 10 / (1 + 0.95 + 0.70) = 10 / 2.65
         assert result == pytest.approx(3.77, rel=0.01)
@@ -47,7 +47,7 @@ class TestRechargeCalculations:
         base = 10.0
         enhancement = 2.0  # 200%
         global_rech = 4.0  # 400%
-        
+
         # Total would be 600% but capped at 500%
         result = calc_recharge(base, enhancement, global_rech)
         assert result == pytest.approx(1.67, rel=0.01)  # 10 / 6.0
@@ -57,7 +57,7 @@ class TestRechargeCalculations:
         base = 0.1  # Very fast power
         enhancement = 5.0  # Extreme enhancement
         global_rech = 5.0
-        
+
         result = calc_recharge(base, enhancement, global_rech)
         assert result == 0.5  # Minimum recharge time
 
@@ -83,12 +83,12 @@ class TestRechargeCalculations:
                 "activation_time": 2.0
             }
         ]
-        
+
         result = calc_chain_time(powers, global_recharge=0.70)
-        
+
         # Total animation time
         assert result["total_animation"] == 4.5
-        
+
         # Check seamless
         assert result["seamless"] is True
         assert result["gap_time"] == 0.0
@@ -103,9 +103,9 @@ class TestRechargeCalculations:
                 "activation_time": 2.0
             }
         ]
-        
+
         result = calc_chain_time(powers)
-        
+
         assert result["limiting_recharge"] == 20.0
         assert result["gap_time"] == 18.0  # 20 - 2
         assert result["seamless"] is False
@@ -114,9 +114,9 @@ class TestRechargeCalculations:
         """Test permanent power status."""
         duration = 120.0  # 2 minute duration
         recharge = 100.0  # Recharges before it expires
-        
+
         result = calc_perma_status(duration, recharge)
-        
+
         assert result["is_perma"] is True
         assert result["uptime_percent"] == 100.0
         assert result["overlap_seconds"] == 20.0
@@ -126,9 +126,9 @@ class TestRechargeCalculations:
         """Test non-permanent power status."""
         duration = 90.0
         recharge = 120.0  # 30 second gap
-        
+
         result = calc_perma_status(duration, recharge)
-        
+
         assert result["is_perma"] is False
         assert result["uptime_percent"] == 75.0  # 90/120
         assert result["overlap_seconds"] == 0.0
@@ -137,10 +137,10 @@ class TestRechargeCalculations:
     def test_activation_time_basic(self):
         """Test activation time calculation."""
         base = 1.67  # Common activation time
-        
+
         result = calc_activation_time(base)
         assert result == 1.67
-        
+
         # With reduction (rare)
         result = calc_activation_time(base, animation_bonus=0.1)
         assert result == pytest.approx(1.503, rel=0.01)
@@ -148,7 +148,7 @@ class TestRechargeCalculations:
     def test_activation_time_minimum(self):
         """Test minimum activation time (arcanatime)."""
         base = 0.1  # Very fast
-        
+
         result = calc_activation_time(base)
         assert result == 0.132  # Minimum arcanatime
 
@@ -157,7 +157,7 @@ class TestRechargeCalculations:
         damage = 100.0
         recharge = 8.0
         activation = 2.0
-        
+
         # DPS = 100 / (8 + 2) = 10
         result = calc_dps_with_recharge(damage, recharge, activation)
         assert result == 10.0

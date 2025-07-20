@@ -4,7 +4,6 @@ This module implements the Enhancement Diversification system from City of Heroe
 which applies diminishing returns to enhancement values.
 """
 
-from typing import Dict, List
 
 from app.config.constants import ED_SCHEDULES
 
@@ -52,16 +51,16 @@ def apply_ed(schedule: str, enhancement_value: float) -> float:
         segment_start = thresholds[i]
         segment_end = thresholds[i + 1]
         segment_size = segment_end - segment_start
-        
+
         # How much of the remaining value fits in this segment
         segment_amount = min(remaining, segment_size)
-        
+
         # Apply the multiplier for this segment
         total += segment_amount * multipliers[i]
-        
+
         # Reduce remaining by what we used
         remaining -= segment_amount
-        
+
         # If we've used everything, we're done
         if remaining <= 0:
             break
@@ -83,14 +82,14 @@ def get_ed_schedule_for_type(enhancement_type: str) -> str:
         The schedule letter ('A', 'B', or 'C')
     """
     from app.config.constants import ED_SCHEDULE_TYPES
-    
+
     return ED_SCHEDULE_TYPES.get(enhancement_type.lower(), "A")
 
 
 def calculate_ed_for_enhancement_set(
-    enhancements: Dict[str, float], 
-    enhancement_types: Dict[str, str]
-) -> Dict[str, float]:
+    enhancements: dict[str, float],
+    enhancement_types: dict[str, str]
+) -> dict[str, float]:
     """Calculate ED for a set of enhancements.
 
     Args:
@@ -101,9 +100,9 @@ def calculate_ed_for_enhancement_set(
         Dict mapping enhancement type to post-ED value
     """
     result = {}
-    
+
     for enh_type, value in enhancements.items():
         schedule = enhancement_types.get(enh_type, "A")
         result[enh_type] = apply_ed(schedule, value)
-    
+
     return result

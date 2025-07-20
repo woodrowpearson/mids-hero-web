@@ -1,7 +1,6 @@
 """Response schemas for calculation API."""
 
 from datetime import datetime
-from typing import Any
 
 from pydantic import BaseModel, Field
 

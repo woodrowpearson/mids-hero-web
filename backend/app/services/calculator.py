@@ -5,22 +5,20 @@ This module coordinates all calculation logic for character builds.
 
 import logging
 from datetime import datetime
-from typing import Dict, List
 
 from app.config.constants import (
     ARCHETYPE_CAPS,
     BASE_ENDURANCE,
     BASE_MOVEMENT,
     BASE_STEALTH_PERCEPTION,
-    get_archetype_cap,
 )
 from app.schemas.build import BuildPayload
 from app.schemas.response import (
     AggregateStats,
     CalcResponse,
     CombatTotals,
-    DefenseTotals,
     DamageBuffTotals,
+    DefenseTotals,
     EnduranceStats,
     HitPointStats,
     MovementStats,
@@ -101,7 +99,7 @@ def _calculate_power_stats(power_data, global_buffs) -> PerPowerStats:
     from app.calc.damage import calc_final_damage
     from app.calc.endurance import calc_end_cost
     from app.calc.recharge import calc_recharge
-    
+
     # TODO: Get actual base stats from database
     # For now, use placeholder values
     base_stats = PowerStatBlock(
@@ -113,7 +111,7 @@ def _calculate_power_stats(power_data, global_buffs) -> PerPowerStats:
         range=80.0,
         radius=0.0,
     )
-    
+
     # TODO: Calculate enhancement values from slot data
     # For now, use common values
     enhancement_values = {
@@ -123,7 +121,7 @@ def _calculate_power_stats(power_data, global_buffs) -> PerPowerStats:
         "recharge": 0.50,  # 50% recharge reduction
         "range": 0.0,  # No range enhancement
     }
-    
+
     # Calculate enhanced values using actual formulas
     enhanced_damage = calc_final_damage(
         base_stats.damage,
@@ -131,22 +129,22 @@ def _calculate_power_stats(power_data, global_buffs) -> PerPowerStats:
         global_buffs.damage / 100.0,  # Convert percentage to decimal
         "Blaster",  # TODO: Get from build data
     )
-    
+
     enhanced_end_cost = calc_end_cost(
         base_stats.endurance_cost,
         enhancement_values["endurance"],
         0.0,  # No global endurance reduction in this example
     )
-    
+
     enhanced_recharge = calc_recharge(
         base_stats.recharge_time,
         enhancement_values["recharge"],
         global_buffs.recharge / 100.0,  # Convert percentage to decimal
     )
-    
+
     # Calculate enhanced accuracy (simple formula for now)
     enhanced_accuracy = base_stats.accuracy * (1.0 + enhancement_values["accuracy"])
-    
+
     enhanced_stats = PowerStatBlock(
         damage=enhanced_damage,
         endurance_cost=enhanced_end_cost,
@@ -170,8 +168,8 @@ def _calculate_power_stats(power_data, global_buffs) -> PerPowerStats:
 
 def _calculate_aggregate_stats(
     build: BuildPayload,
-    archetype_data: Dict,
-    validation_warnings: List[ValidationWarning],
+    archetype_data: dict,
+    validation_warnings: list[ValidationWarning],
 ) -> AggregateStats:
     """Calculate aggregate statistics for the entire build."""
     # Base HP calculation
@@ -217,19 +215,19 @@ def _calculate_aggregate_stats(
 
     # Check defense caps using caps module
     from app.calc.caps import check_defense_caps
-    
+
     defense_dict = {
         "melee": defense_totals.melee,
         "ranged": defense_totals.ranged,
         "aoe": defense_totals.aoe,
     }
-    
+
     cap_warnings = []
     capped_defense = check_defense_caps(defense_dict, cap_warnings)
-    
+
     # Update defense totals with capped values
     defense_totals = DefenseTotals(**capped_defense)
-    
+
     # Add any warnings
     for warning in cap_warnings:
         validation_warnings.append(
@@ -242,7 +240,7 @@ def _calculate_aggregate_stats(
 
     # Check resistance caps using caps module
     from app.calc.caps import check_resistance_caps
-    
+
     resistance_dict = {
         "smashing": build.global_buffs.resistance.smashing,
         "lethal": build.global_buffs.resistance.lethal,
@@ -253,16 +251,16 @@ def _calculate_aggregate_stats(
         "toxic": build.global_buffs.resistance.toxic,
         "psionic": build.global_buffs.resistance.psionic,
     }
-    
+
     res_warnings = []
     capped_resistance = check_resistance_caps(
-        resistance_dict, 
-        build.build.archetype, 
+        resistance_dict,
+        build.build.archetype,
         res_warnings
     )
-    
+
     resistance_totals = ResistanceTotals(**capped_resistance)
-    
+
     # Add any warnings
     for warning in res_warnings:
         validation_warnings.append(
@@ -288,13 +286,13 @@ def _calculate_aggregate_stats(
     )
 
 
-def _calculate_set_bonuses(build: BuildPayload) -> List[SetBonusDetail]:
+def _calculate_set_bonuses(build: BuildPayload) -> list[SetBonusDetail]:  # noqa: ARG001
     """Calculate set bonuses from slotted enhancements."""
     # TODO: This is a stub implementation
     # In a real system, we would:
     # 1. Extract enhancement sets from power slots
     # 2. Apply stacking rules
     # 3. Return active bonuses
-    
+
     # For now, return empty list
     return []

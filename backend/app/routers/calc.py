@@ -1,9 +1,7 @@
 """Calculator API endpoints."""
 
 from fastapi import APIRouter, HTTPException
-from sqlalchemy.orm import Session
 
-from app.database import get_db
 from app.schemas.build import BuildPayload
 from app.schemas.response import CalcResponse
 from app.services.calculator import run_calculations

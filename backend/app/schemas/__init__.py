@@ -1,5 +1,6 @@
 """Schemas package for API request/response models."""
 
+# ruff: noqa: E402
 # Import all schemas from the original schemas.py file
 import sys
 from pathlib import Path

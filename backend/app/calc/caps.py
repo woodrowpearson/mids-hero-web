@@ -3,10 +3,8 @@
 Implements cap enforcement for various stats based on archetype limits.
 """
 
-from typing import Dict, List, Optional
 
 from app.config.constants import ARCHETYPE_CAPS, GLOBAL_CAPS
-from app.core.enums import DamageType, DefenseType
 
 
 class CapError(Exception):
@@ -15,9 +13,9 @@ class CapError(Exception):
 
 
 def apply_archetype_caps(
-    stats: Dict[str, float],
+    stats: dict[str, float],
     archetype: str,
-) -> Dict[str, float]:
+) -> dict[str, float]:
     """Apply archetype-specific caps to stats.
 
     Args:
@@ -34,56 +32,56 @@ def apply_archetype_caps(
     at_caps = ARCHETYPE_CAPS.get(archetype)
     if not at_caps:
         raise CapError(f"Unknown archetype: {archetype}")
-    
+
     capped_stats = {}
-    
+
     for stat_name, value in stats.items():
         # Determine which cap to apply based on stat name
         if "damage" in stat_name.lower():
             cap = at_caps.get("damage_cap", 4.0)
             capped_value = min(value, cap)
-        
+
         elif any(resist in stat_name.lower() for resist in [
-            "smashing", "lethal", "fire", "cold", "energy", 
+            "smashing", "lethal", "fire", "cold", "energy",
             "negative", "toxic", "psionic", "resistance"
         ]):
             cap = at_caps.get("resistance_cap", 0.75)
             # Resistance is percentage, so cap at percentage value
             capped_value = min(value, cap * 100)
-        
+
         elif "defense" in stat_name.lower():
             cap = GLOBAL_CAPS.get("defense_hard_cap", 0.95)
             # Defense is percentage, so cap at percentage value
             capped_value = min(value, cap * 100)
-        
+
         elif "hp" in stat_name.lower() or "hit_points" in stat_name.lower():
             cap = at_caps.get("hp_cap", 1606)
             capped_value = min(value, cap)
-        
+
         elif "recharge" in stat_name.lower():
             cap = GLOBAL_CAPS.get("recharge_cap", 5.0)
             # Recharge bonus is multiplicative
             capped_value = min(value, cap)
-        
+
         elif "accuracy" in stat_name.lower() or "tohit" in stat_name.lower():
             cap = GLOBAL_CAPS.get("accuracy_cap", 0.95)
             floor = GLOBAL_CAPS.get("tohit_floor", 0.05)
             # ToHit is capped between floor and cap
             capped_value = max(floor * 100, min(value, cap * 100))
-        
+
         else:
             # No cap found for this stat, return as-is
             capped_value = value
-        
+
         capped_stats[stat_name] = capped_value
-    
+
     return capped_stats
 
 
 def check_defense_caps(
-    defense_values: Dict[str, float],
-    warnings: Optional[List] = None,
-) -> Dict[str, float]:
+    defense_values: dict[str, float],
+    warnings: list | None = None,
+) -> dict[str, float]:
     """Check and cap defense values.
 
     Args:
@@ -95,14 +93,14 @@ def check_defense_caps(
     """
     hard_cap = GLOBAL_CAPS["defense_hard_cap"] * 100  # Convert to percentage
     soft_cap_pve = GLOBAL_CAPS["defense_soft_cap_pve"] * 100
-    
+
     capped = {}
-    
+
     for def_type, value in defense_values.items():
         # Apply hard cap
         capped_value = min(value, hard_cap)
         capped[def_type] = capped_value
-        
+
         # Add warnings if applicable
         if warnings is not None:
             if value > hard_cap:
@@ -118,15 +116,15 @@ def check_defense_caps(
                     "message": f"{def_type} defense exceeds soft cap of {soft_cap_pve}%",
                     "value": value,
                 })
-    
+
     return capped
 
 
 def check_resistance_caps(
-    resistance_values: Dict[str, float],
+    resistance_values: dict[str, float],
     archetype: str,
-    warnings: Optional[List] = None,
-) -> Dict[str, float]:
+    warnings: list | None = None,
+) -> dict[str, float]:
     """Check and cap resistance values.
 
     Args:
@@ -140,9 +138,9 @@ def check_resistance_caps(
     # Get archetype resistance cap
     at_caps = ARCHETYPE_CAPS.get(archetype, {})
     res_cap = at_caps.get("resistance_cap", 0.75) * 100  # Convert to percentage
-    
+
     capped = {}
-    
+
     for dmg_type, value in resistance_values.items():
         # Resistance can be negative (vulnerability)
         if value > res_cap:
@@ -156,9 +154,9 @@ def check_resistance_caps(
                 })
         else:
             capped_value = value
-        
+
         capped[dmg_type] = capped_value
-    
+
     return capped
 
 
@@ -177,17 +175,17 @@ def check_damage_cap(
     """
     at_caps = ARCHETYPE_CAPS.get(archetype, {})
     damage_cap = at_caps.get("damage_cap", 4.0)
-    
+
     return min(damage_multiplier, damage_cap)
 
 
 def calculate_effective_stats(
-    base_stats: Dict[str, float],
-    enhancements: Dict[str, float],
-    set_bonuses: Dict[str, float],
-    global_bonuses: Dict[str, float],
+    base_stats: dict[str, float],
+    enhancements: dict[str, float],
+    set_bonuses: dict[str, float],
+    global_bonuses: dict[str, float],
     archetype: str,
-) -> Dict[str, Dict[str, float]]:
+) -> dict[str, dict[str, float]]:
     """Calculate effective stats after all bonuses and caps.
 
     Args:
@@ -202,21 +200,21 @@ def calculate_effective_stats(
     """
     # Combine all bonuses
     combined_stats = {}
-    
+
     # Get all unique stat names
     all_stats = set()
     all_stats.update(base_stats.keys())
     all_stats.update(enhancements.keys())
     all_stats.update(set_bonuses.keys())
     all_stats.update(global_bonuses.keys())
-    
+
     # Calculate combined values
     for stat in all_stats:
         base = base_stats.get(stat, 0.0)
         enh = enhancements.get(stat, 0.0)
         set_bon = set_bonuses.get(stat, 0.0)
         global_bon = global_bonuses.get(stat, 0.0)
-        
+
         # For most stats, bonuses are additive
         if any(x in stat.lower() for x in ["damage", "recharge", "accuracy", "endurance"]):
             # These are multipliers
@@ -224,10 +222,10 @@ def calculate_effective_stats(
         else:
             # These are flat additions
             combined_stats[stat] = base + enh + set_bon + global_bon
-    
+
     # Apply caps
     capped_stats = apply_archetype_caps(combined_stats, archetype)
-    
+
     return {
         "uncapped": combined_stats,
         "capped": capped_stats,

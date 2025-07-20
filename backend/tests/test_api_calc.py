@@ -22,7 +22,7 @@ class TestCalculationAPI:
             hit_points_max=1606,
         )
         db.add(test_archetype)
-        
+
         test_powerset = models.Powerset(
             id=1,
             name="Fire Blast",
@@ -31,7 +31,7 @@ class TestCalculationAPI:
             powerset_type="primary",
         )
         db.add(test_powerset)
-        
+
         test_power = models.Power(
             id=1,
             name="test_power_1",
@@ -48,7 +48,7 @@ class TestCalculationAPI:
         )
         db.add(test_power)
         db.commit()
-        
+
         payload = {
             "build": {
                 "name": "Test Blaster",
@@ -112,7 +112,7 @@ class TestCalculationAPI:
             hit_points_max=1606,
         )
         db.add(test_archetype)
-        
+
         test_powerset = models.Powerset(
             id=1,
             name="Fire Blast",
@@ -121,7 +121,7 @@ class TestCalculationAPI:
             powerset_type="primary",
         )
         db.add(test_powerset)
-        
+
         test_power = models.Power(
             id=2,
             name="fire_blast",
@@ -137,7 +137,7 @@ class TestCalculationAPI:
             range_feet=80,
         )
         db.add(test_power)
-        
+
         # Create damage SO enhancement
         damage_so = models.Enhancement(
             id=1,
@@ -150,7 +150,7 @@ class TestCalculationAPI:
         )
         db.add(damage_so)
         db.commit()
-        
+
         payload = {
             "build": {
                 "name": "Enhanced Blaster",

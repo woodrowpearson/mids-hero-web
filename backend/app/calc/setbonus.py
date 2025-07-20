@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING
 from app.config.constants import SET_BONUS_RULES
 
 if TYPE_CHECKING:
-    from sqlalchemy.orm import Session
+    pass
 
 
 class SetBonusInfo:
@@ -119,21 +119,21 @@ def _get_bonuses_for_set(set_name: str, piece_count: int, db=None) -> list[SetBo
     if db:
         # Import here to avoid circular imports
         from app.models import EnhancementSet, SetBonus
-        
+
         # Get the enhancement set
         enh_set = db.query(EnhancementSet).filter(
             EnhancementSet.name == set_name
         ).first()
-        
+
         if not enh_set:
             return []
-            
+
         # Get all bonuses for this set up to piece_count
         bonuses = db.query(SetBonus).filter(
             SetBonus.set_id == enh_set.id,
             SetBonus.pieces_required <= piece_count
         ).order_by(SetBonus.pieces_required).all()
-        
+
         # Convert to SetBonusInfo objects
         all_bonuses = []
         for bonus in bonuses:
@@ -144,9 +144,9 @@ def _get_bonuses_for_set(set_name: str, piece_count: int, db=None) -> list[SetBo
                 bonus_value=float(bonus.bonus_amount or 0),
                 bonus_description=bonus.bonus_description or ""
             ))
-        
+
         return all_bonuses
-    
+
     # Fallback to example data if no database
     example_sets = {
         "Devastation": {

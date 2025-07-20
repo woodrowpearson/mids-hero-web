@@ -9,12 +9,6 @@ from datetime import datetime
 from sqlalchemy.orm import Session
 
 from app import models
-from app.config.constants import (
-    ARCHETYPE_CAPS,
-    BASE_ENDURANCE,
-    BASE_MOVEMENT,
-    BASE_STEALTH_PERCEPTION,
-)
 from app.calc_schemas.build import BuildPayload
 from app.calc_schemas.response import (
     AggregateStats,
@@ -31,6 +25,12 @@ from app.calc_schemas.response import (
     SetBonusDetail,
     StealthPerceptionStats,
     ValidationWarning,
+)
+from app.config.constants import (
+    ARCHETYPE_CAPS,
+    BASE_ENDURANCE,
+    BASE_MOVEMENT,
+    BASE_STEALTH_PERCEPTION,
 )
 
 logger = logging.getLogger(__name__)
@@ -64,7 +64,7 @@ def run_calculations(build: BuildPayload, db: Session) -> CalcResponse:
     archetype_record = db.query(models.Archetype).filter(
         models.Archetype.name == archetype_name
     ).first()
-    
+
     if not archetype_record:
         # Fallback to hardcoded data if not in database
         archetype_data = ARCHETYPE_CAPS.get(archetype_name)
@@ -84,8 +84,8 @@ def run_calculations(build: BuildPayload, db: Session) -> CalcResponse:
     # Process each power
     for power_data in build.powers:
         power_stats = _calculate_power_stats(
-            power_data, 
-            build.global_buffs, 
+            power_data,
+            build.global_buffs,
             db,
             archetype_name,
             build.build.level
@@ -118,8 +118,8 @@ def run_calculations(build: BuildPayload, db: Session) -> CalcResponse:
 
 
 def _calculate_power_stats(
-    power_data, 
-    global_buffs, 
+    power_data,
+    global_buffs,
     db: Session,
     archetype: str,
     level: int
@@ -137,11 +137,11 @@ def _calculate_power_stats(
     power_id = power_data.id
     if isinstance(power_id, str) and power_id.isdigit():
         power_id = int(power_id)
-    
+
     power = db.query(models.Power).filter(
         models.Power.id == power_id
     ).first()
-    
+
     if not power:
         # Fallback to placeholder values if power not found
         logger.warning(f"Power {power_data.id} not found in database, using defaults")
@@ -167,7 +167,7 @@ def _calculate_power_stats(
                 level,
                 power_type
             )
-        
+
         base_stats = PowerStatBlock(
             damage=damage_value,
             endurance_cost=float(power.endurance_cost or 10.0),
@@ -232,12 +232,24 @@ def _calculate_aggregate_stats(
     db: Session,
 ) -> AggregateStats:
     """Calculate aggregate statistics for the entire build."""
+    # First, calculate set bonuses
+    set_bonus_details = _calculate_set_bonuses(build, db)
+
+    # Aggregate set bonuses by type
+    set_bonus_totals = {}
+    for bonus in set_bonus_details:
+        for bonus_type, value in bonus.bonus_values.items():
+            if bonus_type not in set_bonus_totals:
+                set_bonus_totals[bonus_type] = 0.0
+            set_bonus_totals[bonus_type] += value
+
     # Base HP calculation
     base_hp = archetype_data.get("base_hp", 1000.0)
     hp_cap = archetype_data.get("hp_cap", 1606)
 
-    # Apply HP buffs (stub for now)
-    max_hp = min(base_hp * 1.0, hp_cap)  # No HP buffs in stub
+    # Apply HP buffs from set bonuses
+    hp_buff = 1.0 + set_bonus_totals.get("hp", 0.0) / 100.0
+    max_hp = min(base_hp * hp_buff, hp_cap)
 
     # Create combat totals
     combat_totals = CombatTotals(
@@ -266,11 +278,17 @@ def _calculate_aggregate_stats(
         ),
     )
 
-    # Apply global buffs to defense/resistance
+    # Apply global buffs AND set bonuses to defense
+    # Note: In City of Heroes, positional defense (melee/ranged/aoe) and typed defense (smashing/lethal/etc)
+    # are separate. The game uses the higher of the two when calculating hit chances.
+    # For simplicity, we'll add typed defense bonuses to the corresponding positional defense.
     defense_totals = DefenseTotals(
-        melee=build.global_buffs.defense.melee,
-        ranged=build.global_buffs.defense.ranged,
-        aoe=build.global_buffs.defense.aoe,
+        melee=build.global_buffs.defense.melee + set_bonus_totals.get("defense_melee", 0.0) +
+              max(set_bonus_totals.get("defense_smashing", 0.0), set_bonus_totals.get("defense_lethal", 0.0)),
+        ranged=build.global_buffs.defense.ranged + set_bonus_totals.get("defense_ranged", 0.0) +
+               max(set_bonus_totals.get("defense_energy", 0.0), set_bonus_totals.get("defense_negative", 0.0)),
+        aoe=build.global_buffs.defense.aoe + set_bonus_totals.get("defense_aoe", 0.0) +
+            max(set_bonus_totals.get("defense_fire", 0.0), set_bonus_totals.get("defense_cold", 0.0)),
     )
 
     # Check defense caps using caps module
@@ -331,10 +349,11 @@ def _calculate_aggregate_stats(
             )
         )
 
+    # Apply global buffs AND set bonuses to damage
     damage_buff_totals = DamageBuffTotals(
-        melee=build.global_buffs.damage,
-        ranged=build.global_buffs.damage,
-        aoe=build.global_buffs.damage,
+        melee=build.global_buffs.damage + set_bonus_totals.get("damage", 0.0),
+        ranged=build.global_buffs.damage + set_bonus_totals.get("damage", 0.0),
+        aoe=build.global_buffs.damage + set_bonus_totals.get("damage", 0.0),
     )
 
     return AggregateStats(
@@ -342,7 +361,7 @@ def _calculate_aggregate_stats(
         defense=defense_totals,
         resistance=resistance_totals,
         damage_buff=damage_buff_totals,
-        set_bonuses=_calculate_set_bonuses(build, db),
+        set_bonuses=set_bonus_details,  # Use the already calculated set bonuses
     )
 
 
@@ -351,11 +370,11 @@ def _calculate_enhancement_values(
     db: Session
 ) -> dict[str, float]:
     """Calculate total enhancement values from slotted enhancements.
-    
+
     Args:
         slots: List of enhancement slots for the power
         db: Database session
-        
+
     Returns:
         Dictionary of enhancement type to total percentage value
     """
@@ -368,7 +387,7 @@ def _calculate_enhancement_values(
         "defense": 0.0,
         "resistance": 0.0,
     }
-    
+
     for slot in slots:
         # Handle both string and integer enhancement IDs
         enh_id = slot.enhancement_id
@@ -384,11 +403,11 @@ def _calculate_enhancement_values(
             enhancement = db.query(models.Enhancement).filter(
                 models.Enhancement.name == enh_id
             ).first()
-        
+
         if not enhancement:
             logger.warning(f"Enhancement {slot.enhancement_id} not found in database")
             continue
-            
+
         # Calculate enhancement value based on level
         # For SOs: They give their full value at their level
         # For IOs: They scale with level
@@ -398,48 +417,48 @@ def _calculate_enhancement_values(
         else:
             # IOs scale: base_value * level / 50
             level_modifier = slot.enhancement_level / 50.0
-        
+
         # Add bonuses from the enhancement
         if enhancement.damage_bonus:
             base_value = float(enhancement.damage_bonus) / 100.0  # Convert percentage
             enhancement_totals["damage"] += base_value * level_modifier
-            
+
         if enhancement.accuracy_bonus:
             base_value = float(enhancement.accuracy_bonus) / 100.0
             enhancement_totals["accuracy"] += base_value * level_modifier
-            
+
         if enhancement.endurance_bonus:
             base_value = float(enhancement.endurance_bonus) / 100.0
             enhancement_totals["endurance"] += base_value * level_modifier
-            
+
         if enhancement.recharge_bonus:
             base_value = float(enhancement.recharge_bonus) / 100.0
             enhancement_totals["recharge"] += base_value * level_modifier
-            
+
         # TODO: Handle boosted (+5 levels) and catalyzed (attuned) enhancements
         if slot.boosted:
             # Boosted adds 5 levels worth of enhancement
             pass
-            
+
         if slot.catalyzed:
             # Catalyzed scales with character level
             pass
-    
+
     return enhancement_totals
 
 
 def _calculate_set_bonuses(build: BuildPayload, db: Session) -> list[SetBonusDetail]:
     """Calculate set bonuses from slotted enhancements.
-    
+
     Args:
-        build: Build configuration 
+        build: Build configuration
         db: Database session
-        
+
     Returns:
         List of active set bonuses
     """
     from app.calc.setbonus import calculate_set_bonus_totals
-    
+
     # Collect all enhancement slots from all powers
     all_slots = []
     for power in build.powers:
@@ -448,7 +467,7 @@ def _calculate_set_bonuses(build: BuildPayload, db: Session) -> list[SetBonusDet
             enh_id = slot.enhancement_id
             if isinstance(enh_id, str) and enh_id.isdigit():
                 enh_id = int(enh_id)
-                
+
             enhancement = None
             if isinstance(enh_id, int):
                 enhancement = db.query(models.Enhancement).filter(
@@ -458,23 +477,23 @@ def _calculate_set_bonuses(build: BuildPayload, db: Session) -> list[SetBonusDet
                 enhancement = db.query(models.Enhancement).filter(
                     models.Enhancement.name == enh_id
                 ).first()
-                
+
             if enhancement and enhancement.set_id:
                 # Get the enhancement set
                 enh_set = db.query(models.EnhancementSet).filter(
                     models.EnhancementSet.id == enhancement.set_id
                 ).first()
-                
+
                 if enh_set:
                     all_slots.append({
                         "power_id": power.id,
                         "set_name": enh_set.name,
                         "enhancement_id": enhancement.id,
                     })
-    
+
     # Calculate bonuses using the setbonus module
     result = calculate_set_bonus_totals(all_slots, db)
-    
+
     # Convert to response format
     bonus_details = []
     for detail in result.get("details", []):
@@ -484,5 +503,5 @@ def _calculate_set_bonuses(build: BuildPayload, db: Session) -> list[SetBonusDet
             bonus_description=detail["bonus_description"],
             bonus_values=detail["bonus_values"]
         ))
-    
+
     return bonus_details

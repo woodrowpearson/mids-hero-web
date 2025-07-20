@@ -242,6 +242,9 @@ def _calculate_aggregate_stats(
             if bonus_type not in set_bonus_totals:
                 set_bonus_totals[bonus_type] = 0.0
             set_bonus_totals[bonus_type] += value
+            
+    # Calculate passive/auto power effects
+    auto_power_effects = _calculate_auto_power_effects(build, db)
 
     # Base HP calculation
     base_hp = archetype_data.get("base_hp", 1000.0)
@@ -319,15 +322,24 @@ def _calculate_aggregate_stats(
     # Check resistance caps using caps module
     from app.calc.caps import check_resistance_caps
 
+    # Combine global buffs, auto power effects, and set bonuses for resistance
     resistance_dict = {
-        "smashing": build.global_buffs.resistance.smashing,
-        "lethal": build.global_buffs.resistance.lethal,
-        "fire": build.global_buffs.resistance.fire,
-        "cold": build.global_buffs.resistance.cold,
-        "energy": build.global_buffs.resistance.energy,
-        "negative": build.global_buffs.resistance.negative,
-        "toxic": build.global_buffs.resistance.toxic,
-        "psionic": build.global_buffs.resistance.psionic,
+        "smashing": (build.global_buffs.resistance.smashing + 
+                    auto_power_effects.get("resistance_smashing", 0.0)),
+        "lethal": (build.global_buffs.resistance.lethal + 
+                  auto_power_effects.get("resistance_lethal", 0.0)),
+        "fire": (build.global_buffs.resistance.fire + 
+                auto_power_effects.get("resistance_fire", 0.0)),
+        "cold": (build.global_buffs.resistance.cold + 
+                auto_power_effects.get("resistance_cold", 0.0)),
+        "energy": (build.global_buffs.resistance.energy + 
+                  auto_power_effects.get("resistance_energy", 0.0)),
+        "negative": (build.global_buffs.resistance.negative + 
+                    auto_power_effects.get("resistance_negative", 0.0)),
+        "toxic": (build.global_buffs.resistance.toxic + 
+                 auto_power_effects.get("resistance_toxic", 0.0)),
+        "psionic": (build.global_buffs.resistance.psionic + 
+                   auto_power_effects.get("resistance_psionic", 0.0)),
     }
 
     res_warnings = []
@@ -445,6 +457,55 @@ def _calculate_enhancement_values(
             pass
 
     return enhancement_totals
+
+
+def _calculate_auto_power_effects(build: BuildPayload, db: Session) -> dict[str, float]:
+    """Calculate passive effects from auto powers.
+    
+    Auto powers are always-on powers that provide passive bonuses like
+    resistance, defense, regeneration, etc.
+    
+    Args:
+        build: Build configuration
+        db: Database session
+        
+    Returns:
+        Dictionary of effect type to total value
+    """
+    auto_effects = {}
+    
+    # Process each power to check for auto/passive effects
+    for power_data in build.powers:
+        # Get power from database
+        power_id = power_data.id
+        if isinstance(power_id, str) and power_id.isdigit():
+            power_id = int(power_id)
+            
+        power = db.query(models.Power).filter(
+            models.Power.id == power_id
+        ).first()
+        
+        if not power:
+            continue
+            
+        # Check if it's an auto power
+        if power.power_type == "auto" and power.effects:
+            # Add effects from the power
+            for effect_name, effect_value in power.effects.items():
+                if effect_name not in auto_effects:
+                    auto_effects[effect_name] = 0.0
+                # Convert percentage to decimal if needed
+                if isinstance(effect_value, (int, float)):
+                    # Resistance values are stored as decimals (0.15 = 15%)
+                    # Convert to percentage for consistency
+                    if effect_name.startswith("resistance_"):
+                        auto_effects[effect_name] += effect_value * 100
+                    elif effect_name.startswith("defense_"):
+                        auto_effects[effect_name] += effect_value * 100
+                    else:
+                        auto_effects[effect_name] += effect_value
+    
+    return auto_effects
 
 
 def _calculate_set_bonuses(build: BuildPayload, db: Session) -> list[SetBonusDetail]:

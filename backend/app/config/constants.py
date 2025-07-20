@@ -203,10 +203,10 @@ BASE_ENDURANCE = {
 
 # Base movement speeds (in mph)
 BASE_MOVEMENT = {
-    "run_speed": 21.0,
-    "fly_speed": 0.0,  # Only if flight power active
-    "jump_height": 14.0,  # feet
-    "jump_speed": 14.0,
+    "run_speed": 14.32,  # Base run speed in mph (matches MidsReborn)
+    "fly_speed": 0.0,    # Only if flight power active
+    "jump_height": 8.0,  # Base jump height in feet
+    "jump_speed": 14.32, # Base jump speed in mph
 }
 
 # Stealth and perception base values

@@ -9,6 +9,7 @@ from datetime import datetime
 from sqlalchemy.orm import Session
 
 from app import models
+from app.calc.buffs import BuffCalculator
 from app.calc.tohit import ToHitCalculator
 from app.calc_schemas.build import BuildPayload
 from app.calc_schemas.response import (
@@ -83,6 +84,9 @@ def run_calculations(build: BuildPayload, db: Session) -> CalcResponse:
             "hp_max": archetype_record.hit_points_max or 1606,
         })
 
+    # Initialize BuffCalculator for this archetype
+    buff_calculator = BuffCalculator(archetype_name)
+
     # Process each power
     for power_data in build.powers:
         power_stats = _calculate_power_stats(
@@ -90,13 +94,14 @@ def run_calculations(build: BuildPayload, db: Session) -> CalcResponse:
             build.global_buffs,
             db,
             archetype_name,
-            build.build.level
+            build.build.level,
+            buff_calculator
         )
         per_power_stats.append(power_stats)
 
     # Calculate aggregate stats
     aggregate_stats = _calculate_aggregate_stats(
-        build, archetype_data, validation_warnings, db
+        build, archetype_data, validation_warnings, db, buff_calculator
     )
 
     # Create response
@@ -124,7 +129,8 @@ def _calculate_power_stats(
     global_buffs,
     db: Session,
     archetype: str,
-    level: int
+    level: int,
+    buff_calculator: BuffCalculator
 ) -> PerPowerStats:
     """Calculate enhanced statistics for a single power.
 
@@ -204,11 +210,20 @@ def _calculate_power_stats(
     post_ed_values = enhancement_data["post_ed"]
 
     # Calculate enhanced values using actual formulas
+    # Use BuffCalculator to aggregate damage buffs from all sources
+    buff_sources = []
+    if global_buffs and hasattr(global_buffs, 'damage'):
+        buff_sources.append({"damage": global_buffs.damage})
+
+    # Calculate total damage buff using BuffCalculator
+    all_buffs = buff_calculator.calculate_offensive_buffs(buff_sources)
+    total_damage_buff = all_buffs.get("damage", 0.0) / 100.0  # Convert to decimal
+
     # calc_final_damage expects pre-ED percentage as decimal
     enhanced_damage = calc_final_damage(
         base_stats.damage,
         pre_ed_values["damage"] / 100.0,  # Convert percentage to decimal
-        global_buffs.damage / 100.0,  # Convert percentage to decimal
+        total_damage_buff,
         archetype,
     )
 
@@ -287,28 +302,62 @@ def _calculate_aggregate_stats(
     archetype_data: dict,
     validation_warnings: list[ValidationWarning],
     db: Session,
+    buff_calculator: BuffCalculator,
 ) -> AggregateStats:
     """Calculate aggregate statistics for the entire build."""
     # First, calculate set bonuses
     set_bonus_details = _calculate_set_bonuses(build, db)
 
-    # Aggregate set bonuses by type
-    set_bonus_totals = {}
+    # Extract set bonuses into format for BuffCalculator
+    set_bonus_sources = []
     for bonus in set_bonus_details:
-        for bonus_type, value in bonus.bonus_values.items():
-            if bonus_type not in set_bonus_totals:
-                set_bonus_totals[bonus_type] = 0.0
-            set_bonus_totals[bonus_type] += value
+        set_bonus_sources.append(bonus.bonus_values)
 
     # Calculate passive/auto power effects
-    auto_power_effects = _calculate_auto_power_effects(build, db)
+    auto_power_dict = _calculate_auto_power_effects(build, db)
+    power_buff_sources = [auto_power_dict] if auto_power_dict else []
+
+    # Convert global buffs to proper format
+    global_buff_dict = {}
+    if build.global_buffs:
+        if hasattr(build.global_buffs, 'damage'):
+            global_buff_dict['damage'] = build.global_buffs.damage
+        if hasattr(build.global_buffs, 'recharge'):
+            global_buff_dict['recharge'] = build.global_buffs.recharge
+        if hasattr(build.global_buffs, 'healing'):
+            global_buff_dict['healing'] = build.global_buffs.healing
+        if hasattr(build.global_buffs, 'defense'):
+            global_buff_dict['defense_melee'] = build.global_buffs.defense.melee
+            global_buff_dict['defense_ranged'] = build.global_buffs.defense.ranged
+            global_buff_dict['defense_aoe'] = build.global_buffs.defense.aoe
+        if hasattr(build.global_buffs, 'resistance'):
+            global_buff_dict['resistance_smashing'] = build.global_buffs.resistance.smashing
+            global_buff_dict['resistance_lethal'] = build.global_buffs.resistance.lethal
+            global_buff_dict['resistance_fire'] = build.global_buffs.resistance.fire
+            global_buff_dict['resistance_cold'] = build.global_buffs.resistance.cold
+            global_buff_dict['resistance_energy'] = build.global_buffs.resistance.energy
+            global_buff_dict['resistance_negative'] = build.global_buffs.resistance.negative
+            global_buff_dict['resistance_toxic'] = build.global_buffs.resistance.toxic
+            global_buff_dict['resistance_psionic'] = build.global_buffs.resistance.psionic
+
+    # Calculate all buffs using BuffCalculator
+    all_buffs = buff_calculator.calculate_all_buffs(
+        global_buff_dict,
+        power_buff_sources,
+        set_bonus_sources,
+        []  # No debuff resistance sources for now
+    )
+
+    # Debug logging
+    logger.debug(f"Global buff dict: {global_buff_dict}")
+    logger.debug(f"All buffs calculated: {all_buffs}")
 
     # Base HP calculation
     base_hp = archetype_data.get("base_hp", 1000.0)
     hp_cap = archetype_data.get("hp_cap", 1606)
 
-    # Apply HP buffs from set bonuses
-    hp_buff = 1.0 + set_bonus_totals.get("hp", 0.0) / 100.0
+    # Apply HP buffs from BuffCalculator
+    hp_buff = 1.0 + all_buffs["defensive"].get("hp", 0.0) / 100.0
     max_hp = min(base_hp * hp_buff, hp_cap)
 
     # Create combat totals
@@ -338,32 +387,31 @@ def _calculate_aggregate_stats(
         ),
     )
 
-    # Apply global buffs AND set bonuses AND auto/toggle power effects to defense
+    # Apply defense buffs from BuffCalculator
     # Note: In City of Heroes, positional defense (melee/ranged/aoe) and typed defense (smashing/lethal/etc)
     # are separate. The game uses the higher of the two when calculating hit chances.
-    # For simplicity, we'll add typed defense bonuses to the corresponding positional defense.
+    defense_buffs = all_buffs["defensive"]
+
+    # Combine positional and typed defenses
+    melee_defense = defense_buffs.get("defense_melee", 0.0) + max(
+        defense_buffs.get("defense_smashing", 0.0),
+        defense_buffs.get("defense_lethal", 0.0)
+    )
+
+    ranged_defense = defense_buffs.get("defense_ranged", 0.0) + max(
+        defense_buffs.get("defense_energy", 0.0),
+        defense_buffs.get("defense_negative", 0.0)
+    )
+
+    aoe_defense = defense_buffs.get("defense_aoe", 0.0) + max(
+        defense_buffs.get("defense_fire", 0.0),
+        defense_buffs.get("defense_cold", 0.0)
+    )
+
     defense_totals = DefenseTotals(
-        melee=(build.global_buffs.defense.melee +
-               set_bonus_totals.get("defense_melee", 0.0) +
-               auto_power_effects.get("defense_melee", 0.0) +
-               max(set_bonus_totals.get("defense_smashing", 0.0),
-                   set_bonus_totals.get("defense_lethal", 0.0),
-                   auto_power_effects.get("defense_smashing", 0.0),
-                   auto_power_effects.get("defense_lethal", 0.0))),
-        ranged=(build.global_buffs.defense.ranged +
-                set_bonus_totals.get("defense_ranged", 0.0) +
-                auto_power_effects.get("defense_ranged", 0.0) +
-                max(set_bonus_totals.get("defense_energy", 0.0),
-                    set_bonus_totals.get("defense_negative", 0.0),
-                    auto_power_effects.get("defense_energy", 0.0),
-                    auto_power_effects.get("defense_negative", 0.0))),
-        aoe=(build.global_buffs.defense.aoe +
-             set_bonus_totals.get("defense_aoe", 0.0) +
-             auto_power_effects.get("defense_aoe", 0.0) +
-             max(set_bonus_totals.get("defense_fire", 0.0),
-                 set_bonus_totals.get("defense_cold", 0.0),
-                 auto_power_effects.get("defense_fire", 0.0),
-                 auto_power_effects.get("defense_cold", 0.0))),
+        melee=melee_defense,
+        ranged=ranged_defense,
+        aoe=aoe_defense,
     )
 
     # Check defense caps using caps module
@@ -394,25 +442,24 @@ def _calculate_aggregate_stats(
     # Check resistance caps using caps module
     from app.calc.caps import check_resistance_caps
 
-    # Combine global buffs, auto power effects, and set bonuses for resistance
-    resistance_dict = {
-        "smashing": (build.global_buffs.resistance.smashing +
-                    auto_power_effects.get("resistance_smashing", 0.0)),
-        "lethal": (build.global_buffs.resistance.lethal +
-                  auto_power_effects.get("resistance_lethal", 0.0)),
-        "fire": (build.global_buffs.resistance.fire +
-                auto_power_effects.get("resistance_fire", 0.0)),
-        "cold": (build.global_buffs.resistance.cold +
-                auto_power_effects.get("resistance_cold", 0.0)),
-        "energy": (build.global_buffs.resistance.energy +
-                  auto_power_effects.get("resistance_energy", 0.0)),
-        "negative": (build.global_buffs.resistance.negative +
-                    auto_power_effects.get("resistance_negative", 0.0)),
-        "toxic": (build.global_buffs.resistance.toxic +
-                 auto_power_effects.get("resistance_toxic", 0.0)),
-        "psionic": (build.global_buffs.resistance.psionic +
-                   auto_power_effects.get("resistance_psionic", 0.0)),
-    }
+    # Get resistance values from BuffCalculator (not in defensive buffs currently)
+    # For now, we'll aggregate resistance manually from all sources
+    resistance_sources = []
+    if global_buff_dict:
+        resistance_sources.append({
+            f"resistance_{dmg_type}": global_buff_dict.get(f"resistance_{dmg_type}", 0.0)
+            for dmg_type in ["smashing", "lethal", "fire", "cold", "energy", "negative", "toxic", "psionic"]
+        })
+    resistance_sources.extend(power_buff_sources)
+    resistance_sources.extend(set_bonus_sources)
+
+    # Aggregate resistance values
+    resistance_dict = {}
+    for dmg_type in ["smashing", "lethal", "fire", "cold", "energy", "negative", "toxic", "psionic"]:
+        total = 0.0
+        for source in resistance_sources:
+            total += source.get(f"resistance_{dmg_type}", 0.0)
+        resistance_dict[dmg_type] = total
 
     res_warnings = []
     capped_resistance = check_resistance_caps(
@@ -433,11 +480,16 @@ def _calculate_aggregate_stats(
             )
         )
 
-    # Apply global buffs AND set bonuses to damage
+    # Apply damage buffs from BuffCalculator
+    offensive_buffs = all_buffs["offensive"]
+
+    # Get general damage buff or specific type buffs
+    general_damage = offensive_buffs.get("damage", 0.0)
+
     damage_buff_totals = DamageBuffTotals(
-        melee=build.global_buffs.damage + set_bonus_totals.get("damage", 0.0),
-        ranged=build.global_buffs.damage + set_bonus_totals.get("damage", 0.0),
-        aoe=build.global_buffs.damage + set_bonus_totals.get("damage", 0.0),
+        melee=offensive_buffs.get("damage_melee", general_damage),
+        ranged=offensive_buffs.get("damage_ranged", general_damage),
+        aoe=offensive_buffs.get("damage_aoe", general_damage),
     )
 
     return AggregateStats(
@@ -651,13 +703,17 @@ def _calculate_set_bonuses(build: BuildPayload, db: Session) -> list[SetBonusDet
     Returns:
         List of active set bonuses
     """
-    from app.calc.setbonus import calculate_set_bonus_totals
+    from app.calc.setbonus import gather_set_bonuses
 
-    # Collect all enhancement slots from all powers
-    all_slots = []
+    # Track enhancement sets and piece counts
+    set_piece_counts = {}
+
     for power in build.powers:
+        # Track enhancements by set for this power
+        power_sets = {}
+
         for slot in power.slots:
-            # Get enhancement details to find set membership
+            # Get enhancement details
             enh_id = slot.enhancement_id
             if isinstance(enh_id, str) and enh_id.isdigit():
                 enh_id = int(enh_id)
@@ -679,23 +735,37 @@ def _calculate_set_bonuses(build: BuildPayload, db: Session) -> list[SetBonusDet
                 ).first()
 
                 if enh_set:
-                    all_slots.append({
-                        "power_id": power.id,
-                        "set_name": enh_set.name,
-                        "enhancement_id": enhancement.id,
-                    })
+                    if enh_set.name not in power_sets:
+                        power_sets[enh_set.name] = 0
+                    power_sets[enh_set.name] += 1
 
-    # Calculate bonuses using the setbonus module
-    result = calculate_set_bonus_totals(all_slots, db)
+        # Add to overall set counts
+        for set_name, count in power_sets.items():
+            if set_name not in set_piece_counts:
+                set_piece_counts[set_name] = []
+            set_piece_counts[set_name].append(count)
+
+    # Create list of sets with piece counts
+    enhancement_sets = []
+    for set_name, counts in set_piece_counts.items():
+        # Each power with pieces from this set counts as one instance
+        for count in counts:
+            enhancement_sets.append({
+                "set_name": set_name,
+                "piece_count": count,
+            })
+
+    # Get set bonuses
+    active_bonuses, aggregated = gather_set_bonuses(enhancement_sets, db)
 
     # Convert to response format
     bonus_details = []
-    for detail in result.get("details", []):
+    for bonus in active_bonuses:
         bonus_details.append(SetBonusDetail(
-            set_name=detail["set_name"],
-            bonus_tier=detail["bonus_tier"],
-            bonus_description=detail["bonus_description"],
-            bonus_values=detail["bonus_values"]
+            set_name=bonus.set_name,
+            bonus_tier=bonus.pieces_required,
+            bonus_description=bonus.bonus_description,
+            bonus_values={bonus.bonus_type: bonus.bonus_value}
         ))
 
     return bonus_details

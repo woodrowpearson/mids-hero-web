@@ -65,20 +65,20 @@ class TestToHitIntegration:
 
         response = client.post("/api/calculate", json=payload)
         assert response.status_code == 200
-        
+
         data = response.json()
         assert "per_power_stats" in data
         assert len(data["per_power_stats"]) == 1
-        
+
         power_stats = data["per_power_stats"][0]
         assert "enhanced_stats" in power_stats
         assert "hit_chance" in power_stats["enhanced_stats"]
-        
+
         # Base ToHit (75%) with no defense, no buffs, base accuracy (1.0)
         # Should be 75%
         expected_hit_chance = 75.0
         assert abs(power_stats["enhanced_stats"]["hit_chance"] - expected_hit_chance) < 0.1
-        
+
         # Clean up
         db.delete(test_power)
         db.commit()
@@ -91,7 +91,7 @@ class TestToHitIntegration:
             "build": {
                 "name": "Test Build",
                 "archetype": "Blaster",
-                "origin": "Science", 
+                "origin": "Science",
                 "level": 50,
                 "alignment": "Hero"
             },
@@ -110,7 +110,7 @@ class TestToHitIntegration:
 
         response = client.post("/api/calculate", json=payload)
         assert response.status_code == 200
-        
+
         data = response.json()
         # Verify the response structure includes hit_chance even with no powers
         assert "per_power_stats" in data

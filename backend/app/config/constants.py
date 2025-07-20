@@ -320,3 +320,33 @@ HEAL_BASE_BY_LEVEL = {
     45: 340.053,
     50: 357.95,   # Level 50 base heal
 }
+
+# Buff caps (percentage values)
+BUFF_CAPS = {
+    "damage": 400.0,       # Varies by archetype, this is a fallback
+    "tohit": 200.0,        # +200% ToHit buff cap
+    "accuracy": 200.0,     # +200% Accuracy buff cap
+    "recharge": 500.0,     # +500% Recharge buff cap
+    "hp": 200.0,          # +200% Max HP buff cap
+    "regeneration": 2000.0,  # +2000% Regeneration buff cap
+    "recovery": 500.0,     # +500% Recovery buff cap
+    "run_speed": 300.0,    # +300% Run Speed cap
+    "fly_speed": 300.0,    # +300% Fly Speed cap
+    "jump_height": 300.0,  # +300% Jump Height cap
+    "jump_speed": 300.0,   # +300% Jump Speed cap
+    "endurance_cost": 90.0,  # Max 90% endurance cost reduction
+}
+
+# Debuff resistance caps (percentage values)
+DEBUFF_RESISTANCE_CAPS = {
+    "damage": 100.0,       # 100% damage debuff resistance
+    "tohit": 100.0,        # 100% ToHit debuff resistance
+    "accuracy": 100.0,     # 100% Accuracy debuff resistance
+    "defense": 100.0,      # 100% Defense debuff resistance
+    "regeneration": 100.0, # 100% Regen debuff resistance
+    "recovery": 100.0,     # 100% Recovery debuff resistance
+    "recharge": 100.0,     # 100% Recharge debuff resistance
+    "movement": 100.0,     # 100% Movement debuff resistance
+    "endurance": 100.0,    # 100% Endurance debuff resistance
+    "hp": 100.0,          # 100% HP debuff resistance
+}

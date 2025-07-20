@@ -135,6 +135,11 @@
   },
   "recent_activities": [
     {
+      "timestamp": "2025-07-20T15:34:05.461210",
+      "branch": "feature/issue-44-epic-3-calculation-endpoints",
+      "action": "progress_update"
+    },
+    {
       "timestamp": "2025-07-20T10:54:32.367755",
       "branch": "feature/issue-44-epic-3-calculation-endpoints",
       "action": "progress_update"
@@ -178,14 +183,8 @@
       "timestamp": "2025-07-19T17:01:14.831654",
       "branch": "feature/issue-44-epic-3-calculation-endpoints",
       "action": "progress_update"
-    },
-    {
-      "timestamp": "2025-07-19T19:30:00Z",
-      "branch": "feature/issue-36-epic-3-api-endpoints",
-      "action": "epic3_task31_api_endpoints",
-      "description": "Completed Epic 3 Task 3.1: Core Data Endpoints. Verified existing endpoints for archetypes, powersets, powers, and enhancements. Fixed decimal serialization issues in Power schema. Added Salvage and Recipe schemas. Created misc_data router for salvage/recipe endpoints. Updated tests to match API response format. Created PR #193 with all CI checks passing."
     }
   ],
-  "commit_count": 175,
+  "commit_count": 177,
   "files_modified": 1
 }

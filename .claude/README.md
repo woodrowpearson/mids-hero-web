@@ -116,8 +116,22 @@ graph LR
     style Manual fill:#ccccff
 ```
 
-**Current**: ✅ Hooks run automatically on every Claude interaction  
+
+**Current**: ✅ Hooks run automatically on every Claude interaction
 **Backup**: Manual commands available for debugging and analysis
+
+### 🪝 Hook Execution
+
+Hooks are configured in `.claude/settings.json` under the `"hooks"` section.
+Claude triggers them at several points:
+
+- **UserPromptSubmit** – right after you send a message.
+- **PreToolUse** – before any tool or command executes.
+- **PostToolUse** – after a tool finishes running.
+- **Stop** – when the session ends.
+
+Each hook lists commands that Claude runs automatically, powering
+context validation, token limits and activity logging.
 
 ### 🔧 Available Commands
 

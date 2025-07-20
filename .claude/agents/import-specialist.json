@@ -1,0 +1,14 @@
+{
+  "version": "1.0",
+  "description": "Import Specialist agent configuration",
+  "modules": [
+    ".claude/modules/import/guide.md",
+    ".claude/modules/import/commands-reference.md"
+  ],
+  "tool_loadout": {
+    "preferred_tools": ["Read", "Bash", "LS", "Grep"],
+    "preferred_commands": ["python", "just import-*", "just i12-*"],
+    "avoid_tools": ["Write", "Edit"]
+  },
+  "context_limit": 35000
+}

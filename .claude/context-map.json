@@ -1,7 +1,7 @@
 {
   "version": "1.0",
   "description": "Claude context loading rules and token limits",
-  "last_updated": "2025-01-19",
+  "last_updated": "2025-07-25",
   
   "token_limits": {
     "total_max": 128000,
@@ -168,6 +168,22 @@
       "preferred_commands": ["docker", "logs", "ps", "grep"],
       "avoid_tools": [],
       "context_hints": "Diagnostic focus, read-heavy"
+    }
+  },
+
+  "agents": {
+    "description": "Isolated agent contexts with separate state",
+    "database-specialist": {
+      "config": ".claude/agents/database-specialist.json",
+      "state_dir": ".claude/state/agents/database-specialist/"
+    },
+    "import-specialist": {
+      "config": ".claude/agents/import-specialist.json",
+      "state_dir": ".claude/state/agents/import-specialist/"
+    },
+    "frontend-specialist": {
+      "config": ".claude/agents/frontend-specialist.json",
+      "state_dir": ".claude/state/agents/frontend-specialist/"
     }
   },
   

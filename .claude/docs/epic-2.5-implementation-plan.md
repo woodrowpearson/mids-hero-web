@@ -248,6 +248,21 @@ agent-database cmd:
   uv run --script .claude/scripts/database-agent.py "{{cmd}}"
 ```
 
+### Running and Switching Agents
+
+Each agent reads its configuration from `.claude/agents/{name}.json` and keeps
+logs under `.claude/state/agents/{name}/`. Use the matching `just` command to
+run a task with a given agent:
+
+```bash
+just agent-database "migrate"
+just agent-import "status"
+just agent-frontend "dev"
+```
+
+Switch agents by invoking a different command; previous agent context remains
+quarantined in its own state directory.
+
 ## 📅 Implementation Timeline
 
 ### Week 1: Session Summarization Foundation

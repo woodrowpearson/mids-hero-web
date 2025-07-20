@@ -1,0 +1,14 @@
+{
+  "version": "1.0",
+  "description": "Frontend Specialist agent configuration",
+  "modules": [
+    ".claude/modules/frontend/guide.md",
+    ".claude/modules/frontend/architecture.md"
+  ],
+  "tool_loadout": {
+    "preferred_tools": ["Read", "Write", "Edit", "MultiEdit", "Bash"],
+    "preferred_commands": ["npm", "jest", "just frontend-*"],
+    "avoid_tools": ["Bash(psql:*)"]
+  },
+  "context_limit": 30000
+}

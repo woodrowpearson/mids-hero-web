@@ -1,0 +1,14 @@
+{
+  "version": "1.0",
+  "description": "Database Specialist agent configuration",
+  "modules": [
+    ".claude/modules/database/guide.md",
+    ".claude/modules/database/schema-reference.md"
+  ],
+  "tool_loadout": {
+    "preferred_tools": ["Read", "Write", "Edit", "MultiEdit", "Bash", "LS"],
+    "preferred_commands": ["alembic", "psql", "just db-*"],
+    "avoid_tools": ["WebFetch", "WebSearch"]
+  },
+  "context_limit": 40000
+}

@@ -16,6 +16,7 @@ class PowerStatBlock(BaseModel):
     activation_time: float = Field(..., description="Activation time in seconds")
     range: float = Field(..., description="Range in feet")
     radius: float = Field(..., description="Radius in feet (0 for single target)")
+    hit_chance: float = Field(default=0.0, description="Final hit chance percentage (0-95)")
 
 
 class EnhancementValues(BaseModel):
@@ -33,6 +34,7 @@ class EnhancementValues(BaseModel):
         default=0.0, description="Total recharge reduction % after ED"
     )
     range: float = Field(default=0.0, description="Total range enhancement % after ED")
+    tohit: float = Field(default=0.0, description="Total ToHit buff % (not affected by ED)")
 
 
 class PerPowerStats(BaseModel):

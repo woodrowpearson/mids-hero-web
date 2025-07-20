@@ -1,6 +1,5 @@
 """Healing calculations for powers that restore hit points."""
 from dataclasses import dataclass
-from typing import Optional
 
 from app.calc.ed import apply_ed
 from app.config.constants import ARCHETYPE_HEAL_MODIFIERS, HEAL_BASE_BY_LEVEL
@@ -36,14 +35,14 @@ def calc_base_heal(
     # Get base heal value for level
     # This represents the base heal at level 50 for a 1.0 scale
     base_heal_at_level = HEAL_BASE_BY_LEVEL.get(level, HEAL_BASE_BY_LEVEL[50])
-    
+
     # Get archetype modifier
     archetype_name = archetype.value if hasattr(archetype, 'value') else str(archetype)
     archetype_modifier = ARCHETYPE_HEAL_MODIFIERS.get(
-        archetype_name, 
+        archetype_name,
         ARCHETYPE_HEAL_MODIFIERS["Defender"]
     )
-    
+
     # Calculate final base heal
     return base_heal_at_level * heal_scale * archetype_modifier
 
@@ -68,13 +67,13 @@ def calc_final_healing(
     """
     # Apply ED to heal enhancement (Schedule A)
     ed_enhancement = apply_ed('A', heal_enhancement)
-    
+
     # Calculate total multiplier
     total_multiplier = 1 + ed_enhancement + global_heal_buff
-    
+
     # Apply multiplier to base heal
     final_heal = base_heal * total_multiplier
-    
+
     # Healing doesn't have caps like damage, but ensure non-negative
     return max(0.0, final_heal)
 
@@ -105,10 +104,10 @@ def calc_heal_over_time(
     """
     # Calculate number of ticks
     ticks = int(duration / interval)
-    
+
     # Calculate base heal per tick
     base_heal_per_tick = calc_base_heal(heal_scale, archetype, level)
-    
+
     # Apply enhancements to get final heal per tick
     heal_per_tick = calc_final_healing(
         base_heal_per_tick,
@@ -116,10 +115,10 @@ def calc_heal_over_time(
         global_heal_buff,
         archetype
     )
-    
+
     # Calculate total healing
     total_healing = heal_per_tick * ticks
-    
+
     return HealOverTimeResult(
         ticks=ticks,
         heal_per_tick=heal_per_tick,

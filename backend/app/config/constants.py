@@ -219,6 +219,15 @@ BASE_STEALTH_PERCEPTION = {
     "perception_pvp": 1153.0,
 }
 
+# Base ToHit values
+BASE_TOHIT = {
+    "pve_even": 0.75,  # 75% base chance vs even-level
+    "pvp": 0.50,       # 50% base in PvP
+    "level_modifier": 0.05,  # ±5% per level difference
+    "floor": 0.05,     # 5% minimum hit chance
+    "ceiling": 0.95,   # 95% maximum hit chance
+}
+
 # Set bonus stacking rules
 SET_BONUS_RULES = {
     "max_same_set": 5,  # Maximum 5 of the same set

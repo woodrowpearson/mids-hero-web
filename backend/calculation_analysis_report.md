@@ -122,10 +122,14 @@ None of these are implemented:
 
 ## Partial Implementations
 
-### ⚠️ Accuracy vs To-Hit
+### ✅ Accuracy vs To-Hit (COMPLETED)
 - Accuracy enhancements are implemented
-- To-Hit bonuses are not implemented
-- The distinction between Accuracy and To-Hit is not properly modeled
+- To-Hit bonuses are now fully implemented
+- The distinction between Accuracy and To-Hit is properly modeled
+- Complete hit chance calculation with formula: clamp((BaseToHit + ToHitBuffs - Defense) * Accuracy, 0.05, 0.95)
+- Streak breaker system implemented
+- Defense cascade calculation supported
+- PvP ToHit modifications supported
 
 ### ⚠️ Power Activation Time
 - Base activation times are stored

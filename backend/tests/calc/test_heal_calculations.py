@@ -1,12 +1,12 @@
 """Test heal calculations following TDD approach."""
+
 import pytest
-from decimal import Decimal
 
 from app.calc.healing import (
+    HealOverTimeResult,
     calc_base_heal,
     calc_final_healing,
     calc_heal_over_time,
-    HealOverTimeResult,
 )
 from app.core.enums import Archetype
 
@@ -84,7 +84,7 @@ class TestHealCalculations:
             heal_enhancement=0.0,
             global_heal_buff=0.0
         )
-        
+
         assert isinstance(result, HealOverTimeResult)
         assert result.ticks == 5  # 10 seconds / 2 second interval
         assert result.heal_per_tick == pytest.approx(178.975, 0.01)
@@ -103,7 +103,7 @@ class TestHealCalculations:
             heal_enhancement=0.95,  # 95% heal enhancement
             global_heal_buff=0.10   # 10% from set bonuses
         )
-        
+
         # Base heal per tick: 357.95 * 0.5 = 178.975
         # With ED and buffs: 178.975 * (1 + 0.95 + 0.10) = 366.896
         assert result.heal_per_tick == pytest.approx(366.896, 0.1)
@@ -117,14 +117,14 @@ class TestHealCalculations:
             archetype=Archetype.TANKER,
             level=50
         )
-        
+
         # Defender has full heal modifier
         defender_heal = calc_base_heal(
             heal_scale=1.0,
             archetype=Archetype.DEFENDER,
             level=50
         )
-        
+
         # Tanker should heal for less
         assert tanker_heal < defender_heal
         assert tanker_heal == pytest.approx(214.77, 0.01)  # 60% of defender
@@ -134,14 +134,14 @@ class TestHealCalculations:
         # Self heals often have different scales
         # This is typically handled by the power's heal_scale value
         # but we can test the calculation is correct
-        
+
         # Reconstruction (self-only) typically 25% scale
         self_heal = calc_base_heal(
             heal_scale=0.25,
             archetype=Archetype.SCRAPPER,
             level=50
         )
-        
+
         # Scrappers have reduced heal scales
         assert self_heal == pytest.approx(53.69, 0.01)  # 25% of 214.77
 
@@ -155,7 +155,7 @@ class TestHealCalculations:
             archetype=Archetype.DEFENDER
         )
         assert result == 0.0
-        
+
         # Negative values should be handled
         result = calc_final_healing(
             base_heal=100.0,
@@ -164,7 +164,7 @@ class TestHealCalculations:
             archetype=Archetype.DEFENDER
         )
         assert result == 50.0  # 100 * (1 - 0.5)
-        
+
         # Very high enhancement values
         result = calc_final_healing(
             base_heal=100.0,
@@ -184,14 +184,14 @@ class TestHealCalculations:
             archetype=Archetype.DEFENDER,
             level=1
         )
-        
+
         # Level 50 heal
         level_50_heal = calc_base_heal(
             heal_scale=1.0,
             archetype=Archetype.DEFENDER,
             level=50
         )
-        
+
         # Higher level should heal more
         assert level_50_heal > level_1_heal
         # Level 50 is approximately 10x level 1

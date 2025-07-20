@@ -62,7 +62,7 @@ class TestHealingIntegration:
             other_bonuses={"heal": 33.33}
         )
         db.add(test_enhancement)
-        
+
         db.commit()
 
         # Build payload with healing enhancements
@@ -131,23 +131,23 @@ class TestHealingIntegration:
         assert response.status_code == 200
 
         data = response.json()
-        
+
         # Find the healing power in results
         heal_power = next(
             (p for p in data["per_power_stats"] if p["power_id"] == 1),
             None
         )
         assert heal_power is not None
-        
+
         # Verify base healing calculation
         # Defender at level 50: 357.95 base * 0.3 scale = 107.385
         assert heal_power["base_stats"]["healing"] == pytest.approx(107.385, 0.01)
-        
+
         # Verify enhanced healing calculation
         # 3x 33.33% = 99.99% enhancement, which is ~95% after ED
         # 107.385 * (1 + 0.95 + 0.15) = 107.385 * 2.10 = 225.509
         assert heal_power["enhanced_stats"]["healing"] == pytest.approx(225.509, 0.5)
-        
+
         # Verify enhancement values after ED
         assert heal_power["enhancement_values"]["healing"] == pytest.approx(95.0, 0.5)
 
@@ -239,7 +239,7 @@ class TestHealingIntegration:
 
         data = response.json()
         power_stats = data["per_power_stats"][0]
-        
+
         # Should have no healing
         assert power_stats["base_stats"]["healing"] == 0.0
         assert power_stats["enhanced_stats"]["healing"] == 0.0
@@ -383,15 +383,15 @@ class TestHealingIntegration:
         # Get responses
         defender_response = client.post("/api/calculate", json=defender_payload)
         tanker_response = client.post("/api/calculate", json=tanker_payload)
-        
+
         assert defender_response.status_code == 200
         assert tanker_response.status_code == 200
-        
+
         defender_data = defender_response.json()
         tanker_data = tanker_response.json()
-        
+
         defender_heal_value = defender_data["per_power_stats"][0]["base_stats"]["healing"]
         tanker_heal_value = tanker_data["per_power_stats"][0]["base_stats"]["healing"]
-        
+
         # Tanker should heal for 60% of Defender
         assert tanker_heal_value == pytest.approx(defender_heal_value * 0.6, 0.01)

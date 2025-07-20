@@ -83,6 +83,7 @@ class GlobalBuffs(BaseModel):
 
     damage: float = Field(default=0.0, description="Global damage buff %")
     recharge: float = Field(default=0.0, description="Global recharge buff %")
+    healing: float = Field(default=0.0, description="Global healing buff %")
     defense: DefenseBuffs = Field(
         default_factory=DefenseBuffs, description="Defense buffs"
     )

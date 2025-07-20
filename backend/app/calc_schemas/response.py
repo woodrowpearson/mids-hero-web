@@ -9,6 +9,7 @@ class PowerStatBlock(BaseModel):
     """Base statistics for a power."""
 
     damage: float = Field(..., description="Damage value")
+    healing: float = Field(default=0.0, description="Healing value")
     endurance_cost: float = Field(..., description="Endurance cost")
     recharge_time: float = Field(..., description="Recharge time in seconds")
     accuracy: float = Field(..., description="Accuracy multiplier")
@@ -21,6 +22,7 @@ class EnhancementValues(BaseModel):
     """Enhancement values after ED calculation."""
 
     damage: float = Field(default=0.0, description="Total damage enhancement % after ED")
+    healing: float = Field(default=0.0, description="Total healing enhancement % after ED")
     accuracy: float = Field(
         default=0.0, description="Total accuracy enhancement % after ED"
     )

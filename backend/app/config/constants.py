@@ -28,7 +28,9 @@ ED_SCHEDULE_TYPES = {
     "endurance": "A",
     "recharge": "A",
     "heal": "A",
+    "defense": "B",
     "defense_buff": "B",
+    "resistance": "B",
     "resistance_buff": "B",
     "tohit_buff": "B",
     "defense_debuff": "B",
@@ -273,3 +275,39 @@ def get_ed_schedule(enhancement_type: str) -> dict[str, list]:
     """
     schedule_letter = ED_SCHEDULE_TYPES.get(enhancement_type, "A")
     return ED_SCHEDULES.get(schedule_letter, ED_SCHEDULES["A"])
+
+
+# Archetype heal modifiers (multiplier for heal powers)
+ARCHETYPE_HEAL_MODIFIERS = {
+    "Blaster": 0.60,      # 60% of base heal
+    "Controller": 1.00,    # 100% of base heal
+    "Defender": 1.00,      # 100% of base heal
+    "Scrapper": 0.60,      # 60% of base heal
+    "Tanker": 0.60,        # 60% of base heal
+    "Brute": 0.60,         # 60% of base heal
+    "Stalker": 0.60,       # 60% of base heal
+    "Mastermind": 1.00,    # 100% of base heal
+    "Dominator": 0.80,     # 80% of base heal
+    "Corruptor": 1.00,     # 100% of base heal
+    "Arachnos Soldier": 0.80,  # 80% of base heal
+    "Arachnos Widow": 0.80,    # 80% of base heal
+    "Peacebringer": 0.80,  # 80% of base heal
+    "Warshade": 0.80,      # 80% of base heal
+    "Sentinel": 0.70,      # 70% of base heal
+}
+
+# Base heal values by level (for 1.0 heal scale)
+# These are approximate values based on the game's healing formula
+HEAL_BASE_BY_LEVEL = {
+    1: 35.795,    # Level 1 base heal
+    5: 53.693,
+    10: 89.488,
+    15: 125.283,
+    20: 161.078,
+    25: 196.873,
+    30: 232.668,
+    35: 268.463,
+    40: 304.258,
+    45: 340.053,
+    50: 357.95,   # Level 50 base heal
+}

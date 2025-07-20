@@ -132,6 +132,7 @@ def _calculate_power_stats(
     from app.calc.damage import calc_damage_scale_to_damage, calc_final_damage
     from app.calc.endurance import calc_end_cost
     from app.calc.recharge import calc_recharge
+    from app.calc.healing import calc_base_heal, calc_final_healing
 
     # Get actual power data from database
     # Handle both string and integer IDs
@@ -148,6 +149,7 @@ def _calculate_power_stats(
         logger.warning(f"Power {power_data.id} not found in database, using defaults")
         base_stats = PowerStatBlock(
             damage=50.0,
+            healing=0.0,
             endurance_cost=10.0,
             recharge_time=10.0,
             accuracy=1.0,
@@ -169,8 +171,22 @@ def _calculate_power_stats(
                 power_type
             )
 
+        # Extract healing scale from power effects
+        heal_scale = 0.0
+        if power.effects and isinstance(power.effects, dict):
+            heal_scale = float(power.effects.get("heal_scale", 0.0))
+
+        healing_value = 0.0
+        if heal_scale > 0:
+            healing_value = calc_base_heal(
+                heal_scale,
+                archetype,
+                level
+            )
+
         base_stats = PowerStatBlock(
             damage=damage_value,
+            healing=healing_value,
             endurance_cost=float(power.endurance_cost or 10.0),
             recharge_time=float(power.recharge_time or 10.0),
             accuracy=float(power.accuracy or 1.0),
@@ -193,6 +209,16 @@ def _calculate_power_stats(
         archetype,
     )
 
+    # Calculate enhanced healing
+    enhanced_healing = 0.0
+    if base_stats.healing > 0:
+        enhanced_healing = calc_final_healing(
+            base_stats.healing,
+            pre_ed_values["heal"] / 100.0,  # Convert percentage to decimal
+            global_buffs.healing / 100.0 if hasattr(global_buffs, 'healing') else 0.0,
+            archetype
+        )
+
     enhanced_end_cost = calc_end_cost(
         base_stats.endurance_cost,
         post_ed_values["endurance"],
@@ -210,6 +236,7 @@ def _calculate_power_stats(
 
     enhanced_stats = PowerStatBlock(
         damage=enhanced_damage,
+        healing=enhanced_healing,
         endurance_cost=enhanced_end_cost,
         recharge_time=enhanced_recharge,
         accuracy=enhanced_accuracy,
@@ -225,6 +252,7 @@ def _calculate_power_stats(
         enhanced_stats=enhanced_stats,
         enhancement_values=EnhancementValues(
             damage=post_ed_values["damage"],
+            healing=post_ed_values["heal"],
             accuracy=post_ed_values["accuracy"],
             endurance=post_ed_values["endurance"],
             recharge=post_ed_values["recharge"],
@@ -289,17 +317,32 @@ def _calculate_aggregate_stats(
         ),
     )
 
-    # Apply global buffs AND set bonuses to defense
+    # Apply global buffs AND set bonuses AND auto/toggle power effects to defense
     # Note: In City of Heroes, positional defense (melee/ranged/aoe) and typed defense (smashing/lethal/etc)
     # are separate. The game uses the higher of the two when calculating hit chances.
     # For simplicity, we'll add typed defense bonuses to the corresponding positional defense.
     defense_totals = DefenseTotals(
-        melee=build.global_buffs.defense.melee + set_bonus_totals.get("defense_melee", 0.0) +
-              max(set_bonus_totals.get("defense_smashing", 0.0), set_bonus_totals.get("defense_lethal", 0.0)),
-        ranged=build.global_buffs.defense.ranged + set_bonus_totals.get("defense_ranged", 0.0) +
-               max(set_bonus_totals.get("defense_energy", 0.0), set_bonus_totals.get("defense_negative", 0.0)),
-        aoe=build.global_buffs.defense.aoe + set_bonus_totals.get("defense_aoe", 0.0) +
-            max(set_bonus_totals.get("defense_fire", 0.0), set_bonus_totals.get("defense_cold", 0.0)),
+        melee=(build.global_buffs.defense.melee + 
+               set_bonus_totals.get("defense_melee", 0.0) +
+               auto_power_effects.get("defense_melee", 0.0) +
+               max(set_bonus_totals.get("defense_smashing", 0.0), 
+                   set_bonus_totals.get("defense_lethal", 0.0),
+                   auto_power_effects.get("defense_smashing", 0.0),
+                   auto_power_effects.get("defense_lethal", 0.0))),
+        ranged=(build.global_buffs.defense.ranged + 
+                set_bonus_totals.get("defense_ranged", 0.0) +
+                auto_power_effects.get("defense_ranged", 0.0) +
+                max(set_bonus_totals.get("defense_energy", 0.0), 
+                    set_bonus_totals.get("defense_negative", 0.0),
+                    auto_power_effects.get("defense_energy", 0.0),
+                    auto_power_effects.get("defense_negative", 0.0))),
+        aoe=(build.global_buffs.defense.aoe + 
+             set_bonus_totals.get("defense_aoe", 0.0) +
+             auto_power_effects.get("defense_aoe", 0.0) +
+             max(set_bonus_totals.get("defense_fire", 0.0), 
+                 set_bonus_totals.get("defense_cold", 0.0),
+                 auto_power_effects.get("defense_fire", 0.0),
+                 auto_power_effects.get("defense_cold", 0.0))),
     )
 
     # Check defense caps using caps module
@@ -400,6 +443,7 @@ def _calculate_enhancement_values(
     """
     from app.calc.ed import apply_ed, get_ed_schedule_for_type
     
+    
     enhancement_totals = {
         "damage": 0.0,
         "accuracy": 0.0,
@@ -430,11 +474,17 @@ def _calculate_enhancement_values(
         if not enhancement:
             logger.warning(f"Enhancement {slot.enhancement_id} not found in database")
             continue
+        
 
         # Use the new effects field if available
         if hasattr(enhancement, 'effects') and enhancement.effects:
             # Effects field contains enhancement values as decimals
             for effect_type, effect_value in enhancement.effects.items():
+                if effect_type in enhancement_totals:
+                    enhancement_totals[effect_type] += effect_value
+        # Check other_bonuses field for additional enhancements (like heal)
+        elif hasattr(enhancement, 'other_bonuses') and enhancement.other_bonuses:
+            for effect_type, effect_value in enhancement.other_bonuses.items():
                 if effect_type in enhancement_totals:
                     enhancement_totals[effect_type] += effect_value
         else:
@@ -477,10 +527,11 @@ def _calculate_enhancement_values(
 
 
 def _calculate_auto_power_effects(build: BuildPayload, db: Session) -> dict[str, float]:
-    """Calculate passive effects from auto powers.
+    """Calculate passive effects from auto and toggle powers.
     
-    Auto powers are always-on powers that provide passive bonuses like
-    resistance, defense, regeneration, etc.
+    Auto powers are always-on powers that provide passive bonuses.
+    Toggle powers are powers that can be activated/deactivated and provide
+    ongoing bonuses while active (with endurance cost).
     
     Args:
         build: Build configuration
@@ -491,7 +542,8 @@ def _calculate_auto_power_effects(build: BuildPayload, db: Session) -> dict[str,
     """
     auto_effects = {}
     
-    # Process each power to check for auto/passive effects
+    
+    # Process each power to check for auto/passive/toggle effects
     for power_data in build.powers:
         # Get power from database
         power_id = power_data.id
@@ -505,22 +557,59 @@ def _calculate_auto_power_effects(build: BuildPayload, db: Session) -> dict[str,
         if not power:
             continue
             
-        # Check if it's an auto power
-        if power.power_type == "auto" and power.effects:
-            # Add effects from the power
-            for effect_name, effect_value in power.effects.items():
-                if effect_name not in auto_effects:
-                    auto_effects[effect_name] = 0.0
-                # Convert percentage to decimal if needed
-                if isinstance(effect_value, (int, float)):
-                    # Resistance values are stored as decimals (0.15 = 15%)
+        # Check if it's an auto or toggle power with effects
+        if power.power_type in ("auto", "toggle") and power.effects:
+            # Calculate enhancement values for this power if it's a toggle
+            # Auto powers typically can't be enhanced for their effects
+            enhancement_multiplier = 1.0
+            
+            if power.power_type == "toggle" and power_data.slots:
+                # Get enhancement values for defense/resistance
+                enhancement_data = _calculate_enhancement_values(power_data.slots, db)
+                post_ed_values = enhancement_data["post_ed"]
+                
+                # Apply appropriate enhancement based on effect type
+                # Note: We need to apply enhancements to each effect individually
+                temp_effects = {}
+                
+                
+                for effect_name, effect_value in power.effects.items():
+                    if effect_name.startswith("defense_"):
+                        # Apply defense enhancement
+                        enhancement_bonus = post_ed_values.get("defense", 0.0) / 100.0
+                        enhanced_value = effect_value * (1.0 + enhancement_bonus)
+                        temp_effects[effect_name] = enhanced_value
+                    elif effect_name.startswith("resistance_"):
+                        # Apply resistance enhancement
+                        enhancement_bonus = post_ed_values.get("resistance", 0.0) / 100.0
+                        enhanced_value = effect_value * (1.0 + enhancement_bonus)
+                        temp_effects[effect_name] = enhanced_value
+                    else:
+                        # No enhancement for other effects
+                        temp_effects[effect_name] = effect_value
+                
+                # Add enhanced effects
+                for effect_name, effect_value in temp_effects.items():
+                    if effect_name not in auto_effects:
+                        auto_effects[effect_name] = 0.0
                     # Convert to percentage for consistency
-                    if effect_name.startswith("resistance_"):
-                        auto_effects[effect_name] += effect_value * 100
-                    elif effect_name.startswith("defense_"):
+                    if effect_name.startswith(("resistance_", "defense_")):
                         auto_effects[effect_name] += effect_value * 100
                     else:
                         auto_effects[effect_name] += effect_value
+            else:
+                # Auto power or toggle without enhancements
+                for effect_name, effect_value in power.effects.items():
+                    if effect_name not in auto_effects:
+                        auto_effects[effect_name] = 0.0
+                    # Convert percentage to decimal if needed
+                    if isinstance(effect_value, (int, float)):
+                        # Resistance/defense values are stored as decimals (0.15 = 15%)
+                        # Convert to percentage for consistency
+                        if effect_name.startswith(("resistance_", "defense_")):
+                            auto_effects[effect_name] += effect_value * 100
+                        else:
+                            auto_effects[effect_name] += effect_value
     
     return auto_effects
 

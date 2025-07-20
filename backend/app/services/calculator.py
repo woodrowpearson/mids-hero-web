@@ -59,11 +59,27 @@ def run_calculations(build: BuildPayload, db: Session) -> CalcResponse:
     per_power_stats = []
     validation_warnings = []
 
-    # Get archetype data
-    archetype = build.build.archetype
-    archetype_data = ARCHETYPE_CAPS.get(archetype)
-    if not archetype_data:
-        raise ValueError(f"Unknown archetype: {archetype}")
+    # Get archetype data from database
+    archetype_name = build.build.archetype
+    archetype_record = db.query(models.Archetype).filter(
+        models.Archetype.name == archetype_name
+    ).first()
+    
+    if not archetype_record:
+        # Fallback to hardcoded data if not in database
+        archetype_data = ARCHETYPE_CAPS.get(archetype_name)
+        if not archetype_data:
+            raise ValueError(f"Unknown archetype: {archetype_name}")
+    else:
+        # Use database values for caps (TODO: Add cap columns to archetype table)
+        # For now, still use hardcoded caps
+        archetype_data = ARCHETYPE_CAPS.get(archetype_name, {
+            "damage_cap": 4.0,
+            "resistance_cap": 0.75,
+            "defense_cap": 0.95,
+            "hp_base": archetype_record.hit_points_base or 1000,
+            "hp_max": archetype_record.hit_points_max or 1606,
+        })
 
     # Process each power
     for power_data in build.powers:
@@ -71,7 +87,7 @@ def run_calculations(build: BuildPayload, db: Session) -> CalcResponse:
             power_data, 
             build.global_buffs, 
             db,
-            archetype,
+            archetype_name,
             build.build.level
         )
         per_power_stats.append(power_stats)
@@ -85,7 +101,7 @@ def run_calculations(build: BuildPayload, db: Session) -> CalcResponse:
     response = CalcResponse(
         timestamp=datetime.utcnow(),
         build_name=build.build.name,
-        archetype=archetype,
+        archetype=archetype_name,
         level=build.build.level,
         per_power_stats=per_power_stats,
         aggregate_stats=aggregate_stats,

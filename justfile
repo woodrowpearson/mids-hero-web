@@ -310,6 +310,27 @@ context-check:
     @just token-analyze .claude/core/
     @just token-analyze .claude/modules/
 
+# Summarize the current session context
+context-summarize:
+    @echo "📝 Summarizing session context..."
+    {{python}} .claude/scripts/session_summarizer.py
+
+# Build retrieval index for documentation
+rag-index dir="docs":
+    @echo "📚 Building RAG index from {{dir}}..."
+    {{python}} .claude/scripts/rag-indexer.py "{{dir}}"
+
+# Search documentation via retrieval-augmented generation
+rag-search query:
+    @echo "🔍 Searching RAG index for '{{query}}'..."
+    {{python}} .claude/scripts/rag-search.py "{{query}}"
+
+# Install git hooks
+git-hook-install:
+    @echo "🔧 Installing git hooks..."
+    install -m 755 .claude/hooks/git-commit-hook.sh .git/hooks/pre-commit
+    @echo "✅ Git hooks installed"
+
 # Docker commands
 docker-up:
     docker-compose up -d
@@ -389,6 +410,7 @@ help:
     @echo "  just git-feature NAME     # Create feature branch"
     @echo "  just git-fix NAME         # Create fix branch"
     @echo "  just git-pr               # Create pull request"
+    @echo "  just git-hook-install     # Install git hooks"
     @echo ""
     @echo "📥 Data Import (All Parsers):"
     @echo "  just import-all DIR       # Import all data from directory"
@@ -402,6 +424,9 @@ help:
     @echo "  just import-status        # Import system status"
     @echo "  just import-stats         # Database record counts"
     @echo "  just cache-stats          # Cache performance"
+    @echo "  just context-summarize    # Summarize session"
+    @echo "  just rag-index DIR        # Build RAG index"
+    @echo "  just rag-search QUERY     # Search docs"
     @echo ""
     @echo "⚡ Performance:"
     @echo "  just perf-bench           # I12 benchmarks"

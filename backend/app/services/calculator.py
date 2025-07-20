@@ -27,6 +27,7 @@ from app.schemas.response import (
     PerPowerStats,
     PowerStatBlock,
     ResistanceTotals,
+    SetBonusDetail,
     StealthPerceptionStats,
     ValidationWarning,
 )
@@ -283,5 +284,17 @@ def _calculate_aggregate_stats(
         defense=defense_totals,
         resistance=resistance_totals,
         damage_buff=damage_buff_totals,
-        set_bonuses=[],  # TODO: Implement set bonus calculation
+        set_bonuses=_calculate_set_bonuses(build),
     )
+
+
+def _calculate_set_bonuses(build: BuildPayload) -> List[SetBonusDetail]:
+    """Calculate set bonuses from slotted enhancements."""
+    # TODO: This is a stub implementation
+    # In a real system, we would:
+    # 1. Extract enhancement sets from power slots
+    # 2. Apply stacking rules
+    # 3. Return active bonuses
+    
+    # For now, return empty list
+    return []

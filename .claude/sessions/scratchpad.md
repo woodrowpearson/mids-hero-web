@@ -26,21 +26,36 @@
    - Only basic accuracy implemented
    - No tohit buff calculations
    - No defense debuff support
+   - Includes Last Hit Chance calculation
 
 3. **#223 - Buff/debuff effects (non-defense)** (MEDIUM)
    - No buff power effects
    - No debuff calculations
    - No buff/debuff enhancements
+   - Includes damage, recharge, recovery buffs
+   - Includes all debuff types
 
 4. **#224 - Movement speed enhancements** (MEDIUM)
    - Only base values
    - No travel power support
    - No speed buff calculations
+   - Will use ED Schedule B
 
 5. **#225 - Basic mez protection/resistance** (LOW)
    - No hold/stun/sleep/immobilize protection
    - No mez duration calculations
    - No mez enhancement support
+   - Covers 7 mez types
+
+6. **#226 - Remaining Base Stats and Attributes** (MEDIUM) - NEW
+   - Current HP/Endurance tracking
+   - Absorption Points
+   - Healing Received Bonus
+   - Endurance Consumption Rate
+   - All Debuff Resistances (5 types)
+   - Range Bonus application
+   - Threat Level
+   - Gravity modifier
 
 ### Development Approach
 - TDD with pytest for all new features
@@ -51,8 +66,10 @@
 ### Current Status
 - Health check passed
 - PR #208 is open and ready for new commits
-- Issue #221 (Healing) completed with full test coverage
-- Ready to commit changes and move to Issue #222
+- Issue #221 (Healing) ✅ COMPLETED and committed
+- Issue #226 created for remaining base stats
+- Project progress updated and pushed
+- Ready to work on Issue #222 (ToHit/Accuracy)
 
 ### Implementation Notes - Healing
 - Healing uses Schedule A for ED calculations

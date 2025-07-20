@@ -213,6 +213,9 @@ class TestCalculationAPI:
         # Check that damage was enhanced
         assert power_stats["enhanced_stats"]["damage"] > power_stats["base_stats"]["damage"]
         # Check ED was applied (3 SOs should give ~95% after ED)
+        print(f"Enhancement values: {power_stats['enhancement_values']}")
+        print(f"Base damage: {power_stats['base_stats']['damage']}")
+        print(f"Enhanced damage: {power_stats['enhanced_stats']['damage']}")
         assert power_stats["enhancement_values"]["damage"] == pytest.approx(95.0, rel=0.1)
 
     def test_calculate_with_global_buffs(self, client, db: Session):

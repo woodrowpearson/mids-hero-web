@@ -373,9 +373,14 @@ def _calculate_enhancement_values(
             continue
             
         # Calculate enhancement value based on level
-        # Basic formula: base_value * (1 + (level - 1) * 0.02)
-        # This gives ~100% at level 50 for SOs
-        level_modifier = 1.0 + (slot.enhancement_level - 1) * 0.02
+        # For SOs: They give their full value at their level
+        # For IOs: They scale with level
+        if enhancement.enhancement_type == "SO":
+            # SOs give full value at their level
+            level_modifier = 1.0
+        else:
+            # IOs scale: base_value * level / 50
+            level_modifier = slot.enhancement_level / 50.0
         
         # Add bonuses from the enhancement
         if enhancement.damage_bonus:

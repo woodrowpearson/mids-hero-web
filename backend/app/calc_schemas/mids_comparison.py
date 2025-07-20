@@ -131,7 +131,12 @@ def convert_our_stats_to_mids_format(calc_response: dict) -> dict[str, float]:
         "jump_height": totals["movement"]["jump_height"],
         
         # Combat modifiers (from damage_buff)
-        "damage_buff": agg["damage_buff"]["melee"],  # Assuming same for all
+        # Use the maximum of melee/ranged/aoe for comparison
+        "damage_buff": max(
+            agg["damage_buff"].get("melee", 0.0),
+            agg["damage_buff"].get("ranged", 0.0),
+            agg["damage_buff"].get("aoe", 0.0)
+        ),
         "tohit_buff": 0.0,  # TODO: Track tohit separately
         "accuracy_buff": 0.0,  # TODO: Track accuracy buff from sets
         "recharge_buff": 0.0,  # TODO: Track global recharge

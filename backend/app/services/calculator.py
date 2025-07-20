@@ -17,6 +17,7 @@ from app.calc_schemas.response import (
     DamageBuffTotals,
     DefenseTotals,
     EnduranceStats,
+    EnhancementValues,
     HitPointStats,
     MovementStats,
     PerPowerStats,
@@ -179,30 +180,33 @@ def _calculate_power_stats(
         )
 
     # Calculate enhancement values from slot data
-    enhancement_values = _calculate_enhancement_values(power_data.slots, db)
+    enhancement_data = _calculate_enhancement_values(power_data.slots, db)
+    pre_ed_values = enhancement_data["pre_ed"]
+    post_ed_values = enhancement_data["post_ed"]
 
     # Calculate enhanced values using actual formulas
+    # calc_final_damage expects pre-ED percentage as decimal
     enhanced_damage = calc_final_damage(
         base_stats.damage,
-        enhancement_values["damage"],
+        pre_ed_values["damage"] / 100.0,  # Convert percentage to decimal
         global_buffs.damage / 100.0,  # Convert percentage to decimal
         archetype,
     )
 
     enhanced_end_cost = calc_end_cost(
         base_stats.endurance_cost,
-        enhancement_values["endurance"],
+        post_ed_values["endurance"],
         0.0,  # No global endurance reduction in this example
     )
 
     enhanced_recharge = calc_recharge(
         base_stats.recharge_time,
-        enhancement_values["recharge"],
+        post_ed_values["recharge"],
         global_buffs.recharge / 100.0,  # Convert percentage to decimal
     )
 
     # Calculate enhanced accuracy (simple formula for now)
-    enhanced_accuracy = base_stats.accuracy * (1.0 + enhancement_values["accuracy"])
+    enhanced_accuracy = base_stats.accuracy * (1.0 + post_ed_values["accuracy"] / 100.0)
 
     enhanced_stats = PowerStatBlock(
         damage=enhanced_damage,
@@ -219,9 +223,13 @@ def _calculate_power_stats(
         power_name=power_data.power_name,
         base_stats=base_stats,
         enhanced_stats=enhanced_stats,
-        enhancement_values={
-            k: v * 100 for k, v in enhancement_values.items()  # Convert to percentage
-        },
+        enhancement_values=EnhancementValues(
+            damage=post_ed_values["damage"],
+            accuracy=post_ed_values["accuracy"],
+            endurance=post_ed_values["endurance"],
+            recharge=post_ed_values["recharge"],
+            range=post_ed_values["range"],
+        ),
     )
 
 
@@ -388,8 +396,10 @@ def _calculate_enhancement_values(
         db: Database session
 
     Returns:
-        Dictionary of enhancement type to total percentage value
+        Dictionary of enhancement type to total percentage value (post-ED)
     """
+    from app.calc.ed import apply_ed, get_ed_schedule_for_type
+    
     enhancement_totals = {
         "damage": 0.0,
         "accuracy": 0.0,
@@ -398,6 +408,7 @@ def _calculate_enhancement_values(
         "range": 0.0,
         "defense": 0.0,
         "resistance": 0.0,
+        "heal": 0.0,
     }
 
     for slot in slots:
@@ -420,43 +431,49 @@ def _calculate_enhancement_values(
             logger.warning(f"Enhancement {slot.enhancement_id} not found in database")
             continue
 
-        # Calculate enhancement value based on level
-        # For SOs: They give their full value at their level
-        # For IOs: They scale with level
-        if enhancement.enhancement_type == "SO":
-            # SOs give full value at their level
-            level_modifier = 1.0
+        # Use the new effects field if available
+        if hasattr(enhancement, 'effects') and enhancement.effects:
+            # Effects field contains enhancement values as decimals
+            for effect_type, effect_value in enhancement.effects.items():
+                if effect_type in enhancement_totals:
+                    enhancement_totals[effect_type] += effect_value
         else:
-            # IOs scale: base_value * level / 50
-            level_modifier = slot.enhancement_level / 50.0
-
-        # Add bonuses from the enhancement
-        if enhancement.damage_bonus:
-            base_value = float(enhancement.damage_bonus) / 100.0  # Convert percentage
-            enhancement_totals["damage"] += base_value * level_modifier
-
-        if enhancement.accuracy_bonus:
-            base_value = float(enhancement.accuracy_bonus) / 100.0
-            enhancement_totals["accuracy"] += base_value * level_modifier
-
-        if enhancement.endurance_bonus:
-            base_value = float(enhancement.endurance_bonus) / 100.0
-            enhancement_totals["endurance"] += base_value * level_modifier
-
-        if enhancement.recharge_bonus:
-            base_value = float(enhancement.recharge_bonus) / 100.0
-            enhancement_totals["recharge"] += base_value * level_modifier
+            # Fallback to individual bonus fields (stored as percentages)
+            if hasattr(enhancement, 'damage_bonus') and enhancement.damage_bonus:
+                enhancement_totals["damage"] += float(enhancement.damage_bonus)
+            if hasattr(enhancement, 'accuracy_bonus') and enhancement.accuracy_bonus:
+                enhancement_totals["accuracy"] += float(enhancement.accuracy_bonus)
+            if hasattr(enhancement, 'endurance_bonus') and enhancement.endurance_bonus:
+                enhancement_totals["endurance"] += float(enhancement.endurance_bonus)
+            if hasattr(enhancement, 'recharge_bonus') and enhancement.recharge_bonus:
+                enhancement_totals["recharge"] += float(enhancement.recharge_bonus)
+            if hasattr(enhancement, 'defense_bonus') and enhancement.defense_bonus:
+                enhancement_totals["defense"] += float(enhancement.defense_bonus)
+            if hasattr(enhancement, 'resistance_bonus') and enhancement.resistance_bonus:
+                enhancement_totals["resistance"] += float(enhancement.resistance_bonus)
 
         # TODO: Handle boosted (+5 levels) and catalyzed (attuned) enhancements
-        if slot.boosted:
-            # Boosted adds 5 levels worth of enhancement
-            pass
+        # TODO: Handle level scaling for IOs vs SOs
 
-        if slot.catalyzed:
-            # Catalyzed scales with character level
-            pass
-
-    return enhancement_totals
+    # Apply Enhancement Diversification to each enhancement type
+    ed_totals = {}
+    pre_ed_totals = {}
+    for enh_type, total_value in enhancement_totals.items():
+        pre_ed_totals[enh_type] = total_value
+        if total_value > 0:
+            schedule = get_ed_schedule_for_type(enh_type)
+            # Convert percentage to decimal for ED calculation
+            ed_value = apply_ed(schedule, total_value / 100.0)
+            # Convert back to percentage
+            ed_totals[enh_type] = ed_value * 100.0
+            # Debug logging
+            if enh_type == "damage" and total_value > 100:
+                logger.debug(f"ED Debug - Type: {enh_type}, Pre-ED: {total_value}%, Schedule: {schedule}, Post-ED: {ed_value * 100.0}%")
+        else:
+            ed_totals[enh_type] = 0.0
+    
+    # Return both pre-ED (for damage calc) and post-ED (for display) values
+    return {"pre_ed": pre_ed_totals, "post_ed": ed_totals}
 
 
 def _calculate_auto_power_effects(build: BuildPayload, db: Session) -> dict[str, float]:

@@ -98,7 +98,7 @@ def migrate_session_data():
     # Cleanup prompt
     if home_sessions.exists() and migrations:
         print(f"\n💡 You can now remove old data from {home_claude}")
-        print("   Run: rm -rf ~/.claude/sessions ~/.claude/auto_summary")
+        print("   Run: trash ~/.claude/sessions ~/.claude/auto_summary")
 
 
 def main():

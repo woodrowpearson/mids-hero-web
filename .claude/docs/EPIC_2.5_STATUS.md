@@ -28,10 +28,10 @@ Epic 2.5 focuses on advanced context management for Claude Code, building on the
   - ✅ Integrated with justfile commands
 
 - **PR #212**: Agent templates and context isolation
-  - ✅ Created agent configuration templates
-  - ✅ Implemented agent_runner.py for isolation
-  - ✅ Added per-agent state directories
-  - ✅ Created just commands for agent invocation
+  - ❌ CLOSED - Pivoting to native sub-agents
+  - Custom JSON configs being replaced
+  - agent_runner.py no longer needed
+  - Native sub-agents handle isolation automatically
 
 ## 🚧 Outstanding Tasks
 
@@ -49,13 +49,16 @@ Completed work:
 - [x] Justfile commands
 
 ### Task 2.5.2: Context Quarantine (#177)
-**Status**: 70% Complete
+**Status**: 30% Complete (Pivoting to Native Sub-Agents)
+
+**UPDATE**: Pivoting from custom agent implementation to Anthropic's native sub-agents feature.
 
 Remaining work:
-- [ ] Agent context isolation improvements (#234)
-- [ ] Inter-agent communication protocol (#235)
-- [ ] Automatic agent delegation
-- [ ] Performance monitoring
+- [ ] Create native sub-agents using `/agents` command
+- [ ] Configure system prompts for each specialist
+- [ ] Test automatic delegation functionality
+- [ ] Remove old custom agent infrastructure
+- [ ] Update documentation for native approach
 
 ### Task 2.5.3: RAG Documentation (#178)
 **Status**: 65% Complete

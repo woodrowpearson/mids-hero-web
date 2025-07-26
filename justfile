@@ -375,6 +375,35 @@ git-pr:
     @bash .claude/commands/validate-git-workflow.sh || exit 1
     @gh pr create
 
+# Session Management Commands
+session-summarize:
+    @echo "📝 Generating session summary..."
+    {{python}} scripts/context/session_summarizer.py test
+
+session-status:
+    @echo "📊 Session status..."
+    {{python}} scripts/context/auto_summarizer.py status
+
+session-continue session_id="":
+    @echo "🔄 Continuing session {{session_id}}..."
+    {{python}} scripts/context/session_continuity.py continue {{session_id}}
+
+session-list:
+    @echo "📋 Recent sessions..."
+    {{python}} scripts/context/session_continuity.py list
+
+threshold-config:
+    @echo "⚙️ Threshold configuration..."
+    {{python}} scripts/context/threshold_config.py config
+
+threshold-set key value:
+    @echo "⚙️ Setting threshold {{key}} = {{value}}..."
+    {{python}} scripts/context/threshold_config.py set {{key}} {{value}}
+
+summary-validate summary_file:
+    @echo "✅ Validating summary quality..."
+    {{python}} scripts/context/summary_validator.py validate {{summary_file}}
+
 # Help - show this message
 help:
     @echo "Mids Hero Web Development Commands"
@@ -412,6 +441,13 @@ help:
     @echo "  just db-setup             # Database setup"
     @echo "  just db-migrate           # Run migrations"
     @echo "  just db-status            # Migration status"
+    @echo ""
+    @echo "🤖 Session Management:"
+    @echo "  just session-summarize    # Generate session summary"
+    @echo "  just session-status       # Show session status"
+    @echo "  just session-continue     # Continue previous session"
+    @echo "  just session-list         # List recent sessions"
+    @echo "  just threshold-config     # Show threshold config"
     @echo ""
     @echo "For full command list:"
     @just --list

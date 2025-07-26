@@ -1,0 +1,14 @@
+# Session Management - Git Ignore Rules
+
+# Always ignore auto-generated session data
+session_*.json
+*_checkpoint_*.json
+*_auto_state.json
+
+# Keep manual notes and scratchpad
+!scratchpad.md
+!scratchpad/
+
+# Keep session metadata for team sharing (optional)
+# Uncomment the line below if you want to share session metadata
+# !session_metadata.json

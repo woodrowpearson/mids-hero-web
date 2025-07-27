@@ -1,0 +1,12 @@
+{
+  "created": "2025-07-27T02:07:47.703378",
+  "total_invocations": 1,
+  "agents": {
+    "general-purpose": {
+      "count": 1,
+      "first_use": "2025-07-27T02:07:47.703381",
+      "last_use": "2025-07-27T02:07:47.703382"
+    }
+  },
+  "last_invocation": "2025-07-27T02:07:47.703380"
+}

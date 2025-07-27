@@ -1,0 +1,16 @@
+{
+  "agent_type": "general-purpose",
+  "first_use": "2025-07-27T02:07:47.702873",
+  "tasks": [
+    {
+      "timestamp": "2025-07-27T02:07:47.702822",
+      "agent_type": "general-purpose",
+      "task_description": "Test",
+      "prompt_preview": "Test...",
+      "session_id": "test",
+      "task_id": "c8c625aa"
+    }
+  ],
+  "last_use": "2025-07-27T02:07:47.702875",
+  "total_tasks": 1
+}

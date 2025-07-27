@@ -200,6 +200,22 @@
             "run_in_background": true
           }
         ]
+      },
+      {
+        "matcher": "Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 .claude/hooks/subagent-state-tracker.py",
+            "timeout_seconds": 5,
+            "run_in_background": true
+          },
+          {
+            "type": "command",
+            "command": "python3 .claude/hooks/activity-logger.py",
+            "run_in_background": true
+          }
+        ]
       }
     ],
     "PostToolUse": [

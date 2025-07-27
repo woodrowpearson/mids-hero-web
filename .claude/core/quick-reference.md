@@ -24,6 +24,7 @@ just git-fix NAME          # Create fix branch
 just ucp "feat: message"   # Quick commit & push
 just update-progress       # Full update workflow
 just git-pr                # Create pull request
+just git-hook-install      # Install git hooks
 ```
 
 ## 🗄️ Database
@@ -54,6 +55,9 @@ docker-compose ps         # Check services
 /clear                    # Clear context
 just token-usage         # Check tokens
 just cache-stats         # Cache performance
+just context-summarize   # Summarize session
+just rag-index docs/     # Build retrieval index
+just rag-search "query"  # Search docs
 ```
 
 ## 📝 Session Management

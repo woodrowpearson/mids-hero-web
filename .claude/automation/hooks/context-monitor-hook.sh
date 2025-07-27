@@ -55,3 +55,10 @@ if [[ "$CONTEXT_USAGE" =~ ^[0-9,]+$ ]]; then
         echo "🔄 Auto-pruning recommended"
     fi
 fi
+
+# Log current usage
+mkdir -p .claude/state/logs
+echo "$(date '+%Y-%m-%d %H:%M:%S') - Context usage: ${CONTEXT_USAGE} tokens" >> .claude/state/logs/context-usage.log
+
+echo "Context usage: ${CONTEXT_USAGE} tokens"
+exit 0

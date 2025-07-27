@@ -73,7 +73,6 @@
       "description": "Files loaded when explicitly referenced",
       "patterns": {
         "workflow": ".claude/workflows/*.md",
-        "automation": ".claude/automation/README.md",
         "docs": ".claude/docs/*.md"
       }
     },

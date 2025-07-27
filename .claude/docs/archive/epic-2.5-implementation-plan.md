@@ -42,27 +42,23 @@ session-summarize:
 - **2.5.1.3**: Session Continuity Manager
 - **2.5.1.4**: Summary Template Engine
 
-### Phase 2: Context Quarantine via Agents (Task 2.5.2)
+### Phase 2: Context Quarantine via Native Sub-Agents (Task 2.5.2)
 
-**Goal**: Isolate contexts for different work streams to prevent contamination
+**Goal**: Isolate contexts for different work streams using Anthropic's native sub-agents
 
-**Approach**: Agent-specific context environments using uv virtual environments
+**Approach**: Leverage Claude Code's built-in sub-agent feature with automatic delegation
 
-```just
-[script]
-agent-database:
-  # /// script
-  # requires-python = ">=3.11"
-  # dependencies = ["sqlalchemy", "alembic"]
-  # ///
-  # Database-focused agent with isolated context
-```
+**Implementation**: Create specialized sub-agents using `/agents` command:
+- `database-specialist`: Database operations and migrations
+- `frontend-specialist`: React components and UI development
+- `import-specialist`: I12/MHD data import operations
+- `api-specialist`: FastAPI endpoint development
 
 **Components**:
-- **2.5.2.1**: Agent Context Isolation System
-- **2.5.2.2**: Cross-Agent Communication Protocol
-- **2.5.2.3**: Agent-Specific Tool Loadouts
-- **2.5.2.4**: Context Merge Strategies
+- **2.5.2.1**: Native Sub-Agent Configuration
+- **2.5.2.2**: Automatic Task Delegation
+- **2.5.2.3**: Tool Restriction per Agent
+- **2.5.2.4**: Context Window Isolation
 
 ### Phase 3: RAG Documentation Indexing (Task 2.5.3)
 
@@ -125,46 +121,39 @@ rag-index:
 # Export to multiple formats (markdown, JSON, plain text)
 ```
 
-### Task 2.5.2: Context Quarantine via Agents
+### Task 2.5.2: Context Quarantine via Native Sub-Agents
 
-#### Subtask 2.5.2.1: Agent Context Isolation System
-**Deliverable**: Isolated context environments per agent
-```bash
-# Use uv to create agent-specific environments
-# Separate .claude/agents/{agent-name}/ directories
-# Isolated state and logging per agent
+#### Subtask 2.5.2.1: Native Sub-Agent Configuration
+**Deliverable**: Four specialized sub-agents using Claude Code's `/agents` command
+```yaml
+# Example: database-specialist.md
+---
+name: database-specialist
+description: Database operations, migrations, and PostgreSQL management
+tools: [Read, Write, Edit, MultiEdit, Bash, LS, Grep]
+---
+You are a database specialist for the Mids Hero Web project...
 ```
 
-#### Subtask 2.5.2.2: Cross-Agent Communication Protocol
-**Deliverable**: Agent coordination and data sharing
-```python
-# Message passing between agents
-# Shared state management
-# Conflict resolution protocols
-```
+#### Subtask 2.5.2.2: Automatic Task Delegation
+**Deliverable**: Claude automatically delegates to appropriate sub-agents
+- Database queries → database-specialist
+- React components → frontend-specialist
+- Data imports → import-specialist
+- API endpoints → api-specialist
 
-#### Subtask 2.5.2.3: Agent-Specific Tool Loadouts
-**Deliverable**: Customized tool sets per agent type
-```json
-// Enhanced context-map.json with agent configurations
-{
-  "agents": {
-    "database": {
-      "tools": ["Read", "Edit", "Bash(alembic:*)"],
-      "modules": [".claude/modules/database/"],
-      "context_limit": 40000
-    }
-  }
-}
-```
+#### Subtask 2.5.2.3: Tool Restriction per Agent
+**Deliverable**: Each agent has specific tool access
+- Database: No WebFetch/WebSearch
+- Frontend: Includes NotebookRead/Edit
+- Import: Focus on file operations
+- API: Includes WebFetch for API testing
 
-#### Subtask 2.5.2.4: Context Merge Strategies
-**Deliverable**: Smart context combining when agents collaborate
-```python
-# Automatic context deduplication
-# Priority-based context merging
-# Conflict detection and resolution
-```
+#### Subtask 2.5.2.4: Context Window Isolation
+**Deliverable**: Each sub-agent maintains separate context
+- Independent context windows
+- No cross-contamination between agents
+- Automatic context management by Claude Code
 
 ### Task 2.5.3: RAG Documentation Indexing
 
@@ -243,11 +232,25 @@ rag-index:
 rag-query query:
   uv run --script .claude/scripts/rag-search.py "{{query}}"
 
-# Agent operations
-agent-database cmd:
-  uv run --script .claude/scripts/database-agent.py "{{cmd}}"
+# Native sub-agents (no just commands needed)
+# Claude automatically delegates to appropriate agents
 ```
 
+### Using Native Sub-Agents
+
+Anthropic's Claude Code now includes built-in sub-agents that automatically handle task delegation:
+
+1. **Create sub-agents**: Use `/agents` command in Claude Code
+2. **Automatic delegation**: Claude detects task type and delegates
+3. **Manual invocation**: Mention agent name explicitly if needed
+
+Example interactions:
+- "Update the user schema" → Automatically uses database-specialist
+- "Create a login component" → Automatically uses frontend-specialist
+- "Import this I12 file" → Automatically uses import-specialist
+- "Add a new API endpoint" → Automatically uses api-specialist
+
+No manual commands or scripts needed - Claude Code handles agent selection and context isolation automatically.
 ## 📅 Implementation Timeline
 
 ### Week 1: Session Summarization Foundation
@@ -255,10 +258,10 @@ agent-database cmd:
 - Create session continuity management
 - Add summary templates
 
-### Week 2: Context Quarantine Setup  
-- Design agent isolation architecture
-- Implement basic agent environments
-- Create communication protocols
+### Week 2: Native Sub-Agent Implementation
+- Create four specialized sub-agents using `/agents`
+- Configure tool restrictions and system prompts
+- Test automatic delegation functionality
 
 ### Week 3: RAG System Development
 - Build vector indexing system

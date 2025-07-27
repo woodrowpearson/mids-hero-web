@@ -5,7 +5,6 @@ This directory contains the Claude Code context management system for the Mids H
 ## 📁 Directory Structure
 
 - **`agents/`** - Native Claude Code sub-agents for specialized tasks
-- **`core/`** - Essential project references and guides
 - **`docs/`** - All project documentation
 - **`hooks/`** - Active Claude Code hooks for automation
 - **`modules/`** - Task-based context modules (database, api, frontend, etc.)

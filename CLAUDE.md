@@ -34,7 +34,7 @@ Task-Based Loading:
 ```
 
 **Tell Claude your task** to load the right context:
-- "I need to work on database migrations" 
+- "I need to work on database migrations"
 - "Help me import I12 power data"
 - "Let's build an API endpoint"
 
@@ -80,10 +80,10 @@ just i12-import file   # Import powers
 
 ## 📁 Key Locations
 
-- **Core Guide**: `.claude/core/project-guide.md`
-- **Quick Ref**: `.claude/core/quick-reference.md`
 - **Workflows**: `.claude/workflows/daily.md`
 - **Modules**: `.claude/modules/{task}/guide.md`
+- **Dev Guide**: `.claude/docs/development-workflow.md`
+- **Progress**: `.claude/state/progress.json`
 
 ## 🔧 For Specific Work
 
@@ -98,11 +98,11 @@ just i12-import file   # Import powers
 ## ⚠️ Remember
 
 - Use `fd` not `find`
-- Use `trash` not `rm -rf`  
+- Use `trash` not `rm -rf`
 - Keep sessions focused
 - Load only what you need
 
 ---
 
-*Claude's context system explained: `.claude/README.md`*  
+*Claude's context system explained: `.claude/README.md`*
 *Full documentation: `.claude/docs/`*

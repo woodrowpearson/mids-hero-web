@@ -10,7 +10,7 @@ just import-health
 just import-all data/exports/
 
 # Import specific data type  
-just i12-import data/i12_powers.json
+just i12-import data/imported/I12_powers.json
 ```
 
 ## Import System Architecture
@@ -35,11 +35,11 @@ backend/app/data_import/
 ### Basic Import
 ```bash
 # Import with default settings
-just i12-import data/i12_powers.json
+just i12-import data/imported/I12_powers.json
 
 # With custom batch size and memory limit
 cd backend
-python scripts/import_i12_data.py data.json \
+python scripts/import_i12_data.py data/imported/I12_powers.json \
     --batch-size 500 \
     --memory-limit 0.5
 ```
@@ -50,7 +50,7 @@ python scripts/import_i12_data.py data.json \
 just i12-import-resume data/i12_powers.json 50000
 
 # Or directly
-python scripts/import_i12_data.py data.json \
+python scripts/import_i12_data.py data/imported/I12_powers.json \
     --resume-from 50000
 ```
 
@@ -72,16 +72,16 @@ just import-all data/exports/ 500
 
 ### Import Specific Types
 ```bash
-just import-archetypes data/archetypes.json
-just import-powersets data/powersets.json  
-just import-powers data/powers.json
-just import-enhancements data/enhancements.json
+just import-archetypes data/imported/archetypes.json
+just import-powersets data/imported/powersets.json  
+just import-powers data/imported/powers.json
+just import-enhancements data/imported/enhancements.json
 ```
 
 ### Clear and Reimport
 ```bash
 # Clear existing data and import fresh
-just import-clear powers data/powers.json
+just import-clear powers data/imported/powers.json
 ```
 
 ## Monitoring & Health
@@ -199,7 +199,7 @@ just import-powers data/powers.json  # Then powers
 **Memory errors**:
 ```bash
 # Reduce batch/chunk sizes
-python scripts/import_i12_data.py data.json \
+python scripts/import_i12_data.py data/imported/I12_powers.json \
     --batch-size 100 \
     --chunk-size 1000 \
     --memory-limit 0.5
@@ -217,13 +217,13 @@ SELECT * FROM import_logs ORDER BY created_at DESC LIMIT 5;
 # Verbose logging
 cd backend
 export LOG_LEVEL=DEBUG
-python scripts/import_i12_data.py data.json --verbose
+python scripts/import_i12_data.py data/imported/I12_powers.json --verbose
 ```
 
 ### Clear Cache
 ```bash
 # If cache corrupted
-python scripts/import_i12_data.py data.json --clear-cache
+python scripts/import_i12_data.py data/imported/I12_powers.json --clear-cache
 ```
 
 ## Best Practices

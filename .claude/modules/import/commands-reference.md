@@ -10,11 +10,11 @@ just import-all <data_dir> [batch_size]
 
 # Import specific type
 just import-type <type> <file> [batch_size]
-# Example: just import-type powers data/powers.json 500
+# Example: just import-type powers data/imported/powers.json 500
 
 # Clear and import (removes existing data)
 just import-clear <type> <file> [batch_size]
-# Example: just import-clear enhancements data/enh.json
+# Example: just import-clear enhancements data/imported/enhancements.json
 ```
 
 ### Type-Specific Commands
@@ -31,15 +31,15 @@ just import-salvage <file>        # Import salvage data
 ```bash
 # Standard import
 just i12-import <file>
-# Example: just i12-import data/i12_powers.json
+# Example: just i12-import data/imported/I12_powers.json
 
 # Resume from failure
 just i12-import-resume <file> <record_number>
-# Example: just i12-import-resume data/i12_powers.json 50000
+# Example: just i12-import-resume data/imported/I12_powers.json 50000
 
 # Validate only (no import)
 just i12-validate <file>
-# Example: just i12-validate data/i12_powers.json
+# Example: just i12-validate data/imported/I12_powers.json
 ```
 
 ### Health & Monitoring
@@ -74,21 +74,21 @@ Options:
 ### Examples
 ```bash
 # Basic import
-python scripts/import_i12_data.py data/i12_powers.json
+python scripts/import_i12_data.py data/imported/I12_powers.json
 
 # Performance tuning
-python scripts/import_i12_data.py data/i12_powers.json \
+python scripts/import_i12_data.py data/imported/I12_powers.json \
     --batch-size 2000 \
     --chunk-size 10000 \
     --memory-limit 2.0
 
 # Debug mode
-python scripts/import_i12_data.py data/i12_powers.json \
+python scripts/import_i12_data.py data/imported/I12_powers.json \
     --verbose \
     --batch-size 100
 
 # Resume with cache clear
-python scripts/import_i12_data.py data/i12_powers.json \
+python scripts/import_i12_data.py data/imported/I12_powers.json \
     --resume-from 150000 \
     --clear-cache
 ```
@@ -129,7 +129,7 @@ export IMPORT_MEMORY_LIMIT="1.0"
 
 ### Successful Import
 ```
-🚀 Starting I12 power data import from data/i12_powers.json
+🚀 Starting I12 power data import from data/imported/I12_powers.json
 📊 Found 360,847 total records to process
 ⏳ Processing... 50,000/360,847 (13.8%)
 ⏳ Processing... 100,000/360,847 (27.7%)

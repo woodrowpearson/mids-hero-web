@@ -13,343 +13,106 @@ jobs:
   claude-response:
     if: github.event.issue.pull_request && contains(github.event.comment.body, '@claude')
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
           
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-          
-      - name: Install dependencies
+      - name: Extract Claude question
+        id: extract
         run: |
-          pip install anthropic pyyaml
-          
-      - name: Get issue/PR context
-        id: context
-        run: |
-          ISSUE_NUMBER=${{ github.event.issue.number }}
           USER_COMMENT="${{ github.event.comment.body }}"
-          
           # Remove @claude mention and get actual question
           QUESTION=$(echo "$USER_COMMENT" | sed 's/@claude//' | sed 's/^[[:space:]]*//')
-          
           echo "question=$QUESTION" >> $GITHUB_OUTPUT
-          echo "issue_number=$ISSUE_NUMBER" >> $GITHUB_OUTPUT
           
-          # Get issue/PR details
-          if [ "${{ github.event.issue.pull_request }}" != "null" ]; then
-            gh pr view $ISSUE_NUMBER --json title,body,files > pr_context.json
-            echo "type=pr" >> $GITHUB_OUTPUT
-          else
-            gh issue view $ISSUE_NUMBER --json title,body > issue_context.json
-            echo "type=issue" >> $GITHUB_OUTPUT
-          fi
-        env:
-          GH_TOKEN: ${{ github.token }}
-          
-      - name: Generate Claude response
-        id: claude
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: |
-          echo "Basic Claude response placeholder" > claude_response.md
-          
-      - name: Post Claude response
-        if: success()
-        uses: actions/github-script@v7
+      - name: Claude Code Response
+        uses: anthropics/claude-code-action@v1.2.0
         with:
-          script: |
-            const fs = require('fs');
-            const response = fs.readFileSync('claude_response.md', 'utf8');
-            const issueNumber = ${{ steps.context.outputs.issue_number }};
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          timeout_minutes: "10"
+          direct_prompt: |
+            You are responding to a question in PR #${{ github.event.issue.number }} of the Mids Hero Web project.
             
-            const commentBody = "## 🤖 Claude Code Assistant\n\n" + response + "\n\n---\n*I'm Claude, your AI assistant for the Mids Hero Web project. Mention @claude in comments to ask questions about the codebase, epic progress, or City of Heroes mechanics.*";
+            User question: ${{ steps.extract.outputs.question }}
             
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: issueNumber,
-              body: commentBody
-            });
+            Provide a helpful response about the codebase, epic progress, or City of Heroes mechanics as requested.
+            Keep your response concise and relevant to the question.
 
   claude-doc-automation:
     if: github.event.issue.pull_request && contains(github.event.comment.body, 'implement doc suggestions')
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           ref: ${{ github.event.issue.pull_request.head.ref }}
           
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Implement Documentation Suggestions
+        uses: anthropics/claude-code-action@v1.2.0
         with:
-          python-version: '3.11'
-          
-      - name: Install dependencies
-        run: pip install anthropic
-        
-      - name: Find and parse doc suggestions
-        id: find-suggestions
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          PR_NUMBER=${{ github.event.issue.number }}
-          
-          # Get all comments on this PR
-          gh api repos/${{ github.repository }}/issues/$PR_NUMBER/comments \
-            --jq '.[] | select(.user.login == "github-actions") | select(.body | contains("Documentation Update Suggestions")) | .body' \
-            > doc_suggestions_raw.txt
-          
-          if [ -s doc_suggestions_raw.txt ]; then
-            echo "found_suggestions=true" >> $GITHUB_OUTPUT
-            echo "Found documentation suggestions to implement"
-          else
-            echo "found_suggestions=false" >> $GITHUB_OUTPUT
-            echo "No documentation suggestions found"
-          fi
-          
-      - name: Apply documentation updates
-        if: steps.find-suggestions.outputs.found_suggestions == 'true'
-        run: |
-          # Simple implementation for common patterns
-          if grep -q "update CLAUDE.md Epic status" doc_suggestions_raw.txt; then
-            echo "Updating CLAUDE.md Epic status..."
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          timeout_minutes: "15"
+          direct_prompt: |
+            This is an automated task to implement documentation suggestions for PR #${{ github.event.issue.number }}.
             
-            # Update Epic 1 to reflect latest completion status
-            if grep -q "Epic 1" CLAUDE.md && ! grep -q "All GitHub issues closed" CLAUDE.md; then
-              sed -i 's/Epic 1: Project Setup\\*\\* - Complete/Epic 1: Project Setup** - Complete (All GitHub issues closed)/' CLAUDE.md
-              echo "✅ Updated Epic 1 status in CLAUDE.md"
-            fi
-          fi
-          
-          # Check token count
-          CHAR_COUNT=$(wc -c < CLAUDE.md)
-          TOKEN_EST=$((CHAR_COUNT / 4))
-          echo "CLAUDE.md estimated tokens: $TOKEN_EST"
-          
-          if [ $TOKEN_EST -gt 4500 ]; then
-            echo "⚠️ CLAUDE.md approaching token limit ($TOKEN_EST tokens)"
-          fi
-          
-      - name: Commit and comment
-        if: steps.find-suggestions.outputs.found_suggestions == 'true'
-        run: |
-          # Check if any files were modified
-          if ! git diff --quiet; then
-            git config user.name "claude-code-bot"
-            git config user.email "claude-code-bot@anthropic.com"
+            1. Search for recent documentation suggestions in PR comments from github-actions bot
+            2. Apply the suggested documentation updates to the appropriate files
+            3. Ensure CLAUDE.md stays under 5K tokens
+            4. Commit any changes with appropriate message
             
-            git add -A
-            git commit -m "🤖 @claude: implement documentation suggestions
-
-            Applied documentation updates as requested:
-            - Updated Epic status and completion details
-            - Verified token limits and file constraints
-            - Implemented suggestions from doc-synthesis workflow
-
-            Co-Authored-By: Claude <noreply@anthropic.com>"
+            Focus on:
+            - Epic status updates in CLAUDE.md
+            - Token limit compliance
+            - Documentation accuracy
             
-            git push
-            
-            # Create success comment
-            gh api repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments \
-              --field body="Documentation updates applied successfully. Changes committed and pushed."
-          else
-            # No changes needed
-            gh api repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments \
-              --field body="Documentation already up-to-date. No changes needed."
-          fi
-        env:
-          GH_TOKEN: ${{ github.token }}
+            The user comment was: "${{ github.event.comment.body }}"
 
   approval-processor:
     if: github.event.issue.pull_request && (contains(github.event.comment.body, 'approved') || contains(github.event.comment.body, 'approve') || contains(github.event.comment.body, 'implement this') || contains(github.event.comment.body, 'apply this') || contains(github.event.comment.body, '✅') || contains(github.event.comment.body, 'yes, apply') || contains(github.event.comment.body, 'go ahead'))
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           ref: ${{ github.event.issue.pull_request.head.ref }}
           
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Process Approval and Apply Changes
+        uses: anthropics/claude-code-action@v1.2.0
         with:
-          python-version: '3.11'
-          
-      - name: Install dependencies
-        run: pip install anthropic
-        
-      - name: Find and process approval
-        id: process-approval
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          PR_NUMBER=${{ github.event.issue.number }}
-          APPROVAL_COMMENT="${{ github.event.comment.body }}"
-          
-          echo "Processing approval: $APPROVAL_COMMENT"
-          
-          # Get all recent doc-synthesis comments from this PR (last 24 hours)
-          gh api repos/${{ github.repository }}/issues/$PR_NUMBER/comments \
-            --jq '.[] | select(.user.login == "github-actions") | select(.body | contains("Documentation") and (contains("Suggestions") or contains("Manual Review"))) | .body' \
-            > recent_doc_suggestions.txt
-          
-          if [ -s recent_doc_suggestions.txt ]; then
-            echo "found_suggestions=true" >> $GITHUB_OUTPUT
-            echo "Found recent documentation suggestions to implement"
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          timeout_minutes: "20"
+          direct_prompt: |
+            This is an automated task to process approval comments and apply approved changes for PR #${{ github.event.issue.number }}.
             
-            # Parse approval type
-            if echo "$APPROVAL_COMMENT" | grep -qi "approve with\\|approved with"; then
-              echo "approval_type=modified" >> $GITHUB_OUTPUT
-              echo "Detected approval with modifications"
-            else
-              echo "approval_type=simple" >> $GITHUB_OUTPUT
-              echo "Detected simple approval"
-            fi
-          else
-            echo "found_suggestions=false" >> $GITHUB_OUTPUT
-            echo "No recent documentation suggestions found"
-          fi
-          
-      - name: Apply simple documentation updates
-        if: |
-          steps.process-approval.outputs.found_suggestions == 'true' &&
-          steps.process-approval.outputs.approval_type == 'simple'
-        run: |
-          echo "Applying simple approved changes..."
-          
-          # Epic status updates
-          if grep -qi "epic.*status\\|epic.*complete" recent_doc_suggestions.txt; then
-            if grep -q "Epic 1.*Complete" CLAUDE.md && ! grep -q "All GitHub issues closed" CLAUDE.md; then
-              sed -i 's/Epic 1: Project Setup\\*\\* - Complete/Epic 1: Project Setup** - Complete (All GitHub issues closed)/' CLAUDE.md
-              echo "✅ Updated Epic 1 completion status"
-            fi
-          fi
-          
-          # API documentation
-          if grep -qi "api.*doc\\|endpoint" recent_doc_suggestions.txt; then
-            if ! grep -q "API Documentation" README.md; then
-              sed -i '/## Features/i\
-              ## API Documentation\
-              \
-              FastAPI provides comprehensive API documentation at http://localhost:8000/docs\
-              \
-              ' README.md
-              echo "✅ Added API documentation section"
-            fi
-          fi
-          
-          # Quick commands
-          if grep -qi "command.*quick\\|justfile" recent_doc_suggestions.txt; then
-            if [ ! -f ".claude/quick-commands.md" ]; then
-              echo "# Quick Commands\n\nEssential commands:\n- \`just dev\` - Start development\n- \`just test\` - Run tests\n- \`just health\` - Health checks" > .claude/quick-commands.md
-              echo "✅ Created quick commands documentation"
-            fi
-          fi
-          
-      - name: Apply modified documentation updates  
-        if: |
-          steps.process-approval.outputs.found_suggestions == 'true' &&
-          steps.process-approval.outputs.approval_type == 'modified'
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          APPROVAL_COMMENT: ${{ github.event.comment.body }}
-        run: |
-          echo "Applying modified approved changes..."
-          
-          # Use Python to parse and apply modifications
-          python3 << 'PYEOF'
-          import os
-          import re
-
-          approval = os.environ.get("APPROVAL_COMMENT", "")
-
-          # Extract modifications from approval comment
-          if "with" in approval.lower():
-              modifications = approval.split("with", 1)[1].strip()
-              print(f"Detected modifications: {modifications}")
-              
-              # Apply common modification patterns
-              if "docker" in modifications.lower():
-                  os.makedirs(".claude", exist_ok=True)
-                  with open(".claude/quick-commands.md", "a") as f:
-                      f.write("\n## Docker Commands\n- `just docker-up` - Start containers\n- `just docker-down` - Stop containers\n")
-                  print("✅ Added Docker commands per modification request")
-              
-              if "epic 2" in modifications.lower() or "data import" in modifications.lower():
-                  # Add Epic 2 specific details to CLAUDE.md
-                  try:
-                      with open("CLAUDE.md", "r") as f:
-                          content = f.read()
-                      
-                      updated_content = content.replace(
-                          "Epic 2: Data Import** - In Progress (CRITICAL BLOCKER)",
-                          "Epic 2: Data Import** - In Progress (CRITICAL BLOCKER)\n\n- Requires City of Heroes .mhd game data files\n- Database schema ready, migrations pending\n- Import pipeline architecture designed"
-                      )
-                      
-                      if updated_content != content:
-                          with open("CLAUDE.md", "w") as f:
-                              f.write(updated_content)
-                          print("✅ Added Epic 2 details per modification request")
-                  except Exception as e:
-                      print(f"Error updating CLAUDE.md: {e}")
-          PYEOF
-          
-      - name: Commit approved changes
-        if: steps.process-approval.outputs.found_suggestions == 'true'
-        run: |
-          APPROVAL_TYPE="${{ steps.process-approval.outputs.approval_type }}"
-          APPROVAL_COMMENT="${{ github.event.comment.body }}"
-          
-          if ! git diff --quiet; then
-            git config user.name "approval-processor-bot"  
-            git config user.email "approval-processor-bot@mids-hero-web.com"
+            User approval comment: "${{ github.event.comment.body }}"
             
-            git add -A
+            Tasks:
+            1. Find recent documentation suggestions from github-actions bot in this PR
+            2. Determine if this is a simple approval or approval with modifications
+            3. Apply the approved changes based on the approval type
+            4. For modified approvals, parse and apply the requested modifications
+            5. Commit changes with appropriate message
             
-            if [ "$APPROVAL_TYPE" = "modified" ]; then
-              MODIFIED_FILES=$(git diff --name-only HEAD~1 | sed 's/^/- Updated /' | tr '\n' ' ')
-              git commit -m "✅ Implement approved documentation changes with modifications
-
-              Applied with user modifications: '$APPROVAL_COMMENT'
-
-              $MODIFIED_FILES
-
-              🤖 Generated with [Claude Code](https://claude.ai/code)
-
-              Co-Authored-By: Claude <noreply@anthropic.com>"
-            else
-              SIMPLE_FILES=$(git diff --name-only HEAD~1 | sed 's/^/- Updated /' | tr '\n' ' ')
-              git commit -m "✅ Implement approved documentation changes
-
-              Simple approval: '$APPROVAL_COMMENT'
-
-              $SIMPLE_FILES
-
-              🤖 Generated with [Claude Code](https://claude.ai/code)
-
-              Co-Authored-By: Claude <noreply@anthropic.com>"
-            fi
+            Common modifications to handle:
+            - Docker commands addition
+            - Epic 2 details updates
+            - API documentation sections
+            - Quick commands documentation
             
-            git push
-            
-            # Confirmation comment
-            APPROVAL_TYPE_TEXT="Simple approval"
-            if [ "$APPROVAL_TYPE" = "modified" ]; then
-              APPROVAL_TYPE_TEXT="Modified approval"
-            fi
-            
-            FILES_UPDATED=$(git diff --name-only HEAD~1 | sed 's/^/- ✅ /' | tr '\n' ' ')
-            
-            gh api repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments \
-              --field body="Documentation changes applied successfully. Approval type: $APPROVAL_TYPE_TEXT. Files updated: $FILES_UPDATED. Your approval: $APPROVAL_COMMENT"
-          else
-            gh api repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments \
-              --field body="Approval processed - no changes required. Your approval: $APPROVAL_COMMENT"
-          fi
-        env:
-          GH_TOKEN: ${{ github.token }}
+            Ensure all changes are properly committed and pushed.

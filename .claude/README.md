@@ -47,3 +47,106 @@ Run `just context-validate` to check:
 - Main guide: `/CLAUDE.md`
 - Development workflow: `.claude/docs/development-workflow.md`
 - Session management: `.claude/docs/session-management.md`
+
+### 🔧 Quick Commands
+
+**Import operations:**
+```bash
+# Claude loads import module for import tasks
+"I need to import I12 power data"
+```
+
+**Context health checks:**
+```bash
+just context-check      # Full validation and analysis
+just context-validate   # Check structure and limits
+just token-analyze      # Analyze token usage
+```
+
+### ⚡ Best Practices
+
+1. **Start with task declaration** - Helps Claude load right context
+2. **Use /clear between tasks** - Prevents context pollution  
+3. **Check token usage** - Run `just context-check` regularly
+4. **One task per session** - Maintains focus
+5. **Validate before commits** - Ensure context stays healthy
+
+### 🤖 Automation Status
+
+```mermaid
+graph LR
+    subgraph "ACTIVE NOW ✨"
+        Hooks[Claude Code Hooks<br/>UserPromptSubmit<br/>PreToolUse<br/>PostToolUse<br/>Stop]
+        Auto[Automatic Validation<br/>Token Limiting<br/>Activity Logging]
+    end
+    
+    subgraph "Manual Backup"
+        Manual[Manual Commands<br/>just context-check<br/>just token-analyze]
+    end
+    
+    Hooks --> Auto
+    Auto --> Manual
+    
+    style Hooks fill:#99ff99
+    style Auto fill:#99ff99
+    style Manual fill:#ccccff
+```
+
+**Current**: ✅ Hooks run automatically on every Claude interaction
+**Backup**: Manual commands available for debugging and analysis
+
+### 🪝 Hook Execution
+
+Hooks are configured in `.claude/settings.json` under the `"hooks"` section.
+Claude triggers them at several points:
+
+- **UserPromptSubmit** – right after you send a message.
+- **PreToolUse** – before any tool or command executes.
+- **PostToolUse** – after a tool finishes running.
+- **Stop** – when the session ends.
+
+Each hook lists commands that Claude runs automatically, powering
+context validation, token limits and activity logging.
+
+### 🔧 Available Commands
+
+```bash
+# Context validation
+just context-check      # Full health check (validate + analyze)
+just context-validate   # Validate structure against limits
+just token-analyze      # Analyze token usage in directories
+
+# Manual hook execution (if needed)
+bash .claude/automation/hooks/session-start-hook.sh
+bash .claude/automation/hooks/session-end-hook.sh
+```
+
+### ⚙️ Customization
+
+Edit `.claude/context-map.json` to:
+- Adjust token limits
+- Change loading rules
+- Add new modules
+- Set file size limits
+- Configure tool loadouts per task
+
+### ❓ Troubleshooting
+
+**Context overflow?**
+- Use /clear command
+- Start new session
+- Check for large files in modules/
+
+**Missing context?**
+- Explicitly mention your task domain
+- Check context-map.json rules
+- Verify file exists in expected location
+
+**Conflicting information?**
+- Check for duplicates across modules
+- Ensure single source of truth
+- Report in GitHub issue
+
+---
+
+*Based on context management best practices from ["How Contexts Fail"](https://www.dbreunig.com/2025/06/22/how-contexts-fail-and-how-to-fix-them.html)*

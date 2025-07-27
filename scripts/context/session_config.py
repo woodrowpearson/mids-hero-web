@@ -48,9 +48,9 @@ class SessionConfig:
         if use_project_dir:
             project_root = SessionConfig._find_project_root()
             if project_root:
-                return project_root / ".claude" / "thresholds.json"
+                return project_root / ".claude" / "context-map.json"
         
-        return Path.home() / ".claude" / "thresholds.json"
+        return Path.home() / ".claude" / "context-map.json"
     
     @staticmethod
     def _find_project_root() -> Optional[Path]:
@@ -71,7 +71,7 @@ class SessionConfig:
             "home_dir": {
                 "sessions": str(Path.home() / ".claude" / "sessions"),
                 "auto_summary": str(Path.home() / ".claude" / "auto_summary"),
-                "thresholds": str(Path.home() / ".claude" / "thresholds.json"),
+                "context_map": str(Path.home() / ".claude" / "context-map.json"),
             },
             "project_dir": None
         }
@@ -82,7 +82,7 @@ class SessionConfig:
                 "root": str(project_root),
                 "sessions": str(project_root / ".claude" / "sessions"),
                 "auto_summary": str(project_root / ".claude" / "auto_summary"),
-                "thresholds": str(project_root / ".claude" / "thresholds.json"),
+                "context_map": str(project_root / ".claude" / "context-map.json"),
             }
         
         # Check environment variable

@@ -5,13 +5,14 @@ Archetype API endpoints for Mids-Web backend.
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
-from .. import crud, schemas
+from .. import crud
+from .. import schemas as app_schemas
 from ..database import get_db
 
 router = APIRouter()
 
 
-@router.get("/archetypes", response_model=list[schemas.Archetype])
+@router.get("/archetypes", response_model=list[app_schemas.Archetype])
 async def get_archetypes(
     skip: int = Query(0, ge=0, description="Number of items to skip"),
     limit: int = Query(100, ge=1, le=1000, description="Number of items to return"),
@@ -26,7 +27,7 @@ async def get_archetypes(
     return archetypes
 
 
-@router.get("/archetypes/{archetype_id}", response_model=schemas.Archetype)
+@router.get("/archetypes/{archetype_id}", response_model=app_schemas.Archetype)
 async def get_archetype(
     archetype_id: int,
     db: Session = Depends(get_db),
@@ -43,7 +44,7 @@ async def get_archetype(
 
 
 @router.get(
-    "/archetypes/{archetype_id}/powersets", response_model=list[schemas.Powerset]
+    "/archetypes/{archetype_id}/powersets", response_model=list[app_schemas.Powerset]
 )
 async def get_archetype_powersets(
     archetype_id: int,

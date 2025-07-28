@@ -4,7 +4,8 @@ CRUD operations for Mids-Web backend.
 
 from sqlalchemy.orm import Session
 
-from . import models, schemas
+from . import models
+from . import schemas as app_schemas
 
 
 def get_archetype(db: Session, archetype_id: int) -> models.Archetype | None:
@@ -22,7 +23,7 @@ def get_archetypes(
 
 
 def create_archetype(
-    db: Session, archetype: schemas.ArchetypeCreate
+    db: Session, archetype: app_schemas.ArchetypeCreate
 ) -> models.Archetype:
     """Create a new archetype."""
     db_archetype = models.Archetype(**archetype.dict())

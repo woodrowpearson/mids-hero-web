@@ -5,13 +5,14 @@ Powerset API endpoints for Mids-Web backend.
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from .. import crud, schemas
+from .. import crud
+from .. import schemas as app_schemas
 from ..database import get_db
 
 router = APIRouter()
 
 
-@router.get("/powersets/{powerset_id}", response_model=schemas.Powerset)
+@router.get("/powersets/{powerset_id}", response_model=app_schemas.Powerset)
 async def get_powerset(
     powerset_id: int,
     db: Session = Depends(get_db),
@@ -29,7 +30,7 @@ async def get_powerset(
 
 
 @router.get(
-    "/powersets/{powerset_id}/detailed", response_model=schemas.PowersetWithPowers
+    "/powersets/{powerset_id}/detailed", response_model=app_schemas.PowersetWithPowers
 )
 async def get_powerset_detailed(
     powerset_id: int,
@@ -64,7 +65,7 @@ async def get_powerset_detailed(
     return powerset_dict
 
 
-@router.get("/powersets/{powerset_id}/powers", response_model=list[schemas.Power])
+@router.get("/powersets/{powerset_id}/powers", response_model=list[app_schemas.Power])
 async def get_powerset_powers(
     powerset_id: int,
     db: Session = Depends(get_db),

@@ -6,13 +6,14 @@ Includes salvage, recipes, and incarnate-related endpoints.
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
-from .. import models, schemas
+from .. import models
+from .. import schemas as app_schemas
 from ..database import get_db
 
 router = APIRouter()
 
 
-@router.get("/salvage", response_model=list[schemas.Salvage])
+@router.get("/salvage", response_model=list[app_schemas.Salvage])
 async def get_salvage(
     skip: int = Query(0, ge=0, description="Number of items to skip"),
     limit: int = Query(100, ge=1, le=1000, description="Number of items to return"),
@@ -36,7 +37,7 @@ async def get_salvage(
     return salvage_items
 
 
-@router.get("/salvage/{salvage_id}", response_model=schemas.Salvage)
+@router.get("/salvage/{salvage_id}", response_model=app_schemas.Salvage)
 async def get_salvage_item(
     salvage_id: int,
     db: Session = Depends(get_db),
@@ -52,7 +53,7 @@ async def get_salvage_item(
     return salvage
 
 
-@router.get("/recipes", response_model=list[schemas.Recipe])
+@router.get("/recipes", response_model=list[app_schemas.Recipe])
 async def get_recipes(
     skip: int = Query(0, ge=0, description="Number of items to skip"),
     limit: int = Query(100, ge=1, le=1000, description="Number of items to return"),
@@ -74,7 +75,7 @@ async def get_recipes(
     return recipes
 
 
-@router.get("/recipes/{recipe_id}", response_model=schemas.Recipe)
+@router.get("/recipes/{recipe_id}", response_model=app_schemas.Recipe)
 async def get_recipe(
     recipe_id: int,
     db: Session = Depends(get_db),
@@ -90,7 +91,7 @@ async def get_recipe(
     return recipe
 
 
-@router.get("/recipes/{recipe_id}/salvage", response_model=list[schemas.RecipeSalvage])
+@router.get("/recipes/{recipe_id}/salvage", response_model=list[app_schemas.RecipeSalvage])
 async def get_recipe_salvage(
     recipe_id: int,
     db: Session = Depends(get_db),

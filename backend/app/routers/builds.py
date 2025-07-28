@@ -7,31 +7,7 @@ from fastapi import APIRouter, HTTPException
 router = APIRouter()
 
 
-@router.post("/calculate")
-async def calculate_build(build_data: dict):
-    """Calculate build statistics."""
-    # Placeholder implementation
-    return {
-        "damage_bonus": 50.0,
-        "accuracy_bonus": 25.0,
-        "defense_totals": {
-            "smashing": 15.0,
-            "lethal": 15.0,
-            "fire": 10.0,
-            "cold": 10.0,
-            "energy": 20.0,
-            "negative": 20.0,
-        },
-        "resistance_totals": {
-            "smashing": 5.0,
-            "lethal": 5.0,
-            "fire": 0.0,
-            "cold": 0.0,
-            "energy": 0.0,
-            "negative": 0.0,
-        },
-        "set_bonuses": ["Accuracy +5%", "Damage +3%"],
-    }
+# Removed /calculate endpoint - now handled by calc.py router
 
 
 @router.post("/build/encode")

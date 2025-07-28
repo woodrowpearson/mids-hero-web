@@ -11,7 +11,15 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from app.database import close_database_pool, create_database_pool
-from app.routers import archetypes, builds, enhancements, misc_data, powers, powersets
+from app.routers import (
+    archetypes,
+    builds,
+    calc,
+    enhancements,
+    misc_data,
+    powers,
+    powersets,
+)
 
 
 # Application lifecycle management
@@ -60,6 +68,7 @@ app.include_router(powers.router, prefix="/api", tags=["powers"])
 app.include_router(enhancements.router, prefix="/api", tags=["enhancements"])
 app.include_router(builds.router, prefix="/api", tags=["builds"])
 app.include_router(misc_data.router, prefix="/api", tags=["misc"])
+app.include_router(calc.router, tags=["calculator"])
 
 
 # Health check endpoint

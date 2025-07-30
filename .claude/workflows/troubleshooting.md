@@ -33,7 +33,7 @@ VACUUM ANALYZE;        # Update statistics
 just import-health
 
 # Common fixes
-just import-clear powers data/powers.json  # Clear bad data
+just import-clear powers data/imported/powers.json  # Clear bad data
 just cache-stats                           # Check cache
 python scripts/import_i12_data.py --clear-cache
 ```

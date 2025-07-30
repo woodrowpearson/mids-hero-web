@@ -1,0 +1,91 @@
+name: Documentation Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+  id-token: write
+
+concurrency:
+  group: doc-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  doc-impact-review:
+    name: Review Documentation Impact
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && !contains(github.event.pull_request.labels.*.name, 'skip-doc-review')
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v44
+        with:
+          files: |
+            backend/**/*.py
+            frontend/**/*.{js,ts,jsx,tsx}
+            backend/pyproject.toml
+            frontend/package.json
+            docker-compose.yml
+            Dockerfile
+            justfile
+            .github/workflows/*.yml
+          files_ignore: |
+            **/*_test.py
+            **/*.test.{js,ts,jsx,tsx}
+            **/__pycache__/**
+            **/node_modules/**
+            
+      - name: Get documentation files changed
+        id: doc-files
+        uses: tj-actions/changed-files@v44
+        with:
+          files: |
+            **/*.md
+            .claude/**/*.{md,json}
+            
+      - name: Documentation Review with Claude
+        if: steps.changed-files.outputs.any_changed == 'true' || steps.doc-files.outputs.any_changed == 'true'
+        uses: anthropics/claude-code-action@beta
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          timeout_minutes: "8"
+          max_turns: "2"
+          direct_prompt: |
+            Review PR #${{ github.event.pull_request.number }} for documentation impact.
+            
+            Code files changed: ${{ steps.changed-files.outputs.all_changed_files }}
+            Documentation changed: ${{ steps.doc-files.outputs.all_changed_files }}
+            
+            Analyze and provide structured output:
+            
+            ## Documentation Impact Analysis
+            
+            ### 1. Required Updates
+            List only documentation that MUST be updated based on the changes.
+            
+            ### 2. Validation Results  
+            - [ ] CLAUDE.md token limit (<5K): [PASS/FAIL if changed]
+            - [ ] Broken references: [List any found]
+            - [ ] Outdated examples: [List any found]
+            
+            ### 3. Specific Actions
+            Provide a numbered list of specific documentation updates needed.
+            
+            Focus on:
+            - Workflow changes → .github/workflows/README.md
+            - API changes → API documentation
+            - Model changes → Database documentation  
+            - Command changes → Quick commands guide
+            - Context changes → .claude/README.md
+            
+            Keep response under 500 words. Only flag actual issues, not potential ones.

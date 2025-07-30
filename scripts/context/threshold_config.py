@@ -111,11 +111,11 @@ class ThresholdManager:
         current = Path.cwd()
         while current != current.parent:
             if (current / ".git").exists():
-                return current / ".claude" / "thresholds.json"
+                return current / ".claude" / "context-map.json"
             current = current.parent
         
         # Fallback to current directory if no git root found
-        return Path.cwd() / ".claude" / "thresholds.json"
+        return Path.cwd() / ".claude" / "context-map.json"
 
     def _load_config(self) -> ThresholdConfig:
         """Load configuration from file."""
@@ -123,7 +123,9 @@ class ThresholdManager:
             try:
                 with open(self.config_path) as f:
                     data = json.load(f)
-                    return ThresholdConfig.from_dict(data)
+                    # Extract session_thresholds from context-map.json
+                    thresholds_data = data.get('session_thresholds', {})
+                    return ThresholdConfig.from_dict(thresholds_data)
             except Exception as e:
                 print(f"Warning: Failed to load config: {e}")
 
@@ -132,8 +134,18 @@ class ThresholdManager:
 
     def _save_config(self):
         """Save configuration to file."""
+        # Load existing context-map.json
+        data = {}
+        if self.config_path.exists():
+            with open(self.config_path) as f:
+                data = json.load(f)
+        
+        # Update session_thresholds section
+        data['session_thresholds'] = self.config.to_dict()
+        
+        # Save back
         with open(self.config_path, "w") as f:
-            json.dump(self.config.to_dict(), f, indent=2)
+            json.dump(data, f, indent=2)
 
     def _apply_env_overrides(self):
         """Apply environment variable overrides."""

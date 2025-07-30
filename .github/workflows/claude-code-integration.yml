@@ -8,348 +8,100 @@ permissions:
   contents: write
   pull-requests: write
   issues: write
+  id-token: write
 
 jobs:
-  claude-response:
-    if: github.event.issue.pull_request && contains(github.event.comment.body, '@claude')
+  claude-handler:
+    if: github.event.issue.pull_request
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - trigger: '@claude'
+            name: 'Question Response'
+            timeout: 10
+            checkout_ref: ''
+          - trigger: 'implement doc suggestions'
+            name: 'Documentation Implementation'
+            timeout: 15
+            checkout_ref: '${{ github.event.issue.pull_request.head.ref }}'
+          - trigger: 'approved|approve|implement this|apply this|✅|yes, apply|go ahead'
+            name: 'Approval Processing'
+            timeout: 20
+            checkout_ref: '${{ github.event.issue.pull_request.head.ref }}'
+    
+    name: Claude ${{ matrix.name }}
     steps:
-      - uses: actions/checkout@v4
+      - name: Check trigger
+        id: check
+        run: |
+          COMMENT="${{ github.event.comment.body }}"
+          TRIGGER="${{ matrix.trigger }}"
+          
+          # Use grep with extended regex for pattern matching
+          if echo "$COMMENT" | grep -qE "$TRIGGER"; then
+            echo "should_run=true" >> $GITHUB_OUTPUT
+            
+            # Extract question for @claude mentions
+            if [[ "${{ matrix.trigger }}" == "@claude" ]]; then
+              QUESTION=$(echo "$COMMENT" | sed 's/@claude//' | sed 's/^[[:space:]]*//')
+              echo "question=$QUESTION" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "should_run=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Checkout repository
+        if: steps.check.outputs.should_run == 'true'
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          
-      - name: Set up Python
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: ${{ matrix.checkout_ref || github.event.pull_request.head.sha }}
+      
+      - name: Set up Python (for token counting)
+        if: steps.check.outputs.should_run == 'true' && matrix.name == 'Documentation Implementation'
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-          
+      
       - name: Install dependencies
-        run: |
-          pip install anthropic pyyaml
-          
-      - name: Get issue/PR context
-        id: context
-        run: |
-          ISSUE_NUMBER=${{ github.event.issue.number }}
-          USER_COMMENT="${{ github.event.comment.body }}"
-          
-          # Remove @claude mention and get actual question
-          QUESTION=$(echo "$USER_COMMENT" | sed 's/@claude//' | sed 's/^[[:space:]]*//')
-          
-          echo "question=$QUESTION" >> $GITHUB_OUTPUT
-          echo "issue_number=$ISSUE_NUMBER" >> $GITHUB_OUTPUT
-          
-          # Get issue/PR details
-          if [ "${{ github.event.issue.pull_request }}" != "null" ]; then
-            gh pr view $ISSUE_NUMBER --json title,body,files > pr_context.json
-            echo "type=pr" >> $GITHUB_OUTPUT
-          else
-            gh issue view $ISSUE_NUMBER --json title,body > issue_context.json
-            echo "type=issue" >> $GITHUB_OUTPUT
-          fi
-        env:
-          GH_TOKEN: ${{ github.token }}
-          
-      - name: Generate Claude response
-        id: claude
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: |
-          echo "Basic Claude response placeholder" > claude_response.md
-          
-      - name: Post Claude response
-        if: success()
+        if: steps.check.outputs.should_run == 'true' && matrix.name == 'Documentation Implementation'
+        run: pip install tiktoken
+      
+      - name: Claude Action - ${{ matrix.name }}
+        if: steps.check.outputs.should_run == 'true'
+        uses: anthropics/claude-code-action@beta
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          timeout_minutes: "${{ matrix.timeout }}"
+          max_turns: "3"
+          direct_prompt: |
+            ${{ matrix.name == 'Question Response' && format('You are responding to a question in PR #{0} of the Mids Hero Web project.\n\nUser question: {1}\n\nProvide a helpful response about the codebase, epic progress, or City of Heroes mechanics as requested.\nKeep your response concise and relevant to the question.', github.event.issue.number, steps.check.outputs.question) || '' }}
+            ${{ matrix.name == 'Documentation Implementation' && format('This is an automated task to implement documentation suggestions for PR #{0}.\n\n1. Search for recent documentation suggestions in PR comments from github-actions bot\n2. Apply the suggested documentation updates to the appropriate files\n3. Ensure CLAUDE.md stays under 5K tokens (use tiktoken to verify)\n4. Commit any changes with message: "docs: implement automated documentation suggestions"\n\nFocus on:\n- Epic status updates in CLAUDE.md\n- Token limit compliance\n- Documentation accuracy\n\nThe user comment was: "{1}"', github.event.issue.number, github.event.comment.body) || '' }}
+            ${{ matrix.name == 'Approval Processing' && format('This is an automated task to process approval comments and apply approved changes for PR #{0}.\n\nUser approval comment: "{1}"\n\nTasks:\n1. Find recent documentation suggestions from github-actions bot in this PR\n2. Determine if this is a simple approval or approval with modifications\n3. Apply the approved changes based on the approval type\n4. For modified approvals, parse and apply the requested modifications\n5. Commit changes with message: "docs: apply approved documentation changes"\n\nCommon modifications to handle:\n- Docker commands addition\n- Epic 2 details updates\n- API documentation sections\n- Quick commands documentation\n\nEnsure all changes are properly committed and pushed.', github.event.issue.number, github.event.comment.body) || '' }}
+      
+      - name: Post summary
+        if: always() && steps.check.outputs.should_run == 'true'
         uses: actions/github-script@v7
         with:
           script: |
-            const fs = require('fs');
-            const response = fs.readFileSync('claude_response.md', 'utf8');
-            const issueNumber = ${{ steps.context.outputs.issue_number }};
+            const status = '${{ job.status }}';
+            const matrixName = '${{ matrix.name }}';
+            const emoji = status === 'success' ? '✅' : '❌';
             
-            const commentBody = "## 🤖 Claude Code Assistant\n\n" + response + "\n\n---\n*I'm Claude, your AI assistant for the Mids Hero Web project. Mention @claude in comments to ask questions about the codebase, epic progress, or City of Heroes mechanics.*";
+            const summaries = {
+              'Question Response': `${emoji} Claude has ${status === 'success' ? 'responded to' : 'failed to respond to'} your question.`,
+              'Documentation Implementation': `${emoji} Documentation suggestions have been ${status === 'success' ? 'implemented' : 'failed to implement'}.`,
+              'Approval Processing': `${emoji} Approved changes have been ${status === 'success' ? 'applied' : 'failed to apply'}.`
+            };
             
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: issueNumber,
-              body: commentBody
-            });
-
-  claude-doc-automation:
-    if: github.event.issue.pull_request && contains(github.event.comment.body, 'implement doc suggestions')
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          ref: ${{ github.event.issue.pull_request.head.ref }}
-          
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-          
-      - name: Install dependencies
-        run: pip install anthropic
-        
-      - name: Find and parse doc suggestions
-        id: find-suggestions
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          PR_NUMBER=${{ github.event.issue.number }}
-          
-          # Get all comments on this PR
-          gh api repos/${{ github.repository }}/issues/$PR_NUMBER/comments \
-            --jq '.[] | select(.user.login == "github-actions") | select(.body | contains("Documentation Update Suggestions")) | .body' \
-            > doc_suggestions_raw.txt
-          
-          if [ -s doc_suggestions_raw.txt ]; then
-            echo "found_suggestions=true" >> $GITHUB_OUTPUT
-            echo "Found documentation suggestions to implement"
-          else
-            echo "found_suggestions=false" >> $GITHUB_OUTPUT
-            echo "No documentation suggestions found"
-          fi
-          
-      - name: Apply documentation updates
-        if: steps.find-suggestions.outputs.found_suggestions == 'true'
-        run: |
-          # Simple implementation for common patterns
-          if grep -q "update CLAUDE.md Epic status" doc_suggestions_raw.txt; then
-            echo "Updating CLAUDE.md Epic status..."
-            
-            # Update Epic 1 to reflect latest completion status
-            if grep -q "Epic 1" CLAUDE.md && ! grep -q "All GitHub issues closed" CLAUDE.md; then
-              sed -i 's/Epic 1: Project Setup\\*\\* - Complete/Epic 1: Project Setup** - Complete (All GitHub issues closed)/' CLAUDE.md
-              echo "✅ Updated Epic 1 status in CLAUDE.md"
-            fi
-          fi
-          
-          # Check token count
-          CHAR_COUNT=$(wc -c < CLAUDE.md)
-          TOKEN_EST=$((CHAR_COUNT / 4))
-          echo "CLAUDE.md estimated tokens: $TOKEN_EST"
-          
-          if [ $TOKEN_EST -gt 4500 ]; then
-            echo "⚠️ CLAUDE.md approaching token limit ($TOKEN_EST tokens)"
-          fi
-          
-      - name: Commit and comment
-        if: steps.find-suggestions.outputs.found_suggestions == 'true'
-        run: |
-          # Check if any files were modified
-          if ! git diff --quiet; then
-            git config user.name "claude-code-bot"
-            git config user.email "claude-code-bot@anthropic.com"
-            
-            git add -A
-            git commit -m "🤖 @claude: implement documentation suggestions
-
-            Applied documentation updates as requested:
-            - Updated Epic status and completion details
-            - Verified token limits and file constraints
-            - Implemented suggestions from doc-synthesis workflow
-
-            Co-Authored-By: Claude <noreply@anthropic.com>"
-            
-            git push
-            
-            # Create success comment
-            gh api repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments \
-              --field body="Documentation updates applied successfully. Changes committed and pushed."
-          else
-            # No changes needed
-            gh api repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments \
-              --field body="Documentation already up-to-date. No changes needed."
-          fi
-        env:
-          GH_TOKEN: ${{ github.token }}
-
-  approval-processor:
-    if: github.event.issue.pull_request && (contains(github.event.comment.body, 'approved') || contains(github.event.comment.body, 'approve') || contains(github.event.comment.body, 'implement this') || contains(github.event.comment.body, 'apply this') || contains(github.event.comment.body, '✅') || contains(github.event.comment.body, 'yes, apply') || contains(github.event.comment.body, 'go ahead'))
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          ref: ${{ github.event.issue.pull_request.head.ref }}
-          
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-          
-      - name: Install dependencies
-        run: pip install anthropic
-        
-      - name: Find and process approval
-        id: process-approval
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          PR_NUMBER=${{ github.event.issue.number }}
-          APPROVAL_COMMENT="${{ github.event.comment.body }}"
-          
-          echo "Processing approval: $APPROVAL_COMMENT"
-          
-          # Get all recent doc-synthesis comments from this PR (last 24 hours)
-          gh api repos/${{ github.repository }}/issues/$PR_NUMBER/comments \
-            --jq '.[] | select(.user.login == "github-actions") | select(.body | contains("Documentation") and (contains("Suggestions") or contains("Manual Review"))) | .body' \
-            > recent_doc_suggestions.txt
-          
-          if [ -s recent_doc_suggestions.txt ]; then
-            echo "found_suggestions=true" >> $GITHUB_OUTPUT
-            echo "Found recent documentation suggestions to implement"
-            
-            # Parse approval type
-            if echo "$APPROVAL_COMMENT" | grep -qi "approve with\\|approved with"; then
-              echo "approval_type=modified" >> $GITHUB_OUTPUT
-              echo "Detected approval with modifications"
-            else
-              echo "approval_type=simple" >> $GITHUB_OUTPUT
-              echo "Detected simple approval"
-            fi
-          else
-            echo "found_suggestions=false" >> $GITHUB_OUTPUT
-            echo "No recent documentation suggestions found"
-          fi
-          
-      - name: Apply simple documentation updates
-        if: |
-          steps.process-approval.outputs.found_suggestions == 'true' &&
-          steps.process-approval.outputs.approval_type == 'simple'
-        run: |
-          echo "Applying simple approved changes..."
-          
-          # Epic status updates
-          if grep -qi "epic.*status\\|epic.*complete" recent_doc_suggestions.txt; then
-            if grep -q "Epic 1.*Complete" CLAUDE.md && ! grep -q "All GitHub issues closed" CLAUDE.md; then
-              sed -i 's/Epic 1: Project Setup\\*\\* - Complete/Epic 1: Project Setup** - Complete (All GitHub issues closed)/' CLAUDE.md
-              echo "✅ Updated Epic 1 completion status"
-            fi
-          fi
-          
-          # API documentation
-          if grep -qi "api.*doc\\|endpoint" recent_doc_suggestions.txt; then
-            if ! grep -q "API Documentation" README.md; then
-              sed -i '/## Features/i\
-              ## API Documentation\
-              \
-              FastAPI provides comprehensive API documentation at http://localhost:8000/docs\
-              \
-              ' README.md
-              echo "✅ Added API documentation section"
-            fi
-          fi
-          
-          # Quick commands
-          if grep -qi "command.*quick\\|justfile" recent_doc_suggestions.txt; then
-            if [ ! -f ".claude/quick-commands.md" ]; then
-              echo "# Quick Commands\n\nEssential commands:\n- \`just dev\` - Start development\n- \`just test\` - Run tests\n- \`just health\` - Health checks" > .claude/quick-commands.md
-              echo "✅ Created quick commands documentation"
-            fi
-          fi
-          
-      - name: Apply modified documentation updates  
-        if: |
-          steps.process-approval.outputs.found_suggestions == 'true' &&
-          steps.process-approval.outputs.approval_type == 'modified'
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          APPROVAL_COMMENT: ${{ github.event.comment.body }}
-        run: |
-          echo "Applying modified approved changes..."
-          
-          # Use Python to parse and apply modifications
-          python3 << 'PYEOF'
-          import os
-          import re
-
-          approval = os.environ.get("APPROVAL_COMMENT", "")
-
-          # Extract modifications from approval comment
-          if "with" in approval.lower():
-              modifications = approval.split("with", 1)[1].strip()
-              print(f"Detected modifications: {modifications}")
-              
-              # Apply common modification patterns
-              if "docker" in modifications.lower():
-                  os.makedirs(".claude", exist_ok=True)
-                  with open(".claude/quick-commands.md", "a") as f:
-                      f.write("\n## Docker Commands\n- `just docker-up` - Start containers\n- `just docker-down` - Stop containers\n")
-                  print("✅ Added Docker commands per modification request")
-              
-              if "epic 2" in modifications.lower() or "data import" in modifications.lower():
-                  # Add Epic 2 specific details to CLAUDE.md
-                  try:
-                      with open("CLAUDE.md", "r") as f:
-                          content = f.read()
-                      
-                      updated_content = content.replace(
-                          "Epic 2: Data Import** - In Progress (CRITICAL BLOCKER)",
-                          "Epic 2: Data Import** - In Progress (CRITICAL BLOCKER)\n\n- Requires City of Heroes .mhd game data files\n- Database schema ready, migrations pending\n- Import pipeline architecture designed"
-                      )
-                      
-                      if updated_content != content:
-                          with open("CLAUDE.md", "w") as f:
-                              f.write(updated_content)
-                          print("✅ Added Epic 2 details per modification request")
-                  except Exception as e:
-                      print(f"Error updating CLAUDE.md: {e}")
-          PYEOF
-          
-      - name: Commit approved changes
-        if: steps.process-approval.outputs.found_suggestions == 'true'
-        run: |
-          APPROVAL_TYPE="${{ steps.process-approval.outputs.approval_type }}"
-          APPROVAL_COMMENT="${{ github.event.comment.body }}"
-          
-          if ! git diff --quiet; then
-            git config user.name "approval-processor-bot"  
-            git config user.email "approval-processor-bot@mids-hero-web.com"
-            
-            git add -A
-            
-            if [ "$APPROVAL_TYPE" = "modified" ]; then
-              MODIFIED_FILES=$(git diff --name-only HEAD~1 | sed 's/^/- Updated /' | tr '\n' ' ')
-              git commit -m "✅ Implement approved documentation changes with modifications
-
-              Applied with user modifications: '$APPROVAL_COMMENT'
-
-              $MODIFIED_FILES
-
-              🤖 Generated with [Claude Code](https://claude.ai/code)
-
-              Co-Authored-By: Claude <noreply@anthropic.com>"
-            else
-              SIMPLE_FILES=$(git diff --name-only HEAD~1 | sed 's/^/- Updated /' | tr '\n' ' ')
-              git commit -m "✅ Implement approved documentation changes
-
-              Simple approval: '$APPROVAL_COMMENT'
-
-              $SIMPLE_FILES
-
-              🤖 Generated with [Claude Code](https://claude.ai/code)
-
-              Co-Authored-By: Claude <noreply@anthropic.com>"
-            fi
-            
-            git push
-            
-            # Confirmation comment
-            APPROVAL_TYPE_TEXT="Simple approval"
-            if [ "$APPROVAL_TYPE" = "modified" ]; then
-              APPROVAL_TYPE_TEXT="Modified approval"
-            fi
-            
-            FILES_UPDATED=$(git diff --name-only HEAD~1 | sed 's/^/- ✅ /' | tr '\n' ' ')
-            
-            gh api repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments \
-              --field body="Documentation changes applied successfully. Approval type: $APPROVAL_TYPE_TEXT. Files updated: $FILES_UPDATED. Your approval: $APPROVAL_COMMENT"
-          else
-            gh api repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments \
-              --field body="Approval processed - no changes required. Your approval: $APPROVAL_COMMENT"
-          fi
-        env:
-          GH_TOKEN: ${{ github.token }}
+            if (summaries[matrixName]) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: summaries[matrixName]
+              });
+            }

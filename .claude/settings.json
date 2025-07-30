@@ -35,8 +35,6 @@
       "Bash(isort:*)",
       "Bash(alembic:*)",
       "Bash(psql:*)",
-      "Bash(.claude/commands/*.sh:*)",
-      "Bash(bash .claude/commands/*.sh:*)"
     ],
     "denied_commands": [
       "Bash(rm -rf:*)",
@@ -88,12 +86,6 @@
       "quality": "just quality",
       "update": "just update-progress",
       "health": "just health"
-    },
-    "session_commands": {
-      "start": "/project:session-start",
-      "update": "/project:session-update",
-      "end": "/project:session-end",
-      "current": "/project:session-current"
     }
   },
 
@@ -202,6 +194,22 @@
       {
         "matcher": "Read",
         "hooks": [
+          {
+            "type": "command",
+            "command": "python3 .claude/hooks/activity-logger.py",
+            "run_in_background": true
+          }
+        ]
+      },
+      {
+        "matcher": "Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 .claude/hooks/subagent-state-tracker.py",
+            "timeout_seconds": 5,
+            "run_in_background": true
+          },
           {
             "type": "command",
             "command": "python3 .claude/hooks/activity-logger.py",

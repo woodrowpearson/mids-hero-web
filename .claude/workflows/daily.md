@@ -16,9 +16,9 @@ just context-check  # Or happens automatically via hooks
 # 4. Start services
 just dev
 
-# 5. Begin session tracking
-/project:session-start issue-123-description
-# This triggers session-start-hook.sh automatically
+# 5. Declare your task to Claude
+# Example: "I need to work on database migrations"
+# This loads appropriate context modules automatically
 ```
 
 ## 🔄 Development Cycle
@@ -34,7 +34,7 @@ git checkout -b feature/issue-123-component
 ```bash
 just test-watch                # Run tests continuously
 just lint-fix                  # Fix issues as you go
-/project:session-update "Implemented X feature"
+# Note: Activity is automatically logged via hooks
 ```
 
 ### Committing Work
@@ -60,10 +60,7 @@ just build       # Build succeeds
 # 1. Final update
 just update-progress
 
-# 2. End session
-/project:session-end
-
-# 3. Create PR if needed
+# 2. Create PR if needed
 gh pr create --title "feat: Add X" --body "..."
 ```
 
@@ -85,4 +82,4 @@ gh pr create --title "feat: Add X" --body "..."
 - **Context clear**: `/clear` between tasks
 
 ---
-*Full workflow: `.claude/development-workflow.md`*
+*Full workflow: `.claude/docs/development-workflow.md`*

@@ -1,73 +1,54 @@
 # Claude Context System
 
-> **Quick Start**: Claude automatically loads `CLAUDE.md` and this directory. Keep CLAUDE.md under 5K tokens as your primary guide.
+This directory contains the Claude Code context management system for the Mids Hero Web project.
 
-## How Claude Context Works
+## 📁 Directory Structure
 
-### 🎯 Core Principle: Progressive Context Loading
+- **`agents/`** - Native Claude Code sub-agents for specialized tasks
+- **`docs/`** - All project documentation
+- **`hooks/`** - Active Claude Code hooks for automation
+- **`modules/`** - Task-based context modules (database, api, frontend, etc.)
+- **`sessions/`** - Session data and summaries
+- **`state/`** - Runtime state including progress tracking and logs
+- **`workflows/`** - Development workflow guides
 
-Claude doesn't need everything at once. We load context progressively based on your task:
+## 🔧 Configuration Files
 
-```mermaid
-graph TD
-    Start[Claude Session Start] --> Core[Load Core Context<br/>~10K tokens]
-    Core --> CLAUDE[CLAUDE.md<br/>~2K tokens]
-    Core --> Settings[settings.json<br/>~3K tokens]
-    Core --> Map[context-map.json<br/>~2K tokens]
-    
-    User[User declares task] --> Detect{Detect Keywords}
-    Detect -->|"database"| DB[Load Database Module<br/>+15K tokens]
-    Detect -->|"import"| Import[Load Import Module<br/>+15K tokens]
-    Detect -->|"api"| API[Load API Module<br/>+15K tokens]
-    Detect -->|"frontend"| FE[Load Frontend Module<br/>+15K tokens]
-    
-    style Core fill:#99ff99
-    style DB fill:#ffcc99
-    style Import fill:#ffcc99
-    style API fill:#ffcc99
-    style FE fill:#ffcc99
-```
+- **`settings.json`** - Claude Code configuration and permissions
+- **`context-map.json`** - Context loading rules and thresholds
+- **`CLEANUP_LOG.md`** - Recent directory reorganization details
 
-### 📊 Token Budget Management
+## 📖 How It Works
 
-```mermaid
-pie title "128K Token Allocation"
-    "Core Context (Always)" : 10
-    "Active Module (Task)" : 15
-    "Working Memory (Conversation)" : 80
-    "Safety Reserve" : 23
-```
+1. **Progressive Loading**: Claude loads only the context needed for your declared task
+2. **Token Management**: Automatic warnings when approaching limits
+3. **Activity Tracking**: All actions logged for session continuity
+4. **Native Sub-Agents**: Specialized agents for database, frontend, API work
 
-- **Core context**: ~10K (always loaded)
-- **Active modules**: ~20-40K (task-specific)
-- **Working memory**: ~40-80K (conversation)
-- **Safety reserve**: ~8K
+## 🚀 Quick Start
 
-**Warnings at 90K, auto-pruning at 110K**
+Tell Claude what you're working on:
+- "I need to work on database migrations"
+- "Help me import I12 power data"
+- "I want to build API endpoints"
 
-### 🗂️ Directory Structure
+Claude will automatically load the appropriate modules and tools for your task.
 
-```
-.claude/
-├── README.md          # You are here
-├── settings.json      # Claude behavior configuration
-├── context-map.json   # Loading rules and limits
-│
-├── core/             # Always loaded (max 10K total)
-├── modules/          # Task-specific contexts
-├── workflows/        # Standard procedures
-├── automation/       # Scripts and commands
-├── state/            # Project state (git-ignored)
-└── docs/             # Meta-documentation
-```
+## 📊 Context Health
 
-### 🚀 Common Tasks
+Run `just context-validate` to check:
+- File sizes and token counts
+- Required files presence
+- Module organization
+- Loading scenarios
 
-**Starting work on database:**
-```bash
-# Claude auto-loads database module when you mention database work
-"I need to work on database migrations"
-```
+## 🔗 Related Documentation
+
+- Main guide: `/CLAUDE.md`
+- Development workflow: `.claude/docs/development-workflow.md`
+- Session management: `.claude/docs/session-management.md`
+
+### 🔧 Quick Commands
 
 **Import operations:**
 ```bash
@@ -81,11 +62,6 @@ just context-check      # Full validation and analysis
 just context-validate   # Check structure and limits
 just token-analyze      # Analyze token usage
 ```
-
-**Quick reference:**
-- See `CLAUDE.md` for project overview
-- See `.claude/core/quick-reference.md` for common commands
-- See `.claude/workflows/daily.md` for development workflow
 
 ### ⚡ Best Practices
 
@@ -116,7 +92,6 @@ graph LR
     style Manual fill:#ccccff
 ```
 
-
 **Current**: ✅ Hooks run automatically on every Claude interaction
 **Backup**: Manual commands available for debugging and analysis
 
@@ -141,9 +116,9 @@ just context-check      # Full health check (validate + analyze)
 just context-validate   # Validate structure against limits
 just token-analyze      # Analyze token usage in directories
 
-# Manual hook execution (until automated)
-bash .claude/automation/hooks/session-start-hook.sh
-bash .claude/automation/hooks/session-end-hook.sh
+# Manual hook execution (if needed)
+# Hooks are now automatically managed via .claude/settings.json
+# No manual execution needed
 ```
 
 ### ⚙️ Customization
@@ -171,6 +146,60 @@ Edit `.claude/context-map.json` to:
 - Check for duplicates across modules
 - Ensure single source of truth
 - Report in GitHub issue
+
+## 🔧 GitHub Integration
+
+The Claude context system integrates seamlessly with GitHub workflows to provide:
+
+### Automated Features
+
+1. **PR Code Review** (claude-auto-review.yml)
+   - Automatic review on every PR
+   - City of Heroes domain knowledge
+   - Inline code suggestions
+
+2. **Interactive Assistant** (claude-code-integration.yml)
+   - Use `@claude` in PR/issue comments
+   - Get help with implementation
+   - Ask about project status
+
+3. **Documentation Sync** (doc-auto-sync.yml)
+   - Automatic updates when code changes
+   - Weekly consistency checks
+   - Token limit enforcement
+
+4. **Context Health** (context-health-check.yml)
+   - Runs every 6 hours
+   - Monitors file sizes
+   - Validates structure
+
+### Working with Workflows
+
+**Local Development**:
+- Claude Code hooks trigger automatically
+- Context loads based on your task
+- Activity tracked for continuity
+
+**GitHub Integration**:
+- PRs get automatic review
+- Documentation stays in sync
+- Health checks prevent issues
+
+**Example Workflow**:
+```bash
+# 1. Create feature branch
+git checkout -b feature/new-power
+
+# 2. Tell Claude your task
+"I need to add a new power calculation"
+
+# 3. Make changes (Claude loads calculation context)
+# 4. Create PR (automatic review starts)
+# 5. Use @claude for help in PR comments
+# 6. Documentation updates suggested automatically
+```
+
+See [/.github/workflows/README.md](/.github/workflows/README.md) for detailed workflow documentation.
 
 ---
 

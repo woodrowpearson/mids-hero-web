@@ -73,7 +73,6 @@
       "description": "Files loaded when explicitly referenced",
       "patterns": {
         "workflow": ".claude/workflows/*.md",
-        "automation": ".claude/automation/README.md",
         "docs": ".claude/docs/*.md"
       }
     },
@@ -178,5 +177,28 @@
     "session_summaries": ".claude/state/summaries/",
     "max_scratchpad_size": 10000,
     "auto_summarize_at": 50000
+  },
+  
+  "session_thresholds": {
+    "description": "Session management and summarization thresholds",
+    "max_context_tokens": 120000,
+    "summary_trigger_percent": 0.1,
+    "critical_token_percent": 0.95,
+    "min_tokens_for_summary": 10000,
+    "checkpoint_interval": 25,
+    "min_messages_for_summary": 5,
+    "max_messages_to_keep": 10,
+    "session_timeout_hours": 24,
+    "auto_summary_interval_hours": 2.0,
+    "stale_session_hours": 72,
+    "min_summary_quality_score": 0.7,
+    "max_summary_retries": 3,
+    "summary_model_temperature": 0.3,
+    "max_summary_time_seconds": 30.0,
+    "max_parallel_summaries": 3,
+    "cache_ttl_hours": 48,
+    "max_state_file_size_mb": 10.0,
+    "max_checkpoint_files": 5,
+    "max_related_sessions": 10
   }
 }

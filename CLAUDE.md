@@ -17,7 +17,7 @@ just dev       # Start services
 
 ## 📍 Context System
 
-Claude uses **progressive context loading** based on your task:
+Claude uses **native sub-agents** with automatic delegation based on your task:
 
 ```
 Always Loaded:
@@ -25,16 +25,19 @@ Always Loaded:
 ├── .claude/settings.json        # Configuration
 └── .claude/context-map.json     # Loading rules
 
-Task-Based Loading:
-├── Database → .claude/modules/database/
-├── Import   → .claude/modules/import/
-├── API      → .claude/modules/api/
-├── Frontend → .claude/modules/frontend/
-└── Testing  → .claude/modules/testing/
+Native Sub-Agents:
+├── Database → database-specialist
+├── Import   → import-specialist  
+├── API      → backend-specialist
+├── Frontend → frontend-specialist
+├── Testing  → testing-specialist
+├── DevOps   → devops-specialist
+├── Calculations → calculation-specialist
+└── Documentation → documentation-specialist
 ```
 
-**Tell Claude your task** to load the right context:
-- "I need to work on database migrations" 
+**Tell Claude your task** to automatically delegate to the right specialist:
+- "I need to work on database migrations"
 - "Help me import I12 power data"
 - "Let's build an API endpoint"
 
@@ -64,9 +67,11 @@ just i12-import file   # Import powers
 
 ## 📊 Current Status
 
-- **Epic 1**: ✅ Complete (Setup, CI/CD)
-- **Epic 2**: 🚧 95% (I12 parser done, MHD pending)
-- **Epic 3-6**: 📋 Planned (API, Frontend, Deploy)
+- **Epic 1**: ✅ Complete (Setup, CI/CD, GitHub Actions optimized)
+- **Epic 2**: ✅ Complete (I12 parser, database integration)
+- **Epic 2.5.2**: ✅ Complete (Native sub-agents, workflows optimized)
+- **Epic 3**: 🚧 25% (Core API endpoints done)
+- **Epic 4-6**: 📋 Planned (Frontend, Deploy, Optimize)
 
 ## 🛠️ Critical Rules
 
@@ -80,29 +85,32 @@ just i12-import file   # Import powers
 
 ## 📁 Key Locations
 
-- **Core Guide**: `.claude/core/project-guide.md`
-- **Quick Ref**: `.claude/core/quick-reference.md`
 - **Workflows**: `.claude/workflows/daily.md`
 - **Modules**: `.claude/modules/{task}/guide.md`
+- **Dev Guide**: `.claude/docs/development-workflow.md`
+- **Progress**: `.claude/state/progress.json`
 
 ## 🔧 For Specific Work
 
-| Task | Say This | Loads |
-|------|----------|-------|
-| Database | "work on database" | `.claude/modules/database/` |
-| Import | "import data" | `.claude/modules/import/` |
-| API | "build API" | `.claude/modules/api/` |
-| Frontend | "React component" | `.claude/modules/frontend/` |
-| Debug | "fix error" | `.claude/workflows/troubleshooting.md` |
+| Task | Say This | Auto-Delegates To |
+|------|----------|-------------------|
+| Database | "work on database" | `database-specialist` |
+| Import | "import data" | `import-specialist` |
+| API | "build API" | `backend-specialist` |
+| Frontend | "React component" | `frontend-specialist` |
+| Testing | "write tests" | `testing-specialist` |
+| Calculations | "implement formulas" | `calculation-specialist` |
+| DevOps | "deploy changes" | `devops-specialist` |
+| Documentation | "update docs" | `documentation-specialist` |
 
 ## ⚠️ Remember
 
 - Use `fd` not `find`
-- Use `trash` not `rm -rf`  
+- Use `trash` not `rm -rf`
 - Keep sessions focused
 - Load only what you need
 
 ---
 
-*Claude's context system explained: `.claude/README.md`*  
+*Claude's context system explained: `.claude/README.md`*
 *Full documentation: `.claude/docs/`*

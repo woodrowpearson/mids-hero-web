@@ -1,14 +1,9 @@
+# Temporarily disabled due to YAML syntax issues
+# TODO: Fix heredoc indentation issue
 name: Update Claude Documentation
 
 on:
-  push:
-    paths:
-      - 'backend/**/*.py'
-      - 'frontend/**/*.ts'
-      - 'frontend/**/*.tsx'
-      - '.claude/**/*.md'
-      - 'CLAUDE.md'
-  workflow_dispatch:
+  workflow_dispatch:  # Only manual trigger while fixing
     inputs:
       force_update:
         description: 'Force documentation update'
@@ -35,13 +30,14 @@ jobs:
       
       - name: Create documentation update script
         run: |
+          mkdir -p scripts
           cat > scripts/update_claude_docs.py << 'EOF'
-#!/usr/bin/env python3
-"""Auto-update Claude documentation based on codebase changes."""
-
-import json
-import os
-from pathlib import Path
+          #!/usr/bin/env python3
+          """Auto-update Claude documentation based on codebase changes."""
+          
+          import json
+          import os
+          from pathlib import Path
 import tiktoken
 import yaml
 from datetime import datetime

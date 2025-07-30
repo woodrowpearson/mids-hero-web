@@ -8,117 +8,100 @@ permissions:
   contents: write
   pull-requests: write
   issues: write
+  id-token: write
 
 jobs:
-  claude-response:
-    if: github.event.issue.pull_request && contains(github.event.comment.body, '@claude')
+  claude-handler:
+    if: github.event.issue.pull_request
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
-      issues: write
-      id-token: write
+    strategy:
+      matrix:
+        include:
+          - trigger: '@claude'
+            name: 'Question Response'
+            timeout: 10
+            checkout_ref: ''
+          - trigger: 'implement doc suggestions'
+            name: 'Documentation Implementation'
+            timeout: 15
+            checkout_ref: '${{ github.event.issue.pull_request.head.ref }}'
+          - trigger: 'approved|approve|implement this|apply this|✅|yes, apply|go ahead'
+            name: 'Approval Processing'
+            timeout: 20
+            checkout_ref: '${{ github.event.issue.pull_request.head.ref }}'
+    
+    name: Claude ${{ matrix.name }}
     steps:
+      - name: Check trigger
+        id: check
+        run: |
+          COMMENT="${{ github.event.comment.body }}"
+          TRIGGER="${{ matrix.trigger }}"
+          
+          # Use grep with extended regex for pattern matching
+          if echo "$COMMENT" | grep -qE "$TRIGGER"; then
+            echo "should_run=true" >> $GITHUB_OUTPUT
+            
+            # Extract question for @claude mentions
+            if [[ "${{ matrix.trigger }}" == "@claude" ]]; then
+              QUESTION=$(echo "$COMMENT" | sed 's/@claude//' | sed 's/^[[:space:]]*//')
+              echo "question=$QUESTION" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "should_run=false" >> $GITHUB_OUTPUT
+          fi
+      
       - name: Checkout repository
+        if: steps.check.outputs.should_run == 'true'
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          
-      - name: Extract Claude question
-        id: extract
-        run: |
-          USER_COMMENT="${{ github.event.comment.body }}"
-          # Remove @claude mention and get actual question
-          QUESTION=$(echo "$USER_COMMENT" | sed 's/@claude//' | sed 's/^[[:space:]]*//')
-          echo "question=$QUESTION" >> $GITHUB_OUTPUT
-          
-      - name: Claude Code Response
-        uses: anthropics/claude-code-action@beta
-        with:
-          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          timeout_minutes: "10"
-          direct_prompt: |
-            You are responding to a question in PR #${{ github.event.issue.number }} of the Mids Hero Web project.
-            
-            User question: ${{ steps.extract.outputs.question }}
-            
-            Provide a helpful response about the codebase, epic progress, or City of Heroes mechanics as requested.
-            Keep your response concise and relevant to the question.
-
-  claude-doc-automation:
-    if: github.event.issue.pull_request && contains(github.event.comment.body, 'implement doc suggestions')
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-      issues: write
-      id-token: write
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          ref: ${{ github.event.issue.pull_request.head.ref }}
-          
-      - name: Implement Documentation Suggestions
+          ref: ${{ matrix.checkout_ref || github.event.pull_request.head.sha }}
+      
+      - name: Set up Python (for token counting)
+        if: steps.check.outputs.should_run == 'true' && matrix.name == 'Documentation Implementation'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        if: steps.check.outputs.should_run == 'true' && matrix.name == 'Documentation Implementation'
+        run: pip install tiktoken
+      
+      - name: Claude Action - ${{ matrix.name }}
+        if: steps.check.outputs.should_run == 'true'
         uses: anthropics/claude-code-action@beta
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          timeout_minutes: "15"
+          timeout_minutes: "${{ matrix.timeout }}"
+          max_turns: "3"
           direct_prompt: |
-            This is an automated task to implement documentation suggestions for PR #${{ github.event.issue.number }}.
-            
-            1. Search for recent documentation suggestions in PR comments from github-actions bot
-            2. Apply the suggested documentation updates to the appropriate files
-            3. Ensure CLAUDE.md stays under 5K tokens
-            4. Commit any changes with appropriate message
-            
-            Focus on:
-            - Epic status updates in CLAUDE.md
-            - Token limit compliance
-            - Documentation accuracy
-            
-            The user comment was: "${{ github.event.comment.body }}"
-
-  approval-processor:
-    if: github.event.issue.pull_request && (contains(github.event.comment.body, 'approved') || contains(github.event.comment.body, 'approve') || contains(github.event.comment.body, 'implement this') || contains(github.event.comment.body, 'apply this') || contains(github.event.comment.body, '✅') || contains(github.event.comment.body, 'yes, apply') || contains(github.event.comment.body, 'go ahead'))
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-      issues: write
-      id-token: write
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+            ${{ matrix.name == 'Question Response' && format('You are responding to a question in PR #{0} of the Mids Hero Web project.\n\nUser question: {1}\n\nProvide a helpful response about the codebase, epic progress, or City of Heroes mechanics as requested.\nKeep your response concise and relevant to the question.', github.event.issue.number, steps.check.outputs.question) || '' }}
+            ${{ matrix.name == 'Documentation Implementation' && format('This is an automated task to implement documentation suggestions for PR #{0}.\n\n1. Search for recent documentation suggestions in PR comments from github-actions bot\n2. Apply the suggested documentation updates to the appropriate files\n3. Ensure CLAUDE.md stays under 5K tokens (use tiktoken to verify)\n4. Commit any changes with message: "docs: implement automated documentation suggestions"\n\nFocus on:\n- Epic status updates in CLAUDE.md\n- Token limit compliance\n- Documentation accuracy\n\nThe user comment was: "{1}"', github.event.issue.number, github.event.comment.body) || '' }}
+            ${{ matrix.name == 'Approval Processing' && format('This is an automated task to process approval comments and apply approved changes for PR #{0}.\n\nUser approval comment: "{1}"\n\nTasks:\n1. Find recent documentation suggestions from github-actions bot in this PR\n2. Determine if this is a simple approval or approval with modifications\n3. Apply the approved changes based on the approval type\n4. For modified approvals, parse and apply the requested modifications\n5. Commit changes with message: "docs: apply approved documentation changes"\n\nCommon modifications to handle:\n- Docker commands addition\n- Epic 2 details updates\n- API documentation sections\n- Quick commands documentation\n\nEnsure all changes are properly committed and pushed.', github.event.issue.number, github.event.comment.body) || '' }}
+      
+      - name: Post summary
+        if: always() && steps.check.outputs.should_run == 'true'
+        uses: actions/github-script@v7
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          ref: ${{ github.event.issue.pull_request.head.ref }}
-          
-      - name: Process Approval and Apply Changes
-        uses: anthropics/claude-code-action@beta
-        with:
-          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          timeout_minutes: "20"
-          direct_prompt: |
-            This is an automated task to process approval comments and apply approved changes for PR #${{ github.event.issue.number }}.
+          script: |
+            const status = '${{ job.status }}';
+            const matrixName = '${{ matrix.name }}';
+            const emoji = status === 'success' ? '✅' : '❌';
             
-            User approval comment: "${{ github.event.comment.body }}"
+            const summaries = {
+              'Question Response': `${emoji} Claude has ${status === 'success' ? 'responded to' : 'failed to respond to'} your question.`,
+              'Documentation Implementation': `${emoji} Documentation suggestions have been ${status === 'success' ? 'implemented' : 'failed to implement'}.`,
+              'Approval Processing': `${emoji} Approved changes have been ${status === 'success' ? 'applied' : 'failed to apply'}.`
+            };
             
-            Tasks:
-            1. Find recent documentation suggestions from github-actions bot in this PR
-            2. Determine if this is a simple approval or approval with modifications
-            3. Apply the approved changes based on the approval type
-            4. For modified approvals, parse and apply the requested modifications
-            5. Commit changes with appropriate message
-            
-            Common modifications to handle:
-            - Docker commands addition
-            - Epic 2 details updates
-            - API documentation sections
-            - Quick commands documentation
-            
-            Ensure all changes are properly committed and pushed.
+            if (summaries[matrixName]) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: summaries[matrixName]
+              });
+            }

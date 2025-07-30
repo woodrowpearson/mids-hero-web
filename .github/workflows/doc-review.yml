@@ -10,11 +10,15 @@ permissions:
   pull-requests: write
   id-token: write
 
+concurrency:
+  group: doc-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
   doc-impact-review:
     name: Review Documentation Impact
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' && !contains(github.event.pull_request.labels.*.name, 'skip-doc-review')
     
     steps:
       - uses: actions/checkout@v4
@@ -28,43 +32,60 @@ jobs:
           files: |
             backend/**/*.py
             frontend/**/*.{js,ts,jsx,tsx}
-            **/*.md
             backend/pyproject.toml
             frontend/package.json
             docker-compose.yml
             Dockerfile
             justfile
-            .claude/**/*.md
             .github/workflows/*.yml
+          files_ignore: |
+            **/*_test.py
+            **/*.test.{js,ts,jsx,tsx}
+            **/__pycache__/**
+            **/node_modules/**
+            
+      - name: Get documentation files changed
+        id: doc-files
+        uses: tj-actions/changed-files@v44
+        with:
+          files: |
+            **/*.md
+            .claude/**/*.{md,json}
             
       - name: Documentation Review with Claude
-        if: steps.changed-files.outputs.any_changed == 'true'
+        if: steps.changed-files.outputs.any_changed == 'true' || steps.doc-files.outputs.any_changed == 'true'
         uses: anthropics/claude-code-action@beta
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          timeout_minutes: "10"
+          timeout_minutes: "8"
+          max_turns: "2"
           direct_prompt: |
-            Review the changes in PR #${{ github.event.pull_request.number }} and analyze documentation impact.
+            Review PR #${{ github.event.pull_request.number }} for documentation impact.
             
-            Changed files: ${{ steps.changed-files.outputs.all_changed_files }}
+            Code files changed: ${{ steps.changed-files.outputs.all_changed_files }}
+            Documentation changed: ${{ steps.doc-files.outputs.all_changed_files }}
             
-            Please provide:
-            1. A concise analysis of which documentation might need updates based on the changes
-            2. Specific suggestions for documentation that should be updated
-            3. Check if any README files reference changed/deleted files
-            4. Verify CLAUDE.md token limit compliance if it was changed
+            Analyze and provide structured output:
             
-            Focus areas:
-            - If workflows changed: Check .github/workflows/README.md accuracy
-            - If API files changed: Suggest API documentation updates
-            - If models changed: Suggest database documentation updates
-            - If justfile changed: Suggest command documentation updates
-            - If .claude/ files changed: Check context system documentation
+            ## Documentation Impact Analysis
             
-            Format your response as a PR comment with:
-            - Summary of documentation impact
-            - Checklist of recommended updates
-            - Any warnings about stale references
+            ### 1. Required Updates
+            List only documentation that MUST be updated based on the changes.
             
-            Keep the review concise and actionable.
+            ### 2. Validation Results  
+            - [ ] CLAUDE.md token limit (<5K): [PASS/FAIL if changed]
+            - [ ] Broken references: [List any found]
+            - [ ] Outdated examples: [List any found]
+            
+            ### 3. Specific Actions
+            Provide a numbered list of specific documentation updates needed.
+            
+            Focus on:
+            - Workflow changes → .github/workflows/README.md
+            - API changes → API documentation
+            - Model changes → Database documentation  
+            - Command changes → Quick commands guide
+            - Context changes → .claude/README.md
+            
+            Keep response under 500 words. Only flag actual issues, not potential ones.

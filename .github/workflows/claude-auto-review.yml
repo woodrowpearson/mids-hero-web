@@ -4,6 +4,10 @@ on:
   pull_request:
     types: [opened, synchronize]
 
+concurrency:
+  group: claude-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
   auto-review:
     runs-on: ubuntu-latest
@@ -15,25 +19,46 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1
+          fetch-depth: 0  # Changed to 0 for better diff analysis
+
+      - name: Get PR size
+        id: pr-size
+        run: |
+          # Calculate PR size for dynamic timeout
+          CHANGES=$(git diff --numstat origin/${{ github.event.pull_request.base.ref }}..HEAD | awk '{ added += $1; deleted += $2 } END { print added + deleted }')
+          echo "changes=$CHANGES" >> $GITHUB_OUTPUT
+          
+          # Set timeout based on PR size
+          if [ $CHANGES -lt 100 ]; then
+            echo "timeout=10" >> $GITHUB_OUTPUT
+          elif [ $CHANGES -lt 500 ]; then
+            echo "timeout=15" >> $GITHUB_OUTPUT
+          else
+            echo "timeout=20" >> $GITHUB_OUTPUT
+          fi
 
       - name: Automatic PR Review
         uses: anthropics/claude-code-action@beta
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          timeout_minutes: "30"  # Reduce timeout
+          timeout_minutes: "${{ steps.pr-size.outputs.timeout }}"  # Dynamic timeout
+          max_turns: "5"  # Limit conversation turns for efficiency
           direct_prompt: |
-            Please review this pull request and provide comprehensive feedback.
+            Review PR #${{ github.event.pull_request.number }} for the Mids Hero Web project.
+            PR size: ${{ steps.pr-size.outputs.changes }} lines changed.
 
-            Focus on:
-            - Code quality and best practices
-            - Potential bugs or issues
-            - Performance considerations
-            - Security implications
-            - Test coverage
-            - Documentation updates if needed
+            Provide focused feedback on:
+            1. City of Heroes domain correctness (powers, enhancements, game mechanics)
+            2. Code quality and FastAPI/React best practices
+            3. Critical bugs or security issues
+            4. Performance bottlenecks in build calculations
+            5. Missing test coverage for new features
 
-            Provide constructive feedback with specific suggestions for improvement.
-            Use inline comments to highlight specific areas of concern.
-          # allowed_tools: "mcp__github__create_pending_pull_request_review,mcp__github__add_pull_request_review_comment_to_pending_review,mcp__github__submit_pending_pull_request_review,mcp__github__get_pull_request_diff"
+            Guidelines:
+            - Prioritize high-impact issues over minor style preferences
+            - Suggest specific code improvements with examples
+            - Flag any changes that could break existing functionality
+            - Verify game mechanics calculations match expected formulas
+
+            Keep feedback concise and actionable. Use inline comments for specific issues.

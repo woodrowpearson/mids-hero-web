@@ -14,8 +14,6 @@ on:
       - 'frontend/package.json'
       - 'docker-compose.yml'
       - 'Dockerfile'
-  pull_request:
-    types: [opened, synchronize, ready_for_review]
   schedule:
     # Weekly full sync on Sunday at 2 AM
     - cron: '0 2 * * 0'
@@ -25,12 +23,26 @@ on:
         description: 'Force full documentation synchronization'
         type: boolean
         default: false
+      sync_type:
+        description: 'Type of sync to perform'
+        type: choice
+        options:
+          - auto
+          - full
+          - workflows
+          - api
+          - context
+        default: auto
 
 permissions:
   contents: write
   pull-requests: write
   issues: write
   id-token: write
+
+concurrency:
+  group: doc-sync-${{ github.ref }}
+  cancel-in-progress: false  # Don't cancel doc syncs
 
 jobs:
   analyze-changes:
@@ -40,11 +52,23 @@ jobs:
       needs_sync: ${{ steps.analysis.outputs.needs_sync }}
       sync_type: ${{ steps.analysis.outputs.sync_type }}
       affected_docs: ${{ steps.analysis.outputs.affected_docs }}
+      change_summary: ${{ steps.analysis.outputs.change_summary }}
     
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      
+      - name: Get change context
+        id: context
+        run: |
+          # Get commit messages for context
+          if [[ "${{ github.event_name }}" == "push" ]]; then
+            COMMITS=$(git log --oneline -n 5 --pretty=format:"%s")
+            echo "commits<<EOF" >> $GITHUB_OUTPUT
+            echo "$COMMITS" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          fi
       
       - name: Analyze changed files
         id: analysis
@@ -52,57 +76,74 @@ jobs:
           NEEDS_SYNC="false"
           SYNC_TYPE="none"
           AFFECTED_DOCS=""
+          CHANGE_SUMMARY=""
           
+          # Handle manual dispatch
+          if [[ "${{ inputs.sync_type }}" != "" ]] && [[ "${{ inputs.sync_type }}" != "auto" ]]; then
+            NEEDS_SYNC="true"
+            SYNC_TYPE="${{ inputs.sync_type }}"
+            AFFECTED_DOCS="manual"
           # Force full sync if requested or scheduled
-          if [[ "${{ github.event_name }}" == "schedule" ]] || [[ "${{ inputs.force_full_sync }}" == "true" ]]; then
+          elif [[ "${{ github.event_name }}" == "schedule" ]] || [[ "${{ inputs.force_full_sync }}" == "true" ]]; then
             NEEDS_SYNC="true"
             SYNC_TYPE="full"
             AFFECTED_DOCS="all"
           else
-            # Get changed files
-            if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-              CHANGED_FILES=$(git diff --name-only origin/${{ github.event.pull_request.base.ref }}...HEAD)
-            else
-              CHANGED_FILES=$(git diff --name-only HEAD~1...HEAD)
-            fi
+            # Get changed files more efficiently
+            CHANGED_FILES=$(git diff --name-only HEAD~1...HEAD 2>/dev/null || echo "")
             
-            # Analyze impact
+            # Create change summary
+            CHANGE_SUMMARY="Files changed: $(echo "$CHANGED_FILES" | wc -l | tr -d ' ')"
+            
+            # Analyze impact with priority system
+            WORKFLOW_CHANGED=false
+            API_CHANGED=false
+            CONTEXT_CHANGED=false
+            COMMAND_CHANGED=false
+            DB_CHANGED=false
+            
             for file in $CHANGED_FILES; do
               case "$file" in
                 .github/workflows/*.yml)
-                  NEEDS_SYNC="true"
-                  SYNC_TYPE="workflows"
-                  AFFECTED_DOCS="$AFFECTED_DOCS .github/README.md .github/workflows/README.md"
+                  WORKFLOW_CHANGED=true
                   ;;
                 .claude/*)
-                  NEEDS_SYNC="true"
-                  SYNC_TYPE="context"
-                  AFFECTED_DOCS="$AFFECTED_DOCS .claude/README.md CLAUDE.md"
+                  CONTEXT_CHANGED=true
                   ;;
-                backend/app/api/*.py)
-                  NEEDS_SYNC="true"
-                  SYNC_TYPE="api"
-                  AFFECTED_DOCS="$AFFECTED_DOCS docs/api-reference.md .claude/modules/api/specification.md"
+                backend/app/api/*.py|backend/app/routers/*.py)
+                  API_CHANGED=true
                   ;;
                 justfile)
-                  NEEDS_SYNC="true"
-                  SYNC_TYPE="commands"
-                  AFFECTED_DOCS="$AFFECTED_DOCS .claude/docs/quick-commands.md README.md"
+                  COMMAND_CHANGED=true
                   ;;
-                backend/app/models/*.py)
-                  NEEDS_SYNC="true"
-                  SYNC_TYPE="database"
-                  AFFECTED_DOCS="$AFFECTED_DOCS .claude/modules/database/schema.md docs/database-design.md"
-                  ;;
-                *.md)
-                  # Check if this is a major documentation file
-                  if [[ "$file" == "README.md" ]] || [[ "$file" == "CLAUDE.md" ]]; then
-                    NEEDS_SYNC="true"
-                    SYNC_TYPE="docs"
-                  fi
+                backend/app/models/*.py|backend/alembic/versions/*.py)
+                  DB_CHANGED=true
                   ;;
               esac
             done
+            
+            # Set sync type based on highest priority change
+            if $WORKFLOW_CHANGED; then
+              NEEDS_SYNC="true"
+              SYNC_TYPE="workflows"
+              AFFECTED_DOCS=".github/README.md .github/workflows/README.md github_actions_summary.md"
+            elif $API_CHANGED; then
+              NEEDS_SYNC="true"
+              SYNC_TYPE="api"
+              AFFECTED_DOCS="docs/api-reference.md .claude/modules/api/specification.md"
+            elif $DB_CHANGED; then
+              NEEDS_SYNC="true"
+              SYNC_TYPE="database"
+              AFFECTED_DOCS=".claude/modules/database/schema.md docs/database-design.md"
+            elif $CONTEXT_CHANGED; then
+              NEEDS_SYNC="true"
+              SYNC_TYPE="context"
+              AFFECTED_DOCS=".claude/README.md CLAUDE.md"
+            elif $COMMAND_CHANGED; then
+              NEEDS_SYNC="true"
+              SYNC_TYPE="commands"
+              AFFECTED_DOCS=".claude/docs/quick-commands.md README.md"
+            fi
           fi
           
           # Remove duplicates from affected docs
@@ -111,11 +152,13 @@ jobs:
           echo "needs_sync=$NEEDS_SYNC" >> $GITHUB_OUTPUT
           echo "sync_type=$SYNC_TYPE" >> $GITHUB_OUTPUT
           echo "affected_docs=$AFFECTED_DOCS" >> $GITHUB_OUTPUT
+          echo "change_summary=$CHANGE_SUMMARY" >> $GITHUB_OUTPUT
           
           echo "## Documentation Impact Analysis" >> $GITHUB_STEP_SUMMARY
           echo "- Needs Sync: $NEEDS_SYNC" >> $GITHUB_STEP_SUMMARY
           echo "- Sync Type: $SYNC_TYPE" >> $GITHUB_STEP_SUMMARY
           echo "- Affected Docs: $AFFECTED_DOCS" >> $GITHUB_STEP_SUMMARY
+          echo "- Change Summary: $CHANGE_SUMMARY" >> $GITHUB_STEP_SUMMARY
 
   sync-documentation:
     name: Synchronize Documentation
@@ -143,53 +186,51 @@ jobs:
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          timeout_minutes: "20"
+          timeout_minutes: "15"
+          max_turns: "4"
           direct_prompt: |
-            You are updating documentation for the Mids Hero Web project based on recent code changes.
+            You are updating documentation for the Mids Hero Web project.
             
             Sync Type: ${{ needs.analyze-changes.outputs.sync_type }}
-            Affected Documentation Files: ${{ needs.analyze-changes.outputs.affected_docs }}
-            Event Type: ${{ github.event_name }}
+            Affected Documentation: ${{ needs.analyze-changes.outputs.affected_docs }}
+            Change Summary: ${{ needs.analyze-changes.outputs.change_summary }}
+            Recent Commits:
+            ${{ steps.context.outputs.commits }}
             
-            Based on the sync type, perform the following tasks:
+            Based on the sync type, perform ONLY these tasks:
             
-            For "workflows" sync:
-            1. Update .github/README.md to reflect current workflow architecture
-            2. Update .github/workflows/README.md with accurate workflow descriptions
+            "workflows" sync:
+            1. Update github_actions_summary.md with Claude workflow optimizations
+            2. Update .github/workflows/README.md if workflow functionality changed
             3. Remove references to deleted workflows
-            4. Add documentation for new workflows
             
-            For "context" sync:
-            1. Update .claude/README.md to reflect context system changes
-            2. Ensure CLAUDE.md stays under 5K tokens
-            3. Update any references to moved or deleted files
+            "context" sync:
+            1. Update .claude/README.md for context system changes
+            2. Verify CLAUDE.md token count (<5K)
+            3. Fix broken file references
             
-            For "api" sync:
-            1. Update API documentation based on endpoint changes
-            2. Ensure endpoint documentation matches implementation
+            "api" sync:
+            1. Update API endpoint documentation
+            2. Add new endpoints, remove deleted ones
             
-            For "commands" sync:
-            1. Update quick commands documentation
-            2. Ensure justfile commands are documented
+            "commands" sync:
+            1. Update quick commands in .claude/docs/quick-commands.md
+            2. Sync README.md command examples
             
-            For "database" sync:
-            1. Update database schema documentation
-            2. Document new models or relationships
+            "database" sync:
+            1. Update schema documentation
+            2. Document new models/migrations
             
-            For "full" sync:
-            1. Check all documentation consistency
-            2. Update stale references
-            3. Ensure all README files are current
-            4. Validate token limits
+            "full" sync:
+            1. Validate all documentation consistency
+            2. Fix all broken references
+            3. Update token counts
             
-            IMPORTANT:
-            - Only update files that need changes
-            - Preserve existing formatting and structure
-            - Keep CLAUDE.md under 5K tokens
-            - Ensure all file paths are correct
-            - Fix any broken references
-            
-            After making changes, provide a summary of what was updated.
+            Critical Rules:
+            - Make minimal necessary changes
+            - Use git to check current file state
+            - Commit with message: "docs: auto-sync [sync_type] documentation"
+            - If no changes needed, state that clearly
 
   validate-token-limits:
     name: Validate Token Limits
@@ -206,6 +247,16 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+          cache: 'pip'
+      
+      - name: Cache tiktoken
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-tiktoken-${{ hashFiles('**/requirements*.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-tiktoken-
+            ${{ runner.os }}-pip-
       
       - name: Install tiktoken
         run: pip install tiktoken

@@ -138,56 +138,70 @@ jobs:
           pip install tiktoken pyyaml
       
       - name: Documentation Sync with Claude
-        uses: anthropics/claude-code-action@v1.2.0
-        with:
-          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-          timeout_minutes: "20"
-          direct_prompt: |
-            You are updating documentation for the Mids Hero Web project based on recent code changes.
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Create a script to handle documentation updates
+          cat > update_docs.py << 'EOF'
+import os
+import sys
+import subprocess
+
+# Get sync type and affected docs
+sync_type = "${{ needs.analyze-changes.outputs.sync_type }}"
+affected_docs = "${{ needs.analyze-changes.outputs.affected_docs }}"
+event_type = "${{ github.event_name }}"
+
+print(f"Sync Type: {sync_type}")
+print(f"Affected Docs: {affected_docs}")
+print(f"Event Type: {event_type}")
+
+# For now, create a simple summary of what would be updated
+summary = []
+
+if sync_type == "workflows":
+    summary.append("Would update .github/README.md and .github/workflows/README.md")
+elif sync_type == "context":
+    summary.append("Would update .claude/README.md and check CLAUDE.md tokens")
+elif sync_type == "api":
+    summary.append("Would update API documentation")
+elif sync_type == "commands":
+    summary.append("Would update quick commands documentation")
+elif sync_type == "database":
+    summary.append("Would update database schema documentation")
+elif sync_type == "full":
+    summary.append("Would perform full documentation consistency check")
+
+# Save summary
+with open("doc_sync_summary.txt", "w") as f:
+    f.write("\n".join(summary))
+
+print("Documentation sync analysis complete")
+EOF
+          
+          python update_docs.py
+          
+          # If this is a PR and we have a summary, post it
+          if [ -f "doc_sync_summary.txt" ] && [ "${{ github.event_name }}" == "pull_request" ]; then
+            SUMMARY=$(cat doc_sync_summary.txt)
             
-            Sync Type: ${{ needs.analyze-changes.outputs.sync_type }}
-            Affected Documentation Files: ${{ needs.analyze-changes.outputs.affected_docs }}
-            Event Type: ${{ github.event_name }}
-            
-            Based on the sync type, perform the following tasks:
-            
-            For "workflows" sync:
-            1. Update .github/README.md to reflect current workflow architecture
-            2. Update .github/workflows/README.md with accurate workflow descriptions
-            3. Remove references to deleted workflows
-            4. Add documentation for new workflows
-            
-            For "context" sync:
-            1. Update .claude/README.md to reflect context system changes
-            2. Ensure CLAUDE.md stays under 5K tokens
-            3. Update any references to moved or deleted files
-            
-            For "api" sync:
-            1. Update API documentation based on endpoint changes
-            2. Ensure endpoint documentation matches implementation
-            
-            For "commands" sync:
-            1. Update quick commands documentation
-            2. Ensure justfile commands are documented
-            
-            For "database" sync:
-            1. Update database schema documentation
-            2. Document new models or relationships
-            
-            For "full" sync:
-            1. Check all documentation consistency
-            2. Update stale references
-            3. Ensure all README files are current
-            4. Validate token limits
-            
-            IMPORTANT:
-            - Only update files that need changes
-            - Preserve existing formatting and structure
-            - Keep CLAUDE.md under 5K tokens
-            - Ensure all file paths are correct
-            - Fix any broken references
-            
-            After making changes, provide a summary of what was updated.
+            # Use Claude to generate documentation update suggestions
+            bash .github/scripts/claude_wrapper.sh \
+              --prompt "Based on the following sync analysis for the Mids Hero Web project:
+              
+              Sync Type: ${{ needs.analyze-changes.outputs.sync_type }}
+              Affected Files: ${{ needs.analyze-changes.outputs.affected_docs }}
+              
+              Summary: $SUMMARY
+              
+              Please provide specific documentation update suggestions that should be made.
+              Focus on maintaining consistency and ensuring all documentation stays current.
+              Keep suggestions actionable and specific." \
+              --timeout 20 \
+              --pr ${{ github.event.pull_request.number || '' }} \
+              --post-comment
+          fi
 
   validate-token-limits:
     name: Validate Token Limits

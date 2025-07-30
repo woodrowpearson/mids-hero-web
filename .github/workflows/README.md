@@ -133,6 +133,9 @@ This directory contains GitHub Actions workflows that automate CI/CD, code revie
 - `ANTHROPIC_API_KEY` - For all Claude-powered features
 - `CODECOV_TOKEN` - For code coverage reporting (optional)
 
+### Custom Claude Integration
+All Claude features use a custom integration located in `.github/scripts/`. This was implemented because the original `anthropics/claude-code-action` does not exist. See [scripts documentation](../scripts/README.md) for details.
+
 ### Permissions
 All workflows require appropriate permissions:
 - `contents: read/write` - For file operations

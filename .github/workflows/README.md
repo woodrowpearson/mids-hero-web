@@ -1,163 +1,289 @@
-# GitHub Workflows for Mids Hero Web
+# GitHub Workflows Documentation
 
-This directory contains AI-powered workflows specifically designed for the Mids Hero Web project.
+This directory contains GitHub Actions workflows that automate CI/CD, code review, and documentation management for the Mids Hero Web project.
 
-## Active Workflows
+## 📋 Active Workflows
 
-### 🔄 ci.yml
-**Continuous Integration** - Full-stack testing and validation
-- Backend: Python 3.11 + uv + PostgreSQL testing
-- Frontend: React + TypeScript + Node.js testing
-- Docker build validation
-- Just command testing
+### 🔄 ci.yml - Continuous Integration
+**Triggers**: Push to main/develop, Pull requests
 
-### 🏥 context-health-check.yml
-**Context Health Monitoring** - Ensures optimal Claude Code performance
-- Monitors CLAUDE.md size (<5k tokens)
-- Tracks total context usage (<50k tokens)
-- Validates command compliance
-- Runs every 6 hours + on PRs
+**Purpose**: Complete CI/CD pipeline ensuring code quality and tests pass
 
-### 🤖 ai-pr-review.yml
-**AI Code Review** - Claude-powered PR analysis with CoH domain knowledge
-- Code quality and architecture review
-- City of Heroes mechanics validation
-- Epic alignment checking
-- Command compliance enforcement
+**Jobs**:
+- **backend-lint**: Python linting with ruff, black, isort, mypy
+- **frontend-lint**: TypeScript/React linting with ESLint
+- **backend-test**: pytest with PostgreSQL integration
+- **frontend-test**: React component testing
+- **security**: Trivy vulnerability scanning
+- **just-commands**: Validates just command functionality
+- **docker-build**: Docker image build validation (currently disabled)
 
-### 💬 claude-code-integration.yml
-**Claude Assistant** - Interactive help via @claude mentions
-- Answers questions about codebase
-- Provides City of Heroes mechanics guidance
-- Suggests improvements and fixes
-- Epic progress assistance
+**Requirements**: Uses uv for Python, Node.js 18, PostgreSQL 15
 
-### 📚 doc-synthesis.yml
-**Documentation Automation** - Keeps docs in sync with code
-- Suggests README updates for API changes
-- Updates CLAUDE.md for workflow changes
-- Tracks epic progress documentation
-- Maintains architecture docs
+---
 
-## Configuration
+### 🤖 claude-auto-review.yml - AI Code Review
+**Triggers**: Pull request opened or synchronized
 
-All workflows are configured via `.new-project/workflows/config.yaml`:
+**Purpose**: Automatic code review using Claude with City of Heroes domain knowledge
 
-```yaml
-# Example settings
-context_management:
-  max_file_tokens: 5000
-  total_context_limit: 50000
+**Features**:
+- Reviews code quality and best practices
+- Checks for potential bugs and security issues
+- Validates City of Heroes game mechanics
+- Ensures test coverage
+- Comments directly on PR
 
-mids_hero_web:
-  current_epic: 2
-  blocker_check: true
+**Configuration**: Requires `ANTHROPIC_API_KEY` secret
+
+---
+
+### 💬 claude-code-integration.yml - Interactive Claude Assistant
+**Triggers**: Issue comments containing "@claude"
+
+**Purpose**: Interactive AI assistance in PRs and issues
+
+**Commands**:
+- `@claude [question]` - Ask Claude about the codebase
+- `implement doc suggestions` - Apply documentation updates
+- Approval keywords (`approved`, `implement this`, etc.) - Apply suggested changes
+
+**Features**:
+- Context-aware responses about the codebase
+- Can implement approved documentation changes
+- Understands Epic progress and project status
+
+---
+
+### 🏥 context-health-check.yml - Context System Monitor
+**Triggers**: Every 6 hours, push to main/develop, PRs, manual
+
+**Purpose**: Ensures Claude context system remains healthy and performant
+
+**Checks**:
+- CLAUDE.md token count (<5K limit)
+- Context file sizes and structure
+- Required directories and files exist
+- Command compliance (uv/fd/trash usage)
+- Markdown file token analysis
+
+**Output**: GitHub Step Summary with health report
+
+---
+
+### 📚 doc-auto-sync.yml - Documentation Auto-Synchronization
+**Triggers**: Code changes, weekly schedule, manual with full sync option
+
+**Purpose**: Automatically updates documentation when code changes
+
+**Smart Detection**:
+- Workflow changes → Updates .github/README.md files
+- Context changes → Updates .claude/README.md
+- API changes → Updates API documentation
+- Model changes → Updates database docs
+- Command changes → Updates quick reference
+
+**Features**:
+- Intelligent change detection
+- Token limit validation
+- Weekly full synchronization
+- PR comments for warnings
+
+---
+
+### 📝 doc-review.yml - Documentation Impact Review
+**Triggers**: Pull requests
+
+**Purpose**: Reviews PRs for documentation impact and suggests updates
+
+**Analysis**:
+- Identifies which docs might need updates
+- Checks for stale references
+- Validates CLAUDE.md token compliance
+- Posts actionable suggestions as PR comments
+
+---
+
+### 🔧 update-claude-docs.yml - Claude Documentation Updates
+**Triggers**: Changes to Python/TypeScript files, Claude docs, manual
+
+**Purpose**: Updates Claude-specific documentation and monitors token usage
+
+**Features**:
+- Updates timestamps in documentation
+- Checks token limits with warnings
+- Creates PRs for documentation updates
+- Reports token limit issues
+
+---
+
+### ⚙️ dataexporter-tests.yml - DataExporter Module Tests
+**Triggers**: Changes to DataExporter module
+
+**Purpose**: Cross-platform testing of the DataExporter .NET module
+
+**Platforms**: Ubuntu, Windows, macOS
+**Requirements**: .NET 9.0
+
+---
+
+## 🔧 Configuration
+
+### Required Secrets
+- `ANTHROPIC_API_KEY` - For all Claude-powered features
+- `CODECOV_TOKEN` - For code coverage reporting (optional)
+
+### Permissions
+All workflows require appropriate permissions:
+- `contents: read/write` - For file operations
+- `pull-requests: write` - For PR comments
+- `issues: write` - For issue comments
+
+### Environment Variables
+- `PYTHON_VERSION: "3.11"`
+- `NODE_VERSION: "18"`
+
+## 📊 Workflow Interactions
+
+```mermaid
+graph LR
+    PR[Pull Request] --> CI[CI Tests]
+    PR --> CAR[Claude Auto Review]
+    PR --> DR[Doc Review]
+    
+    Code[Code Push] --> CI
+    Code --> DAS[Doc Auto-Sync]
+    Code --> CHC[Context Health Check]
+    
+    Comment[@claude] --> CCI[Claude Integration]
+    
+    Schedule[Cron Schedule] --> CHC
+    Schedule --> DAS
+    
+    Manual[Manual Trigger] --> DAS
+    Manual --> UCD[Update Claude Docs]
 ```
 
-## Usage Examples
+## 💡 Usage Tips
 
-### Getting AI Code Review
-Just create a PR - review happens automatically. For additional review:
-```
-Comment: /ai-review
-```
+### For Developers
 
-### Asking Claude Questions
-In any issue or PR:
-```
-@claude How should I structure the power calculation system?
-@claude What's the status of Epic 2 data import?
-@claude How do I add a new archetype to the database?
-```
+1. **PR Workflow**:
+   - Create PR → Automatic CI + Claude review
+   - Address feedback → Push changes
+   - Get approval → Merge
 
-### Manual Documentation Update
-```
-Trigger the doc-synthesis workflow manually from Actions tab
-```
+2. **Getting Help**:
+   ```
+   @claude How do I implement enhancement calculations?
+   @claude What's the best way to structure this API endpoint?
+   ```
 
-## Setup Requirements
+3. **Documentation**:
+   - Code changes trigger automatic doc suggestions
+   - Weekly full sync ensures consistency
+   - Token warnings prevent context overflow
 
-1. **GitHub Secret**: Add `ANTHROPIC_API_KEY` to repository secrets
-2. **Branch Protection**: Enable for main branch (recommended)
-3. **Permissions**: Workflows need read/write access to PRs and issues
+### For Maintainers
 
-## Mids Hero Web Specific Features
+1. **Monitoring**:
+   - Check Actions tab for workflow status
+   - Review context health reports
+   - Monitor token usage warnings
 
-### Epic Tracking
-- Monitors 6-epic roadmap progress
-- Alerts on Epic 2 blocker status
-- Updates progress automatically
+2. **Manual Controls**:
+   - Force documentation sync from Actions tab
+   - Trigger specific workflows as needed
+   - Review and merge doc update PRs
 
-### City of Heroes Domain
-- Validates archetype definitions
-- Checks power mechanics accuracy
-- Ensures database model consistency
-
-### Command Enforcement
-- Requires `uv` instead of `pip`
-- Enforces `fd` instead of `find`
-- Mandates `trash` instead of `rm -rf`
-- Prefers `just` commands
-
-## Monitoring & Maintenance
-
-### Weekly Tasks
-- [ ] Check context health report
-- [ ] Review AI suggestion accuracy
-- [ ] Update epic progress if needed
-- [ ] Monitor token usage trends
-
-### Monthly Tasks
-- [ ] Review workflow configuration
-- [ ] Update token limits if needed
-- [ ] Check AI model performance
-- [ ] Update City of Heroes validation rules
-
-## Troubleshooting
+## 🚨 Troubleshooting
 
 ### Common Issues
 
-**Workflow not triggering:**
-- Check ANTHROPIC_API_KEY is set
-- Verify branch protection settings
-- Ensure workflow permissions are correct
+**Workflow not running**:
+- Check trigger conditions match
+- Verify secrets are configured
+- Review workflow permissions
 
-**AI responses not appearing:**
-- Check API key validity and credits
-- Verify rate limits aren't exceeded
-- Check workflow logs for errors
+**Claude not responding**:
+- Verify ANTHROPIC_API_KEY is valid
+- Check API rate limits
+- Review workflow logs
 
-**Context warnings:**
-- Run `just context-prune`
-- Split large documentation files
-- Update .claudeignore if needed
+**Documentation not updating**:
+- Check change detection patterns
+- Verify file paths in workflow
+- Run manual sync if needed
 
-**Epic tracking issues:**
-- Verify .claude/epics/ files exist
-- Check file format consistency
-- Run `just progress-update` manually
+**Token limit warnings**:
+- Review flagged files
+- Refactor large documentation
+- Update token limits if necessary
 
-### Getting Help
+### Debug Commands
 
-1. Check workflow logs in Actions tab
-2. Review `.new-project/workflows/implementation-guide.md`
-3. Run `just health` for local diagnostics
-4. Ask @claude in an issue for specific help
+```bash
+# Check workflow syntax
+actionlint .github/workflows/*.yml
 
-## Development
+# Test locally with act
+act pull_request -W .github/workflows/ci.yml
 
-When modifying workflows:
+# View workflow runs
+gh run list --workflow=ci.yml
+```
 
-1. **Test in feature branch first**
-2. **Keep City of Heroes context** - AI needs domain knowledge
-3. **Maintain token efficiency** - Don't inflate context
-4. **Update configuration docs** when changing settings
-5. **Test with real PRs** before merging
+## 🔐 Security Considerations
 
-## Community
+1. **Secrets Management**:
+   - Never commit API keys
+   - Use GitHub secrets for sensitive data
+   - Rotate keys periodically
 
-These workflows are designed for the City of Heroes community:
-- **Accuracy**: Validates game mechanics against known standards
-- **Legacy**: Maintains compatibility with Mids Reborn expectations  
-- **Servers**: Supports both Homecoming and Rebirth variations
-- **Community input**: Encourages feedback on mechanics changes
+2. **Permissions**:
+   - Use minimal required permissions
+   - Review third-party action permissions
+   - Audit workflow access regularly
+
+3. **Code Execution**:
+   - Validate inputs in workflows
+   - Use specific action versions
+   - Review automated changes before merging
+
+## 📈 Performance Optimization
+
+1. **Caching**:
+   - Dependencies cached for faster runs
+   - Docker layer caching enabled
+   - Node modules cached by lock file
+
+2. **Parallelization**:
+   - Jobs run in parallel where possible
+   - Matrix builds for cross-platform testing
+   - Independent checks don't block each other
+
+3. **Conditional Execution**:
+   - Skip unnecessary jobs based on changes
+   - Smart change detection for targeted updates
+   - Early exit on non-relevant changes
+
+## 🔄 Maintenance
+
+### Weekly Tasks
+- Review context health reports
+- Check for workflow updates
+- Monitor token usage trends
+
+### Monthly Tasks
+- Audit workflow permissions
+- Update action versions
+- Review and optimize performance
+
+### Quarterly Tasks
+- Full workflow review
+- Security audit
+- Performance baseline update
+
+---
+
+*Last updated: 2025-01-27*

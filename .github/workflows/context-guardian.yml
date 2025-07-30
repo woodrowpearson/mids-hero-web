@@ -1,0 +1,494 @@
+name: Context Guardian
+
+on:
+  push:
+    paths:
+      - 'CLAUDE.md'
+      - '.claude/**'
+      - '.github/workflows/*.yml'
+  pull_request:
+    paths:
+      - 'CLAUDE.md'
+      - '.claude/**'
+  schedule:
+    - cron: '0 */6 * * *'  # Every 6 hours
+  workflow_dispatch:
+    inputs:
+      deep_analysis:
+        description: 'Perform deep context analysis'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  context-health-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install tiktoken pyyaml jsonschema
+      
+      - name: Create context guardian script
+        run: |
+          cat > scripts/context_guardian.py << 'EOF'
+#!/usr/bin/env python3
+"""Context Guardian - Ensures Claude context system health."""
+
+import os
+import json
+import yaml
+import tiktoken
+from pathlib import Path
+from typing import Dict, List, Tuple, Set
+from datetime import datetime
+import jsonschema
+
+class ContextGuardian:
+    def __init__(self):
+        self.root = Path.cwd()
+        self.tokenizer = tiktoken.get_encoding("cl100k_base")
+        self.issues = []
+        self.warnings = []
+        self.metrics = {}
+        
+        # Critical limits
+        self.CLAUDE_MD_LIMIT = 5000
+        self.MODULE_LIMIT = 20000
+        self.TOTAL_CONTEXT_LIMIT = 50000
+        self.FILE_SIZE_LIMIT = 100000  # 100KB
+        
+    def count_tokens(self, text: str) -> int:
+        """Count tokens in text."""
+        return len(self.tokenizer.encode(text))
+    
+    def check_claude_md(self) -> Dict[str, any]:
+        """Check CLAUDE.md health."""
+        claude_md = self.root / "CLAUDE.md"
+        if not claude_md.exists():
+            self.issues.append("CRITICAL: CLAUDE.md not found!")
+            return {}
+        
+        content = claude_md.read_text()
+        tokens = self.count_tokens(content)
+        size = len(content)
+        
+        result = {
+            'exists': True,
+            'tokens': tokens,
+            'size': size,
+            'lines': len(content.splitlines())
+        }
+        
+        if tokens > self.CLAUDE_MD_LIMIT:
+            self.issues.append(f"CLAUDE.md exceeds token limit: {tokens}/{self.CLAUDE_MD_LIMIT}")
+        elif tokens > self.CLAUDE_MD_LIMIT * 0.9:
+            self.warnings.append(f"CLAUDE.md approaching limit: {tokens}/{self.CLAUDE_MD_LIMIT}")
+        
+        # Check for required sections
+        required_sections = ['Quick Start', 'Essential Commands', 'Critical Rules']
+        for section in required_sections:
+            if section not in content:
+                self.warnings.append(f"CLAUDE.md missing section: {section}")
+        
+        return result
+    
+    def check_context_structure(self) -> Dict[str, any]:
+        """Validate .claude directory structure."""
+        claude_dir = self.root / ".claude"
+        if not claude_dir.exists():
+            self.issues.append("CRITICAL: .claude directory not found!")
+            return {}
+        
+        expected_structure = {
+            'settings.json': 'file',
+            'context-map.json': 'file',
+            'core': 'dir',
+            'modules': 'dir',
+            'workflows': 'dir',
+            'automation': 'dir',
+            'docs': 'dir',
+            'state': 'dir'
+        }
+        
+        structure_ok = True
+        for name, type_ in expected_structure.items():
+            path = claude_dir / name
+            if type_ == 'file' and not path.is_file():
+                self.issues.append(f"Missing required file: .claude/{name}")
+                structure_ok = False
+            elif type_ == 'dir' and not path.is_dir():
+                self.issues.append(f"Missing required directory: .claude/{name}")
+                structure_ok = False
+        
+        return {'structure_valid': structure_ok}
+    
+    def validate_context_map(self) -> Dict[str, any]:
+        """Validate context-map.json."""
+        context_map_path = self.root / ".claude/context-map.json"
+        if not context_map_path.exists():
+            self.issues.append("context-map.json not found")
+            return {}
+        
+        try:
+            with open(context_map_path) as f:
+                context_map = json.load(f)
+            
+            # Validate structure
+            required_keys = ['version', 'limits', 'modules']
+            for key in required_keys:
+                if key not in context_map:
+                    self.issues.append(f"context-map.json missing key: {key}")
+            
+            # Check module definitions
+            if 'modules' in context_map:
+                for module_name, module_config in context_map['modules'].items():
+                    if 'triggers' not in module_config:
+                        self.warnings.append(f"Module {module_name} missing triggers")
+                    if 'load_paths' not in module_config:
+                        self.warnings.append(f"Module {module_name} missing load_paths")
+            
+            return {'valid': True, 'modules': len(context_map.get('modules', {}))}
+            
+        except json.JSONDecodeError as e:
+            self.issues.append(f"context-map.json invalid JSON: {e}")
+            return {'valid': False}
+    
+    def analyze_modules(self) -> Dict[str, any]:
+        """Analyze module token usage."""
+        modules_dir = self.root / ".claude/modules"
+        if not modules_dir.exists():
+            return {}
+        
+        module_stats = {}
+        total_module_tokens = 0
+        
+        for module_dir in modules_dir.iterdir():
+            if module_dir.is_dir():
+                module_tokens = 0
+                module_files = []
+                
+                for file_path in module_dir.rglob("*.md"):
+                    content = file_path.read_text()
+                    tokens = self.count_tokens(content)
+                    module_tokens += tokens
+                    module_files.append({
+                        'file': str(file_path.relative_to(modules_dir)),
+                        'tokens': tokens
+                    })
+                
+                module_stats[module_dir.name] = {
+                    'total_tokens': module_tokens,
+                    'file_count': len(module_files),
+                    'files': module_files
+                }
+                
+                total_module_tokens += module_tokens
+                
+                if module_tokens > self.MODULE_LIMIT:
+                    self.issues.append(
+                        f"Module {module_dir.name} exceeds limit: {module_tokens}/{self.MODULE_LIMIT}"
+                    )
+                elif module_tokens > self.MODULE_LIMIT * 0.8:
+                    self.warnings.append(
+                        f"Module {module_dir.name} approaching limit: {module_tokens}/{self.MODULE_LIMIT}"
+                    )
+        
+        return {
+            'modules': module_stats,
+            'total_tokens': total_module_tokens
+        }
+    
+    def calculate_total_context(self) -> Dict[str, any]:
+        """Calculate total context usage."""
+        total_tokens = 0
+        context_breakdown = {}
+        
+        # CLAUDE.md
+        claude_md_stats = self.check_claude_md()
+        if claude_md_stats:
+            total_tokens += claude_md_stats.get('tokens', 0)
+            context_breakdown['CLAUDE.md'] = claude_md_stats.get('tokens', 0)
+        
+        # Core context
+        core_dir = self.root / ".claude/core"
+        if core_dir.exists():
+            core_tokens = 0
+            for file_path in core_dir.rglob("*.md"):
+                tokens = self.count_tokens(file_path.read_text())
+                core_tokens += tokens
+            total_tokens += core_tokens
+            context_breakdown['core'] = core_tokens
+        
+        # Settings and config
+        for config_file in ['.claude/settings.json', '.claude/context-map.json']:
+            path = self.root / config_file
+            if path.exists():
+                tokens = self.count_tokens(path.read_text())
+                total_tokens += tokens
+                context_breakdown[config_file] = tokens
+        
+        # Check against limit
+        if total_tokens > self.TOTAL_CONTEXT_LIMIT:
+            self.issues.append(
+                f"Total context exceeds limit: {total_tokens}/{self.TOTAL_CONTEXT_LIMIT}"
+            )
+        elif total_tokens > self.TOTAL_CONTEXT_LIMIT * 0.9:
+            self.warnings.append(
+                f"Total context approaching limit: {total_tokens}/{self.TOTAL_CONTEXT_LIMIT}"
+            )
+        
+        return {
+            'total_tokens': total_tokens,
+            'breakdown': context_breakdown,
+            'usage_percent': (total_tokens / self.TOTAL_CONTEXT_LIMIT) * 100
+        }
+    
+    def check_documentation_consistency(self) -> List[str]:
+        """Check for documentation inconsistencies."""
+        inconsistencies = []
+        
+        # Check if .github/README.md correctly describes .claude location
+        github_readme = self.root / ".github/README.md"
+        if github_readme.exists():
+            content = github_readme.read_text()
+            if '.github/.claude' in content:
+                inconsistencies.append(
+                    ".github/README.md incorrectly states .claude is under .github"
+                )
+        
+        # Check if workflows README is accurate
+        workflows_readme = self.root / ".github/workflows/README.md"
+        if workflows_readme.exists():
+            content = workflows_readme.read_text()
+            actual_workflows = set(p.stem for p in (self.root / ".github/workflows").glob("*.yml"))
+            
+            # Simple check for workflow mentions
+            for workflow in actual_workflows:
+                if workflow not in content:
+                    inconsistencies.append(
+                        f"Workflow {workflow}.yml not documented in workflows README"
+                    )
+        
+        # Check for command consistency
+        claude_md = self.root / "CLAUDE.md"
+        if claude_md.exists():
+            content = claude_md.read_text()
+            
+            # Check for outdated commands
+            deprecated_commands = ['pip install', 'find ', 'rm -rf']
+            for cmd in deprecated_commands:
+                if cmd in content:
+                    inconsistencies.append(f"CLAUDE.md contains deprecated command: {cmd}")
+        
+        return inconsistencies
+    
+    def generate_report(self) -> str:
+        """Generate health check report."""
+        report = f"""# Context Guardian Report
+Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+
+## Summary
+- Issues Found: {len(self.issues)}
+- Warnings: {len(self.warnings)}
+- Status: {'❌ FAILED' if self.issues else '⚠️ WARNING' if self.warnings else '✅ HEALTHY'}
+
+"""
+        
+        if self.issues:
+            report += "## 🚨 Critical Issues\n"
+            for issue in self.issues:
+                report += f"- {issue}\n"
+            report += "\n"
+        
+        if self.warnings:
+            report += "## ⚠️ Warnings\n"
+            for warning in self.warnings:
+                report += f"- {warning}\n"
+            report += "\n"
+        
+        # Add metrics
+        total_context = self.calculate_total_context()
+        report += f"""## 📊 Context Metrics
+- Total Context Usage: {total_context['total_tokens']:,} tokens ({total_context['usage_percent']:.1f}% of limit)
+- CLAUDE.md: {self.metrics.get('claude_md_tokens', 0):,} tokens
+- Core Context: {total_context['breakdown'].get('core', 0):,} tokens
+
+### Token Distribution
+"""
+        
+        for component, tokens in total_context['breakdown'].items():
+            report += f"- {component}: {tokens:,} tokens\n"
+        
+        # Add module analysis
+        module_analysis = self.analyze_modules()
+        if module_analysis.get('modules'):
+            report += "\n## 📦 Module Analysis\n"
+            for module_name, stats in module_analysis['modules'].items():
+                report += f"\n### {module_name}\n"
+                report += f"- Total tokens: {stats['total_tokens']:,}\n"
+                report += f"- Files: {stats['file_count']}\n"
+        
+        # Add consistency check
+        inconsistencies = self.check_documentation_consistency()
+        if inconsistencies:
+            report += "\n## 📝 Documentation Consistency Issues\n"
+            for issue in inconsistencies:
+                report += f"- {issue}\n"
+        
+        # Add recommendations
+        report += "\n## 💡 Recommendations\n"
+        
+        if total_context['usage_percent'] > 90:
+            report += "- Consider pruning large documentation files\n"
+            report += "- Review module contents for redundancy\n"
+        
+        if self.metrics.get('claude_md_tokens', 0) > 4000:
+            report += "- CLAUDE.md is approaching token limit, consider moving details to modules\n"
+        
+        if inconsistencies:
+            report += "- Fix documentation inconsistencies to avoid confusion\n"
+        
+        return report
+    
+    def run(self, deep_analysis: bool = False) -> Tuple[bool, str]:
+        """Run the context guardian checks."""
+        print("🛡️ Context Guardian starting health check...")
+        
+        # Basic checks
+        self.check_claude_md()
+        self.check_context_structure()
+        self.validate_context_map()
+        
+        # Store metrics
+        claude_stats = self.check_claude_md()
+        if claude_stats:
+            self.metrics['claude_md_tokens'] = claude_stats.get('tokens', 0)
+        
+        # Deep analysis if requested
+        if deep_analysis:
+            self.analyze_modules()
+            self.check_documentation_consistency()
+        
+        # Generate report
+        report = self.generate_report()
+        
+        # Save report
+        report_dir = self.root / ".claude/state/health-reports"
+        report_dir.mkdir(parents=True, exist_ok=True)
+        
+        report_path = report_dir / f"health-{datetime.now().strftime('%Y%m%d-%H%M%S')}.md"
+        report_path.write_text(report)
+        
+        print(f"\n{report}")
+        print(f"\nReport saved to: {report_path}")
+        
+        # Return success/failure
+        return len(self.issues) == 0, report
+
+if __name__ == "__main__":
+    import sys
+    
+    guardian = ContextGuardian()
+    deep_analysis = os.getenv('DEEP_ANALYSIS', 'false') == 'true'
+    
+    success, report = guardian.run(deep_analysis)
+    
+    # Exit with error if issues found
+    sys.exit(0 if success else 1)
+EOF
+          chmod +x scripts/context_guardian.py
+      
+      - name: Run context health check
+        id: health-check
+        env:
+          DEEP_ANALYSIS: ${{ inputs.deep_analysis }}
+        run: |
+          python scripts/context_guardian.py || echo "health_status=failed" >> $GITHUB_OUTPUT
+      
+      - name: Comment on PR if issues found
+        if: |
+          github.event_name == 'pull_request' && 
+          steps.health-check.outputs.health_status == 'failed'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            
+            // Find the latest health report
+            const reportsDir = '.claude/state/health-reports';
+            const files = fs.readdirSync(reportsDir);
+            const latestReport = files.sort().reverse()[0];
+            const reportContent = fs.readFileSync(path.join(reportsDir, latestReport), 'utf8');
+            
+            // Extract summary from report
+            const summaryMatch = reportContent.match(/## Summary[\s\S]*?(?=##|$)/);
+            const summary = summaryMatch ? summaryMatch[0] : 'Health check failed';
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## 🛡️ Context Guardian Alert
+              
+              ${summary}
+              
+              <details>
+              <summary>Full Report</summary>
+              
+              \`\`\`
+              ${reportContent}
+              \`\`\`
+              </details>
+              
+              Please address any critical issues before merging.`
+            });
+      
+      - name: Create issue for scheduled failures
+        if: |
+          github.event_name == 'schedule' && 
+          steps.health-check.outputs.health_status == 'failed'
+        run: |
+          # Check if issue already exists
+          EXISTING=$(gh issue list --label "context-health" --state open --json number --jq '.[0].number')
+          
+          if [ -z "$EXISTING" ]; then
+            # Find latest report
+            REPORT=$(ls -t .claude/state/health-reports/*.md | head -1)
+            
+            gh issue create \
+              --title "Context Guardian: Health Check Failed" \
+              --label "context-health,automation" \
+              --body "The Context Guardian detected issues during the scheduled health check.
+              
+              ## Latest Report
+              
+              \`\`\`
+              $(cat $REPORT)
+              \`\`\`
+              
+              Please review and address the issues to maintain optimal Claude Code performance."
+          else
+            echo "Issue #$EXISTING already exists for context health"
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
+      
+      - name: Upload health report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: context-health-report
+          path: .claude/state/health-reports/
+          retention-days: 30

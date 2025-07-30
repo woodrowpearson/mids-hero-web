@@ -1,163 +1,130 @@
-# Claude Context System
+# GitHub Configuration
 
-> **Quick Start**: Claude automatically loads `CLAUDE.md` and this directory. Keep CLAUDE.md under 5K tokens as your primary guide.
+This directory contains GitHub-specific configuration including workflows, issue templates, and project documentation.
 
-## How Claude Context Works
-
-### 🎯 Core Principle: Progressive Context Loading
-
-Claude doesn't need everything at once. We load context progressively based on your task:
-
-```mermaid
-graph TD
-    Start[Claude Session Start] --> Core[Load Core Context<br/>~10K tokens]
-    Core --> CLAUDE[CLAUDE.md<br/>~2K tokens]
-    Core --> Settings[settings.json<br/>~3K tokens]
-    Core --> Map[context-map.json<br/>~2K tokens]
-    
-    User[User declares task] --> Detect{Detect Keywords}
-    Detect -->|"database"| DB[Load Database Module<br/>+15K tokens]
-    Detect -->|"import"| Import[Load Import Module<br/>+15K tokens]
-    Detect -->|"api"| API[Load API Module<br/>+15K tokens]
-    Detect -->|"frontend"| FE[Load Frontend Module<br/>+15K tokens]
-    
-    style Core fill:#99ff99
-    style DB fill:#ffcc99
-    style Import fill:#ffcc99
-    style API fill:#ffcc99
-    style FE fill:#ffcc99
-```
-
-### 📊 Token Budget Management
-
-```mermaid
-pie title "128K Token Allocation"
-    "Core Context (Always)" : 10
-    "Active Module (Task)" : 15
-    "Working Memory (Conversation)" : 80
-    "Safety Reserve" : 23
-```
-
-- **Core context**: ~10K (always loaded)
-- **Active modules**: ~20-40K (task-specific)
-- **Working memory**: ~40-80K (conversation)
-- **Safety reserve**: ~8K
-
-**Warnings at 90K, auto-pruning at 110K**
-
-### 🗂️ Directory Structure
+## 📁 Directory Structure
 
 ```
-.claude/
-├── README.md          # You are here
-├── settings.json      # Claude behavior configuration
-├── context-map.json   # Loading rules and limits
-│
-├── core/             # Always loaded (max 10K total)
-├── modules/          # Task-specific contexts
-├── workflows/        # Standard procedures
-├── automation/       # Scripts and commands
-├── state/            # Project state (git-ignored)
-└── docs/             # Meta-documentation
+.github/
+├── workflows/          # GitHub Actions workflows
+│   ├── ci.yml         # Continuous Integration
+│   ├── claude-*.yml   # Claude Code integrations
+│   ├── doc-*.yml      # Documentation automation
+│   └── ...
+├── ISSUE_TEMPLATE/    # Issue templates (if any)
+├── PULL_REQUEST_TEMPLATE/ # PR templates (if any)
+└── README.md          # This file
 ```
 
-### 🚀 Common Tasks
+## 🤖 GitHub Actions Workflows
 
-**Starting work on database:**
-```bash
-# Claude auto-loads database module when you mention database work
-"I need to work on database migrations"
+Our workflows provide automated CI/CD, AI-powered code review, and documentation synchronization. See [workflows/README.md](.github/workflows/README.md) for detailed information.
+
+### Active Workflows
+
+1. **ci.yml** - Main CI/CD pipeline with tests, linting, and security scanning
+2. **claude-auto-review.yml** - Automatic PR review using Claude
+3. **claude-code-integration.yml** - Interactive Claude assistant via @claude mentions
+4. **context-health-check.yml** - Monitors Claude context system health
+5. **doc-auto-sync.yml** - Automatically updates documentation when code changes
+6. **doc-review.yml** - Reviews PRs for documentation impact
+7. **update-claude-docs.yml** - Updates Claude-specific documentation
+8. **dataexporter-tests.yml** - Tests for the DataExporter module
+
+## 🔧 Claude Context System
+
+The Claude context system is located at `.claude/` in the repository root (not in `.github/`). It contains:
+
+- **Progressive context loading** based on declared tasks
+- **Token management** with automatic warnings
+- **Native sub-agents** for specialized development tasks
+- **Activity tracking** and session management
+
+See [/.claude/README.md](/.claude/README.md) for complete documentation about the context system.
+
+## 🚀 Workflow Features
+
+### Continuous Integration
+- Automated testing for backend (Python/FastAPI) and frontend (React/TypeScript)
+- Code quality checks with ruff, black, ESLint
+- Security scanning with Trivy
+- PostgreSQL integration testing
+
+### AI-Powered Development
+- **PR Reviews**: Claude automatically reviews code changes
+- **Interactive Help**: Use @claude in PR/issue comments for assistance
+- **Documentation Sync**: Automatic updates when code changes
+- **Context Health**: Monitors token usage and file sizes
+
+### Documentation Automation
+- **Smart Detection**: Identifies which docs need updates based on code changes
+- **Auto-sync**: Updates README files, API docs, and Claude context
+- **Token Validation**: Ensures CLAUDE.md stays under 5K tokens
+- **Weekly Sync**: Full documentation consistency check
+
+## 📋 Setup Requirements
+
+1. **Repository Secrets**:
+   - `ANTHROPIC_API_KEY` - Required for Claude features
+   - `CODECOV_TOKEN` - Optional for coverage reporting
+
+2. **Branch Protection**:
+   - Enable status checks for `ci` workflow
+   - Require PR reviews before merging
+
+3. **Permissions**:
+   - Workflows need write access to PRs and issues
+   - Claude actions need content read permissions
+
+## 💡 Usage Examples
+
+### Getting AI Code Review
+Simply create a PR - Claude will automatically review it. For additional review:
+```
+@claude Can you review the error handling in this PR?
 ```
 
-**Import operations:**
-```bash
-# Claude loads import module for import tasks
-"I need to import I12 power data"
+### Asking Claude Questions
+In any PR or issue comment:
+```
+@claude How should I implement the power calculation system?
+@claude What's the current status of Epic 2?
 ```
 
-**Context health checks:**
-```bash
-just context-check      # Full validation and analysis
-just context-validate   # Check structure and limits
-just token-analyze      # Analyze token usage
-```
+### Manual Documentation Sync
+Trigger the doc-auto-sync workflow manually from the Actions tab with "Force full sync" option.
 
-**Quick reference:**
-- See `CLAUDE.md` for project overview
-- See `.claude/core/quick-reference.md` for common commands
-- See `.claude/workflows/daily.md` for development workflow
+## 🛠️ Development Guidelines
 
-### ⚡ Best Practices
+When modifying workflows:
 
-1. **Start with task declaration** - Helps Claude load right context
-2. **Use /clear between tasks** - Prevents context pollution  
-3. **Check token usage** - Run `just context-check` regularly
-4. **One task per session** - Maintains focus
-5. **Validate before commits** - Ensure context stays healthy
+1. **Test in feature branches** before merging
+2. **Update workflow documentation** in `.github/workflows/README.md`
+3. **Maintain backward compatibility** with existing PRs
+4. **Monitor token usage** to prevent context overflow
+5. **Follow security best practices** for secrets and permissions
 
-### 🤖 Automation Status
+## 📊 Monitoring
 
-```mermaid
-graph LR
-    subgraph "ACTIVE NOW ✨"
-        Hooks[Claude Code Hooks<br/>UserPromptSubmit<br/>PreToolUse<br/>PostToolUse<br/>Stop]
-        Auto[Automatic Validation<br/>Token Limiting<br/>Activity Logging]
-    end
-    
-    subgraph "Manual Backup"
-        Manual[Manual Commands<br/>just context-check<br/>just token-analyze]
-    end
-    
-    Hooks --> Auto
-    Auto --> Manual
-    
-    style Hooks fill:#99ff99
-    style Auto fill:#99ff99
-    style Manual fill:#ccccff
-```
+- **Workflow Runs**: Check Actions tab for execution history
+- **Context Health**: Review weekly health check reports
+- **Token Usage**: Monitor CLAUDE.md size warnings
+- **Documentation Drift**: Check doc-auto-sync summaries
 
-**Current**: ✅ Hooks run automatically on every Claude interaction  
-**Backup**: Manual commands available for debugging and analysis
+## 🔗 Related Documentation
 
-### 🔧 Available Commands
+- [Workflows Documentation](.github/workflows/README.md) - Detailed workflow information
+- [Claude Context System](/.claude/README.md) - AI assistant configuration
+- [Project Overview](/CLAUDE.md) - Main project guide
+- [Development Workflow](/.claude/docs/development-workflow.md) - Development best practices
 
-```bash
-# Context validation
-just context-check      # Full health check (validate + analyze)
-just context-validate   # Validate structure against limits
-just token-analyze      # Analyze token usage in directories
+## ⚠️ Important Notes
 
-# Manual hook execution (until automated)
-bash .claude/automation/hooks/session-start-hook.sh
-bash .claude/automation/hooks/session-end-hook.sh
-```
-
-### ⚙️ Customization
-
-Edit `.claude/context-map.json` to:
-- Adjust token limits
-- Change loading rules
-- Add new modules
-- Set file size limits
-- Configure tool loadouts per task
-
-### ❓ Troubleshooting
-
-**Context overflow?**
-- Use /clear command
-- Start new session
-- Check for large files in modules/
-
-**Missing context?**
-- Explicitly mention your task domain
-- Check context-map.json rules
-- Verify file exists in expected location
-
-**Conflicting information?**
-- Check for duplicates across modules
-- Ensure single source of truth
-- Report in GitHub issue
+1. The `.claude/` directory is at the repository root, not inside `.github/`
+2. All Claude-related configuration is in `.claude/settings.json`
+3. Workflow modifications may affect PR checks - test carefully
+4. Token limits are enforced to maintain Claude performance
 
 ---
 
-*Based on context management best practices from ["How Contexts Fail"](https://www.dbreunig.com/2025/06/22/how-contexts-fail-and-how-to-fix-them.html)*
+*For workflow-specific documentation, see [.github/workflows/README.md](.github/workflows/README.md)*

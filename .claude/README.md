@@ -147,6 +147,60 @@ Edit `.claude/context-map.json` to:
 - Ensure single source of truth
 - Report in GitHub issue
 
+## 🔧 GitHub Integration
+
+The Claude context system integrates seamlessly with GitHub workflows to provide:
+
+### Automated Features
+
+1. **PR Code Review** (claude-auto-review.yml)
+   - Automatic review on every PR
+   - City of Heroes domain knowledge
+   - Inline code suggestions
+
+2. **Interactive Assistant** (claude-code-integration.yml)
+   - Use `@claude` in PR/issue comments
+   - Get help with implementation
+   - Ask about project status
+
+3. **Documentation Sync** (doc-auto-sync.yml)
+   - Automatic updates when code changes
+   - Weekly consistency checks
+   - Token limit enforcement
+
+4. **Context Health** (context-health-check.yml)
+   - Runs every 6 hours
+   - Monitors file sizes
+   - Validates structure
+
+### Working with Workflows
+
+**Local Development**:
+- Claude Code hooks trigger automatically
+- Context loads based on your task
+- Activity tracked for continuity
+
+**GitHub Integration**:
+- PRs get automatic review
+- Documentation stays in sync
+- Health checks prevent issues
+
+**Example Workflow**:
+```bash
+# 1. Create feature branch
+git checkout -b feature/new-power
+
+# 2. Tell Claude your task
+"I need to add a new power calculation"
+
+# 3. Make changes (Claude loads calculation context)
+# 4. Create PR (automatic review starts)
+# 5. Use @claude for help in PR comments
+# 6. Documentation updates suggested automatically
+```
+
+See [/.github/workflows/README.md](/.github/workflows/README.md) for detailed workflow documentation.
+
 ---
 
 *Based on context management best practices from ["How Contexts Fail"](https://www.dbreunig.com/2025/06/22/how-contexts-fail-and-how-to-fix-them.html)*

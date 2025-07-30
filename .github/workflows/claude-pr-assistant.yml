@@ -44,27 +44,21 @@ jobs:
           echo "$CLAUDE_CONTEXT" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
       
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      
       - name: Claude PR Review
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          # Run custom Claude integration for comprehensive PR review
-          bash .github/scripts/claude_wrapper.sh \
-            --prompt "You are reviewing PR #${{ github.event.pull_request.number || inputs.pr_number }} for the Mids Hero Web project.
+        uses: anthropics/claude-code-action@v1.2.0
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          timeout_minutes: "20"
+          direct_prompt: |
+            You are reviewing PR #${{ github.event.pull_request.number || inputs.pr_number }} for the Mids Hero Web project.
             
-            Repository: ${{ github.repository }}
-            Event: ${{ github.event_name }}
+            Project Context:
+            ${{ steps.context.outputs.context }}
             
             Please provide a comprehensive review focusing on:
             
             ## Code Quality
-            - Adherence to project standards (use of 'just', 'uv', 'fd', 'trash')
+            - Adherence to project standards (use of `just`, `uv`, `fd`, `trash`)
             - Python best practices and type hints
             - React/TypeScript patterns and conventions
             - Error handling and edge cases
@@ -95,11 +89,6 @@ jobs:
             2. Specific inline comments on code issues
             3. Suggestions for improvement
             4. Recognition of good patterns to encourage
-            
-            Format as a helpful GitHub PR review comment." \
-            --timeout 20 \
-            --pr ${{ github.event.pull_request.number || inputs.pr_number }} \
-            --post-comment
 
   # Handle @claude mentions in PR comments
   claude-mention-handler:
@@ -169,35 +158,28 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
       
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      
       - name: Claude Response
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          # Prepare context for Claude
-          CONTEXT=""
-          if [ -n "${{ steps.extract.outputs.module_context }}" ]; then
-            CONTEXT="Relevant Module Context: ${{ steps.extract.outputs.module_context }}"
-          fi
-          
-          # Run custom Claude integration
-          bash .github/scripts/claude_wrapper.sh \
-            --prompt "You are responding to a question in PR #${{ github.event.issue.number }} of the Mids Hero Web project.
+        uses: anthropics/claude-code-action@v1.2.0
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          timeout_minutes: "10"
+          direct_prompt: |
+            You are responding to a question in PR #${{ github.event.issue.number }} of the Mids Hero Web project.
             
             PR Title: ${{ steps.pr.outputs.title }}
             Base Branch: ${{ steps.pr.outputs.base_branch }}
             Head Branch: ${{ steps.pr.outputs.head_branch }}
-            User: ${{ github.event.comment.user.login }}
             
             User Question:
             ${{ steps.extract.outputs.question }}
             
-            $CONTEXT
+            Relevant Module Context:
+            ${{ steps.extract.outputs.module_context }}
+            
+            PR Diff Preview (first 500 lines):
+            ```diff
+            ${{ steps.diff.outputs.diff }}
+            ```
             
             Please provide a helpful response that:
             1. Directly answers the user's question
@@ -207,10 +189,7 @@ jobs:
             5. Suggests concrete code examples when helpful
             6. Keeps responses concise but complete
             
-            Format your response as a GitHub comment with proper markdown." \
-            --timeout 10 \
-            --pr ${{ github.event.issue.number }} \
-            --post-comment
+            Format your response as a GitHub comment with proper markdown.
 
   # Check if review was requested via slash command
   slash-command-review:

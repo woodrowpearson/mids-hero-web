@@ -30,35 +30,19 @@ jobs:
           # Remove @claude mention and get actual question
           QUESTION=$(echo "$USER_COMMENT" | sed 's/@claude//' | sed 's/^[[:space:]]*//')
           echo "question=$QUESTION" >> $GITHUB_OUTPUT
-      
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
           
       - name: Claude Code Response
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          # Run custom Claude integration
-          bash .github/scripts/claude_wrapper.sh \
-            --prompt "You are responding to a question in PR #${{ github.event.issue.number }} of the Mids Hero Web project.
+        uses: anthropics/claude-code-action@v1.2.0
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          timeout_minutes: "10"
+          direct_prompt: |
+            You are responding to a question in PR #${{ github.event.issue.number }} of the Mids Hero Web project.
             
-            User: ${{ github.event.comment.user.login }}
             User question: ${{ steps.extract.outputs.question }}
             
             Provide a helpful response about the codebase, epic progress, or City of Heroes mechanics as requested.
             Keep your response concise and relevant to the question.
-            
-            Context:
-            - This is a City of Heroes build planner replacement project
-            - We're replacing the legacy Windows Forms app with React/FastAPI
-            - Currently on Epic 2.5.2 (Native Sub-Agents Implementation)
-            - Focus on accurate game mechanics and domain knowledge" \
-            --timeout 10 \
-            --pr ${{ github.event.issue.number }} \
-            --post-comment
 
   claude-doc-automation:
     if: github.event.issue.pull_request && contains(github.event.comment.body, 'implement doc suggestions')
@@ -73,38 +57,26 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           ref: ${{ github.event.issue.pull_request.head.ref }}
-      
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
           
       - name: Implement Documentation Suggestions
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          # For now, just acknowledge the request
-          echo "Documentation implementation requested by ${{ github.event.comment.user.login }}"
-          echo "Comment: ${{ github.event.comment.body }}"
-          
-          # Run Claude to analyze what needs to be done
-          bash .github/scripts/claude_wrapper.sh \
-            --prompt "Documentation update requested for PR #${{ github.event.issue.number }}.
+        uses: anthropics/claude-code-action@v1.2.0
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          timeout_minutes: "15"
+          direct_prompt: |
+            This is an automated task to implement documentation suggestions for PR #${{ github.event.issue.number }}.
             
-            User comment: '${{ github.event.comment.body }}'
+            1. Search for recent documentation suggestions in PR comments from github-actions bot
+            2. Apply the suggested documentation updates to the appropriate files
+            3. Ensure CLAUDE.md stays under 5K tokens
+            4. Commit any changes with appropriate message
             
-            Please analyze what documentation updates are needed and provide a summary of the changes that would be made.
             Focus on:
-            - Epic status updates
-            - Token limit compliance for CLAUDE.md
+            - Epic status updates in CLAUDE.md
+            - Token limit compliance
             - Documentation accuracy
             
-            Note: Actual file modifications are not yet implemented in this workflow.
-            Provide a clear summary of what would need to be updated." \
-            --timeout 15 \
-            --pr ${{ github.event.issue.number }} \
-            --post-comment
+            The user comment was: "${{ github.event.comment.body }}"
 
   approval-processor:
     if: github.event.issue.pull_request && (contains(github.event.comment.body, 'approved') || contains(github.event.comment.body, 'approve') || contains(github.event.comment.body, 'implement this') || contains(github.event.comment.body, 'apply this') || contains(github.event.comment.body, '✅') || contains(github.event.comment.body, 'yes, apply') || contains(github.event.comment.body, 'go ahead'))
@@ -119,40 +91,28 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           ref: ${{ github.event.issue.pull_request.head.ref }}
-      
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
           
       - name: Process Approval and Apply Changes
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          # Acknowledge the approval
-          echo "Approval detected from ${{ github.event.comment.user.login }}"
-          echo "Comment: ${{ github.event.comment.body }}"
-          
-          # Run Claude to analyze the approval
-          bash .github/scripts/claude_wrapper.sh \
-            --prompt "Approval comment detected in PR #${{ github.event.issue.number }}.
+        uses: anthropics/claude-code-action@v1.2.0
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          timeout_minutes: "20"
+          direct_prompt: |
+            This is an automated task to process approval comments and apply approved changes for PR #${{ github.event.issue.number }}.
             
-            User: ${{ github.event.comment.user.login }}
-            Approval comment: '${{ github.event.comment.body }}'
+            User approval comment: "${{ github.event.comment.body }}"
             
-            Please analyze this approval and determine:
-            1. Is this a simple approval or approval with modifications?
-            2. What specific changes are being approved?
-            3. Are there any additional modifications requested?
+            Tasks:
+            1. Find recent documentation suggestions from github-actions bot in this PR
+            2. Determine if this is a simple approval or approval with modifications
+            3. Apply the approved changes based on the approval type
+            4. For modified approvals, parse and apply the requested modifications
+            5. Commit changes with appropriate message
             
-            Common approval patterns:
-            - 'approved' or 'approve' - Simple approval
-            - 'approved with X' - Approval with specific modifications
-            - 'implement this' - Apply suggested changes
+            Common modifications to handle:
+            - Docker commands addition
+            - Epic 2 details updates
+            - API documentation sections
+            - Quick commands documentation
             
-            Note: Actual file modifications are not yet implemented in this workflow.
-            Provide a clear summary of what the approval means and what would be done." \
-            --timeout 20 \
-            --pr ${{ github.event.issue.number }} \
-            --post-comment
+            Ensure all changes are properly committed and pushed.

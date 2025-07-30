@@ -36,21 +36,14 @@ jobs:
             .claude/**/*.md
             .github/workflows/*.yml
             
-      - name: Set up Python
-        if: steps.changed-files.outputs.any_changed == 'true'
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      
       - name: Documentation Review with Claude
         if: steps.changed-files.outputs.any_changed == 'true'
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          # Run custom Claude integration
-          bash .github/scripts/claude_wrapper.sh \
-            --prompt "Review the changes in PR #${{ github.event.pull_request.number }} and analyze documentation impact.
+        uses: anthropics/claude-code-action@v1.2.0
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          timeout_minutes: "10"
+          direct_prompt: |
+            Review the changes in PR #${{ github.event.pull_request.number }} and analyze documentation impact.
             
             Changed files: ${{ steps.changed-files.outputs.all_changed_files }}
             
@@ -72,7 +65,4 @@ jobs:
             - Checklist of recommended updates
             - Any warnings about stale references
             
-            Keep the review concise and actionable." \
-            --timeout 10 \
-            --pr ${{ github.event.pull_request.number }} \
-            --post-comment
+            Keep the review concise and actionable.

@@ -17,23 +17,15 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      
+      # Pin to stable version and add validation
       - name: Automatic PR Review
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          # Run custom Claude integration for PR review
-          bash .github/scripts/claude_wrapper.sh \
-            --prompt "Please review pull request #${{ github.event.pull_request.number }} and provide comprehensive feedback.
+        uses: anthropics/claude-code-action@v1.2.0  # Use stable version
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          timeout_minutes: "30"  # Reduce timeout
+          direct_prompt: |
+            Please review this pull request and provide comprehensive feedback.
 
-            Repository: ${{ github.repository }}
-            PR Title: ${{ github.event.pull_request.title }}
-            
             Focus on:
             - Code quality and best practices
             - Potential bugs or issues
@@ -41,12 +33,7 @@ jobs:
             - Security implications
             - Test coverage
             - Documentation updates if needed
-            - City of Heroes domain accuracy (for game mechanics)
 
             Provide constructive feedback with specific suggestions for improvement.
-            Mention specific files and line numbers where applicable.
-            
-            Format your response as a helpful PR review comment." \
-            --timeout 30 \
-            --pr ${{ github.event.pull_request.number }} \
-            --post-comment
+            Use inline comments to highlight specific areas of concern.
+          # allowed_tools: "mcp__github__create_pending_pull_request_review,mcp__github__add_pull_request_review_comment_to_pending_review,mcp__github__submit_pending_pull_request_review,mcp__github__get_pull_request_diff"

@@ -117,8 +117,8 @@ just context-validate   # Validate structure against limits
 just token-analyze      # Analyze token usage in directories
 
 # Manual hook execution (if needed)
-bash .claude/automation/hooks/session-start-hook.sh
-bash .claude/automation/hooks/session-end-hook.sh
+# Hooks are now automatically managed via .claude/settings.json
+# No manual execution needed
 ```
 
 ### ⚙️ Customization

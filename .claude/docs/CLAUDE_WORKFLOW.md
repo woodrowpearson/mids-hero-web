@@ -127,7 +127,7 @@ Semantic search over documentation:
 │   ├── session_summarizer.py
 │   ├── rag-indexer.py
 │   └── rag-search.py
-├── automation/hooks/         # Hook scripts
+├── hooks/                    # Active Claude Code hooks
 └── state/                    # Runtime state (gitignored)
     ├── scratchpad.md
     ├── logs/

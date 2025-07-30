@@ -67,9 +67,11 @@ just i12-import file   # Import powers
 
 ## 📊 Current Status
 
-- **Epic 1**: ✅ Complete (Setup, CI/CD)
-- **Epic 2**: 🚧 95% (I12 parser done, MHD pending)
-- **Epic 3-6**: 📋 Planned (API, Frontend, Deploy)
+- **Epic 1**: ✅ Complete (Setup, CI/CD, GitHub Actions optimized)
+- **Epic 2**: ✅ Complete (I12 parser, database integration)
+- **Epic 2.5.2**: ✅ Complete (Native sub-agents, workflows optimized)
+- **Epic 3**: 🚧 25% (Core API endpoints done)
+- **Epic 4-6**: 📋 Planned (Frontend, Deploy, Optimize)
 
 ## 🛠️ Critical Rules
 

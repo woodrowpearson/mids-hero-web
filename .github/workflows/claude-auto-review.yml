@@ -17,9 +17,8 @@ jobs:
         with:
           fetch-depth: 1
 
-      # Pin to stable version and add validation
       - name: Automatic PR Review
-        uses: anthropics/claude-code-action@v1.2.0  # Use stable version
+        uses: anthropics/claude-code-action@beta
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           timeout_minutes: "30"  # Reduce timeout

@@ -32,7 +32,7 @@ jobs:
           echo "question=$QUESTION" >> $GITHUB_OUTPUT
           
       - name: Claude Code Response
-        uses: anthropics/claude-code-action@v1.2.0
+        uses: anthropics/claude-code-action@beta
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           timeout_minutes: "10"
@@ -59,7 +59,7 @@ jobs:
           ref: ${{ github.event.issue.pull_request.head.ref }}
           
       - name: Implement Documentation Suggestions
-        uses: anthropics/claude-code-action@v1.2.0
+        uses: anthropics/claude-code-action@beta
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           timeout_minutes: "15"
@@ -93,7 +93,7 @@ jobs:
           ref: ${{ github.event.issue.pull_request.head.ref }}
           
       - name: Process Approval and Apply Changes
-        uses: anthropics/claude-code-action@v1.2.0
+        uses: anthropics/claude-code-action@beta
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           timeout_minutes: "20"

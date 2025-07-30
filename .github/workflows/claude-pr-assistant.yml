@@ -45,7 +45,7 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
       
       - name: Claude PR Review
-        uses: anthropics/claude-code-action@v1.2.0
+        uses: anthropics/claude-code-action@beta
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           timeout_minutes: "20"
@@ -159,7 +159,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
       
       - name: Claude Response
-        uses: anthropics/claude-code-action@v1.2.0
+        uses: anthropics/claude-code-action@beta
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           timeout_minutes: "10"

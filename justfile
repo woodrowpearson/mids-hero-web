@@ -404,6 +404,53 @@ summary-validate summary_file:
     @echo "✅ Validating summary quality..."
     {{python}} scripts/context/summary_validator.py validate {{summary_file}}
 
+# RAG System Commands
+rag-setup:
+    @echo "🔧 Setting up RAG system..."
+    @if [ ! -f backend/.env ] && [ -f backend/.env.example ]; then cp backend/.env.example backend/.env; fi
+    @echo "⚠️  Please edit backend/.env and add your GEMINI_API_KEY"
+    @echo "✅ RAG setup complete"
+
+rag-test-auth:
+    @echo "🔐 Testing Gemini API authentication..."
+    cd backend && {{python}} -m app.rag.cli embed -t "test connection"
+
+rag-init-db:
+    @echo "🗄️ Initializing ChromaDB collections..."
+    cd backend && {{python}} -m app.rag.cli status
+
+rag-index path collection="mids_hero_codebase":
+    @echo "📥 Indexing {{path}} into {{collection}}..."
+    cd backend && {{python}} -m app.rag.cli index -p {{path}} -c {{collection}}
+
+rag-search query collection="mids_hero_codebase" limit="5":
+    @echo "🔍 Searching for: {{query}}..."
+    cd backend && {{python}} -m app.rag.cli search -q "{{query}}" -c {{collection}} -n {{limit}}
+
+rag-status:
+    @echo "📊 RAG system status..."
+    cd backend && {{python}} -m app.rag.cli status
+
+rag-usage days="7":
+    @echo "📈 Usage report for {{days}} days..."
+    cd backend && {{python}} -m app.rag.cli usage-report -d {{days}}
+
+rag-embed text:
+    @echo "🧮 Generating embedding..."
+    cd backend && {{python}} -m app.rag.cli embed -t "{{text}}"
+
+rag-index-codebase:
+    @echo "📚 Indexing entire codebase..."
+    cd backend && {{python}} -m app.rag.cli index -p {{project_root}} -c mids_hero_codebase -g "**/*.py" -g "**/*.ts" -g "**/*.tsx" -g "**/*.md"
+
+rag-index-midsreborn:
+    @echo "📚 Indexing MidsReborn codebase..."
+    cd backend && {{python}} -m app.rag.cli index -p {{project_root}}/external/dev/MidsReborn -c midsreborn_docs -g "**/*.cs" -g "**/*.md"
+
+rag-reset-collection collection:
+    @echo "🗑️ Resetting collection {{collection}}..."
+    cd backend && {{python}} -m app.rag.cli reset-collection -c {{collection}} --confirm
+
 # Help - show this message
 help:
     @echo "Mids Hero Web Development Commands"
@@ -447,6 +494,13 @@ help:
     @echo "  just session-status       # Show session status"
     @echo "  just session-continue     # Continue previous session"
     @echo "  just session-list         # List recent sessions"
+    @echo ""
+    @echo "🧠 RAG System:"
+    @echo "  just rag-setup            # Initial RAG setup"
+    @echo "  just rag-status           # System status"
+    @echo "  just rag-index-codebase   # Index project code"
+    @echo "  just rag-search QUERY     # Search indexed docs"
+    @echo "  just rag-usage            # Usage report"
     @echo "  just threshold-config     # Show threshold config"
     @echo ""
     @echo "For full command list:"

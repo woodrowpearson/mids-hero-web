@@ -421,7 +421,7 @@ rag-init-db:
 
 rag-index path collection="mids_hero_codebase":
     @echo "📥 Indexing {{path}} into {{collection}}..."
-    cd backend && {{python}} -m app.rag.cli index -p {{path}} -c {{collection}}
+    cd backend && {{python}} -m app.rag.cli index codebase {{path}} -p "**/*.py" -p "**/*.ts" -p "**/*.tsx" -p "**/*.md"
 
 rag-search query collection="mids_hero_codebase" limit="5":
     @echo "🔍 Searching for: {{query}}..."
@@ -433,7 +433,7 @@ rag-status:
 
 rag-usage days="7":
     @echo "📈 Usage report for {{days}} days..."
-    cd backend && {{python}} -m app.rag.cli usage-report -d {{days}}
+    cd backend && {{python}} -m app.rag.cli usage -d {{days}}
 
 rag-embed text:
     @echo "🧮 Generating embedding..."
@@ -449,7 +449,7 @@ rag-index-midsreborn:
 
 rag-reset-collection collection:
     @echo "🗑️ Resetting collection {{collection}}..."
-    cd backend && {{python}} -m app.rag.cli reset-collection -c {{collection}} --confirm
+    cd backend && {{python}} -m app.rag.cli reset -c {{collection}} --yes
 
 # Help - show this message
 help:

@@ -174,6 +174,11 @@ class TestRAGPipeline:
         """Test search functionality and accuracy."""
         # Initialize and index
         embedding_client = EmbeddingClient()
+        
+        # Skip if in offline mode since semantic search won't work
+        if embedding_client.offline_mode:
+            await embedding_client.close()
+            pytest.skip("Semantic search accuracy test requires online mode")
         db_manager = ChromaDBManager(embedding_client)
         processor = DocumentProcessor()
         

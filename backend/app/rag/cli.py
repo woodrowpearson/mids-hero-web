@@ -282,7 +282,40 @@ def add(file: str):
 @batch.command()
 def process():
     """Process pending batch."""
-    click.echo("Batch process command not fully implemented")
+    
+    async def _process():
+        client = EmbeddingClient()
+        processor = BatchProcessor(client)
+        
+        try:
+            # Check if batch processing is enabled
+            if not rag_settings.batch_processing_enabled:
+                click.echo("⚠️  Batch processing is disabled")
+                return
+            
+            # Process the batch
+            status = processor.get_batch_status()
+            if status["pending_items"] == 0:
+                click.echo("No pending items to process")
+                return
+            
+            click.echo(f"Processing {status['pending_items']} pending items...")
+            results = await processor.process_batch()
+            
+            if results:
+                click.echo(f"✓ Processed batch successfully")
+                click.echo(f"Total items: {results['total_items']}")
+                click.echo(f"Successful: {results['successful_items']}")
+                if results['failed_items'] > 0:
+                    click.echo(f"Failed: {results['failed_items']}")
+                click.echo(f"Cost savings: ${results['cost_savings']:.4f}")
+            else:
+                click.echo("✗ Batch processing failed")
+                
+        finally:
+            await client.close()
+    
+    asyncio.run(_process())
 
 
 @cli.command()
@@ -363,6 +396,37 @@ def config():
     click.echo(f"batch_size: {rag_settings.batch_size}")
     click.echo(f"daily_token_limit: {rag_settings.daily_token_limit}")
     click.echo(f"embedding_model: {rag_settings.embedding_model}")
+
+
+@cli.command()
+@click.option("--text", "-t", required=True, help="Text to generate embedding for")
+def embed(text: str):
+    """Generate embedding for text."""
+    
+    async def _embed():
+        client = EmbeddingClient()
+        
+        try:
+            # Get embedding
+            embedding = await client.get_embedding(text)
+            
+            # Show basic info
+            click.echo(f"Text: {text[:100]}{'...' if len(text) > 100 else ''}")
+            click.echo(f"Embedding dimension: {len(embedding)}")
+            click.echo(f"Mode: {'Offline' if client.offline_mode else 'Online (Gemini)'}")
+            
+            # Show first few values
+            click.echo(f"First 10 values: {embedding[:10]}")
+            
+            # Calculate embedding norm
+            import math
+            norm = math.sqrt(sum(x*x for x in embedding))
+            click.echo(f"Embedding norm: {norm:.4f}")
+            
+        finally:
+            await client.close()
+    
+    asyncio.run(_embed())
 
 
 if __name__ == "__main__":

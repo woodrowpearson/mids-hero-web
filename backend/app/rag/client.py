@@ -62,7 +62,9 @@ class EmbeddingClient:
     def _get_cache_key(self, text: str) -> str:
         """Generate a cache key for the given text."""
         text_hash = hashlib.sha256(text.encode()).hexdigest()
-        return f"{self.model_name}_{self.task_type}_{text_hash}"
+        # Replace slashes in model name to avoid directory issues
+        safe_model_name = self.model_name.replace("/", "_")
+        return f"{safe_model_name}_{self.task_type}_{text_hash}"
 
     def _get_cache_path(self, cache_key: str) -> Path:
         """Get the cache file path for a cache key."""

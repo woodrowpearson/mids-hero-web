@@ -109,7 +109,7 @@ class UsageMonitor:
             )
 
         # Check alert threshold
-        if daily["tokens"] > self.daily_limit * self.alert_threshold:
+        if daily["tokens"] >= self.daily_limit * self.alert_threshold:
             if daily["alerts_sent"] < 3:  # Limit alerts per day
                 self._send_alert(
                     f"Approaching daily token limit: {daily['tokens']} / {self.daily_limit} "

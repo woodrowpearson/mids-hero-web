@@ -1,5 +1,6 @@
 """ChromaDB vector database manager."""
 
+import json
 import logging
 import shutil
 from datetime import datetime
@@ -109,10 +110,14 @@ class ChromaDBManager:
     ) -> chromadb.Collection:
         """Create a new collection."""
         try:
+            # Ensure metadata is not empty
+            if not metadata:
+                metadata = {"created_at": datetime.now().isoformat()}
+            
             collection = self.client.create_collection(
                 name=name,
                 embedding_function=self.embedding_function,
-                metadata=metadata or {},
+                metadata=metadata,
             )
             self.collections[name] = collection
             logger.info(f"Created collection: {name}")
@@ -130,6 +135,23 @@ class ChromaDBManager:
         except Exception as e:
             raise ChromaDBError(f"Failed to delete collection '{name}': {e}")
 
+    def _sanitize_metadata(self, metadata: dict[str, Any]) -> dict[str, Any]:
+        """Sanitize metadata for ChromaDB compatibility."""
+        sanitized = {}
+        for key, value in metadata.items():
+            if value is None or isinstance(value, (str, int, float, bool)):
+                sanitized[key] = value
+            elif isinstance(value, list):
+                # Convert lists to comma-separated strings
+                sanitized[key] = ", ".join(str(v) for v in value)
+            elif isinstance(value, dict):
+                # Convert dicts to JSON strings
+                sanitized[key] = json.dumps(value)
+            else:
+                # Convert other types to strings
+                sanitized[key] = str(value)
+        return sanitized
+
     async def add_documents(
         self,
         collection_name: str,
@@ -144,9 +166,12 @@ class ChromaDBManager:
             # Generate embeddings
             embeddings = await self.embedding_client.embed_batch(documents)
 
+            # Sanitize metadata for ChromaDB
+            sanitized_metadatas = [self._sanitize_metadata(m) for m in metadatas]
+
             # Add to collection
             collection.add(
-                documents=documents, embeddings=embeddings, metadatas=metadatas, ids=ids
+                documents=documents, embeddings=embeddings, metadatas=sanitized_metadatas, ids=ids
             )
 
             logger.info(f"Added {len(documents)} documents to '{collection_name}'")
@@ -167,9 +192,12 @@ class ChromaDBManager:
             # Generate embeddings
             embeddings = await self.embedding_client.embed_batch(documents)
 
+            # Sanitize metadata for ChromaDB
+            sanitized_metadatas = [self._sanitize_metadata(m) for m in metadatas]
+
             # Update in collection
             collection.update(
-                documents=documents, embeddings=embeddings, metadatas=metadatas, ids=ids
+                documents=documents, embeddings=embeddings, metadatas=sanitized_metadatas, ids=ids
             )
 
             logger.info(f"Updated {len(documents)} documents in '{collection_name}'")

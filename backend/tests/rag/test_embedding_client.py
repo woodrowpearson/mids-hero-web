@@ -11,7 +11,7 @@ from app.rag.config import rag_settings
 
 
 @pytest.fixture
-def embedding_client():
+def embedding_client(cache_dir):
     """Create an embedding client for testing."""
     # Force offline mode for testing
     original_api_key = rag_settings.gemini_api_key

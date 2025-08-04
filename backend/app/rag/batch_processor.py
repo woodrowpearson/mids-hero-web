@@ -51,6 +51,8 @@ class BatchProcessor:
     def _save_batch_history(self) -> None:
         """Save batch processing history."""
         try:
+            # Ensure directory exists
+            self.batch_history_file.parent.mkdir(parents=True, exist_ok=True)
             with open(self.batch_history_file, "w") as f:
                 json.dump(self.batch_history[-1000:], f)  # Keep last 1000 entries
         except Exception as e:

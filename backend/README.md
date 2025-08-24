@@ -94,9 +94,29 @@ uv run pytest tests/test_api.py
 
 ## Data Import
 
-The backend includes a comprehensive data import system for City of Heroes game data.
+The backend uses JSON-based import for City of Heroes game data (MHD binary parsing deprecated in Epic 2.5.5).
 
-### Import Types
+### Import Methods
+
+#### 1. JSON Import (Recommended)
+```bash
+# Import from City of Data JSON
+just i12-import external/city_of_data/raw_data_homecoming-20250617_6916/powers.json
+
+# Or use Python directly
+python scripts/import_i12_data.py /path/to/json/file.json
+```
+
+#### 2. New JSON Import Module
+```bash
+# Import all data types
+python -m app.json_import.cli import-all /path/to/json/directory/
+
+# Validate before import
+python -m app.json_import.cli validate --schema power powers.json
+```
+
+### Deprecated Import Types
 
 - **Archetypes** - Character classes (Blaster, Controller, etc.)
 - **Powersets** - Power collections for each archetype

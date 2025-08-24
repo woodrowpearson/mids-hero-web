@@ -1,6 +1,6 @@
 {
   "project": "mids-hero-web",
-  "last_updated": "2025-07-30T12:00:00Z",
+  "last_updated": "2025-08-24T12:00:00Z",
   "epics": {
     "epic1": {
       "name": "Project Setup",
@@ -141,6 +141,72 @@
       ],
       "completion_date": "2025-08-04"
     },
+    "epic2_5_5": {
+      "name": "Project Cleanup & JSON Migration Preparation",
+      "status": "in_progress",
+      "progress": 15,
+      "tasks": [
+        "✅ Task 2.5.5.1: Resolve Duplicates & Conflicts (Priority 1) - COMPLETED",
+        "🚧 Task 2.5.5.2: Refactor MHD Dependencies (Priority 2)",
+        "🚧 Task 2.5.5.3: Update Claude AI Context (Priority 3)",
+        "🚧 Task 2.5.5.4: Migrate Justfile Commands (Priority 4)",
+        "🚧 Task 2.5.5.5: Evaluate Incomplete Features (Priority 5)",
+        "🚧 Task 2.5.5.6: Verify Cleanup Completeness (Priority 6)",
+        "🚧 Task 2.5.5.7: Organizational Housekeeping (Priority 7)"
+      ],
+      "github_issues_in_progress": [
+        "#256 Epic 2.5.5: Project Cleanup & JSON Migration Preparation (parent)",
+        "#262 Task 2.5.5.1: Resolve Duplicates & Conflicts",
+        "#263 Task 2.5.5.2: Refactor MHD Dependencies",
+        "#257 Task 2.5.5.3: Update Claude AI Context",
+        "#258 Task 2.5.5.4: Migrate Justfile Commands",
+        "#259 Task 2.5.5.5: Evaluate Incomplete Features",
+        "#260 Task 2.5.5.6: Verify Cleanup Completeness",
+        "#261 Task 2.5.5.7: Organizational Housekeeping"
+      ],
+      "sub_tasks": [
+        "#264 Sub-task 2.5.5.1.1: Audit Backend Core Duplicates",
+        "#265 Sub-task 2.5.5.1.2: Archive Legacy Data Directories",
+        "#266 Sub-task 2.5.5.1.3: Fix Import Statements After Merge",
+        "#267 Sub-task 2.5.5.2.1: Archive MHD Parser Module",
+        "#268 Sub-task 2.5.5.2.2: Create JSON Import Module",
+        "#269 Sub-task 2.5.5.2.3: Update Database Models for JSON",
+        "#270 Sub-task 2.5.5.3.1: Retrain Import Specialist Agent",
+        "#271 Sub-task 2.5.5.3.2: Update Context Map Keywords",
+        "#272 Sub-task 2.5.5.3.3: Rewrite Import Module Documentation"
+      ],
+      "notes": "CRITICAL cleanup epic blocking Epic 2.6. Must remove all MHD/I12 dependencies, resolve duplicates, and prepare for JSON migration. 8-day effort with phased approach."
+    },
+    "epic2_6": {
+      "name": "JSON Data Source Migration",
+      "status": "blocked",
+      "progress": 0,
+      "tasks": [
+        "🚧 Task 2.6.1: JSON Data Import Pipeline - Archetype and Enhancement Set Importers",
+        "🚧 Task 2.6.2: Powers Data Migration - Complex Power System Import",
+        "🚧 Task 2.6.3: MHD Dependencies Retirement - Remove Binary Parsing Infrastructure"
+      ],
+      "github_issues_in_progress": [
+        "#253 Epic 2.6: JSON Data Source Migration (parent)",
+        "#250 Task 2.6.1: JSON Data Import Pipeline - Archetype and Enhancement Set Importers",
+        "#251 Task 2.6.2: Powers Data Migration - Complex Power System Import",
+        "#252 Task 2.6.3: MHD Dependencies Retirement - Remove Binary Parsing Infrastructure"
+      ],
+      "notes": "Major architectural improvement - eliminates binary parsing, enables direct JSON consumption from external/city_of_data/"
+    },
+    "epic2_7": {
+      "name": "RAG Game Data Integration",
+      "status": "planned",
+      "progress": 0,
+      "tasks": [
+        "📋 Task 2.7.1: RAG Game Data Indexing - ChromaDB Integration"
+      ],
+      "github_issues_planned": [
+        "#254 Epic 2.7: RAG Game Data Integration (parent)",
+        "#255 Task 2.7.1: RAG Game Data Indexing - ChromaDB Integration"
+      ],
+      "notes": "Enhance Claude Code's game mechanics knowledge through semantic indexing of JSON data"
+    },
     "epic3": {
       "name": "Backend API",
       "status": "in_progress",
@@ -186,6 +252,24 @@
     }
   },
   "recent_activities": [
+    {
+      "timestamp": "2025-08-24T22:51:39Z",
+      "branch": "main",
+      "action": "task_2_5_5_1_completed",
+      "description": "Completed Task 2.5.5.1: Resolve Duplicates & Conflicts. Successfully removed empty duplicate directory /backend/backend/ created accidentally on July 19, 2025. Audit confirmed 0 files, no git tracking, and no import references. Archived removal documentation in /archive/duplicates-removed-2025-08-24/. All 204 tests passing (2 SQLite concurrency failures unrelated). Sub-tasks completed: #264 (Audit Backend Core Duplicates), #265 (Archive Legacy Data Directories), #266 (Fix Import Statements After Merge)."
+    },
+    {
+      "timestamp": "2025-08-24T12:00:00Z",
+      "branch": "main",
+      "action": "epic2_5_5_cleanup_epic_created",
+      "description": "Created Epic 2.5.5: Project Cleanup & JSON Migration Preparation (#256). This critical cleanup epic blocks Epic 2.6 and must be completed first. Created 7 main tasks (#257-263) covering duplicates resolution, MHD dependency removal, AI context updates, command migration, feature evaluation, cleanup verification, and housekeeping. Also created 9 sub-tasks (#264-272) for critical path items. Total effort: 8 days with phased approach to maintain system stability."
+    },
+    {
+      "timestamp": "2025-08-24T00:00:00Z",
+      "branch": "main",
+      "action": "epic2_6_json_migration_started",
+      "description": "Started Epic 2.6: JSON Data Source Migration. Created issues #250-252 for JSON import pipeline, powers migration, and MHD retirement. Closed obsolete MidsReborn-related issues #247 and #248. This migration will eliminate binary parsing dependencies and enable direct JSON consumption from external/city_of_data/raw_data_homecoming-20250617_6916/."
+    },
     {
       "timestamp": "2025-08-04T20:00:00Z",
       "branch": "main",

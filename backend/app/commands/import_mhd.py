@@ -1,4 +1,10 @@
-"""FastAPI management command for importing MHD files."""
+"""DEPRECATED: MHD binary import is no longer supported.
+
+This command has been deprecated as part of Epic 2.5.5 cleanup.
+Please use the JSON import functionality instead:
+  - Use DataExporter C# project to convert MHD to JSON
+  - Use scripts/import_i12_data.py to import JSON data
+"""
 
 import asyncio
 import logging
@@ -8,8 +14,9 @@ import click
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import get_async_session
-from app.mhd_parser.cli import MhdParserCLI
-from app.mhd_parser.main_database_parser import parse_main_database
+# DEPRECATED: MHD parser has been archived
+# from app.mhd_parser.cli import MhdParserCLI
+# from app.mhd_parser.main_database_parser import parse_main_database
 from app.models import Archetype as ArchetypeModel
 
 logger = logging.getLogger(__name__)
@@ -25,20 +32,12 @@ class DatabaseImporter:
         self.power_map = {}
 
     async def import_main_database(self, file_path: Path) -> None:
-        """Import main database file."""
-        logger.info(f"Importing main database from {file_path}")
-
-        with open(file_path, "rb") as f:
-            db = parse_main_database(f)
-
-        # Import in dependency order
-        await self._import_archetypes(db.archetypes)
-        await self._import_powersets(db.powersets)
-        await self._import_powers(db.powers)
-        await self._import_summons(db.summons)
-
-        await self.session.commit()
-        logger.info("Main database import complete")
+        """DEPRECATED: Use JSON import instead."""
+        raise NotImplementedError(
+            "MHD binary import is no longer supported. "
+            "Please use DataExporter to convert MHD to JSON, "
+            "then use scripts/import_i12_data.py for import."
+        )
 
     async def _import_archetypes(self, archetypes):
         """Import archetypes and build index mapping."""
@@ -100,11 +99,19 @@ def import_mhd(
     output: str | None,
     log_level: str,
 ):
-    """Import MHD files into the database.
+    """DEPRECATED: MHD binary import is no longer supported.
 
-    Examples:
-        python -m app.commands.import_mhd data/I12.mhd
-        python -m app.commands.import_mhd data/ --export-json --output json/
+    This command has been deprecated as part of Epic 2.5.5 cleanup.
+    
+    Please use the JSON import workflow instead:
+    1. Use DataExporter C# project to convert MHD to JSON:
+       cd DataExporter && dotnet run -- /path/to/mhd/file.mhd
+    
+    2. Import JSON data using:
+       python backend/scripts/import_i12_data.py /path/to/json/file.json
+    
+    Or use the justfile commands:
+       just i12-import /path/to/json/file.json
     """
     # Set up logging
     logging.basicConfig(
@@ -114,25 +121,26 @@ def import_mhd(
 
     path_obj = Path(path)
 
-    if dry_run or export_json:
-        # Use CLI for dry-run and JSON export
-        cli = MhdParserCLI()
-
-        if path_obj.is_file():
-            cli.parse_file(
-                path_obj, Path(output) if output else None, dry_run, export_json
-            )
-        else:
-            cli.parse_directory(
-                path_obj,
-                "*.mhd",
-                Path(output) if output else None,
-                dry_run,
-                export_json,
-            )
-    else:
-        # Real database import
-        asyncio.run(_import_to_database(path_obj, file_type))
+    logger.error("MHD binary import is deprecated!")
+    logger.error("Please use the JSON import workflow:")
+    logger.error("1. Convert MHD to JSON: cd DataExporter && dotnet run -- %s", path)
+    logger.error("2. Import JSON: python backend/scripts/import_i12_data.py <json_file>")
+    logger.error("Or use: just i12-import <json_file>")
+    
+    click.echo("\n" + "="*60)
+    click.echo("ERROR: MHD binary import is no longer supported!")
+    click.echo("="*60)
+    click.echo("\nThis command was deprecated as part of Epic 2.5.5 cleanup.")
+    click.echo("\nPlease use the JSON import workflow instead:")
+    click.echo("\n1. Convert MHD to JSON using DataExporter:")
+    click.echo(f"   cd DataExporter && dotnet run -- {path}")
+    click.echo("\n2. Import the JSON data:")
+    click.echo("   python backend/scripts/import_i12_data.py <json_file>")
+    click.echo("\nOr use the justfile command:")
+    click.echo("   just i12-import <json_file>")
+    click.echo("="*60)
+    
+    raise SystemExit(1)
 
 
 async def _import_to_database(path: Path, file_type: str):

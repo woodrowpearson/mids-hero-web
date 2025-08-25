@@ -39,7 +39,7 @@ class RAGSettings(BaseSettings):
     game_data_collection: str = Field("game_data", env="GAME_DATA_COLLECTION")
 
     class Config:
-        env_file = ".env"
+        env_file = "../../../.env"  # Use root .env file
         case_sensitive = False
 
 

@@ -113,7 +113,7 @@ class ChromaDBManager:
             # Ensure metadata is not empty
             if not metadata:
                 metadata = {"created_at": datetime.now().isoformat()}
-            
+
             collection = self.client.create_collection(
                 name=name,
                 embedding_function=self.embedding_function,
@@ -139,7 +139,7 @@ class ChromaDBManager:
         """Sanitize metadata for ChromaDB compatibility."""
         sanitized = {}
         for key, value in metadata.items():
-            if value is None or isinstance(value, (str, int, float, bool)):
+            if value is None or isinstance(value, str | int | float | bool):
                 sanitized[key] = value
             elif isinstance(value, list):
                 # Convert lists to comma-separated strings

@@ -71,10 +71,8 @@ just i12-import file   # Import powers
 - **Epic 2**: ✅ Complete (I12 parser, database integration)
 - **Epic 2.5.2**: ✅ Complete (Native sub-agents, workflows optimized)
 - **Epic 2.5.3**: ✅ Complete (RAG with ChromaDB + Gemini)
-- **Epic 2.5.4**: ✅ Complete (RAG implementation with testing)
-- **Epic 2.5.5**: ✅ Complete (Project cleanup and state management)
-- **Epic 2.6**: 🚧 IN PROGRESS (JSON Data Migration)
-- **Epic 2.7**: 📋 PLANNED (RAG Enhancement & Documentation Indexing)
+- **Epic 2.5.5**: 🚧 IN PROGRESS (Critical Cleanup - BLOCKS 2.6)
+- **Epic 2.6**: ⏸️ BLOCKED (JSON Data Migration - waiting on 2.5.5)
 - **Epic 3**: 🚧 25% (Core API endpoints done)
 - **Epic 4-6**: 📋 Planned (Frontend, Deploy, Optimize)
 

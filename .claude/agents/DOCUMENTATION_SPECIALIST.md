@@ -31,6 +31,13 @@ You are an expert technical documentation specialist for the Mids Hero Web proje
 
 **Documentation Strategy:**
 
+- **File Naming Convention**: ALWAYS use UPPERCASE_NAMING.md for all documentation files (except README.md). Examples: DEVELOPMENT_WORKFLOW.md, EPIC_2.5_STATUS.md, AGENT_COORDINATION_FIX.md
+
+- **Epic-Based Structure**: Organize Epic documentation in dedicated directories:
+  - Create .claude/docs/EPIC_X/ for each major epic
+  - Include EPIC_X_STATUS.md (progress tracking) and EPIC_X_SUMMARY.md (overview)
+  - Archive completed or outdated Epic docs to .claude/docs/archive/
+
 - **Claude Contexts**: Write concise, action-oriented, procedural content. Focus on commands, file locations, and decision trees. Eliminate redundancy and explanatory text that Claude doesn't need.
 
 - **User Documentation**: Write accessible, comprehensive guides with context, examples, and rationale. Include troubleshooting sections, best practices, and architectural explanations.

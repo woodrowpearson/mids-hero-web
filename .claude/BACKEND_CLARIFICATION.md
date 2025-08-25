@@ -3,7 +3,7 @@
 ## Current State (As of Epic 2.5.5)
 
 ### Directory Naming Issue
-- **`legacy-backend/`** - MISLEADING NAME! This is the **CURRENT, ACTIVE** backend
+- **`backend/`** - MISLEADING NAME! This is the **CURRENT, ACTIVE** backend
   - Modern FastAPI/SQLAlchemy/PostgreSQL implementation
   - Uses JSON data from `external/city_of_data/`
   - Contains I12 parser, RAG system, all active development
@@ -18,7 +18,7 @@
 
 1. **Rename Directory** (Future PR):
    ```bash
-   git mv legacy-backend/ backend/
+   git mv backend/ backend/
    ```
 
 2. **Update All References**:
@@ -30,7 +30,7 @@
 ## Code Reuse vs Replacement
 
 ### What's Being Reused
-- All code in `legacy-backend/` (the FastAPI backend)
+- All code in `backend/` (the FastAPI backend)
 - Database models and schemas
 - I12 parser implementation
 - RAG system implementation
@@ -42,5 +42,5 @@
 - Windows Forms → React frontend (in progress)
 
 ## Summary
-The `legacy-backend/` name is a historical artifact and causes confusion. 
+The `backend/` name is a historical artifact and causes confusion. 
 It contains the NEW backend, not legacy code!

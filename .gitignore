@@ -42,7 +42,6 @@ MANIFEST
 
 # UV lock files
 backend/uv.lock
-legacy-backend/uv.lock
 
 # bi-directional sync between ai and local user
 /shared/

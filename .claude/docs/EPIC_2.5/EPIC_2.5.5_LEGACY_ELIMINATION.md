@@ -48,7 +48,7 @@ api/
 ## What We're Keeping
 
 From the legacy backend, we preserve:
-1. **RAG System** (`legacy-backend/app/rag/`) - Still valuable
+1. **RAG System** (`backend/app/rag/`) - Still valuable
 2. **Test Patterns** - Adapt for new architecture
 3. **Environment Config** - Simplified version
 

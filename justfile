@@ -29,7 +29,7 @@ install-tools:
 # Install all dependencies
 install:
     @echo "📦 Installing backend dependencies..."
-    cd legacy-backend && {{uv}} sync
+    cd backend && {{uv}} sync
     @echo "📦 Installing frontend dependencies..."
     cd frontend && npm install
     @echo "✅ Dependencies installed"
@@ -55,13 +55,13 @@ health:
 # Run all tests
 test:
     @echo "🧪 Running all tests..."
-    cd legacy-backend && {{uv}} run pytest -v
+    cd backend && {{uv}} run pytest -v
     cd frontend && npm test -- --watchAll=false
 
 # Run tests in watch mode
 test-watch:
     @echo "🧪 Running tests in watch mode..."
-    cd legacy-backend && {{uv}} run pytest-watch
+    cd backend && {{uv}} run pytest-watch
 
 # Run linting and type checking
 quality:
@@ -78,28 +78,28 @@ check-commands:
 # Run linters
 lint:
     @echo "🔍 Running linters..."
-    cd legacy-backend && {{uv}} run ruff check .
+    cd backend && {{uv}} run ruff check .
     cd frontend && npm run lint
 
 # Fix linting issues
 lint-fix:
     @echo "🔧 Fixing linting issues..."
-    cd legacy-backend && {{uv}} run ruff check --fix .
-    cd legacy-backend && {{uv}} run black .
+    cd backend && {{uv}} run ruff check --fix .
+    cd backend && {{uv}} run black .
     cd frontend && npm run lint -- --fix
 
 # Run type checking
 type-check:
     @echo "🔍 Running type checking..."
-    cd legacy-backend && {{uv}} run mypy .
+    cd backend && {{uv}} run mypy .
     cd frontend && npm run type-check
 
 # Format code
 format:
     @echo "✨ Formatting code..."
-    cd legacy-backend && {{uv}} run black .
-    cd legacy-backend && {{uv}} run isort .
-    cd legacy-backend && {{uv}} run ruff format .
+    cd backend && {{uv}} run black .
+    cd backend && {{uv}} run isort .
+    cd backend && {{uv}} run ruff format .
     cd frontend && npm run format
 
 # Database setup - comprehensive setup including Docker
@@ -110,12 +110,12 @@ db-setup:
 # Database migrations
 db-migrate:
     @echo "🗄️ Running database migrations..."
-    cd legacy-backend && DATABASE_URL=postgresql://postgres:postgres@localhost:5432/mids_web {{uv}} run alembic upgrade head
+    cd backend && DATABASE_URL=postgresql://postgres:postgres@localhost:5432/mids_web {{uv}} run alembic upgrade head
 
 # Create a new migration
 db-migration-create description:
     @echo "🗄️ Creating new migration: {{description}}..."
-    cd legacy-backend && DATABASE_URL=postgresql://postgres:postgres@localhost:5432/mids_web {{uv}} run alembic revision --autogenerate -m "{{description}}"
+    cd backend && DATABASE_URL=postgresql://postgres:postgres@localhost:5432/mids_web {{uv}} run alembic revision --autogenerate -m "{{description}}"
 
 # Reset database
 db-reset:
@@ -126,7 +126,7 @@ db-reset:
 # Database status
 db-status:
     @echo "📊 Database status..."
-    cd legacy-backend && DATABASE_URL=postgresql://postgres:postgres@localhost:5432/mids_web {{uv}} run alembic current
+    cd backend && DATABASE_URL=postgresql://postgres:postgres@localhost:5432/mids_web {{uv}} run alembic current
 
 # Connect to database
 db-connect:
@@ -136,37 +136,37 @@ db-connect:
 # Load sample data
 db-seed:
     @echo "🌱 Loading sample data..."
-    cd legacy-backend && {{uv}} run python -m scripts.seed_data
+    cd backend && {{uv}} run python -m scripts.seed_data
 
 # Generic Data Import Operations (All Parsers)
 import-all data_dir batch_size="1000":
     @echo "🚀 Importing all data from {{data_dir}}..."
-    cd legacy-backend && {{uv}} run python -m app.data_import.cli --batch-size {{batch_size}} all "{{data_dir}}"
+    cd backend && {{uv}} run python -m app.data_import.cli --batch-size {{batch_size}} all "{{data_dir}}"
 
 import-type type file batch_size="1000":
     @echo "📥 Importing {{type}} data from {{file}}..."
-    cd legacy-backend && {{uv}} run python -m app.data_import.cli --batch-size {{batch_size}} {{type}} "{{file}}"
+    cd backend && {{uv}} run python -m app.data_import.cli --batch-size {{batch_size}} {{type}} "{{file}}"
 
 import-clear type file batch_size="1000":
     @echo "🧹 Clearing and importing {{type}} data from {{file}}..."
-    cd legacy-backend && {{uv}} run python -m app.data_import.cli --clear --batch-size {{batch_size}} {{type}} "{{file}}"
+    cd backend && {{uv}} run python -m app.data_import.cli --clear --batch-size {{batch_size}} {{type}} "{{file}}"
 
 import-resume type file resume_from batch_size="1000":
     @echo "🔄 Resuming {{type}} import from record {{resume_from}}..."
-    cd legacy-backend && {{uv}} run python -m app.data_import.cli --resume-from {{resume_from}} --batch-size {{batch_size}} {{type}} "{{file}}"
+    cd backend && {{uv}} run python -m app.data_import.cli --resume-from {{resume_from}} --batch-size {{batch_size}} {{type}} "{{file}}"
 
 # I12 High-Performance Import Operations  
 i12-import file batch_size="1000" chunk_size="5000" memory_limit="1.0":
     @echo "🚀 Importing I12 power data from {{file}}..."
-    cd legacy-backend && {{uv}} run python scripts/import_i12_data.py "{{file}}" --batch-size {{batch_size}} --chunk-size {{chunk_size}} --memory-limit {{memory_limit}}
+    cd backend && {{uv}} run python scripts/import_i12_data.py "{{file}}" --batch-size {{batch_size}} --chunk-size {{chunk_size}} --memory-limit {{memory_limit}}
 
 i12-import-resume file resume_from batch_size="1000":
     @echo "🔄 Resuming I12 import from record {{resume_from}}..."
-    cd legacy-backend && {{uv}} run python scripts/import_i12_data.py "{{file}}" --resume-from {{resume_from}} --batch-size {{batch_size}}
+    cd backend && {{uv}} run python scripts/import_i12_data.py "{{file}}" --resume-from {{resume_from}} --batch-size {{batch_size}}
 
 i12-validate file:
     @echo "✅ Validating I12 data from {{file}}..."
-    cd legacy-backend && {{uv}} run python scripts/import_i12_data.py "{{file}}" --validate-only
+    cd backend && {{uv}} run python scripts/import_i12_data.py "{{file}}" --validate-only
 
 # Common Import Examples
 import-archetypes file:
@@ -199,11 +199,11 @@ cache-stats:
 # Performance Monitoring & Benchmarks
 perf-bench:
     @echo "⚡ Running I12 performance benchmarks..."
-    cd legacy-backend && {{uv}} run pytest tests/test_i12_streaming_parser.py::TestI12StreamingParser::test_performance_benchmark -v
+    cd backend && {{uv}} run pytest tests/test_i12_streaming_parser.py::TestI12StreamingParser::test_performance_benchmark -v
 
 perf-test-all:
     @echo "⚡ Running all import performance tests..."
-    cd legacy-backend && {{uv}} run pytest tests/ -k "test_performance" -v
+    cd backend && {{uv}} run pytest tests/ -k "test_performance" -v
 
 # Import System Status & Health Checks
 import-status:
@@ -298,7 +298,7 @@ update-progress:
 build:
     @echo "🏗️ Building for production..."
     cd frontend && npm run build
-    cd legacy-backend && {{uv}} build
+    cd backend && {{uv}} build
 
 # Context Management Commands
 context-validate:
@@ -360,7 +360,7 @@ frontend-dev:
 
 # Backend development server
 backend-dev:
-    cd legacy-backend && {{uv}} run uvicorn main:app --reload --host 0.0.0.0 --port 8000
+    cd backend && {{uv}} run uvicorn main:app --reload --host 0.0.0.0 --port 8000
 
 # Git workflow commands
 git-validate:
@@ -413,49 +413,49 @@ summary-validate summary_file:
 # RAG System Commands
 rag-setup:
     @echo "🔧 Setting up RAG system..."
-    @if [ ! -f legacy-backend/.env ] && [ -f legacy-backend/.env.example ]; then cp legacy-backend/.env.example legacy-backend/.env; fi
-    @echo "⚠️  Please edit legacy-backend/.env and add your GEMINI_API_KEY"
+    @if [ ! -f backend/.env ] && [ -f backend/.env.example ]; then cp backend/.env.example backend/.env; fi
+    @echo "⚠️  Please edit backend/.env and add your GEMINI_API_KEY"
     @echo "✅ RAG setup complete"
 
 rag-test-auth:
     @echo "🔐 Testing Gemini API authentication..."
-    cd legacy-backend && {{python}} -m app.rag.cli embed -t "test connection"
+    cd backend && {{python}} -m app.rag.cli embed -t "test connection"
 
 rag-init-db:
     @echo "🗄️ Initializing ChromaDB collections..."
-    cd legacy-backend && {{python}} -m app.rag.cli status
+    cd backend && {{python}} -m app.rag.cli status
 
 rag-index path collection="mids_hero_codebase":
     @echo "📥 Indexing {{path}} into {{collection}}..."
-    cd legacy-backend && {{python}} -m app.rag.cli index codebase {{path}} -p "**/*.py" -p "**/*.ts" -p "**/*.tsx" -p "**/*.md"
+    cd backend && {{python}} -m app.rag.cli index codebase {{path}} -p "**/*.py" -p "**/*.ts" -p "**/*.tsx" -p "**/*.md"
 
 rag-search query collection="mids_hero_codebase" limit="5":
     @echo "🔍 Searching for: {{query}}..."
-    cd legacy-backend && {{python}} -m app.rag.cli search -q "{{query}}" -c {{collection}} -n {{limit}}
+    cd backend && {{python}} -m app.rag.cli search -q "{{query}}" -c {{collection}} -n {{limit}}
 
 rag-status:
     @echo "📊 RAG system status..."
-    cd legacy-backend && {{python}} -m app.rag.cli status
+    cd backend && {{python}} -m app.rag.cli status
 
 rag-usage days="7":
     @echo "📈 Usage report for {{days}} days..."
-    cd legacy-backend && {{python}} -m app.rag.cli usage -d {{days}}
+    cd backend && {{python}} -m app.rag.cli usage -d {{days}}
 
 rag-embed text:
     @echo "🧮 Generating embedding..."
-    cd legacy-backend && {{python}} -m app.rag.cli embed -t "{{text}}"
+    cd backend && {{python}} -m app.rag.cli embed -t "{{text}}"
 
 rag-index-codebase:
     @echo "📚 Indexing entire codebase..."
-    cd legacy-backend && {{python}} -m app.rag.cli index -p {{project_root}} -c mids_hero_codebase -g "**/*.py" -g "**/*.ts" -g "**/*.tsx" -g "**/*.md"
+    cd backend && {{python}} -m app.rag.cli index -p {{project_root}} -c mids_hero_codebase -g "**/*.py" -g "**/*.ts" -g "**/*.tsx" -g "**/*.md"
 
 rag-index-midsreborn:
     @echo "📚 Indexing MidsReborn codebase..."
-    cd legacy-backend && {{python}} -m app.rag.cli index -p {{project_root}}/external/dev/MidsReborn -c midsreborn_docs -g "**/*.cs" -g "**/*.md"
+    cd backend && {{python}} -m app.rag.cli index -p {{project_root}}/external/dev/MidsReborn -c midsreborn_docs -g "**/*.cs" -g "**/*.md"
 
 rag-reset-collection collection:
     @echo "🗑️ Resetting collection {{collection}}..."
-    cd legacy-backend && {{python}} -m app.rag.cli reset -c {{collection}} --yes
+    cd backend && {{python}} -m app.rag.cli reset -c {{collection}} --yes
 
 # Help - show this message
 help:

@@ -66,8 +66,14 @@ test-watch:
 # Run linting and type checking
 quality:
     @echo "🔍 Running code quality checks..."
+    just check-commands
     just lint
     just type-check
+
+# Check for forbidden commands
+check-commands:
+    @echo "🔍 Checking command compliance..."
+    @./scripts/check-forbidden-commands.sh
 
 # Run linters
 lint:

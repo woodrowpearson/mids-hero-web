@@ -103,10 +103,18 @@ just i12-import file   # Import powers
 | DevOps | "deploy changes" | `devops-specialist` |
 | Documentation | "update docs" | `documentation-specialist` |
 
+## ⚠️ CRITICAL Command Compliance
+
+**ALWAYS use these commands:**
+- ✅ `fd` - NEVER use `find`
+- ✅ `rg` (ripgrep) - NEVER use `grep`  
+- ✅ `trash` - NEVER use `rm -rf`
+- ✅ `uv` - NEVER use `pip`
+
+**GitHub Actions will FAIL if you use forbidden commands!**
+
 ## ⚠️ Remember
 
-- Use `fd` not `find`
-- Use `trash` not `rm -rf`
 - Keep sessions focused
 - Load only what you need
 

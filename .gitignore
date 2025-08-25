@@ -40,6 +40,9 @@ share/python-wheels/
 *.egg
 MANIFEST
 
+# UV lock files
+backend/uv.lock
+
 # bi-directional sync between ai and local user
 /shared/
 

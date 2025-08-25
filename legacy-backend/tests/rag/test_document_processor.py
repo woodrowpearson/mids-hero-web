@@ -88,7 +88,7 @@ This is the main documentation for the RAG system.
 Run the following commands:
 
 ```bash
-pip install -r requirements.txt
+uv pip install -r requirements.txt
 ```
 
 ## Usage

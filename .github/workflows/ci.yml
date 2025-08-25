@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./backend
+        working-directory: ./api
     steps:
       - uses: actions/checkout@v4
       
@@ -72,7 +72,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./backend
+        working-directory: ./api
     services:
       postgres:
         image: postgres:15
@@ -112,7 +112,7 @@ jobs:
         if: false
         uses: codecov/codecov-action@v4
         with:
-          file: ./backend/coverage.xml
+          file: ./api/coverage.xml
           fail_ci_if_error: false
 
   frontend-test:

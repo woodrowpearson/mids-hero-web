@@ -41,7 +41,11 @@ share/python-wheels/
 MANIFEST
 
 # bi-directional sync between ai and local user
-/shared/
+# Ignore everything in shared except pr-reviews
+/shared/*
+!/shared/user/
+/shared/user/*
+!/shared/user/pr-reviews/
 
 # data files for db import
 /data/
@@ -269,3 +273,11 @@ temp/
 alembic/versions/*.py
 !alembic/versions/
 alembic/__pycache__/
+
+# UV lock files
+backend/uv.lock
+
+# RAG cache and vector databases
+backend/.claude/rag/cache/
+backend/.claude/rag/db/
+**/chroma.sqlite3

@@ -1,4 +1,5 @@
 # Session Summary: Epic 2.5.2 Native Sub-Agents Pivot
+Last Updated: 2025-08-25 00:00:00 UTC
 
 ## Date: 2025-01-26
 

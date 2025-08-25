@@ -1,4 +1,5 @@
 # Completed Epic Documentation Archive
+Last Updated: 2025-08-25 00:00:00 UTC
 
 This directory contains documentation for completed epics that are kept for historical reference.
 

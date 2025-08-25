@@ -143,6 +143,44 @@ jobs:
             echo "::warning::Some required context structure elements are missing"
           fi
 
+  documentation-timestamps:
+    name: Check Documentation Timestamps
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Check for timestamp compliance
+        run: |
+          echo "## Documentation Timestamp Check" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          MISSING_TIMESTAMPS=0
+          TOTAL_DOCS=0
+          
+          # Check all documentation files in .claude/
+          for file in $(find .claude -name "*.md" -type f | grep -v node_modules | grep -v .git); do
+            TOTAL_DOCS=$((TOTAL_DOCS + 1))
+            
+            # Check if file has timestamp on line 2 or within first 5 lines after title
+            if head -10 "$file" | grep -q "^Last Updated: [0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2} UTC$"; then
+              echo "✅ $file" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "❌ $file (missing timestamp)" >> $GITHUB_STEP_SUMMARY
+              MISSING_TIMESTAMPS=$((MISSING_TIMESTAMPS + 1))
+            fi
+          done
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Timestamp Compliance**: $((TOTAL_DOCS - MISSING_TIMESTAMPS))/$TOTAL_DOCS" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "$MISSING_TIMESTAMPS" -gt 0 ]; then
+            echo "::warning::$MISSING_TIMESTAMPS documentation files are missing timestamps"
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "To fix, run: python .claude/scripts/add_timestamp.py .claude --recursive" >> $GITHUB_STEP_SUMMARY
+          fi
+
   command-compliance:
     name: Check Command Compliance
     runs-on: ubuntu-latest

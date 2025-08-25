@@ -124,6 +124,15 @@
     "enforce_pr_workflow": true
   },
 
+  "documentation_enforcement": {
+    "require_timestamps": true,
+    "timestamp_format": "YYYY-MM-DD HH:MM:SS UTC",
+    "auto_add_timestamps": true,
+    "validate_on_save": true,
+    "timestamp_tool": ".claude/scripts/add_timestamp.py",
+    "check_script": "scripts/check-documentation-timestamps.sh"
+  },
+
   "git_workflow": {
     "protected_branches": ["main", "master"],
     "branch_naming_pattern": "^(feature|fix|docs|test|chore|refactor|perf)/.*",
@@ -167,6 +176,18 @@
             "type": "command",
             "command": "python3 .claude/hooks/activity-logger.py",
             "run_in_background": true
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|MultiEdit|Write(.claude/.*\\.md)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 .claude/scripts/add_timestamp.py $CLAUDE_FILE_PATH",
+            "timeout_seconds": 5,
+            "run_in_background": true,
+            "description": "Auto-update timestamp on documentation edits"
           }
         ]
       },

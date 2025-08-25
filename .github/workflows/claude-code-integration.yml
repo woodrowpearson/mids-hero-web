@@ -4,6 +4,10 @@ on:
   issue_comment:
     types: [created]
 
+concurrency:
+  group: claude-integration-${{ github.event.issue.number }}
+  cancel-in-progress: true
+
 permissions:
   contents: write
   pull-requests: write
@@ -25,7 +29,7 @@ jobs:
             name: 'Documentation Implementation'
             timeout: 15
             checkout_ref: '${{ github.event.issue.pull_request.head.ref }}'
-          - trigger: 'approved|approve|implement this|apply this|✅|yes, apply|go ahead'
+          - trigger: 'approved'
             name: 'Approval Processing'
             timeout: 20
             checkout_ref: '${{ github.event.issue.pull_request.head.ref }}'
@@ -38,12 +42,12 @@ jobs:
           COMMENT="${{ github.event.comment.body }}"
           TRIGGER="${{ matrix.trigger }}"
           
-          # Use grep with extended regex for pattern matching
-          if echo "$COMMENT" | grep -qE "$TRIGGER"; then
+          # Use simple string matching for deterministic behavior
+          if [[ "$COMMENT" == *"$TRIGGER"* ]]; then
             echo "should_run=true" >> $GITHUB_OUTPUT
             
             # Extract question for @claude mentions
-            if [[ "${{ matrix.trigger }}" == "@claude" ]]; then
+            if [[ "$TRIGGER" == "@claude" ]]; then
               QUESTION=$(echo "$COMMENT" | sed 's/@claude//' | sed 's/^[[:space:]]*//')
               echo "question=$QUESTION" >> $GITHUB_OUTPUT
             fi

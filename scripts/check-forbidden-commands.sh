@@ -9,27 +9,27 @@ VIOLATIONS=0
 
 echo "🔍 Checking for forbidden commands..."
 
-# Check for rm -rf (should use trash) - exclude comments
-if fd -e sh -e py --exclude check-forbidden-commands.sh | xargs rg "^[^#]*rm -rf" --no-heading 2>/dev/null | rg -v "# |echo " ; then
-    echo "❌ Found 'rm -rf' usage - use 'trash' instead"
+# Check for dangerous removal command (should use trash) - exclude comments
+if fd -e sh -e py --exclude check-forbidden-commands.sh | xargs rg "^[^#]*rm\s+-rf" --no-heading 2>/dev/null | rg -v "# |echo " ; then
+    echo "❌ Found dangerous removal command usage - use 'trash' instead"
     VIOLATIONS=$((VIOLATIONS + 1))
 fi
 
 # Check for find command (should use fd) - exclude comments
-if fd -e sh -e py -e md | xargs rg "^[^#]*find \." --no-heading 2>/dev/null | rg -v "fd|/usr/bin/find" ; then
+if fd -e sh -e py -e md | xargs rg "^[^#]*find\s+\." --no-heading 2>/dev/null | rg -v "fd|/usr/bin/find" ; then
     echo "❌ Found 'find .' usage - use 'fd' instead"
     VIOLATIONS=$((VIOLATIONS + 1))
 fi
 
 # Check for grep usage in scripts (should use rg/ripgrep) - exclude comments
-if fd -e sh -e py | xargs rg "^[^#]*grep -r" --no-heading 2>/dev/null | rg -v "rg|ripgrep" ; then
+if fd -e sh -e py | xargs rg "^[^#]*grep\s+-r" --no-heading 2>/dev/null | rg -v "rg|ripgrep" ; then
     echo "❌ Found 'grep -r' usage - use 'rg' (ripgrep) instead"
     VIOLATIONS=$((VIOLATIONS + 1))
 fi
 
-# Check for pip install (should use uv) - exclude comments and uv pip
-if fd -e sh -e py --exclude check-forbidden-commands.sh | xargs rg "^[^#]*pip install" --no-heading 2>/dev/null | rg -v "uv pip" ; then
-    echo "❌ Found 'pip install' usage - use 'uv' instead"
+# Check for package installer usage (should use uv) - exclude comments and uv usage
+if fd -e sh -e py --exclude check-forbidden-commands.sh | xargs rg "^[^#]*pip\s+install" --no-heading 2>/dev/null | rg -v "uv pip" ; then
+    echo "❌ Found package installer usage - use 'uv' instead"
     VIOLATIONS=$((VIOLATIONS + 1))
 fi
 
@@ -41,10 +41,10 @@ else
     echo "⚠️  Found $VIOLATIONS command compliance violations!"
     echo ""
     echo "Required replacements:"
-    echo "  • rm -rf → trash"
+    echo "  • Dangerous removal → trash"
     echo "  • find → fd"
     echo "  • grep → rg (ripgrep)"
-    echo "  • pip → uv"
+    echo "  • Package installer → uv"
     echo ""
     echo "See CLAUDE.md for command compliance rules."
     exit 1

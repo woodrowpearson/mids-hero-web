@@ -120,7 +120,6 @@ jobs:
           # Check key Mids Hero Web files
           check_exists "CLAUDE.md"
           check_exists "justfile"
-          check_exists "archive/ROADMAP.md"
           check_exists "backend/pyproject.toml"
           check_exists "frontend/package.json"
 

@@ -7,6 +7,12 @@ repos:
         language: script
         pass_filenames: false
         always_run: true
+      - id: check-documentation-timestamps
+        name: Check documentation timestamps
+        entry: scripts/check-documentation-timestamps.sh
+        language: script
+        pass_filenames: false
+        files: ^\.claude/.*\.md$
       
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.1.6

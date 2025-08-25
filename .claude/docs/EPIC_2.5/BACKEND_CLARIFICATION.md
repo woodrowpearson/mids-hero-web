@@ -1,4 +1,5 @@
 # Backend Directory Structure Clarification
+Last Updated: 2025-08-25 00:00:00 UTC
 
 ## Current State (As of Epic 2.5.5)
 

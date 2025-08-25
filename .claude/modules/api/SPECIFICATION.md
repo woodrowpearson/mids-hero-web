@@ -1,4 +1,5 @@
 # API Specification
+Last Updated: 2025-08-25 00:00:00 UTC
 
 Base URL: `http://localhost:8000/api`
 

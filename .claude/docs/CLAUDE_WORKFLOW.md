@@ -1,4 +1,5 @@
 # Claude Code AI Workflow & Context Management
+Last Updated: 2025-08-25 00:00:00 UTC
 
 This document consolidates the comprehensive workflow and context management system for Claude Code, implementing intelligent context loading, session management, and multi-agent orchestration.
 
@@ -94,7 +95,7 @@ Anthropic's native sub-agents with automatic delegation:
 - **Database Specialist**: Schema, migrations, SQL operations
 - **Frontend Specialist**: React components, UI architecture
 - **Import Specialist**: Data parsing, format conversion
-- **API Specialist**: FastAPI endpoints, API design
+- **Backend Specialist**: FastAPI endpoints, API design
 
 Created via `/agents` command in Claude Code. Claude automatically delegates tasks to appropriate specialists based on context.
 
@@ -122,7 +123,7 @@ Semantic search over documentation:
 │   ├── database-specialist.md
 │   ├── frontend-specialist.md
 │   ├── import-specialist.md
-│   └── api-specialist.md
+│   └── backend-specialist.md
 ├── scripts/                  # Automation scripts
 │   ├── session_summarizer.py
 │   ├── rag-indexer.py

@@ -70,6 +70,8 @@ def enhancement_data():
 def test_damage_calculation_with_enhancements(enhancement_data):
     """Test that damage scales correctly with enhancement bonuses."""
     # Arrange
+Last Updated: 2025-08-25 00:00:00 UTC
+
     base_damage = 100.0
     enhancements = enhancement_data
     

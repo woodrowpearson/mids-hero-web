@@ -1,4 +1,5 @@
 # Claude Context System
+Last Updated: 2025-08-25 00:00:00 UTC
 
 This directory contains the Claude Code context management system for the Mids Hero Web project.
 

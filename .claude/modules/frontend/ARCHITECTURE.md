@@ -1,4 +1,5 @@
 # Frontend Architecture
+Last Updated: 2025-08-25 00:00:00 UTC
 
 The frontend is a React + TypeScript application generated via Create React App.
 

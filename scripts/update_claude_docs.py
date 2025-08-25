@@ -3,6 +3,7 @@
 
 import json
 import os
+import subprocess
 from pathlib import Path
 import tiktoken
 import yaml
@@ -73,6 +74,29 @@ def update_progress_timestamp():
         progress_file.write_text(json.dumps(progress, indent=2))
         print(f"Updated {progress_file}")
 
+def update_documentation_timestamps():
+    """Update timestamps on all Claude documentation files."""
+    timestamp_script = Path(".claude/scripts/add_timestamp.py")
+    
+    if timestamp_script.exists():
+        # Run timestamp update for all .claude documentation
+        result = subprocess.run(
+            ["python3", str(timestamp_script), ".claude", "--recursive"],
+            capture_output=True,
+            text=True
+        )
+        
+        if result.returncode == 0:
+            print("✅ Documentation timestamps updated")
+            if result.stdout:
+                print(result.stdout)
+        else:
+            print("⚠️  Error updating timestamps:")
+            if result.stderr:
+                print(result.stderr)
+    else:
+        print("⚠️  Timestamp script not found at", timestamp_script)
+
 def main():
     """Run all documentation updates."""
     print("🔄 Updating Claude documentation...")
@@ -80,6 +104,7 @@ def main():
     update_readme()
     check_file_sizes()
     update_progress_timestamp()
+    update_documentation_timestamps()
     
     print("✅ Documentation update complete")
 

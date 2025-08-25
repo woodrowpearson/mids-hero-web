@@ -1,4 +1,5 @@
 # Development Workflow
+Last Updated: 2025-08-25 00:00:00 UTC
 
 This document outlines the modern development workflow for the Mids Hero Web project using Claude Code with progressive context loading and automated workflow management.
 

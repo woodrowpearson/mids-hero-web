@@ -44,9 +44,6 @@ MANIFEST
 backend/uv.lock
 legacy-backend/uv.lock
 
-# RAG-specific directories
-legacy-backend/.claude/rag/
-
 # bi-directional sync between ai and local user
 /shared/
 

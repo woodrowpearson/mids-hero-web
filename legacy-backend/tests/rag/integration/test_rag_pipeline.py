@@ -47,7 +47,8 @@ def test_codebase(tmp_path):
     # Create Python module
     (codebase / "app").mkdir()
     (codebase / "app" / "__init__.py").write_text("")
-    (codebase / "app" / "models.py").write_text('''
+    (codebase / "app" / "models.py").write_text(
+        '''
 """Database models for the application."""
 
 class Power:
@@ -61,9 +62,11 @@ class Power:
     def calculate_dps(self):
         """Calculate damage per second."""
         return self.damage / self.recharge
-''')
+'''
+    )
 
-    (codebase / "app" / "api.py").write_text('''
+    (codebase / "app" / "api.py").write_text(
+        '''
 """API endpoints for power management."""
 
 from fastapi import APIRouter
@@ -79,21 +82,25 @@ async def get_powers():
 async def enhance_power(power_id: int, enhancement_type: str):
     """Apply enhancement to a power."""
     return {"success": True}
-''')
+'''
+    )
 
     # Create tests
     (codebase / "tests").mkdir()
-    (codebase / "tests" / "test_models.py").write_text('''
+    (codebase / "tests" / "test_models.py").write_text(
+        """
 import pytest
 from app.models import Power
 
 def test_power_dps():
     power = Power("Fire Blast", damage=100, recharge=2.0)
     assert power.calculate_dps() == 50.0
-''')
+"""
+    )
 
     # Create documentation
-    (codebase / "README.md").write_text('''
+    (codebase / "README.md").write_text(
+        """
 # Test Project
 
 This is a test project for RAG integration testing.
@@ -109,10 +116,12 @@ This is a test project for RAG integration testing.
 ```bash
 uv pip install -r requirements.txt
 ```
-''')
+"""
+    )
 
     # Create config
-    (codebase / "config.json").write_text('''{
+    (codebase / "config.json").write_text(
+        """{
     "game": {
         "name": "City of Heroes",
         "server": "Homecoming"
@@ -120,7 +129,8 @@ uv pip install -r requirements.txt
     "api": {
         "version": "1.0"
     }
-}''')
+}"""
+    )
 
     return codebase
 
@@ -140,8 +150,7 @@ class TestRAGPipeline:
         try:
             # Process codebase
             chunks = await processor.process_directory(
-                test_codebase,
-                patterns=["**/*.py", "**/*.md", "**/*.json"]
+                test_codebase, patterns=["**/*.py", "**/*.md", "**/*.json"]
             )
 
             assert len(chunks) > 0
@@ -152,9 +161,7 @@ class TestRAGPipeline:
             metadatas = [chunk["metadata"] for chunk in chunks]
             ids = [chunk["metadata"]["chunk_id"] for chunk in chunks]
 
-            await db_manager.add_documents(
-                collection_name, documents, metadatas, ids
-            )
+            await db_manager.add_documents(collection_name, documents, metadatas, ids)
 
             # Track usage
             total_tokens = sum(chunk["token_count"] for chunk in chunks)
@@ -193,23 +200,23 @@ class TestRAGPipeline:
             metadatas = [chunk["metadata"] for chunk in chunks]
             ids = [chunk["metadata"]["chunk_id"] for chunk in chunks]
 
-            await db_manager.add_documents(
-                collection_name, documents, metadatas, ids
-            )
+            await db_manager.add_documents(collection_name, documents, metadatas, ids)
 
             # Test searches
             test_queries = [
                 ("calculate DPS for powers", ["calculate_dps", "damage", "recharge"]),
-                ("enhance power API endpoint", ["enhance_power", "power_id", "enhancement_type"]),
-                ("City of Heroes features", ["City of Heroes", "Power management", "Enhancement"]),
+                (
+                    "enhance power API endpoint",
+                    ["enhance_power", "power_id", "enhancement_type"],
+                ),
+                (
+                    "City of Heroes features",
+                    ["City of Heroes", "Power management", "Enhancement"],
+                ),
             ]
 
             for query, expected_terms in test_queries:
-                results = await db_manager.query(
-                    collection_name,
-                    [query],
-                    n_results=3
-                )
+                results = await db_manager.query(collection_name, [query], n_results=3)
 
                 # Check we got results
                 assert len(results["documents"][0]) > 0
@@ -284,7 +291,7 @@ class TestRAGPipeline:
                 text,  # cached
                 "New document 1",  # not cached
                 text,  # cached
-                "New document 2"  # not cached
+                "New document 2",  # not cached
             ]
 
             embeddings = await embedding_client.embed_batch(texts)
@@ -313,16 +320,14 @@ class TestRAGPipeline:
             metadatas = [chunk["metadata"] for chunk in chunks]
             ids = [chunk["metadata"]["chunk_id"] for chunk in chunks]
 
-            await db_manager.add_documents(
-                collection_name, documents, metadatas, ids
-            )
+            await db_manager.add_documents(collection_name, documents, metadatas, ids)
 
             # Query Python files only
             results = await db_manager.query(
                 collection_name,
                 ["class implementation"],
                 n_results=10,
-                where={"file_type": ".py"}
+                where={"file_type": ".py"},
             )
 
             # All results should be Python files
@@ -334,7 +339,7 @@ class TestRAGPipeline:
                 collection_name,
                 ["any content"],
                 n_results=10,
-                where={"file_name": "models.py"}
+                where={"file_name": "models.py"},
             )
 
             # All results should be from models.py
@@ -385,7 +390,7 @@ class TestRAGPipeline:
                 collection_name,
                 [doc[0] for doc in docs],
                 [doc[1] for doc in docs],
-                [f"batch_doc_{i}" for i in range(len(docs))]
+                [f"batch_doc_{i}" for i in range(len(docs))],
             )
 
             # Track usage
@@ -411,10 +416,7 @@ class TestRAGPipeline:
             tasks = []
 
             for pattern in ["**/*.py", "**/*.md", "**/*.json"]:
-                task = processor.process_directory(
-                    test_codebase,
-                    patterns=[pattern]
-                )
+                task = processor.process_directory(test_codebase, patterns=[pattern])
                 tasks.append(task)
 
             # Process concurrently
@@ -459,15 +461,12 @@ class TestRAGPipeline:
                     collection_name,
                     ["Doc 1", "Doc 2"],
                     [{"meta": 1}],  # Wrong length
-                    ["id1", "id2"]
+                    ["id1", "id2"],
                 )
 
             # Collection should still be usable
             await db_manager.add_documents(
-                collection_name,
-                ["Doc 1"],
-                [{"meta": 1}],
-                ["id1"]
+                collection_name, ["Doc 1"], [{"meta": 1}], ["id1"]
             )
 
             assert db_manager.get_document_count(collection_name) == 1

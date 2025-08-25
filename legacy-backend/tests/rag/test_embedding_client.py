@@ -53,6 +53,7 @@ class TestEmbeddingClient:
 
         # Check normalization
         import numpy as np
+
         norm = np.linalg.norm(embedding)
         assert abs(norm - 1.0) < 0.01  # Should be normalized
 
@@ -86,11 +87,7 @@ class TestEmbeddingClient:
     @pytest.mark.asyncio
     async def test_batch_embedding(self, embedding_client):
         """Test batch embedding generation."""
-        texts = [
-            "First text",
-            "Second text",
-            "Third text"
-        ]
+        texts = ["First text", "Second text", "Third text"]
 
         embeddings = await embedding_client.embed_batch(texts, use_cache=False)
 

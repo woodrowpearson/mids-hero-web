@@ -94,13 +94,13 @@ class TestChromaDBManager:
         documents = [
             "This is a test document about Python programming.",
             "Another document about City of Heroes powers.",
-            "Documentation for the RAG system implementation."
+            "Documentation for the RAG system implementation.",
         ]
 
         metadatas = [
             {"type": "test", "id": 1},
             {"type": "test", "id": 2},
-            {"type": "test", "id": 3}
+            {"type": "test", "id": 3},
         ]
 
         ids = ["doc1", "doc2", "doc3"]
@@ -120,13 +120,13 @@ class TestChromaDBManager:
         documents = [
             "Python is a high-level programming language.",
             "City of Heroes has many different powersets.",
-            "The RAG system uses ChromaDB for vector storage."
+            "The RAG system uses ChromaDB for vector storage.",
         ]
 
         metadatas = [
             {"type": "programming", "language": "python"},
             {"type": "game", "topic": "powers"},
-            {"type": "technical", "system": "rag"}
+            {"type": "technical", "system": "rag"},
         ]
 
         ids = ["query_doc1", "query_doc2", "query_doc3"]
@@ -135,9 +135,7 @@ class TestChromaDBManager:
 
         # Query for Python-related documents
         results = await db_manager.query(
-            collection_name,
-            ["Python programming language"],
-            n_results=2
+            collection_name, ["Python programming language"], n_results=2
         )
 
         assert len(results["documents"][0]) <= 2
@@ -166,9 +164,7 @@ class TestChromaDBManager:
 
         # Query to verify update
         results = await db_manager.query(
-            collection_name,
-            ["Updated document"],
-            n_results=1
+            collection_name, ["Updated document"], n_results=1
         )
 
         assert len(results["documents"][0]) == 1
@@ -253,13 +249,13 @@ class TestChromaDBManager:
         documents = [
             "FastAPI endpoint implementation",
             "React component for power selection",
-            "Database migration script"
+            "Database migration script",
         ]
 
         metadatas = [
             {"type": "backend", "framework": "fastapi"},
             {"type": "frontend", "framework": "react"},
-            {"type": "backend", "category": "database"}
+            {"type": "backend", "category": "database"},
         ]
 
         ids = ["filter_doc1", "filter_doc2", "filter_doc3"]
@@ -268,10 +264,7 @@ class TestChromaDBManager:
 
         # Query with metadata filter
         results = await db_manager.query(
-            collection_name,
-            ["backend code"],
-            n_results=10,
-            where={"type": "backend"}
+            collection_name, ["backend code"], n_results=10, where={"type": "backend"}
         )
 
         # Should only return backend documents

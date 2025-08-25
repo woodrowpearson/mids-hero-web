@@ -43,30 +43,37 @@ def sample_codebase(tmp_path):
     project_dir.mkdir()
 
     # Create Python files
-    (project_dir / "main.py").write_text("""
+    (project_dir / "main.py").write_text(
+        """
 def main():
     '''Main entry point for the application.'''
     print("Hello from test project")
 
 if __name__ == "__main__":
     main()
-""")
+"""
+    )
 
-    (project_dir / "utils.py").write_text("""
+    (project_dir / "utils.py").write_text(
+        """
 def calculate_power(base, exponent):
     '''Calculate power with enhancement.'''
     return base ** exponent
-""")
+"""
+    )
 
     # Create TypeScript file
-    (project_dir / "component.tsx").write_text("""
+    (project_dir / "component.tsx").write_text(
+        """
 export function TestComponent({ name }: { name: string }) {
     return <div>Hello {name}</div>;
 }
-""")
+"""
+    )
 
     # Create Markdown
-    (project_dir / "README.md").write_text("""
+    (project_dir / "README.md").write_text(
+        """
 # Test Project
 
 This is a test project for RAG CLI testing.
@@ -75,7 +82,8 @@ This is a test project for RAG CLI testing.
 - Python code
 - TypeScript components
 - RAG integration
-""")
+"""
+    )
 
     return project_dir
 
@@ -128,10 +136,9 @@ class TestRAGCLI:
         runner.invoke(cli, ["setup"])
 
         # Index only Python files
-        result = runner.invoke(cli, [
-            "index", "codebase", str(sample_codebase),
-            "--pattern", "**/*.py"
-        ])
+        result = runner.invoke(
+            cli, ["index", "codebase", str(sample_codebase), "--pattern", "**/*.py"]
+        )
 
         assert result.exit_code == 0
         assert "Indexed" in result.output
@@ -144,13 +151,15 @@ class TestRAGCLI:
 
         # Create a fake MidsReborn file
         mids_file = tmp_path / "test.cs"
-        mids_file.write_text("""
+        mids_file.write_text(
+            """
 namespace MidsReborn {
     public class TestPower {
         public float Damage { get; set; }
     }
 }
-""")
+"""
+        )
 
         result = runner.invoke(cli, ["index", "midsreborn", str(tmp_path)])
 
@@ -163,11 +172,9 @@ namespace MidsReborn {
 
         # Create a fake I12 file
         i12_file = tmp_path / "powers.json"
-        i12_file.write_text(json.dumps({
-            "powers": [
-                {"name": "Fire Blast", "damage": 100}
-            ]
-        }))
+        i12_file.write_text(
+            json.dumps({"powers": [{"name": "Fire Blast", "damage": 100}]})
+        )
 
         result = runner.invoke(cli, ["index", "i12", str(tmp_path)])
 
@@ -193,10 +200,9 @@ namespace MidsReborn {
         runner.invoke(cli, ["setup"])
         runner.invoke(cli, ["index", "codebase", str(sample_codebase)])
 
-        result = runner.invoke(cli, [
-            "search", "test",
-            "--collection", rag_settings.codebase_collection
-        ])
+        result = runner.invoke(
+            cli, ["search", "test", "--collection", rag_settings.codebase_collection]
+        )
 
         assert result.exit_code == 0
         assert "Results" in result.output or "Found" in result.output
@@ -260,9 +266,11 @@ namespace MidsReborn {
         if result.exit_code == 0:
             # Process batch
             process_result = runner.invoke(cli, ["batch", "process"])
-            assert ("Processed" in process_result.output or
-                   "batch" in process_result.output or
-                   "No pending items" in process_result.output)
+            assert (
+                "Processed" in process_result.output
+                or "batch" in process_result.output
+                or "No pending items" in process_result.output
+            )
 
     def test_usage_command(self, runner, test_env):
         """Test usage monitoring command."""
@@ -289,11 +297,15 @@ namespace MidsReborn {
         runner.invoke(cli, ["setup"])
 
         # Reset specific collection
-        result = runner.invoke(cli, [
-            "reset",
-            "--collection", rag_settings.codebase_collection,
-            "--yes"  # Skip confirmation
-        ])
+        result = runner.invoke(
+            cli,
+            [
+                "reset",
+                "--collection",
+                rag_settings.codebase_collection,
+                "--yes",  # Skip confirmation
+            ],
+        )
 
         assert result.exit_code == 0
         assert "Reset" in result.output or "✓" in result.output

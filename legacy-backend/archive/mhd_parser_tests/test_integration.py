@@ -5,9 +5,7 @@ import json
 import struct
 from typing import Any
 
-from app.mhd_parser.enhancement_database_parser import (
-    parse_enhancement_database,
-)
+from app.mhd_parser.enhancement_database_parser import parse_enhancement_database
 from app.mhd_parser.main_database_parser import MainDatabase, parse_main_database
 from app.mhd_parser.text_mhd_parser import (
     FileFormat,

@@ -171,7 +171,10 @@ class ChromaDBManager:
 
             # Add to collection
             collection.add(
-                documents=documents, embeddings=embeddings, metadatas=sanitized_metadatas, ids=ids
+                documents=documents,
+                embeddings=embeddings,
+                metadatas=sanitized_metadatas,
+                ids=ids,
             )
 
             logger.info(f"Added {len(documents)} documents to '{collection_name}'")
@@ -197,7 +200,10 @@ class ChromaDBManager:
 
             # Update in collection
             collection.update(
-                documents=documents, embeddings=embeddings, metadatas=sanitized_metadatas, ids=ids
+                documents=documents,
+                embeddings=embeddings,
+                metadatas=sanitized_metadatas,
+                ids=ids,
             )
 
             logger.info(f"Updated {len(documents)} documents in '{collection_name}'")

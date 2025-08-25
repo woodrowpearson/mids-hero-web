@@ -85,10 +85,7 @@ def codebase(path: str, pattern: tuple):
                 ids = [chunk["metadata"]["chunk_id"] for chunk in chunks]
 
                 await manager.add_documents(
-                    rag_settings.codebase_collection,
-                    documents,
-                    metadatas,
-                    ids
+                    rag_settings.codebase_collection, documents, metadatas, ids
                 )
 
                 click.echo(f"✓ Indexed {len(chunks)} documents from {path}")
@@ -112,10 +109,7 @@ def midsreborn(path: str):
         processor = DocumentProcessor()
 
         try:
-            chunks = await processor.process_directory(
-                Path(path),
-                patterns=["**/*.cs"]
-            )
+            chunks = await processor.process_directory(Path(path), patterns=["**/*.cs"])
 
             if chunks:
                 documents = [chunk["text"] for chunk in chunks]
@@ -123,10 +117,7 @@ def midsreborn(path: str):
                 ids = [chunk["metadata"]["chunk_id"] for chunk in chunks]
 
                 await manager.add_documents(
-                    rag_settings.midsreborn_collection,
-                    documents,
-                    metadatas,
-                    ids
+                    rag_settings.midsreborn_collection, documents, metadatas, ids
                 )
 
                 click.echo(f"✓ Indexed {len(chunks)} MidsReborn files")
@@ -149,8 +140,7 @@ def i12(path: str):
 
         try:
             chunks = await processor.process_directory(
-                Path(path),
-                patterns=["**/*.json", "**/*.txt"]
+                Path(path), patterns=["**/*.json", "**/*.txt"]
             )
 
             if chunks:
@@ -159,10 +149,7 @@ def i12(path: str):
                 ids = [chunk["metadata"]["chunk_id"] for chunk in chunks]
 
                 await manager.add_documents(
-                    rag_settings.game_data_collection,
-                    documents,
-                    metadatas,
-                    ids
+                    rag_settings.game_data_collection, documents, metadatas, ids
                 )
 
                 click.echo(f"✓ Indexed {len(chunks)} I12 data files")
@@ -192,8 +179,8 @@ def search(query: str, collection: str, limit: int):
                 click.echo(f"Results for '{query}':")
                 for i, doc in enumerate(results["documents"][0], 1):
                     click.echo(f"\n{i}. {doc[:200]}...")
-                    if results["metadatas"][0][i-1]:
-                        metadata = results["metadatas"][0][i-1]
+                    if results["metadatas"][0][i - 1]:
+                        metadata = results["metadatas"][0][i - 1]
                         click.echo(f"   File: {metadata.get('file_name', 'Unknown')}")
             else:
                 click.echo("No results found")
@@ -305,7 +292,7 @@ def process():
                 click.echo("✓ Processed batch successfully")
                 click.echo(f"Total items: {results['total_items']}")
                 click.echo(f"Successful: {results['successful_items']}")
-                if results['failed_items'] > 0:
+                if results["failed_items"] > 0:
                     click.echo(f"Failed: {results['failed_items']}")
                 click.echo(f"Cost savings: ${results['cost_savings']:.4f}")
             else:
@@ -412,14 +399,17 @@ def embed(text: str):
             # Show basic info
             click.echo(f"Text: {text[:100]}{'...' if len(text) > 100 else ''}")
             click.echo(f"Embedding dimension: {len(embedding)}")
-            click.echo(f"Mode: {'Offline' if client.offline_mode else 'Online (Gemini)'}")
+            click.echo(
+                f"Mode: {'Offline' if client.offline_mode else 'Online (Gemini)'}"
+            )
 
             # Show first few values
             click.echo(f"First 10 values: {embedding[:10]}")
 
             # Calculate embedding norm
             import math
-            norm = math.sqrt(sum(x*x for x in embedding))
+
+            norm = math.sqrt(sum(x * x for x in embedding))
             click.echo(f"Embedding norm: {norm:.4f}")
 
         finally:

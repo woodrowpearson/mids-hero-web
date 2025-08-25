@@ -21,7 +21,8 @@ def temp_files(tmp_path):
 
     # Python file
     python_file = tmp_path / "test.py"
-    python_file.write_text('''
+    python_file.write_text(
+        '''
 def calculate_damage(base_damage, enhancements):
     """Calculate total damage with enhancements."""
     total = base_damage
@@ -39,12 +40,14 @@ class PowerSet:
     def add_power(self, power):
         """Add a power to the set."""
         self.powers.append(power)
-''')
+'''
+    )
     files["python"] = python_file
 
     # TypeScript file
     ts_file = tmp_path / "component.tsx"
-    ts_file.write_text('''
+    ts_file.write_text(
+        """
 interface PowerData {
   id: number;
   name: string;
@@ -66,12 +69,14 @@ export function PowerSelector({ powers }: { powers: PowerData[] }) {
 const calculateEnhancement = (base: number, bonus: number): number => {
   return base * (1 + bonus);
 };
-''')
+"""
+    )
     files["typescript"] = ts_file
 
     # Markdown file
     md_file = tmp_path / "readme.md"
-    md_file.write_text('''
+    md_file.write_text(
+        """
 # RAG System Documentation
 
 This is the main documentation for the RAG system.
@@ -97,27 +102,28 @@ Import and use the system:
 ```python
 from app.rag import EmbeddingClient
 ```
-''')
+"""
+    )
     files["markdown"] = md_file
 
     # JSON file
     json_file = tmp_path / "config.json"
-    json_file.write_text(json.dumps({
-        "api": {
-            "endpoint": "http://localhost:8000",
-            "version": "v1"
-        },
-        "database": {
-            "host": "localhost",
-            "port": 5432
-        },
-        "features": ["rag", "auth", "api"]
-    }, indent=2))
+    json_file.write_text(
+        json.dumps(
+            {
+                "api": {"endpoint": "http://localhost:8000", "version": "v1"},
+                "database": {"host": "localhost", "port": 5432},
+                "features": ["rag", "auth", "api"],
+            },
+            indent=2,
+        )
+    )
     files["json"] = json_file
 
     # SQL file
     sql_file = tmp_path / "schema.sql"
-    sql_file.write_text('''
+    sql_file.write_text(
+        """
 CREATE TABLE powers (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -133,12 +139,14 @@ INSERT INTO powers (name, description) VALUES
     ('Ice Shield', 'Protective ice barrier');
 
 SELECT * FROM powers WHERE damage_type = 'Fire';
-''')
+"""
+    )
     files["sql"] = sql_file
 
     # C# file
     cs_file = tmp_path / "Power.cs"
-    cs_file.write_text('''
+    cs_file.write_text(
+        """
 using System;
 
 namespace MidsReborn
@@ -164,7 +172,8 @@ namespace MidsReborn
         }
     }
 }
-''')
+"""
+    )
     files["csharp"] = cs_file
 
     # Plain text file
@@ -241,10 +250,7 @@ class TestDocumentProcessor:
         assert len(chunks) > 0
 
         # Small JSON should be single chunk
-        assert any(
-            chunk["metadata"].get("type") == "json_file"
-            for chunk in chunks
-        )
+        assert any(chunk["metadata"].get("type") == "json_file" for chunk in chunks)
 
     @pytest.mark.asyncio
     async def test_process_sql_file(self, processor, temp_files):
@@ -323,8 +329,7 @@ class TestDocumentProcessor:
         directory = temp_files["python"].parent
 
         chunks = await processor.process_directory(
-            directory,
-            patterns=["**/*.py", "**/*.md", "**/*.json"]
+            directory, patterns=["**/*.py", "**/*.md", "**/*.json"]
         )
 
         assert len(chunks) > 0
@@ -351,7 +356,7 @@ class TestDocumentProcessor:
         chunks = await processor.process_directory(
             tmp_path,
             patterns=["**/*.py"],
-            ignore_patterns=["**/node_modules/**", "**/__pycache__/**"]
+            ignore_patterns=["**/node_modules/**", "**/__pycache__/**"],
         )
 
         # Should only find main.py
@@ -424,13 +429,15 @@ class TestDocumentProcessor:
     async def test_syntax_error_python(self, processor, tmp_path):
         """Test handling of Python files with syntax errors."""
         bad_python = tmp_path / "bad.py"
-        bad_python.write_text("""
+        bad_python.write_text(
+            """
 def broken_function(
     # Missing closing parenthesis
     pass
 
 class Also broken
-""")
+"""
+        )
 
         # Should fall back to text chunking
         chunks = await processor.process_file(bad_python)

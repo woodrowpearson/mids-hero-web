@@ -125,7 +125,7 @@ class TestUsageMonitor:
             "requests": 1,
             "embeddings": 1,
             "cost": monitor._calculate_cost(300, "embedding"),
-            "alerts_sent": 0
+            "alerts_sent": 0,
         }
 
         # Check both dates have separate usage
@@ -145,7 +145,7 @@ class TestUsageMonitor:
                     "requests": 10 * (i + 1),
                     "embeddings": 5 * (i + 1),
                     "cost": 0.1 * (i + 1),
-                    "alerts_sent": 0
+                    "alerts_sent": 0,
                 }
 
         monitor._save_usage_data()
@@ -202,7 +202,7 @@ class TestUsageMonitor:
             "requests": 10,
             "embeddings": 5,
             "cost": 0.1,
-            "alerts_sent": 0
+            "alerts_sent": 0,
         }
 
         monitor.usage_data["daily_usage"][recent_date] = {
@@ -210,7 +210,7 @@ class TestUsageMonitor:
             "requests": 20,
             "embeddings": 10,
             "cost": 0.2,
-            "alerts_sent": 0
+            "alerts_sent": 0,
         }
 
         # Clean up data older than 30 days

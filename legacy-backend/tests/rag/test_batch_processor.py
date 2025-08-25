@@ -236,13 +236,13 @@ class TestBatchProcessor:
         batch_processor.results["old_1"] = {
             "embedding": [0.1] * 768,
             "metadata": {},
-            "processed_at": (now - timedelta(hours=25)).isoformat()
+            "processed_at": (now - timedelta(hours=25)).isoformat(),
         }
 
         batch_processor.results["recent_1"] = {
             "embedding": [0.2] * 768,
             "metadata": {},
-            "processed_at": now.isoformat()
+            "processed_at": now.isoformat(),
         }
 
         # Clear results older than 24 hours
@@ -266,10 +266,7 @@ class TestBatchProcessor:
             return path.read_text()
 
         # Process files
-        results = await batch_processor.process_file_batch(
-            [file1, file2],
-            read_file
-        )
+        results = await batch_processor.process_file_batch([file1, file2], read_file)
 
         assert str(file1) in results
         assert str(file2) in results

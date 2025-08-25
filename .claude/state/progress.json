@@ -1,6 +1,6 @@
 {
   "project": "mids-hero-web",
-  "last_updated": "2025-08-25T22:40:00Z",
+  "last_updated": "2025-08-25",
   "epics": {
     "epic1": {
       "name": "Project Setup",
@@ -187,6 +187,11 @@
   },
   "recent_activities": [
     {
+      "timestamp": "2025-08-25T15:43:03.394184",
+      "branch": "feature/issue-256-legacy-elimination-epic-2-5-5",
+      "action": "progress_update"
+    },
+    {
       "timestamp": "2025-08-04T20:00:00Z",
       "branch": "main",
       "action": "epic2_5_3_rag_audit_complete",
@@ -238,34 +243,9 @@
       "branch": "feature/git-workflow-protection",
       "action": "documentation_updates",
       "description": "Updated backend/README.md with BaseImporter and I12 Text Parser documentation. Updated .claude/core/quick-reference.md with new Git workflow commands. Verified CLAUDE.md remains under 5k tokens (439 words)."
-    },
-    {
-      "timestamp": "2025-07-19T09:15:15.855962",
-      "branch": "feature/epic2-completion-docs-tests",
-      "action": "progress_update"
-    },
-    {
-      "timestamp": "2025-07-19T09:09:07.226354",
-      "branch": "feature/epic2-completion-docs-tests",
-      "action": "progress_update"
-    },
-    {
-      "timestamp": "2025-07-19T09:03:27.023957",
-      "branch": "feature/epic2-completion-docs-tests",
-      "action": "progress_update"
-    },
-    {
-      "timestamp": "2025-07-19T08:55:11.326370",
-      "branch": "feature/epic2-completion-docs-tests",
-      "action": "progress_update"
-    },
-    {
-      "timestamp": "2025-07-19T08:48:06.114627",
-      "branch": "feature/epic2-completion-docs-tests",
-      "action": "progress_update"
     }
   ],
-  "commit_count": 174,
-  "files_modified": 47,
+  "commit_count": 210,
+  "files_modified": 1,
   "last_auto_update": "2025-08-25T07:02:04.294408"
 }

@@ -50,6 +50,10 @@ MANIFEST
 # data files for db import
 /data/
 
+# RAG cache
+backend/.claude/rag/cache/
+backend/.claude/rag/db/
+
 # PyInstaller
 *.manifest
 

@@ -121,7 +121,7 @@ jobs:
           check_exists "CLAUDE.md"
           check_exists "justfile"
           check_exists "archive/ROADMAP.md"
-          check_exists "api/pyproject.toml"
+          check_exists "legacy-backend/pyproject.toml"
           check_exists "frontend/package.json"
 
           # Check key directories
@@ -129,7 +129,7 @@ jobs:
           check_exists ".claude/agents/"
           check_exists ".claude/modules/"
           check_exists "scripts/"
-          check_exists "api/app/"
+          check_exists "legacy-backend/app/"
           check_exists "frontend/src/"
 
           # Check Docker files

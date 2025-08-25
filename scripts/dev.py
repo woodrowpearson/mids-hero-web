@@ -37,7 +37,7 @@ def main():
         return
 
     command = sys.argv[1]
-    backend_dir = Path(__file__).parent.parent / "api"
+    backend_dir = Path(__file__).parent.parent / "legacy-backend"
 
     if command == "setup":
         print("Setting up development environment...")

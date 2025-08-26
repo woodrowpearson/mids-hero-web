@@ -2,11 +2,13 @@
 
 ## Overview
 
-This repository implements Phase 3 of our GitHub Actions optimization: **Reusable Workflow Components**. These components eliminate code duplication, improve maintainability, and ensure consistent behavior across all workflows.
+This repository implements Phase 3 of our GitHub Actions optimization:
+**Reusable Workflow Components**. These components eliminate code duplication,
+improve maintainability, and ensure consistent behavior across all workflows.
 
 ## Architecture
 
-```
+```text
 .github/
 ├── workflows/
 │   ├── shared/                    # Reusable workflows
@@ -37,7 +39,8 @@ This repository implements Phase 3 of our GitHub Actions optimization: **Reusabl
 
 Analyzes file changes in pull requests with configurable patterns.
 
-#### Usage:
+#### Basic Usage
+
 ```yaml
 jobs:
   detect-changes:
@@ -51,14 +54,16 @@ jobs:
         justfile
 ```
 
-#### Inputs:
+#### Inputs
+
 - `source_files`: Source code patterns (default: py, js, ts files)
 - `config_files`: Configuration file patterns
 - `doc_files`: Documentation patterns
 - `test_files`: Files to ignore
 - `fetch_depth`: Git fetch depth (default: 0)
 
-#### Outputs:
+#### Outputs
+
 - `source_changed`: Boolean indicating source changes
 - `config_changed`: Boolean indicating config changes
 - `docs_changed`: Boolean indicating documentation changes
@@ -70,7 +75,8 @@ jobs:
 
 Integrates Claude AI for code review and analysis.
 
-#### Usage:
+#### Advanced Usage
+
 ```yaml
 jobs:
   claude-review:
@@ -87,7 +93,8 @@ jobs:
       github_token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-#### Inputs:
+#### Claude Inputs
+
 - `prompt`: Claude prompt (required)
 - `max_turns`: Maximum conversation turns (default: 3)
 - `timeout_minutes`: Timeout in minutes (default: 10)
@@ -95,7 +102,8 @@ jobs:
 - `context_files`: Additional files for context
 - `pr_number`: Pull request number for context
 
-#### Outputs:
+#### Claude Outputs
+
 - `success`: Boolean indicating execution success
 - `response`: Claude's response
 - `comment_url`: URL of posted comment
@@ -104,7 +112,8 @@ jobs:
 
 Extracts comprehensive pull request metadata.
 
-#### Usage:
+#### Context Usage
+
 ```yaml
 jobs:
   get-context:
@@ -116,13 +125,15 @@ jobs:
       github_token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-#### Inputs:
+#### PR Inputs
+
 - `pr_number`: PR number (auto-detected if not provided)
 - `fetch_diff`: Include PR diff (default: true)
 - `fetch_comments`: Include comments (default: false)
 - `fetch_commits`: Include commits (default: false)
 
-#### Outputs:
+#### PR Outputs
+
 - `pr_title`, `pr_body`, `pr_author`, `pr_labels`
 - `pr_state`, `pr_url`, `pr_size`
 - `files_changed`, `additions`, `deletions`
@@ -133,7 +144,8 @@ jobs:
 
 Validates documentation files against token limits.
 
-#### Usage:
+#### Validation Usage
+
 ```yaml
 jobs:
   validate-tokens:
@@ -146,12 +158,14 @@ jobs:
       warning_threshold: 90
 ```
 
-#### Inputs:
+#### Token Inputs
+
 - `files_to_check`: File patterns with limits (pattern:limit)
 - `fail_on_exceed`: Fail workflow if exceeded (default: true)
 - `warning_threshold`: Warning percentage (default: 90)
 
-#### Outputs:
+#### Token Outputs
+
 - `validation_passed`: Boolean indicating success
 - `files_exceeding`: List of files over limit
 - `warning_files`: List of files near limit
@@ -163,7 +177,8 @@ jobs:
 
 Sets up common project dependencies and environment.
 
-#### Usage:
+#### Project Setup Usage
+
 ```yaml
 steps:
   - uses: ./.github/actions/setup-project
@@ -179,7 +194,8 @@ steps:
 
 Posts formatted comments with deduplication support.
 
-#### Usage:
+#### Comment Usage
+
 ```yaml
 steps:
   - uses: ./.github/actions/post-comment
@@ -195,7 +211,8 @@ steps:
 
 ## Migration Guide
 
-### Before (Duplicated Code):
+### Before (Duplicated Code)
+
 ```yaml
 jobs:
   review:
@@ -225,7 +242,8 @@ jobs:
         # ... complex configuration
 ```
 
-### After (Using Components):
+### After (Using Components)
+
 ```yaml
 jobs:
   detect-changes:

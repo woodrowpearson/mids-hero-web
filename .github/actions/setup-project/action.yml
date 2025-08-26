@@ -1,0 +1,92 @@
+name: 'Setup Project Environment'
+description: 'Sets up common project dependencies and environment'
+inputs:
+  python-version:
+    description: 'Python version to setup'
+    required: false
+    default: '3.12'
+  node-version:
+    description: 'Node.js version to setup'
+    required: false
+    default: '20'
+  setup-python:
+    description: 'Whether to setup Python'
+    required: false
+    default: 'true'
+  setup-node:
+    description: 'Whether to setup Node.js'
+    required: false
+    default: 'false'
+  install-just:
+    description: 'Whether to install just command runner'
+    required: false
+    default: 'false'
+  cache-dependencies:
+    description: 'Whether to cache dependencies'
+    required: false
+    default: 'true'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Setup Python
+      if: inputs.setup-python == 'true'
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
+        cache: ${{ inputs.cache-dependencies == 'true' && 'pip' || '' }}
+    
+    - name: Setup Node.js
+      if: inputs.setup-node == 'true'
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: ${{ inputs.cache-dependencies == 'true' && 'npm' || '' }}
+    
+    - name: Install Just
+      if: inputs.install-just == 'true'
+      shell: bash
+      run: |
+        # Install just command runner
+        curl -LSfs https://just.systems/install.sh | sh -s -- --to $HOME/.local/bin
+        echo "$HOME/.local/bin" >> $GITHUB_PATH
+        
+        # Verify installation
+        $HOME/.local/bin/just --version || echo "Just installation failed"
+    
+    - name: Setup Python virtual environment
+      if: inputs.setup-python == 'true'
+      shell: bash
+      run: |
+        # Create and activate virtual environment
+        python -m venv .venv
+        echo "VIRTUAL_ENV=$PWD/.venv" >> $GITHUB_ENV
+        echo "$PWD/.venv/bin" >> $GITHUB_PATH
+        
+        # Upgrade pip
+        .venv/bin/python -m pip install --upgrade pip
+    
+    - name: Cache validation
+      shell: bash
+      run: |
+        echo "## Environment Setup Complete" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        
+        if [[ "${{ inputs.setup-python }}" == "true" ]]; then
+          echo "- ✅ Python ${{ inputs.python-version }}" >> $GITHUB_STEP_SUMMARY
+          python --version >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        if [[ "${{ inputs.setup-node }}" == "true" ]]; then
+          echo "- ✅ Node.js ${{ inputs.node-version }}" >> $GITHUB_STEP_SUMMARY
+          node --version >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        if [[ "${{ inputs.install-just }}" == "true" ]]; then
+          echo "- ✅ Just command runner" >> $GITHUB_STEP_SUMMARY
+          just --version >> $GITHUB_STEP_SUMMARY 2>&1 || echo "Not installed" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        if [[ "${{ inputs.cache-dependencies }}" == "true" ]]; then
+          echo "- ✅ Dependency caching enabled" >> $GITHUB_STEP_SUMMARY
+        fi

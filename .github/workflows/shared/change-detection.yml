@@ -1,0 +1,182 @@
+name: Reusable Change Detection
+
+on:
+  workflow_call:
+    inputs:
+      source_files:
+        description: 'File patterns for source code (multiline string)'
+        required: false
+        type: string
+        default: |
+          backend/**/*.py
+          frontend/**/*.{js,ts,jsx,tsx}
+      config_files:
+        description: 'File patterns for config files (multiline string)'
+        required: false
+        type: string
+        default: |
+          backend/pyproject.toml
+          frontend/package.json
+          docker-compose.yml
+          Dockerfile
+          justfile
+          .github/workflows/*.yml
+      doc_files:
+        description: 'File patterns for documentation (multiline string)'
+        required: false
+        type: string
+        default: |
+          **/*.md
+          .claude/**/*.{md,json}
+      test_files:
+        description: 'File patterns to ignore (multiline string)'
+        required: false
+        type: string
+        default: |
+          **/*_test.py
+          **/*.test.{js,ts,jsx,tsx}
+          **/__pycache__/**
+          **/node_modules/**
+          **/*.pyc
+          **/.pytest_cache/**
+          **/coverage/**
+      fetch_depth:
+        description: 'Git fetch depth'
+        required: false
+        type: number
+        default: 0
+      
+    outputs:
+      source_changed:
+        description: 'Whether source files changed'
+        value: ${{ jobs.detect-changes.outputs.source_changed }}
+      config_changed:
+        description: 'Whether config files changed'
+        value: ${{ jobs.detect-changes.outputs.config_changed }}
+      docs_changed:
+        description: 'Whether documentation changed'
+        value: ${{ jobs.detect-changes.outputs.docs_changed }}
+      any_changed:
+        description: 'Whether any files changed'
+        value: ${{ jobs.detect-changes.outputs.any_changed }}
+      all_changed_files:
+        description: 'All changed files (space-delimited)'
+        value: ${{ jobs.detect-changes.outputs.all_changed_files }}
+      source_files_list:
+        description: 'Changed source files (space-delimited)'
+        value: ${{ jobs.detect-changes.outputs.source_files_list }}
+      config_files_list:
+        description: 'Changed config files (space-delimited)'
+        value: ${{ jobs.detect-changes.outputs.config_files_list }}
+      doc_files_list:
+        description: 'Changed doc files (space-delimited)'
+        value: ${{ jobs.detect-changes.outputs.doc_files_list }}
+      file_count:
+        description: 'Total number of changed files'
+        value: ${{ jobs.detect-changes.outputs.file_count }}
+      pr_size:
+        description: 'PR size category (small/medium/large)'
+        value: ${{ jobs.detect-changes.outputs.pr_size }}
+
+jobs:
+  detect-changes:
+    name: Detect File Changes
+    runs-on: ubuntu-latest
+    outputs:
+      source_changed: ${{ steps.source-files.outputs.any_changed }}
+      config_changed: ${{ steps.config-files.outputs.any_changed }}
+      docs_changed: ${{ steps.doc-files.outputs.any_changed }}
+      any_changed: ${{ steps.combine.outputs.any_changed }}
+      all_changed_files: ${{ steps.combine.outputs.all_changed_files }}
+      source_files_list: ${{ steps.source-files.outputs.all_changed_files }}
+      config_files_list: ${{ steps.config-files.outputs.all_changed_files }}
+      doc_files_list: ${{ steps.doc-files.outputs.all_changed_files }}
+      file_count: ${{ steps.combine.outputs.file_count }}
+      pr_size: ${{ steps.combine.outputs.pr_size }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: ${{ inputs.fetch_depth }}
+      
+      - name: Detect source file changes
+        id: source-files
+        uses: tj-actions/changed-files@v44
+        with:
+          files: ${{ inputs.source_files }}
+          files_ignore: ${{ inputs.test_files }}
+      
+      - name: Detect config file changes
+        id: config-files
+        uses: tj-actions/changed-files@v44
+        with:
+          files: ${{ inputs.config_files }}
+      
+      - name: Detect documentation changes
+        id: doc-files
+        uses: tj-actions/changed-files@v44
+        with:
+          files: ${{ inputs.doc_files }}
+      
+      - name: Combine results
+        id: combine
+        run: |
+          # Determine if any files changed
+          ANY_CHANGED="false"
+          if [[ "${{ steps.source-files.outputs.any_changed }}" == "true" ]] || \
+             [[ "${{ steps.config-files.outputs.any_changed }}" == "true" ]] || \
+             [[ "${{ steps.doc-files.outputs.any_changed }}" == "true" ]]; then
+            ANY_CHANGED="true"
+          fi
+          
+          # Combine all changed files
+          ALL_FILES=""
+          if [[ -n "${{ steps.source-files.outputs.all_changed_files }}" ]]; then
+            ALL_FILES="${{ steps.source-files.outputs.all_changed_files }}"
+          fi
+          if [[ -n "${{ steps.config-files.outputs.all_changed_files }}" ]]; then
+            if [[ -n "$ALL_FILES" ]]; then
+              ALL_FILES="$ALL_FILES ${{ steps.config-files.outputs.all_changed_files }}"
+            else
+              ALL_FILES="${{ steps.config-files.outputs.all_changed_files }}"
+            fi
+          fi
+          if [[ -n "${{ steps.doc-files.outputs.all_changed_files }}" ]]; then
+            if [[ -n "$ALL_FILES" ]]; then
+              ALL_FILES="$ALL_FILES ${{ steps.doc-files.outputs.all_changed_files }}"
+            else
+              ALL_FILES="${{ steps.doc-files.outputs.all_changed_files }}"
+            fi
+          fi
+          
+          # Count files and determine PR size
+          FILE_COUNT=0
+          if [[ -n "$ALL_FILES" ]]; then
+            FILE_COUNT=$(echo "$ALL_FILES" | wc -w)
+          fi
+          
+          # Determine PR size
+          PR_SIZE="small"
+          if [ $FILE_COUNT -gt 10 ] && [ $FILE_COUNT -le 50 ]; then
+            PR_SIZE="medium"
+          elif [ $FILE_COUNT -gt 50 ]; then
+            PR_SIZE="large"
+          fi
+          
+          # Output results
+          echo "any_changed=$ANY_CHANGED" >> $GITHUB_OUTPUT
+          echo "all_changed_files=$ALL_FILES" >> $GITHUB_OUTPUT
+          echo "file_count=$FILE_COUNT" >> $GITHUB_OUTPUT
+          echo "pr_size=$PR_SIZE" >> $GITHUB_OUTPUT
+          
+          # Generate summary
+          echo "## Change Detection Results" >> $GITHUB_STEP_SUMMARY
+          echo "- **Any Changed**: $ANY_CHANGED" >> $GITHUB_STEP_SUMMARY
+          echo "- **Total Files**: $FILE_COUNT" >> $GITHUB_STEP_SUMMARY
+          echo "- **PR Size**: $PR_SIZE" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Change Categories" >> $GITHUB_STEP_SUMMARY
+          echo "- Source Files: ${{ steps.source-files.outputs.any_changed }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Config Files: ${{ steps.config-files.outputs.any_changed }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Documentation: ${{ steps.doc-files.outputs.any_changed }}" >> $GITHUB_STEP_SUMMARY

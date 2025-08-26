@@ -1,0 +1,147 @@
+name: 'Post GitHub Comment'
+description: 'Posts formatted comments to PRs or issues with deduplication support'
+inputs:
+  token:
+    description: 'GitHub token'
+    required: true
+  issue-number:
+    description: 'Issue or PR number'
+    required: false
+    default: ''
+  comment-body:
+    description: 'Comment body (markdown)'
+    required: true
+  comment-identifier:
+    description: 'Unique identifier for comment updates (prevents duplicates)'
+    required: false
+    default: ''
+  update-existing:
+    description: 'Update existing comment with same identifier'
+    required: false
+    default: 'true'
+  add-reactions:
+    description: 'Comma-separated list of reactions to add'
+    required: false
+    default: ''
+
+outputs:
+  comment-id:
+    description: 'ID of the posted comment'
+    value: ${{ steps.post.outputs.comment_id }}
+  comment-url:
+    description: 'URL of the posted comment'
+    value: ${{ steps.post.outputs.comment_url }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Determine issue number
+      id: issue
+      shell: bash
+      run: |
+        ISSUE_NUMBER="${{ inputs.issue-number }}"
+        
+        # Auto-detect if not provided
+        if [[ -z "$ISSUE_NUMBER" ]]; then
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            ISSUE_NUMBER="${{ github.event.pull_request.number }}"
+          elif [[ "${{ github.event_name }}" == "issue_comment" ]]; then
+            ISSUE_NUMBER="${{ github.event.issue.number }}"
+          fi
+        fi
+        
+        if [[ -z "$ISSUE_NUMBER" ]]; then
+          echo "❌ Could not determine issue/PR number" >&2
+          exit 1
+        fi
+        
+        echo "issue_number=$ISSUE_NUMBER" >> $GITHUB_OUTPUT
+    
+    - name: Check for existing comment
+      id: find
+      if: inputs.comment-identifier != '' && inputs.update-existing == 'true'
+      shell: bash
+      run: |
+        IDENTIFIER="${{ inputs.comment-identifier }}"
+        ISSUE_NUMBER="${{ steps.issue.outputs.issue_number }}"
+        
+        # Search for existing comment with identifier
+        EXISTING_ID=$(gh api repos/${{ github.repository }}/issues/$ISSUE_NUMBER/comments \
+          --jq ".[] | select(.body | contains(\"<!-- $IDENTIFIER -->\")) | .id" \
+          | head -n 1)
+        
+        echo "existing_id=$EXISTING_ID" >> $GITHUB_OUTPUT
+      env:
+        GH_TOKEN: ${{ inputs.token }}
+    
+    - name: Post or update comment
+      id: post
+      shell: bash
+      run: |
+        ISSUE_NUMBER="${{ steps.issue.outputs.issue_number }}"
+        EXISTING_ID="${{ steps.find.outputs.existing_id }}"
+        
+        # Prepare comment body with identifier if provided
+        BODY="${{ inputs.comment-body }}"
+        if [[ -n "${{ inputs.comment-identifier }}" ]]; then
+          BODY="$BODY
+        
+        <!-- ${{ inputs.comment-identifier }} -->"
+        fi
+        
+        # Create temporary file with body
+        cat > comment.md << 'EOF'
+        $BODY
+        EOF
+        
+        # Post or update comment
+        if [[ -n "$EXISTING_ID" ]]; then
+          # Update existing comment
+          RESPONSE=$(gh api repos/${{ github.repository }}/issues/comments/$EXISTING_ID \
+            --method PATCH \
+            --field body="$BODY" \
+            --jq '{id: .id, url: .html_url}')
+          echo "Updated existing comment #$EXISTING_ID" >> $GITHUB_STEP_SUMMARY
+        else
+          # Create new comment
+          RESPONSE=$(gh api repos/${{ github.repository }}/issues/$ISSUE_NUMBER/comments \
+            --method POST \
+            --field body="$BODY" \
+            --jq '{id: .id, url: .html_url}')
+          echo "Posted new comment on #$ISSUE_NUMBER" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        # Extract response
+        COMMENT_ID=$(echo "$RESPONSE" | jq -r '.id')
+        COMMENT_URL=$(echo "$RESPONSE" | jq -r '.url')
+        
+        echo "comment_id=$COMMENT_ID" >> $GITHUB_OUTPUT
+        echo "comment_url=$COMMENT_URL" >> $GITHUB_OUTPUT
+        echo "Comment URL: $COMMENT_URL" >> $GITHUB_STEP_SUMMARY
+      env:
+        GH_TOKEN: ${{ inputs.token }}
+        BODY: ${{ inputs.comment-body }}
+    
+    - name: Add reactions
+      if: inputs.add-reactions != ''
+      shell: bash
+      run: |
+        COMMENT_ID="${{ steps.post.outputs.comment_id }}"
+        REACTIONS="${{ inputs.add-reactions }}"
+        
+        # Add each reaction
+        IFS=',' read -ra REACTION_LIST <<< "$REACTIONS"
+        for reaction in "${REACTION_LIST[@]}"; do
+          reaction=$(echo "$reaction" | xargs)  # Trim whitespace
+          
+          # Valid reactions: +1, -1, laugh, confused, heart, hooray, rocket, eyes
+          if [[ "$reaction" =~ ^(\+1|-1|laugh|confused|heart|hooray|rocket|eyes)$ ]]; then
+            gh api repos/${{ github.repository }}/issues/comments/$COMMENT_ID/reactions \
+              --method POST \
+              --field content="$reaction" \
+              >/dev/null 2>&1 || echo "Failed to add reaction: $reaction"
+            echo "Added reaction: $reaction" >> $GITHUB_STEP_SUMMARY
+          fi
+        done
+      env:
+        GH_TOKEN: ${{ inputs.token }}

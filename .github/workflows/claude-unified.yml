@@ -1,0 +1,326 @@
+name: Claude Unified
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      # Include only source code and critical config files
+      - 'backend/**/*.py'
+      - 'frontend/**/*.{js,ts,jsx,tsx}'
+      - 'backend/pyproject.toml'
+      - 'frontend/package.json'
+      - 'docker-compose.yml'
+      - 'Dockerfile'
+      - 'justfile'
+      - '.github/workflows/*.yml'
+    paths-ignore:
+      # Exclude test files and cache directories
+      - '**/*_test.py'
+      - '**/*.test.{js,ts,jsx,tsx}'
+      - '**/__pycache__/**'
+      - '**/node_modules/**'
+      - '**/*.md'
+      - '.claude/**/*.md'
+      - '**/*.pyc'
+      - '**/.pytest_cache/**'
+      - '**/coverage/**'
+  issue_comment:
+    types: [created]
+
+concurrency:
+  group: claude-unified-${{ github.event.pull_request.number || github.event.issue.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+  id-token: write
+
+jobs:
+  determine-action:
+    name: Determine Claude Action
+    runs-on: ubuntu-latest
+    outputs:
+      action_type: ${{ steps.detect.outputs.action_type }}
+      should_run: ${{ steps.detect.outputs.should_run }}
+      timeout: ${{ steps.detect.outputs.timeout }}
+      checkout_ref: ${{ steps.detect.outputs.checkout_ref }}
+      prompt_type: ${{ steps.detect.outputs.prompt_type }}
+      max_turns: ${{ steps.detect.outputs.max_turns }}
+    
+    steps:
+      - name: Detect action type
+        id: detect
+        run: |
+          ACTION_TYPE="none"
+          SHOULD_RUN="false"
+          TIMEOUT=5
+          CHECKOUT_REF=""
+          PROMPT_TYPE="none"
+          MAX_TURNS=3
+          
+          # Handle pull request auto-review
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            # Check if we should skip Claude review
+            if [[ "${{ contains(github.event.pull_request.labels.*.name, 'skip-claude-review') }}" == "false" ]]; then
+              ACTION_TYPE="pr-review"
+              SHOULD_RUN="true"
+              PROMPT_TYPE="review"
+              MAX_TURNS=5
+              
+              # Calculate dynamic timeout based on PR size
+              FILE_COUNT="${{ github.event.pull_request.changed_files }}"
+              if [ "${FILE_COUNT:-10}" -lt 10 ]; then
+                TIMEOUT=5
+              elif [ "${FILE_COUNT:-10}" -lt 50 ]; then
+                TIMEOUT=10
+              else
+                TIMEOUT=15
+              fi
+            fi
+          # Handle issue comments
+          elif [[ "${{ github.event_name }}" == "issue_comment" ]] && [[ "${{ github.event.issue.pull_request }}" != "" ]]; then
+            COMMENT="${{ github.event.comment.body }}"
+            
+            # Check for different triggers
+            if [[ "$COMMENT" == *"@claude"* ]]; then
+              ACTION_TYPE="question"
+              SHOULD_RUN="true"
+              PROMPT_TYPE="question"
+              TIMEOUT=10
+              MAX_TURNS=3
+            elif [[ "$COMMENT" == *"implement doc suggestions"* ]]; then
+              ACTION_TYPE="doc-implement"
+              SHOULD_RUN="true"
+              PROMPT_TYPE="implement"
+              TIMEOUT=15
+              CHECKOUT_REF="${{ github.event.issue.pull_request.head.ref }}"
+              MAX_TURNS=3
+            elif [[ "$COMMENT" == *"approved"* ]]; then
+              ACTION_TYPE="approval"
+              SHOULD_RUN="true"
+              PROMPT_TYPE="approval"
+              TIMEOUT=20
+              CHECKOUT_REF="${{ github.event.issue.pull_request.head.ref }}"
+              MAX_TURNS=3
+            fi
+          fi
+          
+          echo "action_type=$ACTION_TYPE" >> $GITHUB_OUTPUT
+          echo "should_run=$SHOULD_RUN" >> $GITHUB_OUTPUT
+          echo "timeout=$TIMEOUT" >> $GITHUB_OUTPUT
+          echo "checkout_ref=$CHECKOUT_REF" >> $GITHUB_OUTPUT
+          echo "prompt_type=$PROMPT_TYPE" >> $GITHUB_OUTPUT
+          echo "max_turns=$MAX_TURNS" >> $GITHUB_OUTPUT
+          
+          echo "## Claude Action Detection" >> $GITHUB_STEP_SUMMARY
+          echo "- Action Type: $ACTION_TYPE" >> $GITHUB_STEP_SUMMARY
+          echo "- Should Run: $SHOULD_RUN" >> $GITHUB_STEP_SUMMARY
+          echo "- Timeout: $TIMEOUT minutes" >> $GITHUB_STEP_SUMMARY
+          echo "- Prompt Type: $PROMPT_TYPE" >> $GITHUB_STEP_SUMMARY
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  claude-action:
+    name: Claude ${{ needs.determine-action.outputs.action_type }}
+    needs: determine-action
+    if: needs.determine-action.outputs.should_run == 'true'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: ${{ needs.determine-action.outputs.checkout_ref || github.event.pull_request.head.sha || github.sha }}
+      
+      - name: Calculate PR size (for reviews)
+        id: pr-size
+        if: needs.determine-action.outputs.action_type == 'pr-review'
+        run: |
+          FILE_COUNT=$(gh pr view ${{ github.event.pull_request.number }} --json files --jq '.files | length' || echo "10")
+          echo "file_count=$FILE_COUNT" >> $GITHUB_OUTPUT
+          echo "PR has $FILE_COUNT changed files"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Extract question (for @claude mentions)
+        id: extract-question
+        if: needs.determine-action.outputs.action_type == 'question'
+        run: |
+          COMMENT="${{ github.event.comment.body }}"
+          QUESTION=$(echo "$COMMENT" | sed 's/@claude//' | sed 's/^[[:space:]]*//')
+          echo "question<<EOF" >> $GITHUB_OUTPUT
+          echo "$QUESTION" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+      
+      - name: Set up Python (for doc implementation)
+        if: needs.determine-action.outputs.action_type == 'doc-implement' || needs.determine-action.outputs.action_type == 'approval'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies (for doc implementation)
+        if: needs.determine-action.outputs.action_type == 'doc-implement' || needs.determine-action.outputs.action_type == 'approval'
+        run: pip install tiktoken
+      
+      - name: Build Claude prompt
+        id: build-prompt
+        run: |
+          PROMPT=""
+          
+          case "${{ needs.determine-action.outputs.prompt_type }}" in
+            review)
+              PROMPT="Review PR #${{ github.event.pull_request.number }} for the Mids Hero Web project.
+
+          Provide focused feedback on:
+          1. City of Heroes domain correctness (powers, enhancements, game mechanics)
+          2. Code quality and FastAPI/React best practices
+          3. Critical bugs or security issues
+          4. Performance bottlenecks in build calculations
+          5. Missing test coverage for new features
+
+          Guidelines:
+          - Prioritize high-impact issues over minor style preferences
+          - Suggest specific code improvements with examples
+          - Flag any changes that could break existing functionality
+          - Verify game mechanics calculations match expected formulas
+
+          Keep feedback concise and actionable. Use inline comments for specific issues."
+              ;;
+            
+            question)
+              PROMPT="You are responding to a question in PR #${{ github.event.issue.number }} of the Mids Hero Web project.
+
+          User question: ${{ steps.extract-question.outputs.question }}
+
+          Provide a helpful response about the codebase, epic progress, or City of Heroes mechanics as requested.
+          Keep your response concise and relevant to the question."
+              ;;
+            
+            implement)
+              PROMPT="This is an automated task to implement documentation suggestions for PR #${{ github.event.issue.number }}.
+
+          1. Search for recent documentation suggestions in PR comments from github-actions bot
+          2. Apply the suggested documentation updates to the appropriate files
+          3. Ensure CLAUDE.md stays under 5K tokens (use tiktoken to verify)
+          4. Commit any changes with message: \"docs: implement automated documentation suggestions\"
+
+          Focus on:
+          - Epic status updates in CLAUDE.md
+          - Token limit compliance
+          - Documentation accuracy
+
+          The user comment was: \"${{ github.event.comment.body }}\""
+              ;;
+            
+            approval)
+              PROMPT="This is an automated task to process approval comments and apply approved changes for PR #${{ github.event.issue.number }}.
+
+          User approval comment: \"${{ github.event.comment.body }}\"
+
+          Tasks:
+          1. Find recent documentation suggestions from github-actions bot in this PR
+          2. Determine if this is a simple approval or approval with modifications
+          3. Apply the approved changes based on the approval type
+          4. For modified approvals, parse and apply the requested modifications
+          5. Commit changes with message: \"docs: apply approved documentation changes\"
+
+          Common modifications to handle:
+          - Docker commands addition
+          - Epic 2 details updates
+          - API documentation sections
+          - Quick commands documentation
+
+          Ensure all changes are properly committed and pushed."
+              ;;
+          esac
+          
+          # Save prompt to file to handle multi-line content
+          echo "$PROMPT" > claude_prompt.txt
+          echo "Prompt saved to file"
+      
+      - name: Claude Action Execution
+        uses: anthropics/claude-code-action@beta
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          cache_prompts: true
+          cache_control: ephemeral
+          timeout_minutes: "${{ needs.determine-action.outputs.timeout }}"
+          max_turns: "${{ needs.determine-action.outputs.max_turns }}"
+          direct_prompt_file: claude_prompt.txt
+      
+      - name: Post summary comment
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const status = '${{ job.status }}';
+            const actionType = '${{ needs.determine-action.outputs.action_type }}';
+            const emoji = status === 'success' ? '✅' : '❌';
+            
+            const summaries = {
+              'pr-review': `${emoji} Claude has ${status === 'success' ? 'completed' : 'failed'} the automated PR review.`,
+              'question': `${emoji} Claude has ${status === 'success' ? 'responded to' : 'failed to respond to'} your question.`,
+              'doc-implement': `${emoji} Documentation suggestions have been ${status === 'success' ? 'implemented' : 'failed to implement'}.`,
+              'approval': `${emoji} Approved changes have been ${status === 'success' ? 'applied' : 'failed to apply'}.`
+            };
+            
+            if (summaries[actionType] && context.eventName === 'issue_comment') {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: summaries[actionType]
+              });
+            }
+
+  create-summary:
+    name: Create Action Summary
+    needs: [determine-action, claude-action]
+    if: always() && needs.determine-action.outputs.should_run == 'true'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Create summary report
+        run: |
+          echo "# 🤖 Claude Unified Action Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Action Type**: ${{ needs.determine-action.outputs.action_type }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Event**: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Status**: ${{ needs.claude-action.result || 'skipped' }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          case "${{ needs.determine-action.outputs.action_type }}" in
+            pr-review)
+              echo "## 🔍 Pull Request Review" >> $GITHUB_STEP_SUMMARY
+              echo "- PR Number: #${{ github.event.pull_request.number }}" >> $GITHUB_STEP_SUMMARY
+              echo "- Changed Files: ${{ github.event.pull_request.changed_files }}" >> $GITHUB_STEP_SUMMARY
+              ;;
+            question)
+              echo "## 💬 Question Response" >> $GITHUB_STEP_SUMMARY
+              echo "- Issue/PR: #${{ github.event.issue.number }}" >> $GITHUB_STEP_SUMMARY
+              echo "- Triggered by: @${{ github.event.comment.user.login }}" >> $GITHUB_STEP_SUMMARY
+              ;;
+            doc-implement)
+              echo "## 📝 Documentation Implementation" >> $GITHUB_STEP_SUMMARY
+              echo "- PR Number: #${{ github.event.issue.number }}" >> $GITHUB_STEP_SUMMARY
+              echo "- Triggered by: @${{ github.event.comment.user.login }}" >> $GITHUB_STEP_SUMMARY
+              ;;
+            approval)
+              echo "## ✅ Approval Processing" >> $GITHUB_STEP_SUMMARY
+              echo "- PR Number: #${{ github.event.issue.number }}" >> $GITHUB_STEP_SUMMARY
+              echo "- Approved by: @${{ github.event.comment.user.login }}" >> $GITHUB_STEP_SUMMARY
+              ;;
+          esac
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Timeout**: ${{ needs.determine-action.outputs.timeout }} minutes" >> $GITHUB_STEP_SUMMARY
+          echo "**Max Turns**: ${{ needs.determine-action.outputs.max_turns }}" >> $GITHUB_STEP_SUMMARY
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "*Claude Unified Workflow - Consolidating all Claude interactions*" >> $GITHUB_STEP_SUMMARY

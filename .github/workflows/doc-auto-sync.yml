@@ -13,6 +13,10 @@ on:
       - 'backend/pyproject.toml'
       - 'frontend/package.json'
       - 'docker-compose.yml'
+
+concurrency:
+  group: doc-sync-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
       - 'Dockerfile'
   schedule:
     # Weekly full sync on Sunday at 2 AM

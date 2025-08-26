@@ -21,21 +21,12 @@ jobs:
         with:
           fetch-depth: 0  # Changed to 0 for better diff analysis
 
-      - name: Get PR size
+      - name: Set fixed timeout
         id: pr-size
         run: |
-          # Calculate PR size for dynamic timeout
-          CHANGES=$(git diff --numstat origin/${{ github.event.pull_request.base.ref }}..HEAD | awk '{ added += $1; deleted += $2 } END { print added + deleted }')
-          echo "changes=$CHANGES" >> $GITHUB_OUTPUT
-          
-          # Set timeout based on PR size
-          if [ $CHANGES -lt 100 ]; then
-            echo "timeout=10" >> $GITHUB_OUTPUT
-          elif [ $CHANGES -lt 500 ]; then
-            echo "timeout=15" >> $GITHUB_OUTPUT
-          else
-            echo "timeout=20" >> $GITHUB_OUTPUT
-          fi
+          # Use fixed timeout for predictable behavior
+          echo "timeout=15" >> $GITHUB_OUTPUT
+          echo "Using fixed timeout of 15 minutes for consistent behavior"
 
       - name: Automatic PR Review
         uses: anthropics/claude-code-action@beta
@@ -46,7 +37,6 @@ jobs:
           max_turns: "5"  # Limit conversation turns for efficiency
           direct_prompt: |
             Review PR #${{ github.event.pull_request.number }} for the Mids Hero Web project.
-            PR size: ${{ steps.pr-size.outputs.changes }} lines changed.
 
             Provide focused feedback on:
             1. City of Heroes domain correctness (powers, enhancements, game mechanics)

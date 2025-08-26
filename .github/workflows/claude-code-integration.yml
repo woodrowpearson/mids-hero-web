@@ -79,6 +79,8 @@ jobs:
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          cache_prompts: true  # Enable prompt caching for ~30% API reduction
+          cache_control: ephemeral  # Use ephemeral caching for PR-specific context
           timeout_minutes: "${{ matrix.timeout }}"
           max_turns: "3"
           direct_prompt: |

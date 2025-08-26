@@ -52,13 +52,39 @@ jobs:
             **/*.md
             .claude/**/*.{md,json}
             
+      - name: Calculate dynamic timeout
+        id: calculate-timeout
+        run: |
+          # Calculate total files changed
+          CODE_COUNT="${{ steps.changed-files.outputs.all_changed_files_count }}"
+          DOC_COUNT="${{ steps.doc-files.outputs.all_changed_files_count }}"
+          TOTAL_COUNT=$((${CODE_COUNT:-0} + ${DOC_COUNT:-0}))
+          
+          # Documentation review is simpler, so use shorter timeouts
+          # <10 files: 3 minutes
+          # 10-30 files: 5 minutes
+          # >30 files: 8 minutes
+          if [ "$TOTAL_COUNT" -lt 10 ]; then
+            TIMEOUT=3
+          elif [ "$TOTAL_COUNT" -lt 30 ]; then
+            TIMEOUT=5
+          else
+            TIMEOUT=8
+          fi
+          
+          echo "timeout=$TIMEOUT" >> $GITHUB_OUTPUT
+          echo "total_count=$TOTAL_COUNT" >> $GITHUB_OUTPUT
+          echo "Dynamic timeout: ${TIMEOUT} minutes for ${TOTAL_COUNT} files changed"
+            
       - name: Documentation Review with Claude
         if: steps.changed-files.outputs.any_changed == 'true' || steps.doc-files.outputs.any_changed == 'true'
         uses: anthropics/claude-code-action@beta
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          timeout_minutes: "8"
+          cache_prompts: true  # Enable prompt caching for ~30% API reduction
+          cache_control: ephemeral  # Use ephemeral caching for PR-specific context
+          timeout_minutes: "${{ steps.calculate-timeout.outputs.timeout }}"  # Dynamic timeout
           max_turns: "2"
           direct_prompt: |
             Review PR #${{ github.event.pull_request.number }} for documentation impact.

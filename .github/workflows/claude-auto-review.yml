@@ -3,6 +3,27 @@ name: Claude Auto Review
 on:
   pull_request:
     types: [opened, synchronize]
+    paths:
+      # Include only source code and critical config files
+      - 'backend/**/*.py'
+      - 'frontend/**/*.{js,ts,jsx,tsx}'
+      - 'backend/pyproject.toml'
+      - 'frontend/package.json'
+      - 'docker-compose.yml'
+      - 'Dockerfile'
+      - 'justfile'
+      - '.github/workflows/*.yml'
+    paths-ignore:
+      # Exclude test files and cache directories
+      - '**/*_test.py'
+      - '**/*.test.{js,ts,jsx,tsx}'
+      - '**/__pycache__/**'
+      - '**/node_modules/**'
+      - '**/*.md'  # Documentation handled by doc-review workflow
+      - '.claude/**/*.md'  # Claude docs handled separately
+      - '**/*.pyc'
+      - '**/.pytest_cache/**'
+      - '**/coverage/**'
 
 concurrency:
   group: claude-review-${{ github.event.pull_request.number }}
@@ -21,18 +42,37 @@ jobs:
         with:
           fetch-depth: 0  # Changed to 0 for better diff analysis
 
-      - name: Set fixed timeout
+      - name: Calculate dynamic timeout
         id: pr-size
         run: |
-          # Use fixed timeout for predictable behavior
-          echo "timeout=15" >> $GITHUB_OUTPUT
-          echo "Using fixed timeout of 15 minutes for consistent behavior"
+          # Get the number of files changed in the PR
+          FILE_COUNT=$(gh pr view ${{ github.event.pull_request.number }} --json files --jq '.files | length' || echo "10")
+          
+          # Calculate timeout based on file count
+          # <10 files: 5 minutes
+          # 10-50 files: 10 minutes
+          # >50 files: 15 minutes
+          if [ "$FILE_COUNT" -lt 10 ]; then
+            TIMEOUT=5
+          elif [ "$FILE_COUNT" -lt 50 ]; then
+            TIMEOUT=10
+          else
+            TIMEOUT=15
+          fi
+          
+          echo "timeout=$TIMEOUT" >> $GITHUB_OUTPUT
+          echo "file_count=$FILE_COUNT" >> $GITHUB_OUTPUT
+          echo "Dynamic timeout: ${TIMEOUT} minutes for ${FILE_COUNT} files changed"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Automatic PR Review
         uses: anthropics/claude-code-action@beta
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          cache_prompts: true  # Enable prompt caching for ~30% API reduction
+          cache_control: ephemeral  # Use ephemeral caching for PR-specific context
           timeout_minutes: "${{ steps.pr-size.outputs.timeout }}"  # Dynamic timeout
           max_turns: "5"  # Limit conversation turns for efficiency
           direct_prompt: |

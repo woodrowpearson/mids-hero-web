@@ -22,36 +22,21 @@ This directory contains GitHub Actions workflows that automate CI/CD, code revie
 
 ---
 
-### 🤖 claude-auto-review.yml - AI Code Review
-**Triggers**: Pull request opened or synchronized
+### 🤖 claude-unified.yml - AI Code Review & Interaction
+**Triggers**: Pull requests, Issue comments containing "@claude"
 
-**Purpose**: Automatic code review using Claude with City of Heroes domain knowledge
+**Purpose**: Unified Claude integration for code review and interactive assistance
 
 **Features**:
-- Reviews code quality and best practices
-- Checks for potential bugs and security issues
-- Validates City of Heroes game mechanics
-- Ensures test coverage
-- Comments directly on PR
+- **PR Auto-Review**: Reviews code quality, City of Heroes mechanics, security issues
+- **Interactive Comments**: 
+  - `@claude [question]` - Ask Claude about the codebase
+  - `implement doc suggestions` - Apply documentation updates
+  - Approval keywords - Apply suggested changes
+- Dynamic timeout based on PR size
+- Context-aware responses about Epic progress
 
 **Configuration**: Requires `ANTHROPIC_API_KEY` secret
-
----
-
-### 💬 claude-code-integration.yml - Interactive Claude Assistant
-**Triggers**: Issue comments containing "@claude"
-
-**Purpose**: Interactive AI assistance in PRs and issues
-
-**Commands**:
-- `@claude [question]` - Ask Claude about the codebase
-- `implement doc suggestions` - Apply documentation updates
-- Approval keywords (`approved`, `implement this`, etc.) - Apply suggested changes
-
-**Features**:
-- Context-aware responses about the codebase
-- Can implement approved documentation changes
-- Understands Epic progress and project status
 
 ---
 
@@ -71,36 +56,29 @@ This directory contains GitHub Actions workflows that automate CI/CD, code revie
 
 ---
 
-### 📚 doc-auto-sync.yml - Documentation Auto-Synchronization
-**Triggers**: Code changes, weekly schedule, manual with full sync option
+### 📚 doc-management.yml - Unified Documentation Management
+**Triggers**: Pull requests, code pushes, weekly schedule, manual dispatch
 
-**Purpose**: Automatically updates documentation when code changes
+**Purpose**: Combined documentation review and auto-synchronization
+
+**Operation Modes**:
+- **Review Mode** (PRs): Analyzes documentation impact, suggests updates
+- **Sync Mode** (pushes): Auto-updates docs based on code changes
+- **Full Mode** (schedule/manual): Complete documentation validation
 
 **Smart Detection**:
 - Workflow changes → Updates .github/README.md files
-- Context changes → Updates .claude/README.md
+- Context changes → Updates .claude/README.md  
 - API changes → Updates API documentation
 - Model changes → Updates database docs
 - Command changes → Updates quick reference
 
 **Features**:
-- Intelligent change detection
-- Token limit validation
+- Unified mode detection based on trigger
+- Token limit validation with warnings
+- Intelligent change analysis
 - Weekly full synchronization
-- PR comments for warnings
-
----
-
-### 📝 doc-review.yml - Documentation Impact Review
-**Triggers**: Pull requests
-
-**Purpose**: Reviews PRs for documentation impact and suggests updates
-
-**Analysis**:
-- Identifies which docs might need updates
-- Checks for stale references
-- Validates CLAUDE.md token compliance
-- Posts actionable suggestions as PR comments
+- Dynamic timeouts based on scope
 
 ---
 
@@ -148,19 +126,19 @@ All workflows require appropriate permissions:
 ```mermaid
 graph LR
     PR[Pull Request] --> CI[CI Tests]
-    PR --> CAR[Claude Auto Review]
-    PR --> DR[Doc Review]
+    PR --> CU[Claude Unified]
+    PR --> DM[Doc Management - Review]
     
     Code[Code Push] --> CI
-    Code --> DAS[Doc Auto-Sync]
+    Code --> DM2[Doc Management - Sync]
     Code --> CHC[Context Health Check]
     
-    Comment[@claude] --> CCI[Claude Integration]
+    Comment[@claude] --> CU
     
     Schedule[Cron Schedule] --> CHC
-    Schedule --> DAS
+    Schedule --> DM3[Doc Management - Full]
     
-    Manual[Manual Trigger] --> DAS
+    Manual[Manual Trigger] --> DM4[Doc Management]
     Manual --> UCD[Update Claude Docs]
 ```
 

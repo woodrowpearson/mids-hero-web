@@ -1,0 +1,523 @@
+name: Documentation Management
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review]
+  push:
+    branches: [main, develop]
+    paths:
+      # Only trigger on changes that affect documentation
+      - 'backend/app/api/**/*.py'
+      - 'backend/app/routers/**/*.py'
+      - 'backend/app/models/**/*.py'
+      - 'backend/alembic/versions/*.py'
+      - '.github/workflows/*.yml'
+      - '.claude/**'
+      - 'justfile'
+      - 'Dockerfile'
+      - 'docker-compose.yml'
+  schedule:
+    # Weekly full sync on Sunday at 2 AM
+    - cron: '0 2 * * 0'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Operation mode'
+        type: choice
+        options:
+          - auto
+          - review
+          - sync
+          - full
+        default: auto
+      force_full_sync:
+        description: 'Force full documentation synchronization'
+        type: boolean
+        default: false
+      sync_type:
+        description: 'Type of sync to perform'
+        type: choice
+        options:
+          - auto
+          - full
+          - workflows
+          - api
+          - context
+        default: auto
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+  id-token: write
+
+concurrency:
+  group: doc-management-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  determine-mode:
+    name: Determine Documentation Mode
+    runs-on: ubuntu-latest
+    outputs:
+      mode: ${{ steps.detect.outputs.mode }}
+      needs_review: ${{ steps.detect.outputs.needs_review }}
+      needs_sync: ${{ steps.detect.outputs.needs_sync }}
+      sync_type: ${{ steps.detect.outputs.sync_type }}
+      affected_docs: ${{ steps.detect.outputs.affected_docs }}
+      timeout: ${{ steps.detect.outputs.timeout }}
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Detect operation mode
+        id: detect
+        run: |
+          MODE="none"
+          NEEDS_REVIEW="false"
+          NEEDS_SYNC="false"
+          SYNC_TYPE="none"
+          AFFECTED_DOCS=""
+          TIMEOUT=5
+          
+          # Handle manual dispatch
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            if [[ "${{ inputs.mode }}" != "" ]] && [[ "${{ inputs.mode }}" != "auto" ]]; then
+              MODE="${{ inputs.mode }}"
+            else
+              MODE="full"
+            fi
+            
+            if [[ "$MODE" == "review" ]] || [[ "$MODE" == "full" ]]; then
+              NEEDS_REVIEW="true"
+            fi
+            
+            if [[ "$MODE" == "sync" ]] || [[ "$MODE" == "full" ]]; then
+              NEEDS_SYNC="true"
+              SYNC_TYPE="${{ inputs.sync_type }}"
+            fi
+            
+            TIMEOUT=15
+          # Pull request - review mode
+          elif [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            MODE="review"
+            NEEDS_REVIEW="true"
+            
+            # Check if we should skip doc review
+            if [[ "${{ contains(github.event.pull_request.labels.*.name, 'skip-doc-review') }}" == "true" ]]; then
+              NEEDS_REVIEW="false"
+              MODE="none"
+            else
+              # Calculate files changed for dynamic timeout
+              FILE_COUNT=$(gh pr view ${{ github.event.pull_request.number }} --json files --jq '.files | length' || echo "10")
+              
+              if [ "$FILE_COUNT" -lt 10 ]; then
+                TIMEOUT=3
+              elif [ "$FILE_COUNT" -lt 30 ]; then
+                TIMEOUT=5
+              else
+                TIMEOUT=8
+              fi
+            fi
+          # Push to main/develop - sync mode
+          elif [[ "${{ github.event_name }}" == "push" ]]; then
+            MODE="sync"
+            NEEDS_SYNC="true"
+            
+            # Analyze changed files to determine sync type
+            CHANGED_FILES=$(git diff --name-only HEAD~1...HEAD 2>/dev/null || echo "")
+            
+            WORKFLOW_CHANGED=false
+            API_CHANGED=false
+            CONTEXT_CHANGED=false
+            COMMAND_CHANGED=false
+            DB_CHANGED=false
+            
+            for file in $CHANGED_FILES; do
+              case "$file" in
+                .github/workflows/*.yml)
+                  WORKFLOW_CHANGED=true
+                  ;;
+                .claude/*)
+                  CONTEXT_CHANGED=true
+                  ;;
+                backend/app/api/*.py|backend/app/routers/*.py)
+                  API_CHANGED=true
+                  ;;
+                justfile)
+                  COMMAND_CHANGED=true
+                  ;;
+                backend/app/models/*.py|backend/alembic/versions/*.py)
+                  DB_CHANGED=true
+                  ;;
+              esac
+            done
+            
+            # Set sync type based on highest priority change
+            if $WORKFLOW_CHANGED; then
+              SYNC_TYPE="workflows"
+              AFFECTED_DOCS=".github/README.md .github/workflows/README.md github_actions_summary.md"
+            elif $API_CHANGED; then
+              SYNC_TYPE="api"
+              AFFECTED_DOCS="docs/api-reference.md .claude/modules/api/specification.md"
+            elif $DB_CHANGED; then
+              SYNC_TYPE="database"
+              AFFECTED_DOCS=".claude/modules/database/schema.md docs/database-design.md"
+            elif $CONTEXT_CHANGED; then
+              SYNC_TYPE="context"
+              AFFECTED_DOCS=".claude/README.md CLAUDE.md"
+            elif $COMMAND_CHANGED; then
+              SYNC_TYPE="commands"
+              AFFECTED_DOCS=".claude/docs/quick-commands.md README.md"
+            else
+              NEEDS_SYNC="false"
+              MODE="none"
+            fi
+            
+            TIMEOUT=10
+          # Schedule - full mode
+          elif [[ "${{ github.event_name }}" == "schedule" ]]; then
+            MODE="full"
+            NEEDS_REVIEW="false"
+            NEEDS_SYNC="true"
+            SYNC_TYPE="full"
+            AFFECTED_DOCS="all"
+            TIMEOUT=15
+          fi
+          
+          # Force full sync if requested
+          if [[ "${{ inputs.force_full_sync }}" == "true" ]]; then
+            NEEDS_SYNC="true"
+            SYNC_TYPE="full"
+            AFFECTED_DOCS="all"
+          fi
+          
+          echo "mode=$MODE" >> $GITHUB_OUTPUT
+          echo "needs_review=$NEEDS_REVIEW" >> $GITHUB_OUTPUT
+          echo "needs_sync=$NEEDS_SYNC" >> $GITHUB_OUTPUT
+          echo "sync_type=$SYNC_TYPE" >> $GITHUB_OUTPUT
+          echo "affected_docs=$AFFECTED_DOCS" >> $GITHUB_OUTPUT
+          echo "timeout=$TIMEOUT" >> $GITHUB_OUTPUT
+          
+          echo "## Documentation Management Mode Detection" >> $GITHUB_STEP_SUMMARY
+          echo "- Mode: $MODE" >> $GITHUB_STEP_SUMMARY
+          echo "- Needs Review: $NEEDS_REVIEW" >> $GITHUB_STEP_SUMMARY
+          echo "- Needs Sync: $NEEDS_SYNC" >> $GITHUB_STEP_SUMMARY
+          echo "- Sync Type: $SYNC_TYPE" >> $GITHUB_STEP_SUMMARY
+          echo "- Affected Docs: $AFFECTED_DOCS" >> $GITHUB_STEP_SUMMARY
+          echo "- Timeout: $TIMEOUT minutes" >> $GITHUB_STEP_SUMMARY
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  doc-impact-review:
+    name: Review Documentation Impact
+    needs: determine-mode
+    if: needs.determine-mode.outputs.needs_review == 'true'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v44
+        with:
+          files: |
+            backend/**/*.py
+            frontend/**/*.{js,ts,jsx,tsx}
+            backend/pyproject.toml
+            frontend/package.json
+            docker-compose.yml
+            Dockerfile
+            justfile
+            .github/workflows/*.yml
+          files_ignore: |
+            **/*_test.py
+            **/*.test.{js,ts,jsx,tsx}
+            **/__pycache__/**
+            **/node_modules/**
+      
+      - name: Get documentation files changed
+        id: doc-files
+        uses: tj-actions/changed-files@v44
+        with:
+          files: |
+            **/*.md
+            .claude/**/*.{md,json}
+      
+      - name: Documentation Review with Claude
+        if: steps.changed-files.outputs.any_changed == 'true' || steps.doc-files.outputs.any_changed == 'true'
+        uses: anthropics/claude-code-action@beta
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          cache_prompts: true
+          cache_control: ephemeral
+          timeout_minutes: "${{ needs.determine-mode.outputs.timeout }}"
+          max_turns: "2"
+          direct_prompt: |
+            Review PR #${{ github.event.pull_request.number }} for documentation impact.
+            
+            Code files changed: ${{ steps.changed-files.outputs.all_changed_files }}
+            Documentation changed: ${{ steps.doc-files.outputs.all_changed_files }}
+            
+            Analyze and provide structured output:
+            
+            ## Documentation Impact Analysis
+            
+            ### 1. Required Updates
+            List only documentation that MUST be updated based on the changes.
+            
+            ### 2. Validation Results  
+            - [ ] CLAUDE.md token limit (<5K): [PASS/FAIL if changed]
+            - [ ] Broken references: [List any found]
+            - [ ] Outdated examples: [List any found]
+            
+            ### 3. Specific Actions
+            Provide a numbered list of specific documentation updates needed.
+            
+            Focus on:
+            - Workflow changes → .github/workflows/README.md
+            - API changes → API documentation
+            - Model changes → Database documentation  
+            - Command changes → Quick commands guide
+            - Context changes → .claude/README.md
+            
+            Keep response under 500 words. Only flag actual issues, not potential ones.
+
+  sync-documentation:
+    name: Synchronize Documentation
+    needs: determine-mode
+    if: needs.determine-mode.outputs.needs_sync == 'true'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: ${{ github.event.pull_request.head.ref || github.ref }}
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install tiktoken pyyaml
+      
+      - name: Get commit context
+        id: context
+        if: github.event_name == 'push'
+        run: |
+          COMMITS=$(git log --oneline -n 5 --pretty=format:"%s")
+          echo "commits<<EOF" >> $GITHUB_OUTPUT
+          echo "$COMMITS" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+      
+      - name: Documentation Sync with Claude
+        uses: anthropics/claude-code-action@beta
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          cache_prompts: true
+          cache_control: ephemeral
+          timeout_minutes: "${{ needs.determine-mode.outputs.timeout }}"
+          max_turns: "4"
+          direct_prompt: |
+            You are updating documentation for the Mids Hero Web project.
+            
+            Sync Type: ${{ needs.determine-mode.outputs.sync_type }}
+            Affected Documentation: ${{ needs.determine-mode.outputs.affected_docs }}
+            Recent Commits:
+            ${{ steps.context.outputs.commits }}
+            
+            Based on the sync type, perform ONLY these tasks:
+            
+            "workflows" sync:
+            1. Update github_actions_summary.md with Claude workflow optimizations
+            2. Update .github/workflows/README.md if workflow functionality changed
+            3. Remove references to deleted workflows
+            
+            "context" sync:
+            1. Update .claude/README.md for context system changes
+            2. Verify CLAUDE.md token count (<5K)
+            3. Fix broken file references
+            
+            "api" sync:
+            1. Update API endpoint documentation
+            2. Add new endpoints, remove deleted ones
+            
+            "commands" sync:
+            1. Update quick commands in .claude/docs/quick-commands.md
+            2. Sync README.md command examples
+            
+            "database" sync:
+            1. Update schema documentation
+            2. Document new models/migrations
+            
+            "full" sync:
+            1. Validate all documentation consistency
+            2. Fix all broken references
+            3. Update token counts
+            
+            Critical Rules:
+            - Make minimal necessary changes
+            - Use git to check current file state
+            - Commit with message: "docs: auto-sync [sync_type] documentation"
+            - If no changes needed, state that clearly
+
+  validate-token-limits:
+    name: Validate Token Limits
+    needs: [determine-mode, sync-documentation]
+    if: always() && (needs.determine-mode.outputs.mode == 'sync' || needs.determine-mode.outputs.mode == 'full' || needs.determine-mode.outputs.mode == 'review')
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref || github.ref }}
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      
+      - name: Cache tiktoken
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-tiktoken-${{ hashFiles('**/requirements*.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-tiktoken-
+            ${{ runner.os }}-pip-
+      
+      - name: Install tiktoken
+        run: pip install tiktoken
+      
+      - name: Check token limits
+        id: token-check
+        run: |
+          python << 'EOF'
+          import tiktoken
+          import json
+          
+          encoding = tiktoken.get_encoding("cl100k_base")
+          
+          files_to_check = {
+              "CLAUDE.md": 5000,
+              ".claude/README.md": 3000,
+              ".github/README.md": 3000,
+              ".github/workflows/README.md": 5000
+          }
+          
+          results = []
+          warnings = []
+          
+          for file_path, limit in files_to_check.items():
+              try:
+                  with open(file_path, 'r') as f:
+                      content = f.read()
+                      tokens = len(encoding.encode(content))
+                      status = "✅" if tokens < limit else "⚠️"
+                      
+                      results.append(f"| {file_path} | {tokens} | {limit} | {status} |")
+                      
+                      if tokens > limit * 0.9:
+                          warnings.append(f"{file_path}: {tokens}/{limit} tokens")
+              except FileNotFoundError:
+                  results.append(f"| {file_path} | - | {limit} | ❌ Not Found |")
+          
+          print("## Token Limit Validation")
+          print("| File | Tokens | Limit | Status |")
+          print("|------|--------|-------|--------|")
+          for result in results:
+              print(result)
+          
+          if warnings:
+              print("\n### ⚠️ Warnings")
+              for warning in warnings:
+                  print(f"- {warning}")
+              
+              with open("token_warnings.json", "w") as f:
+                  json.dump({"warnings": warnings}, f)
+          EOF
+      
+      - name: Comment token warnings on PR
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            
+            try {
+              const warnings = JSON.parse(fs.readFileSync('token_warnings.json', 'utf8'));
+              
+              if (warnings.warnings && warnings.warnings.length > 0) {
+                const body = `## ⚠️ Documentation Token Limit Warnings\n\n` +
+                  `The following files are approaching or exceeding token limits:\n\n` +
+                  warnings.warnings.map(w => `- ${w}`).join('\n') +
+                  `\n\n**Action Required**: Consider refactoring these files to stay within limits.`;
+                
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: context.issue.number,
+                  body: body
+                });
+              }
+            } catch (e) {
+              console.log('No token warnings to report');
+            }
+
+  create-summary:
+    name: Create Documentation Summary
+    needs: [determine-mode, doc-impact-review, sync-documentation, validate-token-limits]
+    if: always()
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Create summary report
+        run: |
+          echo "# 📚 Documentation Management Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Operation Mode**: ${{ needs.determine-mode.outputs.mode }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Event**: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+          
+          if [[ "${{ needs.determine-mode.outputs.mode }}" == "review" ]]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "## 🔍 Documentation Review" >> $GITHUB_STEP_SUMMARY
+            echo "- PR Number: #${{ github.event.pull_request.number }}" >> $GITHUB_STEP_SUMMARY
+            echo "- Review Status: ${{ needs.doc-impact-review.result || 'skipped' }}" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [[ "${{ needs.determine-mode.outputs.needs_sync }}" == "true" ]]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "## 🔄 Documentation Sync" >> $GITHUB_STEP_SUMMARY
+            echo "- Sync Type: ${{ needs.determine-mode.outputs.sync_type }}" >> $GITHUB_STEP_SUMMARY
+            echo "- Sync Status: ${{ needs.sync-documentation.result || 'skipped' }}" >> $GITHUB_STEP_SUMMARY
+            
+            if [[ "${{ needs.determine-mode.outputs.affected_docs }}" != "" ]]; then
+              echo "- Affected Documentation:" >> $GITHUB_STEP_SUMMARY
+              echo "${{ needs.determine-mode.outputs.affected_docs }}" | tr ' ' '\n' | while read doc; do
+                if [[ -n "$doc" ]] && [[ "$doc" != "all" ]]; then
+                  echo "  - $doc" >> $GITHUB_STEP_SUMMARY
+                fi
+              done
+            fi
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## ✅ Token Validation" >> $GITHUB_STEP_SUMMARY
+          echo "- Validation Status: ${{ needs.validate-token-limits.result || 'skipped' }}" >> $GITHUB_STEP_SUMMARY
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "*Unified Documentation Management Workflow*" >> $GITHUB_STEP_SUMMARY

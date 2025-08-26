@@ -187,6 +187,11 @@
   },
   "recent_activities": [
     {
+      "timestamp": "2025-08-25T23:52:08.298041",
+      "branch": "feature/phase-3-reusable-workflows",
+      "action": "progress_update"
+    },
+    {
       "timestamp": "2025-08-25T17:34:30.701624",
       "branch": "feature/workflow-consolidation-phase2",
       "action": "progress_update"
@@ -235,15 +240,9 @@
       "branch": "feature/issue-36-epic-3-api-endpoints",
       "action": "epic3_task31_api_endpoints",
       "description": "Completed Epic 3 Task 3.1: Core Data Endpoints. Verified existing endpoints for archetypes, powersets, powers, and enhancements. Fixed decimal serialization issues in Power schema. Added Salvage and Recipe schemas. Created misc_data router for salvage/recipe endpoints. Updated tests to match API response format. Created PR #193 with all CI checks passing."
-    },
-    {
-      "timestamp": "2025-07-19T17:00:00Z",
-      "branch": "feature/git-workflow-protection",
-      "action": "git_workflow_protection_implementation",
-      "description": "Implemented comprehensive Git workflow protection system to prevent direct commits to main branch. Created validation scripts, pre-commit hooks, updated settings.json with protected branch rules, and enhanced justfile with Git workflow commands. Created PR #192."
     }
   ],
-  "commit_count": 221,
+  "commit_count": 225,
   "files_modified": 1,
   "last_auto_update": "2025-08-25T07:02:04.294408"
 }

@@ -66,8 +66,14 @@ test-watch:
 # Run linting and type checking
 quality:
     @echo "🔍 Running code quality checks..."
+    just check-commands
     just lint
     just type-check
+
+# Check for forbidden commands
+check-commands:
+    @echo "🔍 Checking command compliance..."
+    @./scripts/check-forbidden-commands.sh
 
 # Run linters
 lint:
@@ -126,6 +132,9 @@ db-status:
 db-connect:
     @echo "🔗 Connecting to database..."
     docker exec -it mids-hero-web-db-1 psql -U postgres -d mids_web
+
+# Database shell alias
+db-shell: db-connect
 
 # Load sample data
 db-seed:
@@ -320,6 +329,16 @@ docker-down:
 docker-logs:
     docker-compose logs -f
 
+# View Docker service logs (accepts optional service name)
+logs service="":
+    @if [ -z "{{service}}" ]; then \
+        echo "🔍 Viewing all service logs..."; \
+        docker-compose logs -f; \
+    else \
+        echo "🔍 Viewing logs for {{service}}..."; \
+        docker-compose logs -f {{service}}; \
+    fi
+
 docker-clean:
     docker-compose down -v
     docker system prune -f
@@ -355,6 +374,11 @@ frontend-dev:
 # Backend development server
 backend-dev:
     cd backend && {{uv}} run uvicorn main:app --reload --host 0.0.0.0 --port 8000
+
+# Open Python REPL with backend environment
+backend-shell:
+    @echo "🐍 Opening Python REPL with backend environment..."
+    cd backend && {{uv}} run python -i -c "import sys; sys.path.insert(0, '.'); from app.database import get_db; from app.models import *; print('Backend environment loaded. Database session available via get_db()')"
 
 # Git workflow commands
 git-validate:

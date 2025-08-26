@@ -1,4 +1,5 @@
 # Claude Context System Overview
+Last Updated: 2025-08-25 00:00:00 UTC
 
 ## How Context Loading Works Now
 

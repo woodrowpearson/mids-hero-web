@@ -6,9 +6,7 @@ from datetime import datetime
 
 import pytest
 
-from app.mhd_parser.enhancement_database_parser import (
-    parse_enhancement_database,
-)
+from app.mhd_parser.enhancement_database_parser import parse_enhancement_database
 
 
 class TestEnhancementDatabaseParser:

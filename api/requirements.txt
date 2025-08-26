@@ -1,0 +1,24 @@
+# Mids Hero Web API - JSON-Native Architecture
+# Epic 2.5.5: Minimal dependencies for maximum performance
+
+# Core
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+pydantic==2.5.3
+pydantic-settings==2.1.0
+
+# CORS and security
+python-multipart==0.0.6
+
+# Optional: Caching (if Redis is used)
+# redis==5.0.1
+
+# Optional: Monitoring
+# prometheus-fastapi-instrumentator==6.1.0
+
+# Development
+pytest==7.4.4
+pytest-asyncio==0.23.3
+httpx==0.26.0  # For testing
+
+# Total: ~10 packages vs 47 in legacy backend

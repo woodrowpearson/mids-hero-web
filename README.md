@@ -62,10 +62,9 @@ mids-hero-web/
 └── README.md               # This file
 ```
 
-## Quick Start 
+## Quick Start
 
 > **Note**: This project requires Node.js 18+ and Python 3.11+
-
 
 ### Prerequisites
 
@@ -91,6 +90,7 @@ mids-hero-web/
    ```
 
 3. **Access the application:**
+
    - Frontend: <http://localhost:3000>
    - Backend API: <http://localhost:8000>
    - API Documentation: <http://localhost:8000/docs>
@@ -113,6 +113,7 @@ just lint-fix       # Auto-fix linting issues
 #### Data Import Commands
 
 **Generic Import (All Data Types):**
+
 ```bash
 just import-all data-directory         # Import all City of Heroes data
 just import-type powers data.json      # Import specific data type
@@ -124,6 +125,7 @@ just import-recipes data.json          # Import enhancement recipes
 ```
 
 **High-Performance I12 Import:**
+
 ```bash
 just i12-import data.json              # Import I12 power data (360K+ records)
 just i12-validate data.json            # Validate data before import  
@@ -131,6 +133,7 @@ just i12-import-resume data.json 50000 # Resume from specific record
 ```
 
 **System Monitoring:**
+
 ```bash
 just import-health                     # Full import system health check
 just import-status                     # Import system status
@@ -180,6 +183,7 @@ cd frontend && npm start
 ### Current Status
 
 **✅ Epic 1: Project Setup** - Complete
+
 - Git repository and project structure
 - React frontend scaffold with TypeScript
 - FastAPI backend with proper Python structure  
@@ -188,6 +192,7 @@ cd frontend && npm start
 - AI-powered workflows
 
 **🚧 Epic 2: Data Import** - 90% Complete
+
 - ✅ I12 streaming parser for 360K+ power data  
 - ✅ Multi-tier caching system (LRU + Redis)
 - ✅ Database performance optimizations
@@ -235,6 +240,7 @@ just db-setup  # Automated setup with Docker
 ```
 
 This script:
+
 1. Checks for conflicts with local PostgreSQL
 2. Starts Docker PostgreSQL container
 3. Runs database migrations
@@ -258,6 +264,7 @@ http://localhost:8080  # Adminer
 **Issue**: `FATAL: role "postgres" does not exist`
 
 **Solution**: Local PostgreSQL is conflicting with Docker
+
 ```bash
 # Stop local PostgreSQL
 brew services stop postgresql@14
@@ -269,6 +276,7 @@ just db-setup
 **Issue**: Docker build fails with `uv: not found`
 
 **Solution**: Docker image build issue (fixed in latest version)
+
 ```bash
 # Use database-only setup
 docker-compose up -d db
@@ -278,6 +286,7 @@ just db-migrate
 **Issue**: Migration fails or tables don't exist
 
 **Solution**: Reset and recreate database
+
 ```bash
 just db-reset  # Complete reset
 ```

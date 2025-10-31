@@ -93,17 +93,6 @@ This directory contains GitHub Actions workflows that automate CI/CD, code revie
 - Creates PRs for documentation updates
 - Reports token limit issues
 
----
-
-### ⚙️ dataexporter-tests.yml - DataExporter Module Tests
-**Triggers**: Changes to DataExporter module
-
-**Purpose**: Cross-platform testing of the DataExporter .NET module
-
-**Platforms**: Ubuntu, Windows, macOS
-**Requirements**: .NET 9.0
-
----
 
 ## 🔧 Configuration
 

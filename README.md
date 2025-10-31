@@ -1,370 +1,567 @@
-# Mids Hero Web: Modern City of Heroes Character Build Planner
+# Mids Hero Web
 
-A modern web-based character build planner for City of Heroes, replacing the legacy Windows Forms application with a React/FastAPI stack. This project provides the same powerful build planning capabilities in a modern web environment with AI-assisted development workflows.
+> **A modern, web-based character build planner for City of Heroes**
+>
+> Replacing the legacy Mids Reborn Windows application with a React/FastAPI stack, powered by AI-assisted development.
 
-## Overview
+[![CI Status](https://github.com/woodrowpearson/mids-hero-web/workflows/CI/badge.svg)](https://github.com/woodrowpearson/mids-hero-web/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![React 19](https://img.shields.io/badge/react-19-61dafb.svg)](https://reactjs.org/)
 
-Mids Hero Web is a complete rewrite of the popular Mids Reborn character build planner, designed to provide the same powerful build planning capabilities in a modern web environment. The application allows players to:
+---
 
-- Select archetypes, powersets, and individual powers
-- Plan enhancement slotting with accurate set bonuses
-- Calculate build statistics and totals
-- Export and import character builds
-- Access up-to-date game data from City of Heroes servers
+## 📖 Table of Contents
 
-## Tech Stack
+- [What is Mids Hero Web?](#what-is-mids-hero-web)
+- [Problem We're Solving](#problem-were-solving)
+- [Architecture](#architecture)
+  - [Tech Stack](#tech-stack)
+  - [System Architecture](#system-architecture)
+  - [Data Model](#data-model)
+- [Quick Start](#quick-start)
+- [Development](#development)
+- [Project Status](#project-status)
+- [Contributing](#contributing)
+- [License](#license)
 
-### Frontend
+---
 
-- **React 19** with TypeScript for the user interface
-- **Material-UI** (planned) for component library
-- Component structure with services layer for API integration
-- Modern development tooling (ESLint, Prettier)
+## What is Mids Hero Web?
 
-### Backend
+Mids Hero Web is a **modern web application** that brings the powerful character build planning capabilities of **Mids Reborn** to the browser.
 
-- **FastAPI** for high-performance REST API
-- **SQLAlchemy** with **Alembic** for database ORM and migrations
-- **PostgreSQL** for data storage
-- **Uvicorn** ASGI server for production deployment
-- **uv** for modern Python package management (faster than pip)
+### Features
 
-### DevOps & Deployment
+- ✅ **Character Archetypes**: Select from all City of Heroes archetypes (Blaster, Controller, Defender, etc.)
+- ✅ **Power Selection**: Browse and select powers from primary/secondary/pool powersets
+- ✅ **Enhancement Slotting**: Plan enhancement slots with accurate set bonuses
+- ✅ **Build Statistics**: Calculate damage, resistance, defense, recharge, and more
+- 🚧 **Build Import/Export**: Import existing Mids builds (coming soon)
+- 🚧 **Cloud Saving**: Save and share builds online (coming soon)
+- 📋 **Real-time Validation**: Ensure builds follow game rules (planned)
 
-- **Docker** with multi-stage builds
-- **Docker Compose** for local development
-- **Google Cloud Platform (GCP)** (planned) for production deployment
-- **GitHub Actions** CI/CD with AI-powered workflows
-- **AI-assisted development** with Claude integration
+### For Players
 
-## Project Structure
+- **Browser-based**: No installation required
+- **Cross-platform**: Works on Windows, Mac, Linux, mobile
+- **Always up-to-date**: Game data synced from servers
+- **Shareable**: Send build links to teammates
 
+### For Developers
+
+- **Modern stack**: React 19, FastAPI, PostgreSQL
+- **AI-assisted**: Specialized Claude agents for each domain
+- **Well-tested**: TDD approach with comprehensive test coverage
+- **Well-documented**: Extensive documentation in `.claude/` and `docs/`
+
+---
+
+## Problem We're Solving
+
+### The Legacy Tool: Mids Reborn
+
+[Mids Reborn](https://github.com/LoadedCamel/MidsReborn) is a **Windows Forms desktop application** (fork of the original Mids' Hero Designer) that has been the gold standard for City of Heroes build planning since 2006.
+
+**Limitations**:
+- ❌ Windows-only (requires Wine/compatibility layers on Mac/Linux)
+- ❌ Desktop installation required
+- ❌ Binary `.mhd` file format (not web-compatible)
+- ❌ Manual updates needed for game data changes
+- ❌ No cloud saving or sharing
+- ❌ Aging C# Windows Forms codebase
+
+### Our Solution: Mids Hero Web
+
+**Goals**:
+- ✅ **Web-native**: Run in any modern browser
+- ✅ **Cross-platform**: Windows, Mac, Linux, mobile
+- ✅ **Modern UX**: React 19 with responsive design
+- ✅ **Live data**: Automatic updates from game servers
+- ✅ **Cloud builds**: Save and share builds online
+- ✅ **Maintainable**: Modern TypeScript/Python stack
+
+---
+
+## Architecture
+
+### Tech Stack
+
+```mermaid
+graph TB
+    subgraph "Frontend"
+        React[React 19 + TypeScript]
+        MUI[Material-UI]
+        Vite[Vite Build Tool]
+    end
+
+    subgraph "Backend"
+        FastAPI[FastAPI]
+        SQLAlchemy[SQLAlchemy ORM]
+        Pydantic[Pydantic Schemas]
+    end
+
+    subgraph "Data Layer"
+        PostgreSQL[(PostgreSQL)]
+        Alembic[Alembic Migrations]
+        Redis[(Redis Cache)]
+    end
+
+    subgraph "Data Source"
+        CityOfData[city_of_data JSON]
+        Homecoming[Homecoming Server]
+    end
+
+    subgraph "Infrastructure"
+        Docker[Docker]
+        GHA[GitHub Actions]
+        Claude[Claude AI Agents]
+    end
+
+    React -->|REST API| FastAPI
+    FastAPI --> SQLAlchemy
+    SQLAlchemy --> PostgreSQL
+    FastAPI -.->|Caching| Redis
+    PostgreSQL --> Alembic
+
+    CityOfData -->|Import| FastAPI
+    Homecoming -->|Updates| CityOfData
+
+    Docker --> React
+    Docker --> FastAPI
+    Docker --> PostgreSQL
+
+    GHA -->|CI/CD| Docker
+    Claude -.->|Assists| GHA
+    Claude -.->|Assists| React
+    Claude -.->|Assists| FastAPI
+
+    style React fill:#61dafb
+    style FastAPI fill:#009688
+    style PostgreSQL fill:#336791
+    style Claude fill:#ff9900
+    style CityOfData fill:#90ee90
 ```
-mids-hero-web/
-├── frontend/                 # React TypeScript application
-│   ├── src/
-│   │   ├── components/      # React components
-│   │   ├── services/        # API service layer
-│   │   └── ...
-├── backend/                 # FastAPI application
-│   ├── app/
-│   │   ├── models.py        # Database models
-│   │   ├── schemas.py       # Pydantic schemas
-│   │   ├── crud.py          # Database operations
-│   │   └── database.py      # Database configuration
-│   ├── main.py              # FastAPI entry point
-│   └── pyproject.toml       # Python dependencies & project config
-├── alembic/                 # Database migration files
-├── scripts/                 # Development helper scripts
-│   └── dev.py              # uv development commands
-├── docker-compose.yml       # Local development environment
-├── Dockerfile              # Multi-stage container build
-└── README.md               # This file
+
+### System Architecture
+
+```mermaid
+graph LR
+    subgraph "Client Tier"
+        Browser[Web Browser]
+    end
+
+    subgraph "Application Tier"
+        API[FastAPI Backend]
+        Cache[(Redis)]
+    end
+
+    subgraph "Data Tier"
+        DB[(PostgreSQL)]
+        DataSource[city_of_data JSON]
+    end
+
+    subgraph "AI Development"
+        Agents[Claude Sub-Agents]
+        GH[GitHub Actions]
+    end
+
+    Browser -->|HTTPS| API
+    API -->|Query| Cache
+    Cache -.->|Cache Miss| DB
+    API -->|ORM| DB
+
+    DataSource -->|Import Script| DB
+
+    Agents -.->|Assists| API
+    Agents -.->|Assists| Browser
+    GH -->|CI/CD| API
+    GH -->|CI/CD| Browser
+
+    style Browser fill:#61dafb
+    style API fill:#009688
+    style DB fill:#336791
+    style Agents fill:#ff9900
 ```
+
+### Data Model
+
+#### Source: city_of_data Repository
+
+We use the [city_of_data GitLab repository](https://gitlab.com/bearcano/coh-content-db-homecoming), which provides **JSON exports** of City of Heroes game data directly from the Homecoming server.
+
+**Data Location**: `/Users/w/code/mids-hero-web/external/city_of_data/raw_data_homecoming-20250617_6916`
+
+```mermaid
+graph TB
+    subgraph "city_of_data JSON Structure"
+        Archetypes[archetypes/]
+        Powers[powers/]
+        BoostSets[boost_sets/]
+        Entities[entities/]
+        EntityTags[entity_tags/]
+        Tables[tables/]
+    end
+
+    subgraph "Database Schema"
+        AT[Archetype]
+        PS[Powerset]
+        P[Power]
+        E[Enhancement]
+        ES[EnhancementSet]
+        B[Boost]
+    end
+
+    Archetypes -->|Import| AT
+    Powers -->|Import| P
+    Powers -->|Import| PS
+    BoostSets -->|Import| ES
+    BoostSets -->|Import| E
+    Entities -->|Import| B
+
+    AT -->|1:N| PS
+    PS -->|1:N| P
+    P -->|N:M| E
+    E -->|N:1| ES
+    P -->|N:M| B
+
+    style Archetypes fill:#90ee90
+    style Powers fill:#90ee90
+    style BoostSets fill:#90ee90
+    style AT fill:#336791
+    style PS fill:#336791
+    style P fill:#336791
+```
+
+#### Import Flow
+
+```mermaid
+sequenceDiagram
+    participant Script as Import Script
+    participant JSON as city_of_data JSON
+    participant Parser as Streaming Parser
+    participant Cache as Redis Cache
+    participant DB as PostgreSQL
+
+    Script->>JSON: Read JSON file
+    JSON->>Parser: Stream chunks
+    Parser->>Cache: Check cache
+    Cache-->>Parser: Cache miss
+    Parser->>DB: Batch insert (1000 records)
+    DB-->>Parser: Success
+    Parser->>Cache: Update cache
+    Parser->>Script: Progress update
+
+    Note over Script,DB: Processes 360K+ records<br/>in <1GB memory
+```
+
+#### Database Schema (Simplified)
+
+```mermaid
+erDiagram
+    ARCHETYPE ||--o{ POWERSET : "has"
+    POWERSET ||--o{ POWER : "contains"
+    POWER ||--o{ POWER_EFFECT : "applies"
+    POWER }o--o{ ENHANCEMENT : "accepts"
+    ENHANCEMENT }o--|| ENHANCEMENT_SET : "belongs_to"
+    ENHANCEMENT_SET ||--o{ SET_BONUS : "grants"
+
+    ARCHETYPE {
+        int id PK
+        string name
+        string display_name
+        int hit_points
+        float damage_scale
+    }
+
+    POWERSET {
+        int id PK
+        int archetype_id FK
+        string name
+        string full_name
+        string type
+    }
+
+    POWER {
+        int id PK
+        int powerset_id FK
+        string name
+        string description
+        int level_available
+        int num_allowed_enhancements
+        float accuracy
+        float endurance_cost
+        float recharge_time
+    }
+
+    ENHANCEMENT {
+        int id PK
+        int enhancement_set_id FK
+        string name
+        string type
+        jsonb modifiers
+    }
+
+    ENHANCEMENT_SET {
+        int id PK
+        string name
+        int min_level
+        int max_level
+    }
+```
+
+---
 
 ## Quick Start
 
-> **Note**: This project requires Node.js 18+ and Python 3.11+
-
 ### Prerequisites
 
-- **Docker** and **Docker Compose** installed
-- **Git** for version control
-- **just** command runner - [Install just](https://github.com/casey/just)
-- **uv** (modern Python package manager) - [Install uv](https://docs.astral.sh/uv/getting-started/installation/)
+- **Docker** and **Docker Compose**
+- **just** command runner - [Install](https://github.com/casey/just)
+- **Node.js 18+**
+- **Python 3.11+**
+- **uv** (Python package manager) - [Install](https://docs.astral.sh/uv/)
 
-### Clone and Run
+### Installation
 
-1. **Clone the repository:**
-
+1. **Clone the repository**:
    ```bash
    git clone https://github.com/woodrowpearson/mids-hero-web.git
    cd mids-hero-web
    ```
 
-2. **Quick start:**
-
+2. **Run quick start**:
    ```bash
-   just quickstart  # Sets up everything
-   just dev         # Start development environment
+   just quickstart
    ```
 
-3. **Access the application:**
+   This will:
+   - Start PostgreSQL in Docker
+   - Run database migrations
+   - Install Python dependencies with uv
+   - Install Node.js dependencies
+   - Verify setup
 
-   - Frontend: <http://localhost:3000>
-   - Backend API: <http://localhost:8000>
-   - API Documentation: <http://localhost:8000/docs>
+3. **Start development servers**:
+   ```bash
+   just dev
+   ```
 
-### Development Setup
+4. **Access the application**:
+   - **Frontend**: http://localhost:3000
+   - **Backend API**: http://localhost:8000
+   - **API Docs**: http://localhost:8000/docs
 
-All development operations use the `just` command runner for consistency:
+---
 
-#### Essential Commands
+## Development
+
+### Essential Commands
 
 ```bash
-just quickstart      # Initial setup
+# Development
 just dev            # Start all services
 just health         # Run health checks
 just test           # Run all tests
 just quality        # Code quality checks
 just lint-fix       # Auto-fix linting issues
+
+# Database
+just db-setup       # Complete database setup
+just db-migrate     # Run migrations
+just db-reset       # Reset database
+just db-connect     # PostgreSQL shell
+
+# Data Import
+just import-all data-directory         # Import all data types
+just i12-import data.json              # High-performance I12 import
+just import-health                     # System health check
+just cache-stats                       # Cache performance
+
+# Git Workflow
+git checkout -b feature/issue-XXX      # Create feature branch
+just ucp "message"                     # Quick commit
+just update-progress                   # Update progress tracking
+git push -u origin feature/issue-XXX   # Push branch
+gh pr create                           # Create pull request
 ```
 
-#### Data Import Commands
+### Project Structure
 
-**Generic Import (All Data Types):**
-
-```bash
-just import-all data-directory         # Import all City of Heroes data
-just import-type powers data.json      # Import specific data type
-just import-archetypes data.json       # Import character archetypes
-just import-powersets data.json        # Import powersets
-just import-enhancements data.json     # Import enhancements/IO sets
-just import-salvage data.json          # Import crafting salvage
-just import-recipes data.json          # Import enhancement recipes
 ```
-
-**High-Performance I12 Import:**
-
-```bash
-just i12-import data.json              # Import I12 power data (360K+ records)
-just i12-validate data.json            # Validate data before import  
-just i12-import-resume data.json 50000 # Resume from specific record
+mids-hero-web/
+├── frontend/              # React 19 + TypeScript
+│   ├── src/
+│   │   ├── components/   # React components
+│   │   ├── services/     # API service layer
+│   │   └── types/        # TypeScript definitions
+│   └── package.json
+│
+├── backend/              # FastAPI application
+│   ├── app/
+│   │   ├── models.py     # SQLAlchemy models
+│   │   ├── schemas.py    # Pydantic schemas
+│   │   ├── crud.py       # Database operations
+│   │   └── commands/     # CLI commands
+│   ├── main.py           # FastAPI entry point
+│   └── pyproject.toml    # Python dependencies
+│
+├── alembic/              # Database migrations
+├── scripts/              # Development scripts
+├── .claude/              # AI agent configuration
+├── .github/              # CI/CD workflows
+└── docs/                 # Documentation
 ```
-
-**System Monitoring:**
-
-```bash
-just import-health                     # Full import system health check
-just import-status                     # Import system status
-just import-stats                      # Database record counts
-just cache-stats                       # Cache performance metrics
-```
-
-#### Database Operations
-
-```bash
-just db-setup                      # Complete database setup (recommended)
-just db-migrate                    # Run pending migrations
-just db-migration-create "description"  # Create new migration
-just db-reset                      # Reset database
-just db-status                     # Check migration status
-just db-connect                    # Connect to database
-just db-seed                       # Load sample data
-```
-
-> **Database Setup**: The project uses PostgreSQL in Docker for consistency. Run `just db-setup` for automated setup including Docker container management and migration application.
-
-#### Individual Service Development
-
-```bash
-# Backend only
-just backend-dev
-
-# Frontend only  
-just frontend-dev
-
-# API documentation
-just api-docs
-```
-
-#### Legacy Commands (if needed)
-
-```bash
-# Backend development (direct)
-cd backend && uv run uvicorn main:app --reload
-
-# Frontend development (direct)
-cd frontend && npm start
-```
-
-## Features
-
-### Current Status
-
-**✅ Epic 1: Project Setup** - Complete
-
-- Git repository and project structure
-- React frontend scaffold with TypeScript
-- FastAPI backend with proper Python structure  
-- Docker environment configuration
-- GitHub Actions CI/CD pipeline
-- AI-powered workflows
-
-**🚧 Epic 2: Data Import** - 90% Complete
-
-- ✅ I12 streaming parser for 360K+ power data  
-- ✅ Multi-tier caching system (LRU + Redis)
-- ✅ Database performance optimizations
-- ✅ CLI import tool with resume capability
-- 🚧 MidsReborn MHD integration (final phase)
-
-**📋 Epics 3-6**: Backend API, Frontend, Deployment, Optimization - Planned
-
-### AI-Powered Development
-
-This project features AI-assisted development workflows:
-
-- **@claude mentions** in PRs and issues for AI assistance
-- **Automated PR reviews** with City of Heroes domain knowledge
-- **Context health monitoring** to prevent token limit issues
-- **Command compliance checks** (uv over pip, fd over find, etc.)
-- **Epic progress tracking** and documentation synthesis
-
-### I12 Data Import Features ✅
-
-- ✅ **High-Performance Import**: Process 360K+ power records within 1GB memory
-- ✅ **Streaming JSON Parser**: Memory-efficient chunked processing
-- ✅ **Multi-tier Caching**: LRU + Redis for <100ms query performance
-- ✅ **Database Optimization**: Composite indexes, GIN indexes, materialized views
-- ✅ **Error Recovery**: Resume capability and comprehensive error handling
-- ✅ **CLI Tool**: User-friendly command-line interface with progress tracking
-
-### Planned Features
-
-- [ ] User accounts and cloud build saving
-- [ ] Real-time build sharing
-- [ ] Advanced build validation
-- [ ] Multi-server database support (Homecoming, Rebirth)
-- [ ] Mobile-responsive design
-- [ ] Community build sharing
-
-## Database Setup and Troubleshooting
-
-### Recommended Setup (Docker)
-
-The project uses PostgreSQL in Docker for consistency across development environments:
-
-```bash
-just db-setup  # Automated setup with Docker
-```
-
-This script:
-
-1. Checks for conflicts with local PostgreSQL
-2. Starts Docker PostgreSQL container
-3. Runs database migrations
-4. Verifies setup
-
-### Database Connection Information
-
-```bash
-# Database URL
-postgresql://postgres:postgres@localhost:5432/mids_web
-
-# Container name
-mids-hero-web-db-1
-
-# Admin interface (when running)
-http://localhost:8080  # Adminer
-```
-
-### Common Issues and Solutions
-
-**Issue**: `FATAL: role "postgres" does not exist`
-
-**Solution**: Local PostgreSQL is conflicting with Docker
-
-```bash
-# Stop local PostgreSQL
-brew services stop postgresql@14
-
-# Or use the automated setup
-just db-setup
-```
-
-**Issue**: Docker build fails with `uv: not found`
-
-**Solution**: Docker image build issue (fixed in latest version)
-
-```bash
-# Use database-only setup
-docker-compose up -d db
-just db-migrate
-```
-
-**Issue**: Migration fails or tables don't exist
-
-**Solution**: Reset and recreate database
-
-```bash
-just db-reset  # Complete reset
-```
-
-### Alternative: Local PostgreSQL
-
-If you prefer local PostgreSQL:
-
-```bash
-# Install PostgreSQL
-brew install postgresql@15
-brew services start postgresql@15
-
-# Create database
-createdb mids_web
-
-# Set environment variable
-export DATABASE_URL=postgresql://postgres@localhost:5432/mids_web
-
-# Run migrations
-just db-migrate
-```
-
-## Data Sources
-
-The application uses game data from:
-
-- **Homecoming** (primary): Latest game data from the Homecoming CoH server
-- **Rebirth** (planned): Community-maintained server data
-- **Generic**: Fallback database for basic functionality
-
-Data is automatically updated through the server's update mechanism, eliminating the need for individual client updates.
-
-## Modern Python Development
-
-This project uses **uv**, a modern Python package manager that provides:
-
-- **Faster dependency resolution** - Up to 10x faster than pip
-- **Better dependency management** - Reliable lockfile and conflict resolution
-- **Improved developer experience** - Single command for project setup
-- **Built-in virtual environment management** - No need to manually create/activate venvs
-- **Modern pyproject.toml support** - Standard Python project configuration
-
-Benefits over traditional package managers:
-
-- Faster installs and updates
-- Better reproducibility across environments
-- Simplified dependency management
-- Integrated tooling (linting, formatting, testing)
-
-## Contributing
-
-We welcome contributions! Please see our [development roadmap](ROADMAP.md) for current priorities and planned features.
 
 ### Development Workflow
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Use `just` commands for development (`just health`, `just test`, etc.)
-4. Commit your changes (`git commit -m 'Add amazing feature'`)
-5. Push to the branch (`git push origin feature/amazing-feature`)
-6. Open a Pull Request (AI workflows will assist with review)
+1. **Create feature branch**:
+   ```bash
+   git checkout -b feature/description
+   ```
+
+2. **Run health check before starting**:
+   ```bash
+   just health
+   ```
+
+3. **Make changes and test**:
+   ```bash
+   just test
+   just lint-fix
+   ```
+
+4. **Commit and push**:
+   ```bash
+   just ucp "feat: add power selection UI"
+   git push -u origin feature/description
+   ```
+
+5. **Create pull request**:
+   ```bash
+   gh pr create
+   ```
+
+6. **AI Review**: Claude will automatically review your PR
+
+### AI-Assisted Development
+
+This project uses **Claude Code native sub-agents** for specialized assistance:
+
+- **Database Specialist**: Schema design, migrations, query optimization
+- **Backend Specialist**: FastAPI endpoints, Pydantic schemas
+- **Frontend Specialist**: React components, TypeScript, UI/UX
+- **Import Specialist**: Data import, city_of_data integration
+- **Testing Specialist**: pytest, Vitest, E2E tests
+- **DevOps Specialist**: Docker, CI/CD, deployment
+- **Calculation Specialist**: Game mechanics, damage calculations
+- **Documentation Specialist**: Maintaining docs
+
+**Usage**:
+- Tell Claude your task: "I need to work on database migrations"
+- Claude automatically loads the appropriate specialist context
+- Get domain-specific guidance and code suggestions
+
+---
+
+## Project Status
+
+### Current Progress
+
+| Epic | Status | Progress | Description |
+|------|--------|----------|-------------|
+| **Epic 1** | ✅ Complete | 100% | Project setup, CI/CD, Docker |
+| **Epic 2** | ✅ Complete | 100% | Data model, database, JSON import |
+| **Epic 2.5** | ✅ Complete | 100% | AI agents, workflows, optimization |
+| **Epic 3** | 🚧 In Progress | 25% | Backend API endpoints |
+| **Epic 4** | 📋 Planned | 0% | Frontend React UI |
+| **Epic 5** | 📋 Planned | 0% | Deployment to GCP |
+| **Epic 6** | 📋 Planned | 0% | Performance optimization |
+
+### Completed Milestones
+
+#### ✅ Epic 1: Project Setup (July 2025)
+- Git repository and structure
+- React 19 frontend scaffold
+- FastAPI backend with SQLAlchemy
+- Docker development environment
+- GitHub Actions CI/CD
+- Database migrations with Alembic
+
+#### ✅ Epic 2: Data Import (July-August 2025)
+- ~~Binary MHD parser (abandoned)~~
+- ~~MidsReborn DataExporter (abandoned)~~
+- JSON-native import from city_of_data
+- High-performance streaming parser (360K+ records)
+- Multi-tier caching (LRU + Redis)
+- Database optimizations (composite indexes, GIN indexes)
+
+#### ✅ Epic 2.5: AI-Assisted Development (August-October 2025)
+- Native Claude sub-agents (8 specialists)
+- GitHub Actions optimization (40% performance gain)
+- Automated documentation sync
+- Context health monitoring
+- RAG implementation (completed, later archived)
+
+#### 🚧 Epic 3: Backend API (October 2025 - Current)
+- ✅ Core data endpoints (GET /api/archetypes, powers, etc.)
+- 🚧 Build simulation endpoints
+- 🚧 Calculation logic
+- 📋 Write/modify operations
+
+### Next Steps
+
+1. **Complete Epic 3**: Finish backend API endpoints
+2. **Start Epic 4**: Build React UI for power selection
+3. **Epic 5 Planning**: Design GCP deployment architecture
+4. **Community Feedback**: Gather feedback from CoH players
+
+---
+
+## Contributing
+
+We welcome contributions! Please see our [development roadmap](docs/PROJECT_EVOLUTION.md) for current priorities.
+
+### How to Contribute
+
+1. **Fork the repository**
+2. **Create a feature branch**: `git checkout -b feature/amazing-feature`
+3. **Use just commands**: `just health`, `just test`, `just lint-fix`
+4. **Commit changes**: `just ucp "Add amazing feature"`
+5. **Push branch**: `git push origin feature/amazing-feature`
+6. **Open Pull Request**: Claude will automatically review
+
+### Development Guidelines
+
+- **Use feature branches**: Never commit directly to `main`
+- **Write tests**: TDD approach preferred
+- **Follow conventions**: ESLint, Black, Prettier
+- **Document changes**: Update relevant docs
+- **Run quality checks**: `just quality` before pushing
 
 ### AI Assistance
 
-- Use **@claude** in PR comments for AI assistance
-- AI workflows automatically review code for City of Heroes domain compliance
-- Context health is monitored to prevent token limit issues
+- Use **@claude** in PR comments for help
+- Claude will review for City of Heroes domain accuracy
+- Automated documentation updates
+
+---
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+---
+
 ## Acknowledgments
 
 - **Mids Reborn** team for the original desktop application
+- **LoadedCamel** for maintaining Mids Reborn
 - **City of Heroes** community for continued support
-- **Homecoming** and **Rebirth** server teams for maintaining the game data
+- **Homecoming** and **Rebirth** server teams for game data
+- **bearcano** for the city_of_data repository
+
+---
 
 ## Support
 
@@ -372,8 +569,14 @@ For support, please:
 
 - Check the [documentation](docs/)
 - Open an issue on GitHub
-- Join our Discord server (link coming soon)
+- Join our Discord server (coming soon)
 
 ---
 
-_Mids-Web is not affiliated with or endorsed by NCSoft or the original City of Heroes development team._
+_Mids Hero Web is not affiliated with or endorsed by NCSoft or the original City of Heroes development team._
+
+**Project Links**:
+- GitHub: https://github.com/woodrowpearson/mids-hero-web
+- Mids Reborn: https://github.com/LoadedCamel/MidsReborn
+- city_of_data: https://gitlab.com/bearcano/coh-content-db-homecoming
+- City of Heroes Homecoming: https://homecoming.wiki/

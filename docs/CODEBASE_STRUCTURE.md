@@ -43,8 +43,6 @@ backend/
 │   ├── crud.py          # Database CRUD operations
 │   ├── database.py      # Database connection & session management
 │   └── commands/        # CLI commands for import/export
-├── archive/             # Legacy MHD parser (deprecated)
-│   └── mhd_parser/      # Binary .mhd file parser (no longer used)
 ├── main.py              # FastAPI application entry point
 ├── pyproject.toml       # Python dependencies (uv)
 └── tests/               # Backend test suite
@@ -118,7 +116,7 @@ external/
         └── [more directories]  # Additional game data
 ```
 
-**Data Source**: [city_of_data repository](https://gitlab.com/bearcano/coh-content-db-homecoming)
+**Data Source**: [City of Data (CoD)](https://cod.uberguy.net/homecoming/raw_data_homecoming.zip)
 **Format**: JSON files extracted from City of Heroes game servers
 **Server**: Homecoming (primary), with planned Rebirth support
 
@@ -146,7 +144,6 @@ external/
 
 ## Deprecated/Archive Areas
 
-- `backend/archive/mhd_parser/` - Legacy binary MHD parser (no longer used)
 - `.claude/docs/archive/` - Old documentation and planning artifacts
 - `shared/user/new-project/` - Template files from project setup
 

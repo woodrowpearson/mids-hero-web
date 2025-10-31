@@ -188,7 +188,7 @@ graph LR
 
 #### Source: city_of_data Repository
 
-We use the [city_of_data GitLab repository](https://gitlab.com/bearcano/coh-content-db-homecoming), which provides **JSON exports** of City of Heroes game data directly from the Homecoming server.
+We use [City of Data (CoD)](https://cod.uberguy.net/html/help.html?page=overview), which provides **JSON exports** of City of Heroes game data directly from the Homecoming server.
 
 **Data Location**: `/Users/w/code/mids-hero-web/external/city_of_data/raw_data_homecoming-20250617_6916`
 
@@ -559,7 +559,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **LoadedCamel** for maintaining Mids Reborn
 - **City of Heroes** community for continued support
 - **Homecoming** and **Rebirth** server teams for game data
-- **bearcano** for the city_of_data repository
+- **Rubidium Powers** ([rubidium-dev/powers](https://gitlab.com/rubidium-dev/powers)) for the original powers data repository
+- **City of Data (CoD)** for providing JSON exports of game data
 
 ---
 
@@ -578,5 +579,6 @@ _Mids Hero Web is not affiliated with or endorsed by NCSoft or the original City
 **Project Links**:
 - GitHub: https://github.com/woodrowpearson/mids-hero-web
 - Mids Reborn: https://github.com/LoadedCamel/MidsReborn
-- city_of_data: https://gitlab.com/bearcano/coh-content-db-homecoming
+- City of Data (CoD): https://cod.uberguy.net/html/help.html?page=overview
+- Rubidium Powers: https://gitlab.com/rubidium-dev/powers
 - City of Heroes Homecoming: https://homecoming.wiki/

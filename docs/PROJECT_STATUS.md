@@ -243,7 +243,6 @@ Last Updated: 2025-10-30
 
 1. **Code Comments**: Some complex functions need better documentation
 2. **Linting Rules**: Could be more strict
-3. **Archived Code**: Old MHD parser should be fully removed
 
 ---
 
@@ -363,8 +362,12 @@ None
 
 - [GitHub Repository](https://github.com/woodrowpearson/mids-hero-web)
 - [Mids Reborn](https://github.com/LoadedCamel/MidsReborn)
-- [city_of_data](https://gitlab.com/bearcano/coh-content-db-homecoming)
+- [City of Data (CoD)](https://cod.uberguy.net/html/help.html?page=overview)
 - [CoH Homecoming](https://homecoming.wiki/)
+
+### Credits
+
+- **Powers Data**: [Rubidium Powers](https://gitlab.com/rubidium-dev/powers) - Original repository that City of Data is built upon
 
 ---
 

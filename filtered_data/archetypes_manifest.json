@@ -1,0 +1,468 @@
+{
+  "directory": "archetypes",
+  "total_files": 66,
+  "entries": [
+    {
+      "source": "archetypes/boss_elite.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/boss_elite.json",
+      "size_bytes": 659265
+    },
+    {
+      "source": "archetypes/boss_mito.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/boss_mito.json",
+      "size_bytes": 659523
+    },
+    {
+      "source": "archetypes/lt_turret.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/lt_turret.json",
+      "size_bytes": 654047
+    },
+    {
+      "source": "archetypes/minion_small_agressive.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/minion_small_agressive.json",
+      "size_bytes": 656534
+    },
+    {
+      "source": "archetypes/boss_henchman.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/boss_henchman.json",
+      "size_bytes": 654467
+    },
+    {
+      "source": "archetypes/lt_grunt.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/lt_grunt.json",
+      "size_bytes": 658663
+    },
+    {
+      "source": "archetypes/blaster.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/blaster.json",
+      "size_bytes": 683718
+    },
+    {
+      "source": "archetypes/minion_swarm.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/minion_swarm.json",
+      "size_bytes": 663219
+    },
+    {
+      "source": "archetypes/minion_henchman_small.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/minion_henchman_small.json",
+      "size_bytes": 652137
+    },
+    {
+      "source": "archetypes/boss_praetorianarchvillain.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/boss_praetorianarchvillain.json",
+      "size_bytes": 661674
+    },
+    {
+      "source": "archetypes/boss_guard.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/boss_guard.json",
+      "size_bytes": 661499
+    },
+    {
+      "source": "archetypes/boss_shield.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/boss_shield.json",
+      "size_bytes": 660498
+    },
+    {
+      "source": "archetypes/boss_monster.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/boss_monster.json",
+      "size_bytes": 662213
+    },
+    {
+      "source": "archetypes/minion_turret.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/minion_turret.json",
+      "size_bytes": 655367
+    },
+    {
+      "source": "archetypes/boss_eliteturret.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/boss_eliteturret.json",
+      "size_bytes": 654347
+    },
+    {
+      "source": "archetypes/minion_fire.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/minion_fire.json",
+      "size_bytes": 655970
+    },
+    {
+      "source": "archetypes/warshade.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/warshade.json",
+      "size_bytes": 690981
+    },
+    {
+      "source": "archetypes/minion_henchman.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/minion_henchman.json",
+      "size_bytes": 652089
+    },
+    {
+      "source": "archetypes/boss_reichsman.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/boss_reichsman.json",
+      "size_bytes": 663510
+    },
+    {
+      "source": "archetypes/minion_unkillablenpc.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/minion_unkillablenpc.json",
+      "size_bytes": 655708
+    },
+    {
+      "source": "archetypes/minion_monument.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/minion_monument.json",
+      "size_bytes": 655746
+    },
+    {
+      "source": "archetypes/boss_heavypet.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/boss_heavypet.json",
+      "size_bytes": 663378
+    },
+    {
+      "source": "archetypes/boss_grunt.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/boss_grunt.json",
+      "size_bytes": 658558
+    },
+    {
+      "source": "archetypes/boss_challengearchvillain.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/boss_challengearchvillain.json",
+      "size_bytes": 662061
+    },
+    {
+      "source": "archetypes/tanker.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/tanker.json",
+      "size_bytes": 689821
+    },
+    {
+      "source": "archetypes/arachnos_soldier.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/arachnos_soldier.json",
+      "size_bytes": 689933
+    },
+    {
+      "source": "archetypes/lt_sniper.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/lt_sniper.json",
+      "size_bytes": 655134
+    },
+    {
+      "source": "archetypes/scrapper.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/scrapper.json",
+      "size_bytes": 691958
+    },
+    {
+      "source": "archetypes/controller.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/controller.json",
+      "size_bytes": 681091
+    },
+    {
+      "source": "archetypes/boss_rularuufm.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/boss_rularuufm.json",
+      "size_bytes": 661004
+    },
+    {
+      "source": "archetypes/boss_signature_pets.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/boss_signature_pets.json",
+      "size_bytes": 653951
+    },
+    {
+      "source": "archetypes/lt_longrangedrone.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/lt_longrangedrone.json",
+      "size_bytes": 656574
+    },
+    {
+      "source": "archetypes/peacebringer.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/peacebringer.json",
+      "size_bytes": 690999
+    },
+    {
+      "source": "archetypes/boss_monstrosity.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/boss_monstrosity.json",
+      "size_bytes": 660924
+    },
+    {
+      "source": "archetypes/brute.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/brute.json",
+      "size_bytes": 689877
+    },
+    {
+      "source": "archetypes/boss_rularuu.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/boss_rularuu.json",
+      "size_bytes": 660689
+    },
+    {
+      "source": "archetypes/boss_praetorianelite.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/boss_praetorianelite.json",
+      "size_bytes": 659420
+    },
+    {
+      "source": "archetypes/minion_praetoriansmall.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/minion_praetoriansmall.json",
+      "size_bytes": 657233
+    },
+    {
+      "source": "archetypes/lt_henchman.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/lt_henchman.json",
+      "size_bytes": 647958
+    },
+    {
+      "source": "archetypes/boss_archvillain.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/boss_archvillain.json",
+      "size_bytes": 661461
+    },
+    {
+      "source": "archetypes/dominator.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/dominator.json",
+      "size_bytes": 681785
+    },
+    {
+      "source": "archetypes/minion_practice.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/minion_practice.json",
+      "size_bytes": 660404
+    },
+    {
+      "source": "archetypes/lt_praetoriangrunt_pet.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/lt_praetoriangrunt_pet.json",
+      "size_bytes": 653046
+    },
+    {
+      "source": "archetypes/minion_grunt.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/minion_grunt.json",
+      "size_bytes": 659501
+    },
+    {
+      "source": "archetypes/boss_hugedevice.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/boss_hugedevice.json",
+      "size_bytes": 659315
+    },
+    {
+      "source": "archetypes/boss_rularuucop.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/boss_rularuucop.json",
+      "size_bytes": 661795
+    },
+    {
+      "source": "archetypes/boss_praetorianavlowperception.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/boss_praetorianavlowperception.json",
+      "size_bytes": 661528
+    },
+    {
+      "source": "archetypes/boss_archvillain_flying.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/boss_archvillain_flying.json",
+      "size_bytes": 661372
+    },
+    {
+      "source": "archetypes/minion_controllerpets.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/minion_controllerpets.json",
+      "size_bytes": 652356
+    },
+    {
+      "source": "archetypes/boss_hamidon.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/boss_hamidon.json",
+      "size_bytes": 660950
+    },
+    {
+      "source": "archetypes/corruptor.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/corruptor.json",
+      "size_bytes": 682753
+    },
+    {
+      "source": "archetypes/minion_pets.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/minion_pets.json",
+      "size_bytes": 652354
+    },
+    {
+      "source": "archetypes/stalker.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/stalker.json",
+      "size_bytes": 691811
+    },
+    {
+      "source": "archetypes/minion_praetoriangrunt.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/minion_praetoriangrunt.json",
+      "size_bytes": 660537
+    },
+    {
+      "source": "archetypes/arachnos_widow.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/arachnos_widow.json",
+      "size_bytes": 689958
+    },
+    {
+      "source": "archetypes/boss_turret.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/boss_turret.json",
+      "size_bytes": 655639
+    },
+    {
+      "source": "archetypes/mastermind.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/mastermind.json",
+      "size_bytes": 680142
+    },
+    {
+      "source": "archetypes/boss_praetoriangrunt_pet.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/boss_praetoriangrunt_pet.json",
+      "size_bytes": 654975
+    },
+    {
+      "source": "archetypes/minion_oilslicktarget.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/minion_oilslicktarget.json",
+      "size_bytes": 656078
+    },
+    {
+      "source": "archetypes/index.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/index.json",
+      "size_bytes": 1551
+    },
+    {
+      "source": "archetypes/boss_monster_flying.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/boss_monster_flying.json",
+      "size_bytes": 662250
+    },
+    {
+      "source": "archetypes/boss_praetoriangrunt.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/boss_praetoriangrunt.json",
+      "size_bytes": 658753
+    },
+    {
+      "source": "archetypes/sentinel.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/sentinel.json",
+      "size_bytes": 683217
+    },
+    {
+      "source": "archetypes/minion_small.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/minion_small.json",
+      "size_bytes": 656303
+    },
+    {
+      "source": "archetypes/defender.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/defender.json",
+      "size_bytes": 682541
+    },
+    {
+      "source": "archetypes/lt_praetoriangrunt.json",
+      "reason": "layer_3_special_directory:archetypes",
+      "layer": 3,
+      "copied_to": "archetypes/lt_praetoriangrunt.json",
+      "size_bytes": 659392
+    }
+  ]
+}

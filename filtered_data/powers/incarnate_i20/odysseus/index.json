@@ -1,0 +1,46 @@
+{
+  "name": "Odysseus",
+  "display_name": "Odysseus",
+  "display_fullname": "Incarnate I20.Odysseus",
+  "display_help": "Warriors",
+  "display_short_help": "Warriors",
+  "available_level": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "source_file": "DEFS/POWERS/INCARNATE_I20/ODYSSEUS.POWERSETS",
+  "icon": "odysseus_set.png",
+  "requires": "",
+  "power_names": [
+    "Incarnate_I20.Odysseus.Pulverize",
+    "Incarnate_I20.Odysseus.Jawbreaker",
+    "Incarnate_I20.Odysseus.Shatter",
+    "Incarnate_I20.Odysseus.Crowd_Control",
+    "Incarnate_I20.Odysseus.Vulcan_Clobber",
+    "Incarnate_I20.Odysseus.Explosive_Arrow",
+    "Incarnate_I20.Odysseus.Resistance"
+  ],
+  "power_display_names": [
+    "Pulverize",
+    "Jawbreaker",
+    "Shatter",
+    "Crowd Control",
+    "Vulcan Clobber",
+    "Explosive Arrow",
+    "Resistance"
+  ],
+  "power_short_helps": [
+    "Melee, High DMG(Smash), Foe Disorient",
+    "Melee, Superior DMG(Smash), Foe Knockup",
+    "Melee (Cone), Extreme DMG(Smash), Foe Knockback",
+    "Melee (Cone), High DMG(Smash), Foe Knockback",
+    "Melee, Extreme DMG(Smash), Foe Disorient, -DEF, -Res(All)",
+    "Ranged (Targeted AoE), Moderate DMG(Fire/Lethal), Foe Knockback",
+    "Auto: Res(Fire)"
+  ]
+}

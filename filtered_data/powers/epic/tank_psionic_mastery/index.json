@@ -1,0 +1,38 @@
+{
+  "name": "Tank_Psionic_Mastery",
+  "display_name": "Psionic Mastery",
+  "display_fullname": "Epic.Psionic Mastery",
+  "display_help": "You have Mastery over Psionics and the mind to blast your foes, increase your power, and to add some much needed armor and defense.",
+  "display_short_help": "Psionic Mastery",
+  "available_level": [
+    34,
+    34,
+    37,
+    40,
+    43
+  ],
+  "source_file": "DEFS/POWERS/EPIC/TANK_PSIONIC_MASTERY.POWERSETS",
+  "icon": "psionic_mastery_set.png",
+  "requires": "",
+  "power_names": [
+    "Epic.Tank_Psionic_Mastery.Mesmerize",
+    "Epic.Tank_Psionic_Mastery.Dominate",
+    "Epic.Tank_Psionic_Mastery.Harmonic_Mind",
+    "Epic.Tank_Psionic_Mastery.Mental_Blast",
+    "Epic.Tank_Psionic_Mastery.Psionic_Tornado"
+  ],
+  "power_display_names": [
+    "Mesmerize",
+    "Dominate",
+    "Harmonic Mind",
+    "Mental Blast",
+    "Psionic Tornado"
+  ],
+  "power_short_helps": [
+    "Ranged, DMG(Psionic), Foe Sleep",
+    "Ranged, DMG(Psionic), Foe Hold",
+    "Auto: Self, +Recovery, Endurance Discount",
+    "Ranged, DMG(Psionic), Target -Recharge",
+    "Ranged (Targeted AoE), DoT(Psionic), Foe Knockback"
+  ]
+}

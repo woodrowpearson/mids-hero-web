@@ -1,0 +1,15 @@
+{
+  "tag": "DominationSuppression",
+  "bears": [
+    [
+      "Inherent.Inherent.Domination",
+      "inherent.inherent.domination_rage"
+    ]
+  ],
+  "affects": [
+    [
+      "Inherent.Inherent.Domination",
+      "inherent.inherent.domination"
+    ]
+  ]
+}

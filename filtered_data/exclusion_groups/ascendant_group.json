@@ -1,0 +1,17 @@
+{
+  "group": "Ascendant_Group",
+  "powers": [
+    [
+      "Council.Ascendant Lt.Dispersion Bubble",
+      "council.ascendant_lt.dispersion_bubble"
+    ],
+    [
+      "Council.Ascendant.Shield",
+      "council.ascendant.shield"
+    ],
+    [
+      "Council.Super Soldier.Charge Telegraph",
+      "council.supersoldier.power_siphon_tell"
+    ]
+  ]
+}

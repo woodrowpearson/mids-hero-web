@@ -1,0 +1,258 @@
+{
+  "tag": "FireBlastBonusDoT",
+  "bears": [
+    [
+      "Blaster Ranged.Fire Blast.Blaze",
+      "blaster_ranged.fire_blast.blaze"
+    ],
+    [
+      "Blaster Ranged.Fire Blast.Fire Ball",
+      "blaster_ranged.fire_blast.fire_ball"
+    ],
+    [
+      "Blaster Ranged.Fire Blast.Fire Blast",
+      "blaster_ranged.fire_blast.fire_blast"
+    ],
+    [
+      "Blaster Ranged.Fire Blast.Flares",
+      "blaster_ranged.fire_blast.flares"
+    ],
+    [
+      "Blaster Ranged.Fire Blast.Inferno",
+      "blaster_ranged.fire_blast.inferno"
+    ],
+    [
+      "Corruptor Ranged.Fire Blast.Blaze",
+      "corruptor_ranged.fire_blast.blaze"
+    ],
+    [
+      "Corruptor Ranged.Fire Blast.Fire Ball",
+      "corruptor_ranged.fire_blast.fire_ball"
+    ],
+    [
+      "Corruptor Ranged.Fire Blast.Fire Blast",
+      "corruptor_ranged.fire_blast.fire_blast"
+    ],
+    [
+      "Corruptor Ranged.Fire Blast.Flares",
+      "corruptor_ranged.fire_blast.flares"
+    ],
+    [
+      "Corruptor Ranged.Fire Blast.Inferno",
+      "corruptor_ranged.fire_blast.inferno"
+    ],
+    [
+      "Defender Ranged.Fire Blast.Blaze",
+      "defender_ranged.fire_blast.blaze"
+    ],
+    [
+      "Defender Ranged.Fire Blast.Fire Ball",
+      "defender_ranged.fire_blast.fire_ball"
+    ],
+    [
+      "Defender Ranged.Fire Blast.Fire Blast",
+      "defender_ranged.fire_blast.fire_blast"
+    ],
+    [
+      "Defender Ranged.Fire Blast.Flares",
+      "defender_ranged.fire_blast.flares"
+    ],
+    [
+      "Defender Ranged.Fire Blast.Inferno",
+      "defender_ranged.fire_blast.inferno"
+    ],
+    [
+      "Dominator Assault.Fiery Assault.Blaze",
+      "dominator_assault.fiery_assault.blaze"
+    ],
+    [
+      "Dominator Assault.Fiery Assault.Combustion",
+      "dominator_assault.fiery_assault.combustion"
+    ],
+    [
+      "Dominator Assault.Fiery Assault.Fire Blast",
+      "dominator_assault.fiery_assault.fire_blast"
+    ],
+    [
+      "Dominator Assault.Fiery Assault.Flares",
+      "dominator_assault.fiery_assault.flares"
+    ],
+    [
+      "Epic.Fire Mastery.Fire Ball",
+      "epic.blaze_mastery.fire_ball"
+    ],
+    [
+      "Epic.Fire Mastery.Fire Ball",
+      "epic.fire_mastery.fire_ball"
+    ],
+    [
+      "Epic.Fire Mastery.Fire Ball",
+      "epic.fire_mastery_dominator.fire_ball"
+    ],
+    [
+      "Epic.Fire Mastery.Fire Ball",
+      "epic.pyre_mastery.fire_ball"
+    ],
+    [
+      "Epic.Fire Mastery.Fire Blast",
+      "epic.blaze_mastery.fire_blast"
+    ],
+    [
+      "Epic.Fire Mastery.Fire Blast",
+      "epic.fire_mastery.fire_blast"
+    ],
+    [
+      "Epic.Fire Mastery.Fire Blast",
+      "epic.heat_mastery_stalker.fire_blast"
+    ],
+    [
+      "Epic.Fire Mastery.Fire Blast",
+      "epic.pyre_mastery.fire_blast"
+    ],
+    [
+      "Mission Maker Attacks.Fiery Assault.Blaze",
+      "mission_maker_attacks.fiery_assault.blaze"
+    ],
+    [
+      "Mission Maker Attacks.Fiery Assault.Blazing Bolt",
+      "mission_maker_attacks.fiery_assault.blazing_bolt"
+    ],
+    [
+      "Mission Maker Attacks.Fiery Assault.Fire Blast",
+      "mission_maker_attacks.fiery_assault.fire_blast"
+    ],
+    [
+      "Mission Maker Attacks.Fiery Assault.Flares",
+      "mission_maker_attacks.fiery_assault.flares"
+    ],
+    [
+      "Mission Maker Attacks.Fire Blast.Blaze",
+      "mission_maker_attacks.fire_blast.blaze"
+    ],
+    [
+      "Mission Maker Attacks.Fire Blast.Blazing Bolt",
+      "mission_maker_attacks.fire_blast.blazing_bolt"
+    ],
+    [
+      "Mission Maker Attacks.Fire Blast.Fire Ball",
+      "mission_maker_attacks.fire_blast.fire_ball"
+    ],
+    [
+      "Mission Maker Attacks.Fire Blast.Fire Blast",
+      "mission_maker_attacks.fire_blast.fire_blast"
+    ],
+    [
+      "Mission Maker Attacks.Fire Blast.Flares",
+      "mission_maker_attacks.fire_blast.flares"
+    ],
+    [
+      "Mission Maker Attacks.Fire Blast.Inferno",
+      "mission_maker_attacks.fire_blast.inferno"
+    ],
+    [
+      "Mission Maker Secondary.Fiery Assault.Blaze",
+      "mission_maker_secondary.fiery_assault.blaze"
+    ],
+    [
+      "Mission Maker Secondary.Fiery Assault.Blazing Bolt",
+      "mission_maker_secondary.fiery_assault.blazing_bolt"
+    ],
+    [
+      "Mission Maker Secondary.Fiery Assault.Fire Blast",
+      "mission_maker_secondary.fiery_assault.fire_blast"
+    ],
+    [
+      "Mission Maker Secondary.Fiery Assault.Flares",
+      "mission_maker_secondary.fiery_assault.flares"
+    ],
+    [
+      "Mission Maker Secondary.Fire Blast.Blaze",
+      "mission_maker_secondary.fire_blast.blaze"
+    ],
+    [
+      "Mission Maker Secondary.Fire Blast.Blazing Bolt",
+      "mission_maker_secondary.fire_blast.blazing_bolt"
+    ],
+    [
+      "Mission Maker Secondary.Fire Blast.Fire Ball",
+      "mission_maker_secondary.fire_blast.fire_ball"
+    ],
+    [
+      "Mission Maker Secondary.Fire Blast.Fire Blast",
+      "mission_maker_secondary.fire_blast.fire_blast"
+    ],
+    [
+      "Mission Maker Secondary.Fire Blast.Flares",
+      "mission_maker_secondary.fire_blast.flares"
+    ],
+    [
+      "Mission Maker Secondary.Fire Blast.Inferno",
+      "mission_maker_secondary.fire_blast.inferno"
+    ],
+    [
+      "Objects.Debug.AoE Fire",
+      "objects.debug.aoe_fire"
+    ],
+    [
+      "Objects.Debug.Melee Fire",
+      "objects.debug.melee_fire"
+    ],
+    [
+      "Objects.Debug.Ranged Fire",
+      "objects.debug.ranged_fire"
+    ],
+    [
+      "Pets.Defender Fire Snipe.Blazing Bolt",
+      "pets.defender_fire_snipe.blazing_bolt_normal"
+    ],
+    [
+      "Pets.Defender Fire Snipe.Blazing Bolt",
+      "pets.defender_fire_snipe.blazing_bolt_quick"
+    ],
+    [
+      "Pets.Fire Blast.Blazing Bolt",
+      "pets.blaster_fire_snipe.blazing_bolt_normal"
+    ],
+    [
+      "Pets.Fire Blast.Blazing Bolt",
+      "pets.blaster_fire_snipe.blazing_bolt_quick"
+    ],
+    [
+      "Sentinel Ranged.Fire Blast.Blazing Blast",
+      "sentinel_ranged.fire_blast.blazing_blast"
+    ],
+    [
+      "Sentinel Ranged.Fire Blast.Fire Ball",
+      "sentinel_ranged.fire_blast.fire_ball"
+    ],
+    [
+      "Sentinel Ranged.Fire Blast.Fire Blast",
+      "sentinel_ranged.fire_blast.fire_blast"
+    ],
+    [
+      "Sentinel Ranged.Fire Blast.Flares",
+      "sentinel_ranged.fire_blast.flares"
+    ],
+    [
+      "Sentinel Ranged.Fire Blast.Inferno",
+      "sentinel_ranged.fire_blast.inferno"
+    ],
+    [
+      "Villain Pets.Corruptor FireBlast Snipe.Blazing Bolt",
+      "villain_pets.corruptor_fireblast_snipe.blazing_bolt_normal"
+    ],
+    [
+      "Villain Pets.Corruptor FireBlast Snipe.Blazing Bolt",
+      "villain_pets.corruptor_fireblast_snipe.blazing_bolt_quick"
+    ],
+    [
+      "Villain Pets.Dominator FieryAssault Snipe.Blazing Bolt",
+      "villain_pets.dominator_fieryassault_snipe.blazing_bolt_normal"
+    ],
+    [
+      "Villain Pets.Dominator FieryAssault Snipe.Blazing Bolt",
+      "villain_pets.dominator_fieryassault_snipe.blazing_bolt_quick"
+    ]
+  ],
+  "affects": []
+}

@@ -1,0 +1,30 @@
+{
+  "tag": "Decay",
+  "bears": [
+    [
+      "Controller Buff.Marine Affinity.Power of the Depths",
+      "controller_buff.marine_affinity.call_depths"
+    ],
+    [
+      "Corruptor Buff.Marine Affinity.Power of the Depths",
+      "corruptor_buff.marine_affinity.call_depths"
+    ],
+    [
+      "Defender Buff.Marine Affinity.Power of the Depths",
+      "defender_buff.marine_affinity.call_depths"
+    ],
+    [
+      "Mastermind Buff.Marine Affinity.Power of the Depths",
+      "mastermind_buff.marine_affinity.call_depths"
+    ],
+    [
+      "Mission Maker Secondary.Marine Affinity.Power of the Depths",
+      "mission_maker_secondary.marine_affinity.call_depths"
+    ],
+    [
+      "V Arachnos Proxy.Marine Affinity.Power of the Depths",
+      "v_arachnos_proxy.marine_affinity.call_depths"
+    ]
+  ],
+  "affects": []
+}

@@ -1,0 +1,10 @@
+{
+  "tag": "Ranged",
+  "bears": [
+    [
+      "Objects.Debug.Executer",
+      "objects.debug.executer"
+    ]
+  ],
+  "affects": []
+}

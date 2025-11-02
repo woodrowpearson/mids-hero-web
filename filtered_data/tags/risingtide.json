@@ -1,0 +1,35 @@
+{
+  "tag": "RisingTide",
+  "bears": [
+    [
+      "Controller Buff.Marine Affinity.Shifting Tides",
+      "controller_buff.marine_affinity.shifting_tides"
+    ],
+    [
+      "Corruptor Buff.Marine Affinity.Shifting Tides",
+      "corruptor_buff.marine_affinity.shifting_tides"
+    ],
+    [
+      "Defender Buff.Marine Affinity.Shifting Tides",
+      "defender_buff.marine_affinity.shifting_tides"
+    ],
+    [
+      "Mastermind Buff.Marine Affinity.Shifting Tides",
+      "mastermind_buff.marine_affinity.shifting_tides"
+    ],
+    [
+      "Mission Maker Secondary.Marine Affinity.Shifting Tides",
+      "mission_maker_secondary.marine_affinity.shifting_tides"
+    ],
+    [
+      "V Arachnos Proxy.Marine Affinity.Shifting Tides",
+      "v_arachnos_proxy.marine_affinity.shifting_tides"
+    ]
+  ],
+  "affects": [
+    [
+      "Temporary Powers.Temporary Powers.Rising Tide",
+      "temporary_powers.temporary_powers.rising_tide"
+    ]
+  ]
+}

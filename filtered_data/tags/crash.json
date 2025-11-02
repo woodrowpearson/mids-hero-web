@@ -1,0 +1,62 @@
+{
+  "tag": "Crash",
+  "bears": [
+    [
+      "Brute Defense.Electric Armor.Power Surge",
+      "brute_defense.electric_armor.power_surge"
+    ],
+    [
+      "Brute Defense.Energy Aura.Overload",
+      "brute_defense.energy_aura.overload"
+    ],
+    [
+      "Brute Defense.Radiation Armor.Meltdown",
+      "brute_defense.radiation_armor.meltdown"
+    ],
+    [
+      "Mission Maker Secondary.Electric Armor.Power Surge",
+      "mission_maker_secondary.electric_armor.power_surge"
+    ],
+    [
+      "Scrapper Defense.Electric Armor.Power Surge",
+      "scrapper_defense.electric_armor.power_surge"
+    ],
+    [
+      "Scrapper Defense.Energy Aura.Overload",
+      "scrapper_defense.energy_aura.overload"
+    ],
+    [
+      "Scrapper Defense.Radiation Armor.Meltdown",
+      "scrapper_defense.radiation_armor.meltdown"
+    ],
+    [
+      "Sentinel Defense.Electric Armor.Power Surge",
+      "sentinel_defense.electric_armor.power_surge"
+    ],
+    [
+      "Sentinel Defense.Radiation Armor.Meltdown",
+      "sentinel_defense.radiation_armor.meltdown"
+    ],
+    [
+      "Stalker Defense.Electric Armor.Power Surge",
+      "stalker_defense.electric_armor.power_surge"
+    ],
+    [
+      "Stalker Defense.Energy Aura.Overload",
+      "stalker_defense.energy_aura.overload"
+    ],
+    [
+      "Stalker Defense.Radiation Armor.Meltdown",
+      "stalker_defense.radiation_armor.meltdown"
+    ],
+    [
+      "Tanker Defense.Electric Armor.Power Surge",
+      "tanker_defense.electric_armor.power_surge"
+    ],
+    [
+      "Tanker Defense.Radiation Armor.Meltdown",
+      "tanker_defense.radiation_armor.meltdown"
+    ]
+  ],
+  "affects": []
+}

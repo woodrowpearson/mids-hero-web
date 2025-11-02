@@ -1,0 +1,758 @@
+{
+  "tag": "Overpower",
+  "bears": [
+    [
+      "5thColumn.Maestro RippleAV.Living Shadows",
+      "5thcolumn.maestro_rippleav.living_shadows"
+    ],
+    [
+      "Controller Control.Arsenal Control.Cryo Freeze Ray",
+      "controller_control.arsenal_control.cryo_freeze_ray"
+    ],
+    [
+      "Controller Control.Arsenal Control.Flash Bang",
+      "controller_control.arsenal_control.flash_bang"
+    ],
+    [
+      "Controller Control.Darkness Control.Dark Grasp",
+      "controller_control.darkness_control.dark_grasp"
+    ],
+    [
+      "Controller Control.Darkness Control.Fearsome Stare",
+      "controller_control.darkness_control.fearsome_stare"
+    ],
+    [
+      "Controller Control.Darkness Control.Heart of Darkness",
+      "controller_control.darkness_control.heart_of_darkness"
+    ],
+    [
+      "Controller Control.Darkness Control.Living Shadows",
+      "controller_control.darkness_control.living_shadows"
+    ],
+    [
+      "Controller Control.Darkness Control.Possess",
+      "controller_control.darkness_control.possess"
+    ],
+    [
+      "Controller Control.Darkness Control.Shadowy Binds",
+      "controller_control.darkness_control.shadowy_binds"
+    ],
+    [
+      "Controller Control.Earth Control.Fossilize",
+      "controller_control.earth_control.fossilize"
+    ],
+    [
+      "Controller Control.Earth Control.Stalagmites",
+      "controller_control.earth_control.stalagmites"
+    ],
+    [
+      "Controller Control.Earth Control.Stone Cages",
+      "controller_control.earth_control.stone_cages"
+    ],
+    [
+      "Controller Control.Earth Control.Stone Prison",
+      "controller_control.earth_control.stone_prison"
+    ],
+    [
+      "Controller Control.Electric Control.Chain Fences",
+      "controller_control.electric_control.chain_fences"
+    ],
+    [
+      "Controller Control.Electric Control.Electric Fence",
+      "controller_control.electric_control.electric_fence"
+    ],
+    [
+      "Controller Control.Electric Control.Synaptic Overload",
+      "controller_control.electric_control.synaptic_overload"
+    ],
+    [
+      "Controller Control.Electric Control.Tesla Cage",
+      "controller_control.electric_control.tesla_cage"
+    ],
+    [
+      "Controller Control.Fire Control.Char",
+      "controller_control.fire_control.soot"
+    ],
+    [
+      "Controller Control.Fire Control.Cinders",
+      "controller_control.fire_control.cinders"
+    ],
+    [
+      "Controller Control.Fire Control.Fire Cages",
+      "controller_control.fire_control.fire_cages"
+    ],
+    [
+      "Controller Control.Fire Control.Flashfire",
+      "controller_control.fire_control.flashfire"
+    ],
+    [
+      "Controller Control.Fire Control.Ring of Fire",
+      "controller_control.fire_control.ring_of_fire"
+    ],
+    [
+      "Controller Control.Gravity Control.Crush",
+      "controller_control.gravity_control.crush"
+    ],
+    [
+      "Controller Control.Gravity Control.Crushing Field",
+      "controller_control.gravity_control.crushing_field"
+    ],
+    [
+      "Controller Control.Gravity Control.Gravity Distortion",
+      "controller_control.gravity_control.gravity_distortion"
+    ],
+    [
+      "Controller Control.Gravity Control.Wormhole",
+      "controller_control.gravity_control.wormhole"
+    ],
+    [
+      "Controller Control.Ice Control.Block of Ice",
+      "controller_control.ice_control.block_of_ice"
+    ],
+    [
+      "Controller Control.Ice Control.Chilblain",
+      "controller_control.ice_control.chilblain"
+    ],
+    [
+      "Controller Control.Ice Control.Frostbite",
+      "controller_control.ice_control.frostbite"
+    ],
+    [
+      "Controller Control.Ice Control.Glacier",
+      "controller_control.ice_control.glacier"
+    ],
+    [
+      "Controller Control.Illusion Control.Blind",
+      "controller_control.illusion_control.blind"
+    ],
+    [
+      "Controller Control.Illusion Control.Deceive",
+      "controller_control.illusion_control.deceive"
+    ],
+    [
+      "Controller Control.Illusion Control.Flash",
+      "controller_control.illusion_control.flash"
+    ],
+    [
+      "Controller Control.Mind Control.Confuse",
+      "controller_control.mind_control.confuse"
+    ],
+    [
+      "Controller Control.Mind Control.Dominate",
+      "controller_control.mind_control.dominate"
+    ],
+    [
+      "Controller Control.Mind Control.Mass Confusion",
+      "controller_control.mind_control.mass_confusion"
+    ],
+    [
+      "Controller Control.Mind Control.Telekinesis",
+      "controller_control.mind_control.telekinesis"
+    ],
+    [
+      "Controller Control.Mind Control.Terrify",
+      "controller_control.mind_control.terrify"
+    ],
+    [
+      "Controller Control.Mind Control.Total Domination",
+      "controller_control.mind_control.total_domination"
+    ],
+    [
+      "Controller Control.Plant Control.Entangle",
+      "controller_control.plant_control.entangle"
+    ],
+    [
+      "Controller Control.Plant Control.Roots",
+      "controller_control.plant_control.roots"
+    ],
+    [
+      "Controller Control.Plant Control.Seeds of Confusion",
+      "controller_control.plant_control.seeds_of_confusion"
+    ],
+    [
+      "Controller Control.Plant Control.Strangler",
+      "controller_control.plant_control.strangler"
+    ],
+    [
+      "Controller Control.Pyrotechnic Control.Dazzle",
+      "controller_control.pyrotechnic_control.dazzle"
+    ],
+    [
+      "Controller Control.Pyrotechnic Control.Explosive Bouquet",
+      "controller_control.pyrotechnic_control.explosive_bouquet"
+    ],
+    [
+      "Controller Control.Pyrotechnic Control.Sparkling Cage",
+      "controller_control.pyrotechnic_control.sparkling_cage"
+    ],
+    [
+      "Controller Control.Symphony Control.Aria of Stasis",
+      "controller_control.symphony_control.aria_of_stasis"
+    ],
+    [
+      "Controller Control.Symphony Control.Chords of Despair",
+      "controller_control.symphony_control.chords_of_despair"
+    ],
+    [
+      "Controller Control.Symphony Control.Confounding Chant",
+      "controller_control.symphony_control.confounding_chant"
+    ],
+    [
+      "Controller Control.Symphony Control.Dreadful Discord",
+      "controller_control.symphony_control.dreadful_discord"
+    ],
+    [
+      "Controller Control.Symphony Control.Hymn of Dissonance",
+      "controller_control.symphony_control.hymn_of_dissonance"
+    ],
+    [
+      "Controller Control.Symphony Control.Melodic Binding",
+      "controller_control.symphony_control.melodic_binding"
+    ],
+    [
+      "Controller Control.Wind Control.Breathless",
+      "controller_control.wind_control.breathless"
+    ],
+    [
+      "Controller Control.Wind Control.Downdraft",
+      "controller_control.wind_control.downdraft"
+    ],
+    [
+      "Controller Control.Wind Control.Keening Winds",
+      "controller_control.wind_control.keening_winds"
+    ],
+    [
+      "Controller Control.Wind Control.Microburst",
+      "controller_control.wind_control.microburst"
+    ],
+    [
+      "Controller Control.Wind Control.Vacuum",
+      "controller_control.wind_control.vacuum"
+    ],
+    [
+      "Crey.Revenant BioRanger.Synaptic Overload",
+      "crey.revenant_bioranger.synaptic_overload"
+    ],
+    [
+      "Epic.Psionic Mastery.World of Confusion",
+      "epic.psionic_mastery.world_of_confusion"
+    ],
+    [
+      "Hero Corps Sig.Exothermic.Flashfire",
+      "hero_corps_sig.exothermic.flashfire"
+    ],
+    [
+      "Mission Maker Attacks.Arsenal Control.Cryo Freeze Ray",
+      "mission_maker_attacks.arsenal_control.cryo_freeze_ray"
+    ],
+    [
+      "Mission Maker Attacks.Arsenal Control.Tranquilizer",
+      "mission_maker_attacks.arsenal_control.tranquilizer"
+    ],
+    [
+      "Mission Maker Attacks.Darkness Control.Dark Grasp",
+      "mission_maker_attacks.darkness_control.dark_grasp"
+    ],
+    [
+      "Mission Maker Attacks.Darkness Control.Fearsome Stare",
+      "mission_maker_attacks.darkness_control.fearsome_stare"
+    ],
+    [
+      "Mission Maker Attacks.Darkness Control.Heart of Darkness",
+      "mission_maker_attacks.darkness_control.heart_of_darkness"
+    ],
+    [
+      "Mission Maker Attacks.Darkness Control.Living Shadows",
+      "mission_maker_attacks.darkness_control.living_shadows"
+    ],
+    [
+      "Mission Maker Attacks.Darkness Control.Possess",
+      "mission_maker_attacks.darkness_control.possess"
+    ],
+    [
+      "Mission Maker Attacks.Darkness Control.Shadowy Binds",
+      "mission_maker_attacks.darkness_control.shadowy_binds"
+    ],
+    [
+      "Mission Maker Attacks.Earth Control.Fossilize",
+      "mission_maker_attacks.earth_control.fossilize"
+    ],
+    [
+      "Mission Maker Attacks.Earth Control.Stalagmites",
+      "mission_maker_attacks.earth_control.stalagmites"
+    ],
+    [
+      "Mission Maker Attacks.Earth Control.Stone Cages",
+      "mission_maker_attacks.earth_control.stone_cages"
+    ],
+    [
+      "Mission Maker Attacks.Earth Control.Stone Prison",
+      "mission_maker_attacks.earth_control.stone_prison"
+    ],
+    [
+      "Mission Maker Attacks.Electric Control.Chain Fences",
+      "mission_maker_attacks.electric_control.chain_fences"
+    ],
+    [
+      "Mission Maker Attacks.Electric Control.Electric Fence",
+      "mission_maker_attacks.electric_control.electric_fence"
+    ],
+    [
+      "Mission Maker Attacks.Electric Control.Synaptic Overload",
+      "mission_maker_attacks.electric_control.synaptic_overload"
+    ],
+    [
+      "Mission Maker Attacks.Electric Control.Tesla Cage",
+      "mission_maker_attacks.electric_control.tesla_cage"
+    ],
+    [
+      "Mission Maker Attacks.Fire Control.Char",
+      "mission_maker_attacks.fire_control.char"
+    ],
+    [
+      "Mission Maker Attacks.Fire Control.Cinders",
+      "mission_maker_attacks.fire_control.cinders"
+    ],
+    [
+      "Mission Maker Attacks.Fire Control.Fire Cages",
+      "mission_maker_attacks.fire_control.fire_cages"
+    ],
+    [
+      "Mission Maker Attacks.Fire Control.Flashfire",
+      "mission_maker_attacks.fire_control.flashfire"
+    ],
+    [
+      "Mission Maker Attacks.Fire Control.Ring of Fire",
+      "mission_maker_attacks.fire_control.ring_of_fire"
+    ],
+    [
+      "Mission Maker Attacks.Gravity Control.Crush",
+      "mission_maker_attacks.gravity_control.crush"
+    ],
+    [
+      "Mission Maker Attacks.Gravity Control.Crushing Field",
+      "mission_maker_attacks.gravity_control.crushing_field"
+    ],
+    [
+      "Mission Maker Attacks.Gravity Control.Gravity Distortion",
+      "mission_maker_attacks.gravity_control.gravity_distortion"
+    ],
+    [
+      "Mission Maker Attacks.Gravity Control.Wormhole",
+      "mission_maker_attacks.gravity_control.wormhole"
+    ],
+    [
+      "Mission Maker Attacks.Ice Control.Block of Ice",
+      "mission_maker_attacks.ice_control.block_of_ice"
+    ],
+    [
+      "Mission Maker Attacks.Ice Control.Chilblain",
+      "mission_maker_attacks.ice_control.chilblain"
+    ],
+    [
+      "Mission Maker Attacks.Ice Control.Flash Freeze",
+      "mission_maker_attacks.ice_control.flash_freeze"
+    ],
+    [
+      "Mission Maker Attacks.Ice Control.Frostbite",
+      "mission_maker_attacks.ice_control.frostbite"
+    ],
+    [
+      "Mission Maker Attacks.Ice Control.Glacier",
+      "mission_maker_attacks.ice_control.glacier"
+    ],
+    [
+      "Mission Maker Attacks.Illusion Control.Blind",
+      "mission_maker_attacks.illusion_control.blind"
+    ],
+    [
+      "Mission Maker Attacks.Illusion Control.Deceive",
+      "mission_maker_attacks.illusion_control.deceive"
+    ],
+    [
+      "Mission Maker Attacks.Illusion Control.Flash",
+      "mission_maker_attacks.illusion_control.flash"
+    ],
+    [
+      "Mission Maker Attacks.Mind Control.Confuse",
+      "mission_maker_attacks.mind_control.confuse"
+    ],
+    [
+      "Mission Maker Attacks.Mind Control.Dominate",
+      "mission_maker_attacks.mind_control.dominate"
+    ],
+    [
+      "Mission Maker Attacks.Mind Control.Mass Confusion",
+      "mission_maker_attacks.mind_control.mass_confusion"
+    ],
+    [
+      "Mission Maker Attacks.Mind Control.Mass Hypnosis",
+      "mission_maker_attacks.mind_control.mass_hypnosis"
+    ],
+    [
+      "Mission Maker Attacks.Mind Control.Mesmerize",
+      "mission_maker_attacks.mind_control.mesmerize"
+    ],
+    [
+      "Mission Maker Attacks.Mind Control.Terrify",
+      "mission_maker_attacks.mind_control.terrify"
+    ],
+    [
+      "Mission Maker Attacks.Mind Control.Total Domination",
+      "mission_maker_attacks.mind_control.total_domination"
+    ],
+    [
+      "Mission Maker Attacks.Plant Control.Entangle",
+      "mission_maker_attacks.plant_control.entangle"
+    ],
+    [
+      "Mission Maker Attacks.Plant Control.Roots",
+      "mission_maker_attacks.plant_control.roots"
+    ],
+    [
+      "Mission Maker Attacks.Plant Control.Spore Burst",
+      "mission_maker_attacks.plant_control.spore_burst"
+    ],
+    [
+      "Mission Maker Attacks.Plant Control.Strangler",
+      "mission_maker_attacks.plant_control.strangler"
+    ],
+    [
+      "Mission Maker Pets.Chain Confuse Jump 1.Charge",
+      "mission_maker_pets.chain_confuse_controller_jump1.charge"
+    ],
+    [
+      "Mission Maker Pets.Chain Confuse Jump 2.Charge",
+      "mission_maker_pets.chain_confuse_controller_jump2.charge"
+    ],
+    [
+      "Mission Maker Pets.Chain Confuse Jump 3.Charge",
+      "mission_maker_pets.chain_confuse_controller_jump3.charge"
+    ],
+    [
+      "Mission Maker Pets.Static Field Controller.Static Field",
+      "mission_maker_pets.static_field_controller.static_field"
+    ],
+    [
+      "Mission Maker Secondary.Arsenal Control.Cryo Freeze Ray",
+      "mission_maker_secondary.arsenal_control.cryo_freeze_ray"
+    ],
+    [
+      "Mission Maker Secondary.Darkness Control.Dark Grasp",
+      "mission_maker_secondary.darkness_control.dark_grasp"
+    ],
+    [
+      "Mission Maker Secondary.Darkness Control.Fearsome Stare",
+      "mission_maker_secondary.darkness_control.fearsome_stare"
+    ],
+    [
+      "Mission Maker Secondary.Darkness Control.Heart of Darkness",
+      "mission_maker_secondary.darkness_control.heart_of_darkness"
+    ],
+    [
+      "Mission Maker Secondary.Darkness Control.Living Shadows",
+      "mission_maker_secondary.darkness_control.living_shadows"
+    ],
+    [
+      "Mission Maker Secondary.Darkness Control.Possess",
+      "mission_maker_secondary.darkness_control.possess"
+    ],
+    [
+      "Mission Maker Secondary.Darkness Control.Shadowy Binds",
+      "mission_maker_secondary.darkness_control.shadowy_binds"
+    ],
+    [
+      "Mission Maker Secondary.Earth Control.Fossilize",
+      "mission_maker_secondary.earth_control.fossilize"
+    ],
+    [
+      "Mission Maker Secondary.Earth Control.Stalagmites",
+      "mission_maker_secondary.earth_control.stalagmites"
+    ],
+    [
+      "Mission Maker Secondary.Earth Control.Stone Cages",
+      "mission_maker_secondary.earth_control.stone_cages"
+    ],
+    [
+      "Mission Maker Secondary.Earth Control.Stone Prison",
+      "mission_maker_secondary.earth_control.stone_prison"
+    ],
+    [
+      "Mission Maker Secondary.Electric Control.Chain Fences",
+      "mission_maker_secondary.electric_control.chain_fences"
+    ],
+    [
+      "Mission Maker Secondary.Electric Control.Electric Fence",
+      "mission_maker_secondary.electric_control.electric_fence"
+    ],
+    [
+      "Mission Maker Secondary.Electric Control.Synaptic Overload",
+      "mission_maker_secondary.electric_control.synaptic_overload"
+    ],
+    [
+      "Mission Maker Secondary.Electric Control.Tesla Cage",
+      "mission_maker_secondary.electric_control.tesla_cage"
+    ],
+    [
+      "Mission Maker Secondary.Fire Control.Char",
+      "mission_maker_secondary.fire_control.soot"
+    ],
+    [
+      "Mission Maker Secondary.Fire Control.Cinders",
+      "mission_maker_secondary.fire_control.cinders"
+    ],
+    [
+      "Mission Maker Secondary.Fire Control.Fire Cages",
+      "mission_maker_secondary.fire_control.fire_cages"
+    ],
+    [
+      "Mission Maker Secondary.Fire Control.Flashfire",
+      "mission_maker_secondary.fire_control.flashfire"
+    ],
+    [
+      "Mission Maker Secondary.Fire Control.Ring of Fire",
+      "mission_maker_secondary.fire_control.ring_of_fire"
+    ],
+    [
+      "Mission Maker Secondary.Gravity Control.Crush",
+      "mission_maker_secondary.gravity_control.crush"
+    ],
+    [
+      "Mission Maker Secondary.Gravity Control.Crushing Field",
+      "mission_maker_secondary.gravity_control.crushing_field"
+    ],
+    [
+      "Mission Maker Secondary.Gravity Control.Gravity Distortion",
+      "mission_maker_secondary.gravity_control.gravity_distortion"
+    ],
+    [
+      "Mission Maker Secondary.Gravity Control.Wormhole",
+      "mission_maker_secondary.gravity_control.wormhole"
+    ],
+    [
+      "Mission Maker Secondary.Ice Control.Block of Ice",
+      "mission_maker_secondary.ice_control.block_of_ice"
+    ],
+    [
+      "Mission Maker Secondary.Ice Control.Chilblain",
+      "mission_maker_secondary.ice_control.chilblain"
+    ],
+    [
+      "Mission Maker Secondary.Ice Control.Flash Freeze",
+      "mission_maker_secondary.ice_control.flash_freeze"
+    ],
+    [
+      "Mission Maker Secondary.Ice Control.Frostbite",
+      "mission_maker_secondary.ice_control.frostbite"
+    ],
+    [
+      "Mission Maker Secondary.Ice Control.Glacier",
+      "mission_maker_secondary.ice_control.glacier"
+    ],
+    [
+      "Mission Maker Secondary.Illusion Control.Blind",
+      "mission_maker_secondary.illusion_control.blind"
+    ],
+    [
+      "Mission Maker Secondary.Illusion Control.Deceive",
+      "mission_maker_secondary.illusion_control.deceive"
+    ],
+    [
+      "Mission Maker Secondary.Illusion Control.Flash",
+      "mission_maker_secondary.illusion_control.flash"
+    ],
+    [
+      "Mission Maker Secondary.Mind Control.Confuse",
+      "mission_maker_secondary.mind_control.confuse"
+    ],
+    [
+      "Mission Maker Secondary.Mind Control.Dominate",
+      "mission_maker_secondary.mind_control.dominate"
+    ],
+    [
+      "Mission Maker Secondary.Mind Control.Mass Confusion",
+      "mission_maker_secondary.mind_control.mass_confusion"
+    ],
+    [
+      "Mission Maker Secondary.Mind Control.Mass Hypnosis",
+      "mission_maker_secondary.mind_control.mass_hypnosis"
+    ],
+    [
+      "Mission Maker Secondary.Mind Control.Mesmerize",
+      "mission_maker_secondary.mind_control.mesmerize"
+    ],
+    [
+      "Mission Maker Secondary.Mind Control.Terrify",
+      "mission_maker_secondary.mind_control.terrify"
+    ],
+    [
+      "Mission Maker Secondary.Mind Control.Total Domination",
+      "mission_maker_secondary.mind_control.total_domination"
+    ],
+    [
+      "Mission Maker Secondary.Plant Control.Entangle",
+      "mission_maker_secondary.plant_control.entangle"
+    ],
+    [
+      "Mission Maker Secondary.Plant Control.Roots",
+      "mission_maker_secondary.plant_control.roots"
+    ],
+    [
+      "Mission Maker Secondary.Plant Control.Spore Burst",
+      "mission_maker_secondary.plant_control.spore_burst"
+    ],
+    [
+      "Mission Maker Secondary.Plant Control.Strangler",
+      "mission_maker_secondary.plant_control.strangler"
+    ],
+    [
+      "OnGoingTrainingCharacters.Dollface's Powers.Mesmerize",
+      "ongoingtrainingcharacters.dollface_powers.mesmerize"
+    ],
+    [
+      "Pets.Chain Confuse Jump 1.Charge",
+      "pets.chain_confuse_controller_jump1.charge"
+    ],
+    [
+      "Pets.Chain Confuse Jump 2.Charge",
+      "pets.chain_confuse_controller_jump2.charge"
+    ],
+    [
+      "Pets.Chain Confuse Jump 3.Charge",
+      "pets.chain_confuse_controller_jump3.charge"
+    ],
+    [
+      "Pets.Wind Control.Vacuum",
+      "pets.wind_control_vacuum_controller.vacuum_hold"
+    ],
+    [
+      "PraetorianPolice.Aria.Blind",
+      "praetorianpolice.aria.blind"
+    ],
+    [
+      "Redirects.Assault Rifle.Sleep Grenade",
+      "redirects.assault_rifle.sleep_grenade"
+    ],
+    [
+      "Redirects.Assault Rifle.Smoke Canister",
+      "redirects.assault_rifle.smoke_confusion"
+    ],
+    [
+      "Redirects.Assault Rifle.Tear Gas",
+      "redirects.assault_rifle.tear_gas"
+    ],
+    [
+      "Redirects.Assault Rifle.Tear Gas",
+      "redirects.assault_rifle.tear_gas_oneshot"
+    ],
+    [
+      "Redirects.Electric Control.Tesla Coil",
+      "redirects.electric_control.tesla_coil_chain"
+    ],
+    [
+      "Redirects.Electric Control.Tesla Coil",
+      "redirects.electric_control.tesla_coil_oneshot"
+    ],
+    [
+      "Redirects.Gravity Control.Gravity Distortion Field",
+      "redirects.gravity_control.gravity_distortion_field_oneshot"
+    ],
+    [
+      "Redirects.Gravity Control.Gravity Distortion Field",
+      "redirects.gravity_control.gravity_distortion_field_pulse"
+    ],
+    [
+      "Redirects.Ice Control.Cold Snap",
+      "redirects.ice_control.cold_snap_controller"
+    ],
+    [
+      "Redirects.Mind Control.Mesmerize",
+      "redirects.mind_control.mesmerize_anomaly"
+    ],
+    [
+      "Redirects.Mind Control.Total Domination",
+      "redirects.mind_control.total_domination"
+    ],
+    [
+      "Redirects.Pyrotechnic Control.Brilliant Barrage",
+      "redirects.pyrotechnic_control.glitz_burst"
+    ],
+    [
+      "Redirects.Pyrotechnic Control.Hypnotizing Lights (Close)",
+      "redirects.pyrotechnic_control.hypnotizinglights_narrow"
+    ],
+    [
+      "Redirects.Symphony Control.Impassioned Serenade",
+      "redirects.symphony_control.impassioned_serenade_controller"
+    ],
+    [
+      "TalonsOfVengeance.Keres.Death's Embrace",
+      "talonsofvengeance.keres.deaths_embrace"
+    ],
+    [
+      "TalonsOfVengeance.Oracle Ice.Block of Ice",
+      "talonsofvengeance.oracle_ice.block_of_ice"
+    ],
+    [
+      "V Arachnos Proxy.Arsenal Control.Cryo Freeze Ray",
+      "v_arachnos_proxy.arsenal_control.cryo_freeze_ray"
+    ],
+    [
+      "V Arachnos Proxy.Arsenal Control.Flash Bang",
+      "v_arachnos_proxy.arsenal_control.flash_bang"
+    ],
+    [
+      "V Arachnos Proxy.Darkness Control.Dark Grasp",
+      "v_arachnos_proxy.darkness_control.dark_grasp"
+    ],
+    [
+      "V Arachnos Proxy.Darkness Control.Fearsome Stare",
+      "v_arachnos_proxy.darkness_control.fearsome_stare"
+    ],
+    [
+      "V Arachnos Proxy.Darkness Control.Heart of Darkness",
+      "v_arachnos_proxy.darkness_control.heart_of_darkness"
+    ],
+    [
+      "V Arachnos Proxy.Darkness Control.Living Shadows",
+      "v_arachnos_proxy.darkness_control.living_shadows"
+    ],
+    [
+      "V Arachnos Proxy.Darkness Control.Possess",
+      "v_arachnos_proxy.darkness_control.possess"
+    ],
+    [
+      "V Arachnos Proxy.Darkness Control.Shadowy Binds",
+      "v_arachnos_proxy.darkness_control.shadowy_binds"
+    ],
+    [
+      "V GoldBrickers.Zoe Gold Smelter.Char",
+      "v_goldbrickers.zoe_gold_smelter.char"
+    ],
+    [
+      "Vanguard.Incandescent.Blind",
+      "vanguard.incandescent.blind"
+    ],
+    [
+      "Vanguard.Incandescent.Flash",
+      "vanguard.incandescent.flash"
+    ],
+    [
+      "Villain Pets.Creeper Patch.Entangle",
+      "villain_pets.creeper_entangle.entangle"
+    ],
+    [
+      "Villain Pets.Shadow Field.Shadow Field Hold Controller",
+      "villain_pets.shadow_field.shadow_field_hold_controller"
+    ],
+    [
+      "Villain Pets.Vines.Vines",
+      "villain_pets.vines.vines_oneshot"
+    ],
+    [
+      "Villain Pets.Vines.Vines",
+      "villain_pets.vines.vines_pulse"
+    ]
+  ],
+  "affects": []
+}

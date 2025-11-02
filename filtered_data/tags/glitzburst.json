@@ -1,0 +1,22 @@
+{
+  "tag": "GlitzBurst",
+  "bears": [
+    [
+      "Controller Control.Pyrotechnic Control.Brilliant Barrage",
+      "controller_control.pyrotechnic_control.glitz"
+    ],
+    [
+      "Dominator Control.Pyrotechnic Control.Brilliant Barrage",
+      "dominator_control.pyrotechnic_control.glitz"
+    ],
+    [
+      "Mission Maker Attacks.Pyrotechnic Control.Multipurpose Missiles",
+      "mission_maker_attacks.pyrotechnic_control.glitz"
+    ],
+    [
+      "Mission Maker Secondary.Pyrotechnic Control.Multipurpose Missiles",
+      "mission_maker_secondary.pyrotechnic_control.glitz"
+    ]
+  ],
+  "affects": []
+}

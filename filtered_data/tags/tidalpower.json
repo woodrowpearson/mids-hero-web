@@ -1,0 +1,158 @@
+{
+  "tag": "TidalPower",
+  "bears": [
+    [
+      "Blaster Ranged.Water Blast.Aqua Bolt",
+      "blaster_ranged.water_blast.aqua_bolt"
+    ],
+    [
+      "Blaster Ranged.Water Blast.Dehydrate",
+      "blaster_ranged.water_blast.dehydrate"
+    ],
+    [
+      "Blaster Ranged.Water Blast.Hydro Blast",
+      "blaster_ranged.water_blast.hydro_blast"
+    ],
+    [
+      "Blaster Ranged.Water Blast.Steam Spray",
+      "blaster_ranged.water_blast.steam_spray"
+    ],
+    [
+      "Blaster Ranged.Water Blast.Whirlpool",
+      "blaster_ranged.water_blast.whirlpool"
+    ],
+    [
+      "Corruptor Ranged.Water Blast.Aqua Bolt",
+      "corruptor_ranged.water_blast.aqua_bolt"
+    ],
+    [
+      "Corruptor Ranged.Water Blast.Dehydrate",
+      "corruptor_ranged.water_blast.dehydrate"
+    ],
+    [
+      "Corruptor Ranged.Water Blast.Hydro Blast",
+      "corruptor_ranged.water_blast.hydro_blast"
+    ],
+    [
+      "Corruptor Ranged.Water Blast.Steam Spray",
+      "corruptor_ranged.water_blast.steam_spray"
+    ],
+    [
+      "Corruptor Ranged.Water Blast.Whirlpool",
+      "corruptor_ranged.water_blast.whirlpool"
+    ],
+    [
+      "Defender Ranged.Water Blast.Aqua Bolt",
+      "defender_ranged.water_blast.aqua_bolt"
+    ],
+    [
+      "Defender Ranged.Water Blast.Dehydrate",
+      "defender_ranged.water_blast.dehydrate"
+    ],
+    [
+      "Defender Ranged.Water Blast.Geyser",
+      "defender_ranged.water_blast.geyser"
+    ],
+    [
+      "Defender Ranged.Water Blast.Hydro Blast",
+      "defender_ranged.water_blast.hydro_blast"
+    ],
+    [
+      "Defender Ranged.Water Blast.Steam Spray",
+      "defender_ranged.water_blast.steam_spray"
+    ],
+    [
+      "Defender Ranged.Water Blast.Whirlpool",
+      "defender_ranged.water_blast.whirlpool"
+    ],
+    [
+      "Mission Maker Attacks.Water Blast.Aqua Bolt",
+      "mission_maker_attacks.water_blast.aqua_bolt"
+    ],
+    [
+      "Mission Maker Attacks.Water Blast.Dehydrate",
+      "mission_maker_attacks.water_blast.dehydrate"
+    ],
+    [
+      "Mission Maker Attacks.Water Blast.Geyser",
+      "mission_maker_attacks.water_blast.geyser"
+    ],
+    [
+      "Mission Maker Attacks.Water Blast.Hydro Blast",
+      "mission_maker_attacks.water_blast.hydro_blast"
+    ],
+    [
+      "Mission Maker Attacks.Water Blast.Steam Spray",
+      "mission_maker_attacks.water_blast.steam_spray"
+    ],
+    [
+      "Mission Maker Attacks.Water Blast.Whirlpool",
+      "mission_maker_attacks.water_blast.whirlpool"
+    ],
+    [
+      "Mission Maker Pets.Water Blast.Water Jet",
+      "mission_maker_pets.water_jet.water_jet_normal"
+    ],
+    [
+      "Mission Maker Secondary.Water Blast.Aqua Bolt",
+      "mission_maker_secondary.water_blast.aqua_bolt"
+    ],
+    [
+      "Mission Maker Secondary.Water Blast.Dehydrate",
+      "mission_maker_secondary.water_blast.dehydrate"
+    ],
+    [
+      "Mission Maker Secondary.Water Blast.Geyser",
+      "mission_maker_secondary.water_blast.geyser"
+    ],
+    [
+      "Mission Maker Secondary.Water Blast.Hydro Blast",
+      "mission_maker_secondary.water_blast.hydro_blast"
+    ],
+    [
+      "Mission Maker Secondary.Water Blast.Steam Spray",
+      "mission_maker_secondary.water_blast.steam_spray"
+    ],
+    [
+      "Mission Maker Secondary.Water Blast.Whirlpool",
+      "mission_maker_secondary.water_blast.whirlpool"
+    ],
+    [
+      "Pets.Water Blast.Water Jet",
+      "pets.water_blast_blaster.water_jet_normal"
+    ],
+    [
+      "Pets.Water Blast.Water Jet",
+      "pets.water_blast_corruptor.water_jet_normal"
+    ],
+    [
+      "Pets.Water Blast.Water Jet",
+      "pets.water_blast_defender.water_jet_normal"
+    ],
+    [
+      "Pets.Water Blast.Water Jet",
+      "pets.water_blast_sentinel.water_jet_normal"
+    ],
+    [
+      "Sentinel Ranged.Water Blast.Aqua Bolt",
+      "sentinel_ranged.water_blast.aqua_bolt"
+    ],
+    [
+      "Sentinel Ranged.Water Blast.Dehydrate",
+      "sentinel_ranged.water_blast.dehydrate"
+    ],
+    [
+      "Sentinel Ranged.Water Blast.Hydro Blast",
+      "sentinel_ranged.water_blast.hydro_blast"
+    ],
+    [
+      "Sentinel Ranged.Water Blast.Steam Spray",
+      "sentinel_ranged.water_blast.steam_spray"
+    ],
+    [
+      "Sentinel Ranged.Water Blast.Whirlpool",
+      "sentinel_ranged.water_blast.whirlpool"
+    ]
+  ],
+  "affects": []
+}

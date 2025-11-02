@@ -1,0 +1,10 @@
+{
+  "tag": "LeviathanHunger",
+  "bears": [
+    [
+      "Temporary Powers.Temporary Powers.Leviathan Force",
+      "temporary_powers.temporary_powers.leviathan_hunger_proc"
+    ]
+  ],
+  "affects": []
+}

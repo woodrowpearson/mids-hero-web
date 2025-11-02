@@ -1,0 +1,162 @@
+{
+  "tag": "PvPCrit",
+  "bears": [
+    [
+      "Epic.Dark Mastery.Dark Blast",
+      "epic.darkness_mastery.dark_blast"
+    ],
+    [
+      "Epic.Dark Mastery.Night Fall",
+      "epic.darkness_mastery.night_fall"
+    ],
+    [
+      "Epic.Dark Mastery.Petrifying Gaze",
+      "epic.darkness_mastery.petrifying_gaze"
+    ],
+    [
+      "Epic.Dark Mastery.Tenebrous Tentacles",
+      "epic.darkness_mastery.tenebrous_tentacles"
+    ],
+    [
+      "Epic.Dark Mastery.Umbral Torrent",
+      "epic.darkness_mastery.torrent"
+    ],
+    [
+      "Epic.Energy Mastery.Energy Torrent",
+      "epic.body_mastery.energy_torrent"
+    ],
+    [
+      "Epic.Energy Mastery.Energy Torrent",
+      "epic.body_mastery_stalker.energy_torrent"
+    ],
+    [
+      "Epic.Energy Mastery.Laser Beam Eyes",
+      "epic.body_mastery_stalker.laser_beam_eyes"
+    ],
+    [
+      "Epic.Fire Mastery.Char",
+      "epic.blaze_mastery.char"
+    ],
+    [
+      "Epic.Fire Mastery.Fire Ball",
+      "epic.blaze_mastery.fire_ball"
+    ],
+    [
+      "Epic.Fire Mastery.Fire Blast",
+      "epic.blaze_mastery.fire_blast"
+    ],
+    [
+      "Epic.Fire Mastery.Ring of Fire",
+      "epic.blaze_mastery.ring_of_fire"
+    ],
+    [
+      "Epic.Ice Mastery.Frigid Wind",
+      "epic.scrapper_ice_mastery.frigid_wind"
+    ],
+    [
+      "Epic.Ice Mastery.Ice Bolt",
+      "epic.scrapper_ice_mastery.ice_bolt"
+    ],
+    [
+      "Epic.Leviathan Mastery.Spirit Shark",
+      "epic.stalker_leviathan_mastery.spirit_shark"
+    ],
+    [
+      "Epic.Leviathan Mastery.Spirit Shark Jaws",
+      "epic.stalker_leviathan_mastery.spirit_shark_jaws"
+    ],
+    [
+      "Epic.Mace Mastery.Disruptor Blast",
+      "epic.stalker_mace_mastery.disruptor_blast"
+    ],
+    [
+      "Epic.Mace Mastery.Mace Blast",
+      "epic.stalker_mace_mastery.mace_blast"
+    ],
+    [
+      "Epic.Mace Mastery.Web Cocoon",
+      "epic.stalker_mace_mastery.web_cocoon"
+    ],
+    [
+      "Epic.Mu Mastery.Ball Lightning",
+      "epic.stalker_mu_mastery.ball_lightning"
+    ],
+    [
+      "Epic.Mu Mastery.Electric Shackles",
+      "epic.stalker_mu_mastery.electric_shackles"
+    ],
+    [
+      "Epic.Mu Mastery.Mu Bolts",
+      "epic.stalker_mu_mastery.mu_bolts"
+    ],
+    [
+      "Epic.Psionic Mastery.Mental Blast",
+      "epic.melee_psionic_mastery.mental_blast"
+    ],
+    [
+      "Epic.Psionic Mastery.Psychic Scream",
+      "epic.melee_psionic_mastery.psychic_scream"
+    ],
+    [
+      "Epic.Soul Mastery.Dark Blast",
+      "epic.stalker_soul_mastery.dark_blast"
+    ],
+    [
+      "Epic.Soul Mastery.Soul Storm",
+      "epic.stalker_soul_mastery.soul_storm"
+    ],
+    [
+      "Epic.Weapon Mastery.Exploding Shuriken",
+      "epic.weapon_mastery_stalker.exploding_shuriken"
+    ],
+    [
+      "Pets.Epic AR Snipe.Sniper Rifle",
+      "pets.epic_ar_snipe.sniper_rifle_normal"
+    ],
+    [
+      "Pets.Epic AR Snipe.Sniper Rifle",
+      "pets.epic_ar_snipe.sniper_rifle_quick"
+    ],
+    [
+      "Pets.Psychic Snipe.Psionic Lance",
+      "pets.epic_psychic_snipe.psionic_lance_normal"
+    ],
+    [
+      "Pets.Psychic Snipe.Psionic Lance",
+      "pets.epic_psychic_snipe.psionic_lance_quick"
+    ],
+    [
+      "Redirects.Ice Mastery.Frozen Spear",
+      "redirects.epic_icemastery.frozen_spear_normal"
+    ],
+    [
+      "Redirects.Ice Mastery.Frozen Spear",
+      "redirects.epic_icemastery.frozen_spear_quick"
+    ],
+    [
+      "Villain Pets.Stalker EpicMaceMastery Snipe.Mace Beam",
+      "villain_pets.stalker_epicmacemastery_snipe.mace_beam_normal"
+    ],
+    [
+      "Villain Pets.Stalker EpicMaceMastery Snipe.Mace Beam",
+      "villain_pets.stalker_epicmacemastery_snipe.mace_beam_quick"
+    ],
+    [
+      "Villain Pets.Stalker EpicMuMastery Snipe.Zapp",
+      "villain_pets.stalker_epicmumastery_snipe.zapp_normal"
+    ],
+    [
+      "Villain Pets.Stalker EpicMuMastery Snipe.Zapp",
+      "villain_pets.stalker_epicmumastery_snipe.zapp_quick"
+    ],
+    [
+      "Villain Pets.Stalker EpicSoulMastery Snipe.Moonbeam",
+      "villain_pets.stalker_epicsoulmastery_snipe.moonbeam_normal"
+    ],
+    [
+      "Villain Pets.Stalker EpicSoulMastery Snipe.Moonbeam",
+      "villain_pets.stalker_epicsoulmastery_snipe.moonbeam_quick"
+    ]
+  ],
+  "affects": []
+}

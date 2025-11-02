@@ -1,0 +1,77 @@
+{
+  "group": "FXCostume_Group",
+  "powers": [
+    [
+      "Prestige.Prestige Costumes.Costume Disable",
+      "prestige.prestige_costumes.reward_costume_off"
+    ],
+    [
+      "Prestige.Prestige Costumes.Effect: Chill",
+      "prestige.prestige_costumes.reward_deluxe_mode_chill"
+    ],
+    [
+      "Prestige.Prestige Costumes.Effect: Darkness",
+      "prestige.prestige_costumes.reward_deluxe_mode_darkness"
+    ],
+    [
+      "Prestige.Prestige Costumes.Effect: Drone",
+      "prestige.prestige_costumes.reward_deluxe_mode_drone"
+    ],
+    [
+      "Prestige.Prestige Costumes.Effect: Earthen",
+      "prestige.prestige_costumes.reward_deluxe_mode_earthen"
+    ],
+    [
+      "Prestige.Prestige Costumes.Effect: Entropic",
+      "prestige.prestige_costumes.reward_deluxe_mode_entropic"
+    ],
+    [
+      "Prestige.Prestige Costumes.Effect: Flames",
+      "prestige.prestige_costumes.reward_deluxe_mode_flames"
+    ],
+    [
+      "Prestige.Prestige Costumes.Effect: Ghost",
+      "prestige.prestige_costumes.reward_deluxe_mode_ghost"
+    ],
+    [
+      "Prestige.Prestige Costumes.Effect: Luminous",
+      "prestige.prestige_costumes.reward_deluxe_mode_luminous"
+    ],
+    [
+      "Prestige.Prestige Costumes.Effect: Organic",
+      "prestige.prestige_costumes.reward_deluxe_mode_organic"
+    ],
+    [
+      "Prestige.Prestige Costumes.Effect: P.E.A.C.E. Coordinator",
+      "prestige.prestige_costumes.reward_deluxe_mode_coordinator"
+    ],
+    [
+      "Prestige.Prestige Costumes.Effect: Photosynthesis",
+      "prestige.prestige_costumes.reward_deluxe_mode_photosynthesis"
+    ],
+    [
+      "Prestige.Prestige Costumes.Effect: Psionic",
+      "prestige.prestige_costumes.reward_deluxe_mode_psionic"
+    ],
+    [
+      "Prestige.Prestige Costumes.Effect: Puncture",
+      "prestige.prestige_costumes.reward_deluxe_mode_puncture"
+    ],
+    [
+      "Prestige.Prestige Costumes.Effect: Reflection",
+      "prestige.prestige_costumes.reward_deluxe_mode_reflection"
+    ],
+    [
+      "Prestige.Prestige Costumes.Effect: Shadow",
+      "prestige.prestige_costumes.reward_deluxe_mode_shadow"
+    ],
+    [
+      "Prestige.Prestige Costumes.Effect: Shocking",
+      "prestige.prestige_costumes.reward_deluxe_mode_shock"
+    ],
+    [
+      "Prestige.Prestige Costumes.Effect: Umbral",
+      "prestige.prestige_costumes.reward_deluxe_mode_umbral"
+    ]
+  ]
+}

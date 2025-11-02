@@ -1,0 +1,23 @@
+{
+  "tag": "FateSealed",
+  "bears": [
+    [
+      "Widow Training.Fortunata Training.Psionic Tornado",
+      "widow_training.fortunata_training.frt_psionic_lance"
+    ],
+    [
+      "Widow Training.Fortunata Training.Subdue",
+      "widow_training.fortunata_training.frt_subdue"
+    ],
+    [
+      "Widow Training.Fortunata Training.Telekinetic Blast",
+      "widow_training.fortunata_training.frt_telekinetic_blast"
+    ]
+  ],
+  "affects": [
+    [
+      "Teamwork.Fortunata Teamwork.Fate Sealed",
+      "teamwork.fortunata_teamwork.fate_sealed"
+    ]
+  ]
+}

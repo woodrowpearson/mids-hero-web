@@ -1,0 +1,2876 @@
+{
+  "directory": "metadata",
+  "total_files": 410,
+  "entries": [
+    {
+      "source": "tables/boss_elite.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/boss_elite.json",
+      "size_bytes": 142276
+    },
+    {
+      "source": "tables/boss_mito.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/boss_mito.json",
+      "size_bytes": 141154
+    },
+    {
+      "source": "tables/lt_turret.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/lt_turret.json",
+      "size_bytes": 140792
+    },
+    {
+      "source": "tables/minion_small_agressive.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/minion_small_agressive.json",
+      "size_bytes": 143101
+    },
+    {
+      "source": "tables/boss_henchman.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/boss_henchman.json",
+      "size_bytes": 145977
+    },
+    {
+      "source": "tables/lt_grunt.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/lt_grunt.json",
+      "size_bytes": 140760
+    },
+    {
+      "source": "tables/blaster.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/blaster.json",
+      "size_bytes": 149030
+    },
+    {
+      "source": "tables/minion_swarm.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/minion_swarm.json",
+      "size_bytes": 142577
+    },
+    {
+      "source": "tables/minion_henchman_small.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/minion_henchman_small.json",
+      "size_bytes": 145758
+    },
+    {
+      "source": "tables/boss_praetorianarchvillain.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/boss_praetorianarchvillain.json",
+      "size_bytes": 141611
+    },
+    {
+      "source": "tables/boss_guard.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/boss_guard.json",
+      "size_bytes": 141593
+    },
+    {
+      "source": "tables/boss_shield.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/boss_shield.json",
+      "size_bytes": 142121
+    },
+    {
+      "source": "tables/boss_monster.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/boss_monster.json",
+      "size_bytes": 141709
+    },
+    {
+      "source": "tables/minion_turret.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/minion_turret.json",
+      "size_bytes": 143557
+    },
+    {
+      "source": "tables/boss_eliteturret.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/boss_eliteturret.json",
+      "size_bytes": 140743
+    },
+    {
+      "source": "tables/minion_fire.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/minion_fire.json",
+      "size_bytes": 140792
+    },
+    {
+      "source": "tables/warshade.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/warshade.json",
+      "size_bytes": 149662
+    },
+    {
+      "source": "tables/minion_henchman.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/minion_henchman.json",
+      "size_bytes": 145758
+    },
+    {
+      "source": "tables/boss_reichsman.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/boss_reichsman.json",
+      "size_bytes": 141971
+    },
+    {
+      "source": "tables/minion_unkillablenpc.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/minion_unkillablenpc.json",
+      "size_bytes": 140072
+    },
+    {
+      "source": "tables/minion_monument.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/minion_monument.json",
+      "size_bytes": 140125
+    },
+    {
+      "source": "tables/boss_heavypet.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/boss_heavypet.json",
+      "size_bytes": 142156
+    },
+    {
+      "source": "tables/boss_grunt.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/boss_grunt.json",
+      "size_bytes": 142217
+    },
+    {
+      "source": "tables/boss_challengearchvillain.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/boss_challengearchvillain.json",
+      "size_bytes": 141716
+    },
+    {
+      "source": "tables/tanker.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/tanker.json",
+      "size_bytes": 148483
+    },
+    {
+      "source": "tables/arachnos_soldier.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/arachnos_soldier.json",
+      "size_bytes": 148267
+    },
+    {
+      "source": "tables/lt_sniper.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/lt_sniper.json",
+      "size_bytes": 139478
+    },
+    {
+      "source": "tables/scrapper.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/scrapper.json",
+      "size_bytes": 149508
+    },
+    {
+      "source": "tables/controller.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/controller.json",
+      "size_bytes": 148488
+    },
+    {
+      "source": "tables/boss_rularuufm.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/boss_rularuufm.json",
+      "size_bytes": 141425
+    },
+    {
+      "source": "tables/boss_signature_pets.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/boss_signature_pets.json",
+      "size_bytes": 141121
+    },
+    {
+      "source": "tables/lt_longrangedrone.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/lt_longrangedrone.json",
+      "size_bytes": 140676
+    },
+    {
+      "source": "tables/peacebringer.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/peacebringer.json",
+      "size_bytes": 149670
+    },
+    {
+      "source": "tables/boss_monstrosity.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/boss_monstrosity.json",
+      "size_bytes": 141847
+    },
+    {
+      "source": "tables/brute.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/brute.json",
+      "size_bytes": 149245
+    },
+    {
+      "source": "tables/boss_rularuu.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/boss_rularuu.json",
+      "size_bytes": 141465
+    },
+    {
+      "source": "tables/boss_praetorianelite.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/boss_praetorianelite.json",
+      "size_bytes": 142155
+    },
+    {
+      "source": "tables/minion_praetoriansmall.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/minion_praetoriansmall.json",
+      "size_bytes": 143753
+    },
+    {
+      "source": "tables/lt_henchman.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/lt_henchman.json",
+      "size_bytes": 140380
+    },
+    {
+      "source": "tables/boss_archvillain.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/boss_archvillain.json",
+      "size_bytes": 141674
+    },
+    {
+      "source": "tables/dominator.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/dominator.json",
+      "size_bytes": 149104
+    },
+    {
+      "source": "tables/minion_practice.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/minion_practice.json",
+      "size_bytes": 142283
+    },
+    {
+      "source": "tables/lt_praetoriangrunt_pet.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/lt_praetoriangrunt_pet.json",
+      "size_bytes": 141212
+    },
+    {
+      "source": "tables/minion_grunt.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/minion_grunt.json",
+      "size_bytes": 143344
+    },
+    {
+      "source": "tables/boss_hugedevice.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/boss_hugedevice.json",
+      "size_bytes": 142383
+    },
+    {
+      "source": "tables/boss_rularuucop.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/boss_rularuucop.json",
+      "size_bytes": 141594
+    },
+    {
+      "source": "tables/boss_praetorianavlowperception.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/boss_praetorianavlowperception.json",
+      "size_bytes": 141611
+    },
+    {
+      "source": "tables/boss_archvillain_flying.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/boss_archvillain_flying.json",
+      "size_bytes": 141548
+    },
+    {
+      "source": "tables/minion_controllerpets.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/minion_controllerpets.json",
+      "size_bytes": 142938
+    },
+    {
+      "source": "tables/boss_hamidon.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/boss_hamidon.json",
+      "size_bytes": 141422
+    },
+    {
+      "source": "tables/corruptor.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/corruptor.json",
+      "size_bytes": 149399
+    },
+    {
+      "source": "tables/minion_pets.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/minion_pets.json",
+      "size_bytes": 142938
+    },
+    {
+      "source": "tables/stalker.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/stalker.json",
+      "size_bytes": 149258
+    },
+    {
+      "source": "tables/minion_praetoriangrunt.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/minion_praetoriangrunt.json",
+      "size_bytes": 144103
+    },
+    {
+      "source": "tables/arachnos_widow.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/arachnos_widow.json",
+      "size_bytes": 148256
+    },
+    {
+      "source": "tables/boss_turret.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/boss_turret.json",
+      "size_bytes": 142122
+    },
+    {
+      "source": "tables/mastermind.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/mastermind.json",
+      "size_bytes": 148640
+    },
+    {
+      "source": "tables/boss_praetoriangrunt_pet.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/boss_praetoriangrunt_pet.json",
+      "size_bytes": 142138
+    },
+    {
+      "source": "tables/minion_oilslicktarget.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/minion_oilslicktarget.json",
+      "size_bytes": 140571
+    },
+    {
+      "source": "tables/boss_monster_flying.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/boss_monster_flying.json",
+      "size_bytes": 141709
+    },
+    {
+      "source": "tables/boss_praetoriangrunt.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/boss_praetoriangrunt.json",
+      "size_bytes": 142138
+    },
+    {
+      "source": "tables/sentinel.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/sentinel.json",
+      "size_bytes": 148823
+    },
+    {
+      "source": "tables/minion_small.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/minion_small.json",
+      "size_bytes": 143100
+    },
+    {
+      "source": "tables/defender.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/defender.json",
+      "size_bytes": 149605
+    },
+    {
+      "source": "tables/lt_praetoriangrunt.json",
+      "reason": "metadata:tables",
+      "layer": 3,
+      "copied_to": "tables/lt_praetoriangrunt.json",
+      "size_bytes": 141212
+    },
+    {
+      "source": "tags/corruptoronly.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/corruptoronly.json",
+      "size_bytes": 413
+    },
+    {
+      "source": "tags/eccritmodlarge.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/eccritmodlarge.json",
+      "size_bytes": 1201
+    },
+    {
+      "source": "tags/viral_tohit.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/viral_tohit.json",
+      "size_bytes": 192
+    },
+    {
+      "source": "tags/healself.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/healself.json",
+      "size_bytes": 429
+    },
+    {
+      "source": "tags/zapping.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/zapping.json",
+      "size_bytes": 4197
+    },
+    {
+      "source": "tags/seismicshockwaves.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/seismicshockwaves.json",
+      "size_bytes": 8520
+    },
+    {
+      "source": "tags/interrupttime.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/interrupttime.json",
+      "size_bytes": 5588
+    },
+    {
+      "source": "tags/aoe.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/aoe.json",
+      "size_bytes": 129
+    },
+    {
+      "source": "tags/deffense.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/deffense.json",
+      "size_bytes": 163
+    },
+    {
+      "source": "tags/av_target.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/av_target.json",
+      "size_bytes": 147
+    },
+    {
+      "source": "tags/db_bonusaoe2.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/db_bonusaoe2.json",
+      "size_bytes": 3819
+    },
+    {
+      "source": "tags/scheduleb.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/scheduleb.json",
+      "size_bytes": 3066
+    },
+    {
+      "source": "tags/fire_enchant.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/fire_enchant.json",
+      "size_bytes": 5142
+    },
+    {
+      "source": "tags/mind.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/mind.json",
+      "size_bytes": 754
+    },
+    {
+      "source": "tags/ragedecay.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/ragedecay.json",
+      "size_bytes": 153
+    },
+    {
+      "source": "tags/debuff_dam.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/debuff_dam.json",
+      "size_bytes": 449
+    },
+    {
+      "source": "tags/selfandpets.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/selfandpets.json",
+      "size_bytes": 279
+    },
+    {
+      "source": "tags/graniteroot.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/graniteroot.json",
+      "size_bytes": 581
+    },
+    {
+      "source": "tags/bosscrit.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/bosscrit.json",
+      "size_bytes": 18330
+    },
+    {
+      "source": "tags/doublehit.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/doublehit.json",
+      "size_bytes": 657
+    },
+    {
+      "source": "tags/restbuffs.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/restbuffs.json",
+      "size_bytes": 135
+    },
+    {
+      "source": "tags/critactive.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/critactive.json",
+      "size_bytes": 1607
+    },
+    {
+      "source": "tags/eccritmodplayer.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/eccritmodplayer.json",
+      "size_bytes": 1202
+    },
+    {
+      "source": "tags/regen.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/regen.json",
+      "size_bytes": 373
+    },
+    {
+      "source": "tags/stormbrewing.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/stormbrewing.json",
+      "size_bytes": 6818
+    },
+    {
+      "source": "tags/nbprowlerbrutalswipestun.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/nbprowlerbrutalswipestun.json",
+      "size_bytes": 307
+    },
+    {
+      "source": "tags/opportunityenable.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/opportunityenable.json",
+      "size_bytes": 160
+    },
+    {
+      "source": "tags/restpenalties.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/restpenalties.json",
+      "size_bytes": 139
+    },
+    {
+      "source": "tags/viral_haste.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/viral_haste.json",
+      "size_bytes": 192
+    },
+    {
+      "source": "tags/critplayer.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/critplayer.json",
+      "size_bytes": 19642
+    },
+    {
+      "source": "tags/sustain.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/sustain.json",
+      "size_bytes": 2502
+    },
+    {
+      "source": "tags/normaldebuffgc.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/normaldebuffgc.json",
+      "size_bytes": 192
+    },
+    {
+      "source": "tags/ravagerend.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/ravagerend.json",
+      "size_bytes": 1116
+    },
+    {
+      "source": "tags/defense.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/defense.json",
+      "size_bytes": 26075
+    },
+    {
+      "source": "tags/interfacemaxhp.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/interfacemaxhp.json",
+      "size_bytes": 2327
+    },
+    {
+      "source": "tags/decay.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/decay.json",
+      "size_bytes": 823
+    },
+    {
+      "source": "tags/hailofbulletsendknockback.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/hailofbulletsendknockback.json",
+      "size_bytes": 3053
+    },
+    {
+      "source": "tags/quickcombatteleport.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/quickcombatteleport.json",
+      "size_bytes": 509
+    },
+    {
+      "source": "tags/if the 66% roll is successful, but the 50% fails, this will always execute.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/if the 66% roll is successful, but the 50% fails, this will always execute.json",
+      "size_bytes": 262
+    },
+    {
+      "source": "tags/stealthon.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/stealthon.json",
+      "size_bytes": 1803
+    },
+    {
+      "source": "tags/eccritmodsmall.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/eccritmodsmall.json",
+      "size_bytes": 1201
+    },
+    {
+      "source": "tags/initabsorb.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/initabsorb.json",
+      "size_bytes": 222
+    },
+    {
+      "source": "tags/fatesealed.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/fatesealed.json",
+      "size_bytes": 558
+    },
+    {
+      "source": "tags/leapingon.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/leapingon.json",
+      "size_bytes": 149
+    },
+    {
+      "source": "tags/db_bonusdot2.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/db_bonusdot2.json",
+      "size_bytes": 3819
+    },
+    {
+      "source": "tags/opportunitymax.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/opportunitymax.json",
+      "size_bytes": 157
+    },
+    {
+      "source": "tags/ice_enchant.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/ice_enchant.json",
+      "size_bytes": 5141
+    },
+    {
+      "source": "tags/repulsionfield.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/repulsionfield.json",
+      "size_bytes": 998
+    },
+    {
+      "source": "tags/nbprowlerprimalstrikestun.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/nbprowlerprimalstrikestun.json",
+      "size_bytes": 552
+    },
+    {
+      "source": "tags/crash.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/crash.json",
+      "size_bytes": 1633
+    },
+    {
+      "source": "tags/grantthermalboost.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/grantthermalboost.json",
+      "size_bytes": 665
+    },
+    {
+      "source": "tags/linkcharging.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/linkcharging.json",
+      "size_bytes": 570
+    },
+    {
+      "source": "tags/stealth.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/stealth.json",
+      "size_bytes": 1049
+    },
+    {
+      "source": "tags/nbprowlerpouncestun.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/nbprowlerpouncestun.json",
+      "size_bytes": 268
+    },
+    {
+      "source": "tags/elec_enchant.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/elec_enchant.json",
+      "size_bytes": 5142
+    },
+    {
+      "source": "tags/interfacespecial.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/interfacespecial.json",
+      "size_bytes": 1769
+    },
+    {
+      "source": "tags/colddamage.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/colddamage.json",
+      "size_bytes": 7614
+    },
+    {
+      "source": "tags/perfectionofbody.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/perfectionofbody.json",
+      "size_bytes": 1807
+    },
+    {
+      "source": "tags/powerboostb.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/powerboostb.json",
+      "size_bytes": 4023
+    },
+    {
+      "source": "tags/nojumpbuff.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/nojumpbuff.json",
+      "size_bytes": 322
+    },
+    {
+      "source": "tags/vulnerability.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/vulnerability.json",
+      "size_bytes": 3104
+    },
+    {
+      "source": "tags/db_status1.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/db_status1.json",
+      "size_bytes": 3817
+    },
+    {
+      "source": "tags/repositiongeode.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/repositiongeode.json",
+      "size_bytes": 363
+    },
+    {
+      "source": "tags/interfacedamage.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/interfacedamage.json",
+      "size_bytes": 2052
+    },
+    {
+      "source": "tags/criticalhit.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/criticalhit.json",
+      "size_bytes": 3240
+    },
+    {
+      "source": "tags/scourge.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/scourge.json",
+      "size_bytes": 1205
+    },
+    {
+      "source": "tags/shutdown.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/shutdown.json",
+      "size_bytes": 289
+    },
+    {
+      "source": "tags/perfectionofsoul.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/perfectionofsoul.json",
+      "size_bytes": 1807
+    },
+    {
+      "source": "tags/leviathanhunger.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/leviathanhunger.json",
+      "size_bytes": 201
+    },
+    {
+      "source": "tags/hailofbulletscold.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/hailofbulletscold.json",
+      "size_bytes": 3045
+    },
+    {
+      "source": "tags/interfacerecovery.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/interfacerecovery.json",
+      "size_bytes": 1785
+    },
+    {
+      "source": "tags/nbprowlerviciousstrikestun.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/nbprowlerviciousstrikestun.json",
+      "size_bytes": 313
+    },
+    {
+      "source": "tags/soundboost.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/soundboost.json",
+      "size_bytes": 1856
+    },
+    {
+      "source": "tags/hybernateroot.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/hybernateroot.json",
+      "size_bytes": 1870
+    },
+    {
+      "source": "tags/seismicshockwavesexpire.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/seismicshockwavesexpire.json",
+      "size_bytes": 186
+    },
+    {
+      "source": "tags/undeadforces.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/undeadforces.json",
+      "size_bytes": 382
+    },
+    {
+      "source": "tags/backup.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/backup.json",
+      "size_bytes": 1026
+    },
+    {
+      "source": "tags/synergyfatigue.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/synergyfatigue.json",
+      "size_bytes": 204
+    },
+    {
+      "source": "tags/nbprowlercritactive.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/nbprowlercritactive.json",
+      "size_bytes": 1016
+    },
+    {
+      "source": "tags/hm3tactics.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/hm3tactics.json",
+      "size_bytes": 173
+    },
+    {
+      "source": "tags/combo0.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/combo0.json",
+      "size_bytes": 400
+    },
+    {
+      "source": "tags/suppressflight.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/suppressflight.json",
+      "size_bytes": 343
+    },
+    {
+      "source": "tags/nbinactive.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/nbinactive.json",
+      "size_bytes": 2072
+    },
+    {
+      "source": "tags/db_debuff2.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/db_debuff2.json",
+      "size_bytes": 4266
+    },
+    {
+      "source": "tags/scrapperonly.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/scrapperonly.json",
+      "size_bytes": 4259
+    },
+    {
+      "source": "tags/fireblastbonusdot.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/fireblastbonusdot.json",
+      "size_bytes": 6879
+    },
+    {
+      "source": "tags/seismicstress.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/seismicstress.json",
+      "size_bytes": 6654
+    },
+    {
+      "source": "tags/range.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/range.json",
+      "size_bytes": 20807
+    },
+    {
+      "source": "tags/momentumleap.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/momentumleap.json",
+      "size_bytes": 138
+    },
+    {
+      "source": "tags/stalkeronly.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/stalkeronly.json",
+      "size_bytes": 4290
+    },
+    {
+      "source": "tags/damageproc.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/damageproc.json",
+      "size_bytes": 708
+    },
+    {
+      "source": "tags/interfacedefense.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/interfacedefense.json",
+      "size_bytes": 2280
+    },
+    {
+      "source": "tags/seedblue.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/seedblue.json",
+      "size_bytes": 331
+    },
+    {
+      "source": "tags/presencehealhigh.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/presencehealhigh.json",
+      "size_bytes": 854
+    },
+    {
+      "source": "tags/reverbmelodicbinding.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/reverbmelodicbinding.json",
+      "size_bytes": 620
+    },
+    {
+      "source": "tags/cost.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/cost.json",
+      "size_bytes": 526
+    },
+    {
+      "source": "tags/itfnictus3.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/itfnictus3.json",
+      "size_bytes": 195
+    },
+    {
+      "source": "tags/speedrefresh.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/speedrefresh.json",
+      "size_bytes": 608
+    },
+    {
+      "source": "tags/scrappercrit_aoe.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/scrappercrit_aoe.json",
+      "size_bytes": 7571
+    },
+    {
+      "source": "tags/knockproc.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/knockproc.json",
+      "size_bytes": 217
+    },
+    {
+      "source": "tags/fastsnipe.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/fastsnipe.json",
+      "size_bytes": 367
+    },
+    {
+      "source": "tags/synergybonus.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/synergybonus.json",
+      "size_bytes": 144
+    },
+    {
+      "source": "tags/grantfriendlydoom.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/grantfriendlydoom.json",
+      "size_bytes": 179
+    },
+    {
+      "source": "tags/tbomb.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/tbomb.json",
+      "size_bytes": 704
+    },
+    {
+      "source": "tags/setmomentum.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/setmomentum.json",
+      "size_bytes": 1819
+    },
+    {
+      "source": "tags/neuronclone.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/neuronclone.json",
+      "size_bytes": 407
+    },
+    {
+      "source": "tags/genesismaxhp.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/genesismaxhp.json",
+      "size_bytes": 287
+    },
+    {
+      "source": "tags/controlproc.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/controlproc.json",
+      "size_bytes": 1536
+    },
+    {
+      "source": "tags/increasestormstrength.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/increasestormstrength.json",
+      "size_bytes": 7042
+    },
+    {
+      "source": "tags/damage.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/damage.json",
+      "size_bytes": 139656
+    },
+    {
+      "source": "tags/firedamagedot.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/firedamagedot.json",
+      "size_bytes": 7854
+    },
+    {
+      "source": "tags/rot.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/rot.json",
+      "size_bytes": 162
+    },
+    {
+      "source": "tags/lethalkb10.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/lethalkb10.json",
+      "size_bytes": 2970
+    },
+    {
+      "source": "tags/if the 66% roll fails, this will always execute.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/if the 66% roll fails, this will always execute.json",
+      "size_bytes": 235
+    },
+    {
+      "source": "tags/ssdamage.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/ssdamage.json",
+      "size_bytes": 4120
+    },
+    {
+      "source": "tags/buildstatic.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/buildstatic.json",
+      "size_bytes": 8967
+    },
+    {
+      "source": "tags/lethalkb50.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/lethalkb50.json",
+      "size_bytes": 3088
+    },
+    {
+      "source": "tags/pvpstealthcrit.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/pvpstealthcrit.json",
+      "size_bytes": 4095
+    },
+    {
+      "source": "tags/interfacetohit.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/interfacetohit.json",
+      "size_bytes": 2183
+    },
+    {
+      "source": "tags/reverbhymnofdissonance.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/reverbhymnofdissonance.json",
+      "size_bytes": 646
+    },
+    {
+      "source": "tags/opportunity.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/opportunity.json",
+      "size_bytes": 3229
+    },
+    {
+      "source": "tags/reverbchordsofdespair.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/reverbchordsofdespair.json",
+      "size_bytes": 637
+    },
+    {
+      "source": "tags/nbprowlerupheavalstun.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/nbprowlerupheavalstun.json",
+      "size_bytes": 176
+    },
+    {
+      "source": "tags/speed.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/speed.json",
+      "size_bytes": 371
+    },
+    {
+      "source": "tags/playercrit.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/playercrit.json",
+      "size_bytes": 17401
+    },
+    {
+      "source": "tags/dotproc.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/dotproc.json",
+      "size_bytes": 861
+    },
+    {
+      "source": "tags/hypersonicfly.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/hypersonicfly.json",
+      "size_bytes": 1602
+    },
+    {
+      "source": "tags/genesisresistance.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/genesisresistance.json",
+      "size_bytes": 419
+    },
+    {
+      "source": "tags/suppressbackup.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/suppressbackup.json",
+      "size_bytes": 196
+    },
+    {
+      "source": "tags/itfnictus2.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/itfnictus2.json",
+      "size_bytes": 195
+    },
+    {
+      "source": "tags/nbprowlerferalblowstun.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/nbprowlerferalblowstun.json",
+      "size_bytes": 301
+    },
+    {
+      "source": "tags/defenses.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/defenses.json",
+      "size_bytes": 554
+    },
+    {
+      "source": "tags/telekinesis.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/telekinesis.json",
+      "size_bytes": 487
+    },
+    {
+      "source": "tags/scrapper.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/scrapper.json",
+      "size_bytes": 360
+    },
+    {
+      "source": "tags/pyrotechnicinterceptable.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/pyrotechnicinterceptable.json",
+      "size_bytes": 320
+    },
+    {
+      "source": "tags/peteybuff.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/peteybuff.json",
+      "size_bytes": 308
+    },
+    {
+      "source": "tags/controller.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/controller.json",
+      "size_bytes": 362
+    },
+    {
+      "source": "tags/visual.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/visual.json",
+      "size_bytes": 149
+    },
+    {
+      "source": "tags/movement.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/movement.json",
+      "size_bytes": 23262
+    },
+    {
+      "source": "tags/resistances.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/resistances.json",
+      "size_bytes": 571
+    },
+    {
+      "source": "tags/nojumpspeedbuff.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/nojumpspeedbuff.json",
+      "size_bytes": 327
+    },
+    {
+      "source": "tags/crithit.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/crithit.json",
+      "size_bytes": 716
+    },
+    {
+      "source": "tags/nospeedbuff.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/nospeedbuff.json",
+      "size_bytes": 323
+    },
+    {
+      "source": "tags/resources.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/resources.json",
+      "size_bytes": 283
+    },
+    {
+      "source": "tags/vortexcritical.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/vortexcritical.json",
+      "size_bytes": 474
+    },
+    {
+      "source": "tags/combo1.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/combo1.json",
+      "size_bytes": 400
+    },
+    {
+      "source": "tags/terrorize.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/terrorize.json",
+      "size_bytes": 448
+    },
+    {
+      "source": "tags/thrust.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/thrust.json",
+      "size_bytes": 314
+    },
+    {
+      "source": "tags/preventivemedicine.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/preventivemedicine.json",
+      "size_bytes": 295
+    },
+    {
+      "source": "tags/inherenttaunt.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/inherenttaunt.json",
+      "size_bytes": 4541
+    },
+    {
+      "source": "tags/speedon.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/speedon.json",
+      "size_bytes": 147
+    },
+    {
+      "source": "tags/repel.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/repel.json",
+      "size_bytes": 521
+    },
+    {
+      "source": "tags/reverbdreadfuldiscord.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/reverbdreadfuldiscord.json",
+      "size_bytes": 629
+    },
+    {
+      "source": "tags/lethalkb70.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/lethalkb70.json",
+      "size_bytes": 3039
+    },
+    {
+      "source": "tags/presenceheallow.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/presenceheallow.json",
+      "size_bytes": 853
+    },
+    {
+      "source": "tags/hybridcc.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/hybridcc.json",
+      "size_bytes": 806
+    },
+    {
+      "source": "tags/targetdesignated.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/targetdesignated.json",
+      "size_bytes": 912
+    },
+    {
+      "source": "tags/telehover.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/telehover.json",
+      "size_bytes": 753
+    },
+    {
+      "source": "tags/defiance.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/defiance.json",
+      "size_bytes": 24560
+    },
+    {
+      "source": "tags/boost.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/boost.json",
+      "size_bytes": 5927
+    },
+    {
+      "source": "tags/hm1tactics.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/hm1tactics.json",
+      "size_bytes": 173
+    },
+    {
+      "source": "tags/pendragonenrage.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/pendragonenrage.json",
+      "size_bytes": 809
+    },
+    {
+      "source": "tags/butchbuff.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/butchbuff.json",
+      "size_bytes": 308
+    },
+    {
+      "source": "tags/reverbariaofstasis.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/reverbariaofstasis.json",
+      "size_bytes": 610
+    },
+    {
+      "source": "tags/flightactive.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/flightactive.json",
+      "size_bytes": 1513
+    },
+    {
+      "source": "tags/rage.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/rage.json",
+      "size_bytes": 162
+    },
+    {
+      "source": "tags/stance.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/stance.json",
+      "size_bytes": 1475
+    },
+    {
+      "source": "tags/combo2.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/combo2.json",
+      "size_bytes": 400
+    },
+    {
+      "source": "tags/bleed.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/bleed.json",
+      "size_bytes": 5812
+    },
+    {
+      "source": "tags/splash.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/splash.json",
+      "size_bytes": 1101
+    },
+    {
+      "source": "tags/interfacestatus.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/interfacestatus.json",
+      "size_bytes": 5003
+    },
+    {
+      "source": "tags/reverbenfeeblinglullaby.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/reverbenfeeblinglullaby.json",
+      "size_bytes": 647
+    },
+    {
+      "source": "tags/taunt.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/taunt.json",
+      "size_bytes": 2650
+    },
+    {
+      "source": "tags/granitepenalties.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/granitepenalties.json",
+      "size_bytes": 288
+    },
+    {
+      "source": "tags/distortion.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/distortion.json",
+      "size_bytes": 323
+    },
+    {
+      "source": "tags/tohit.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/tohit.json",
+      "size_bytes": 19953
+    },
+    {
+      "source": "tags/nbprowlersavageblowstun.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/nbprowlersavageblowstun.json",
+      "size_bytes": 178
+    },
+    {
+      "source": "tags/offensiveadaptationgc.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/offensiveadaptationgc.json",
+      "size_bytes": 199
+    },
+    {
+      "source": "tags/dominator.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/dominator.json",
+      "size_bytes": 141
+    },
+    {
+      "source": "tags/mez.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/mez.json",
+      "size_bytes": 69692
+    },
+    {
+      "source": "tags/disable.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/disable.json",
+      "size_bytes": 159
+    },
+    {
+      "source": "tags/melee.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/melee.json",
+      "size_bytes": 131
+    },
+    {
+      "source": "tags/shredrecharge.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/shredrecharge.json",
+      "size_bytes": 208
+    },
+    {
+      "source": "tags/perfectionofmind.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/perfectionofmind.json",
+      "size_bytes": 1807
+    },
+    {
+      "source": "tags/masslevitate.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/masslevitate.json",
+      "size_bytes": 520
+    },
+    {
+      "source": "tags/polarize.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/polarize.json",
+      "size_bytes": 1762
+    },
+    {
+      "source": "tags/interfacemovement.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/interfacemovement.json",
+      "size_bytes": 1637
+    },
+    {
+      "source": "tags/synergystun.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/synergystun.json",
+      "size_bytes": 133
+    },
+    {
+      "source": "tags/scourgeproc.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/scourgeproc.json",
+      "size_bytes": 342
+    },
+    {
+      "source": "tags/itfnictus1.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/itfnictus1.json",
+      "size_bytes": 195
+    },
+    {
+      "source": "tags/glitzburst.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/glitzburst.json",
+      "size_bytes": 610
+    },
+    {
+      "source": "tags/seedyellow.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/seedyellow.json",
+      "size_bytes": 335
+    },
+    {
+      "source": "tags/killerbuff.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/killerbuff.json",
+      "size_bytes": 311
+    },
+    {
+      "source": "tags/nbprowlercloakcritactive.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/nbprowlercloakcritactive.json",
+      "size_bytes": 929
+    },
+    {
+      "source": "tags/leebuff.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/leebuff.json",
+      "size_bytes": 302
+    },
+    {
+      "source": "tags/interfaceresistance.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/interfaceresistance.json",
+      "size_bytes": 2269
+    },
+    {
+      "source": "tags/travelstance.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/travelstance.json",
+      "size_bytes": 697
+    },
+    {
+      "source": "tags/hybridweaken.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/hybridweaken.json",
+      "size_bytes": 1482
+    },
+    {
+      "source": "tags/dominationsuppression.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/dominationsuppression.json",
+      "size_bytes": 254
+    },
+    {
+      "source": "tags/regeneration.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/regeneration.json",
+      "size_bytes": 1541
+    },
+    {
+      "source": "tags/seismic.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/seismic.json",
+      "size_bytes": 7914
+    },
+    {
+      "source": "tags/contaminated.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/contaminated.json",
+      "size_bytes": 9571
+    },
+    {
+      "source": "tags/soul.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/soul.json",
+      "size_bytes": 754
+    },
+    {
+      "source": "tags/mlcrit.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/mlcrit.json",
+      "size_bytes": 17314
+    },
+    {
+      "source": "tags/psioniclink.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/psioniclink.json",
+      "size_bytes": 563
+    },
+    {
+      "source": "tags/66% for first two elements which are 50_50 within.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/66% for first two elements which are 50_50 within.json",
+      "size_bytes": 237
+    },
+    {
+      "source": "tags/hailofbulletsknockdown.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/hailofbulletsknockdown.json",
+      "size_bytes": 3050
+    },
+    {
+      "source": "tags/enddrain.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/enddrain.json",
+      "size_bytes": 308
+    },
+    {
+      "source": "tags/sonic vibrations.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/sonic vibrations.json",
+      "size_bytes": 3580
+    },
+    {
+      "source": "tags/body.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/body.json",
+      "size_bytes": 990
+    },
+    {
+      "source": "tags/lethalkb25.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/lethalkb25.json",
+      "size_bytes": 3072
+    },
+    {
+      "source": "tags/endurance.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/endurance.json",
+      "size_bytes": 134200
+    },
+    {
+      "source": "tags/overpower.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/overpower.json",
+      "size_bytes": 23235
+    },
+    {
+      "source": "tags/rechargetime.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/rechargetime.json",
+      "size_bytes": 148552
+    },
+    {
+      "source": "tags/suppressjumpspeed.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/suppressjumpspeed.json",
+      "size_bytes": 203
+    },
+    {
+      "source": "tags/ranged.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/ranged.json",
+      "size_bytes": 132
+    },
+    {
+      "source": "tags/hm4tactics.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/hm4tactics.json",
+      "size_bytes": 173
+    },
+    {
+      "source": "tags/shieldfx.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/shieldfx.json",
+      "size_bytes": 460
+    },
+    {
+      "source": "tags/combo3.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/combo3.json",
+      "size_bytes": 400
+    },
+    {
+      "source": "tags/vfx.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/vfx.json",
+      "size_bytes": 926
+    },
+    {
+      "source": "tags/defilerend.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/defilerend.json",
+      "size_bytes": 914
+    },
+    {
+      "source": "tags/viral_barf.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/viral_barf.json",
+      "size_bytes": 191
+    },
+    {
+      "source": "tags/sntlopt.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/sntlopt.json",
+      "size_bytes": 193
+    },
+    {
+      "source": "tags/viral_endurance.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/viral_endurance.json",
+      "size_bytes": 196
+    },
+    {
+      "source": "tags/db_debuff1.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/db_debuff1.json",
+      "size_bytes": 3817
+    },
+    {
+      "source": "tags/eccritmod.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/eccritmod.json",
+      "size_bytes": 848
+    },
+    {
+      "source": "tags/accuracy.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/accuracy.json",
+      "size_bytes": 116278
+    },
+    {
+      "source": "tags/ascrit.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/ascrit.json",
+      "size_bytes": 2963
+    },
+    {
+      "source": "tags/db_status2.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/db_status2.json",
+      "size_bytes": 4155
+    },
+    {
+      "source": "tags/phantomarmy.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/phantomarmy.json",
+      "size_bytes": 543
+    },
+    {
+      "source": "tags/arcanepower.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/arcanepower.json",
+      "size_bytes": 559
+    },
+    {
+      "source": "tags/hailofbulletsfire.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/hailofbulletsfire.json",
+      "size_bytes": 3045
+    },
+    {
+      "source": "tags/experimental_immune_tohit.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/experimental_immune_tohit.json",
+      "size_bytes": 220
+    },
+    {
+      "source": "tags/powerboost.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/powerboost.json",
+      "size_bytes": 488
+    },
+    {
+      "source": "tags/synergykd.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/synergykd.json",
+      "size_bytes": 127
+    },
+    {
+      "source": "tags/combobuild.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/combobuild.json",
+      "size_bytes": 1972
+    },
+    {
+      "source": "tags/sweep.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/sweep.json",
+      "size_bytes": 169
+    },
+    {
+      "source": "tags/containment.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/containment.json",
+      "size_bytes": 16582
+    },
+    {
+      "source": "tags/experimental_immune_recov.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/experimental_immune_recov.json",
+      "size_bytes": 220
+    },
+    {
+      "source": "tags/maintarget.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/maintarget.json",
+      "size_bytes": 180
+    },
+    {
+      "source": "tags/corruptor.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/corruptor.json",
+      "size_bytes": 361
+    },
+    {
+      "source": "tags/main target.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/main target.json",
+      "size_bytes": 635
+    },
+    {
+      "source": "tags/reduceifkd.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/reduceifkd.json",
+      "size_bytes": 3131
+    },
+    {
+      "source": "tags/pvpcrit.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/pvpcrit.json",
+      "size_bytes": 4194
+    },
+    {
+      "source": "tags/suppressjump.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/suppressjump.json",
+      "size_bytes": 306
+    },
+    {
+      "source": "tags/genesisdot.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/genesisdot.json",
+      "size_bytes": 1258
+    },
+    {
+      "source": "tags/genesisstatus.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/genesisstatus.json",
+      "size_bytes": 895
+    },
+    {
+      "source": "tags/interfacerecharge.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/interfacerecharge.json",
+      "size_bytes": 2401
+    },
+    {
+      "source": "tags/nbactive.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/nbactive.json",
+      "size_bytes": 2070
+    },
+    {
+      "source": "tags/disintegrate bonus.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/disintegrate bonus.json",
+      "size_bytes": 2414
+    },
+    {
+      "source": "tags/specialcrit.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/specialcrit.json",
+      "size_bytes": 180
+    },
+    {
+      "source": "tags/heal.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/heal.json",
+      "size_bytes": 18082
+    },
+    {
+      "source": "tags/gammaburst.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/gammaburst.json",
+      "size_bytes": 1764
+    },
+    {
+      "source": "tags/teleport5.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/teleport5.json",
+      "size_bytes": 268
+    },
+    {
+      "source": "tags/tidalpower.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/tidalpower.json",
+      "size_bytes": 4273
+    },
+    {
+      "source": "tags/uniqueness.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/uniqueness.json",
+      "size_bytes": 146
+    },
+    {
+      "source": "tags/buildfrenzy.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/buildfrenzy.json",
+      "size_bytes": 5694
+    },
+    {
+      "source": "tags/experimental_immune_haste.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/experimental_immune_haste.json",
+      "size_bytes": 220
+    },
+    {
+      "source": "tags/marked.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/marked.json",
+      "size_bytes": 270
+    },
+    {
+      "source": "tags/knock.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/knock.json",
+      "size_bytes": 10878
+    },
+    {
+      "source": "tags/arcanepowerboost.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/arcanepowerboost.json",
+      "size_bytes": 400
+    },
+    {
+      "source": "tags/seedgreen.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/seedgreen.json",
+      "size_bytes": 324
+    },
+    {
+      "source": "tags/stalker.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/stalker.json",
+      "size_bytes": 359
+    },
+    {
+      "source": "tags/nodamage.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/nodamage.json",
+      "size_bytes": 184
+    },
+    {
+      "source": "tags/db_bonusdot1.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/db_bonusdot1.json",
+      "size_bytes": 3819
+    },
+    {
+      "source": "tags/perception.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/perception.json",
+      "size_bytes": 718
+    },
+    {
+      "source": "tags/asteamcrit.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/asteamcrit.json",
+      "size_bytes": 15451
+    },
+    {
+      "source": "tags/cupidscrush.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/cupidscrush.json",
+      "size_bytes": 824
+    },
+    {
+      "source": "tags/maxjumpheight.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/maxjumpheight.json",
+      "size_bytes": 325
+    },
+    {
+      "source": "tags/cloggle.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/cloggle.json",
+      "size_bytes": 3919
+    },
+    {
+      "source": "tags/sentinelend.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/sentinelend.json",
+      "size_bytes": 1811
+    },
+    {
+      "source": "tags/suppressrunspeed.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/suppressrunspeed.json",
+      "size_bytes": 310
+    },
+    {
+      "source": "tags/wetstatus.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/wetstatus.json",
+      "size_bytes": 10612
+    },
+    {
+      "source": "tags/risingtide.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/risingtide.json",
+      "size_bytes": 940
+    },
+    {
+      "source": "tags/critlarge.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/critlarge.json",
+      "size_bytes": 20462
+    },
+    {
+      "source": "tags/quickjaunt.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/quickjaunt.json",
+      "size_bytes": 230
+    },
+    {
+      "source": "tags/powerboosta.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/powerboosta.json",
+      "size_bytes": 4023
+    },
+    {
+      "source": "tags/mirrorarmy.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/mirrorarmy.json",
+      "size_bytes": 542
+    },
+    {
+      "source": "tags/reverbimpassionedserenade.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/reverbimpassionedserenade.json",
+      "size_bytes": 665
+    },
+    {
+      "source": "tags/reverbchantofrebut.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/reverbchantofrebut.json",
+      "size_bytes": 634
+    },
+    {
+      "source": "tags/scrappercrit_st.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/scrappercrit_st.json",
+      "size_bytes": 13122
+    },
+    {
+      "source": "tags/suppressiblephase.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/suppressiblephase.json",
+      "size_bytes": 315
+    },
+    {
+      "source": "tags/interfacedot.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/interfacedot.json",
+      "size_bytes": 5794
+    },
+    {
+      "source": "tags/av drain.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/av drain.json",
+      "size_bytes": 578
+    },
+    {
+      "source": "tags/seedred.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/seedred.json",
+      "size_bytes": 466
+    },
+    {
+      "source": "tags/nophase.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/nophase.json",
+      "size_bytes": 919
+    },
+    {
+      "source": "tags/status.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/status.json",
+      "size_bytes": 348
+    },
+    {
+      "source": "tags/eyesfx.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/eyesfx.json",
+      "size_bytes": 728
+    },
+    {
+      "source": "tags/fieryembrace.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/fieryembrace.json",
+      "size_bytes": 57275
+    },
+    {
+      "source": "tags/toxicdamage.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/toxicdamage.json",
+      "size_bytes": 4152
+    },
+    {
+      "source": "tags/nostealth.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/nostealth.json",
+      "size_bytes": 189
+    },
+    {
+      "source": "tags/res.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/res.json",
+      "size_bytes": 345
+    },
+    {
+      "source": "tags/seedpurple.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/seedpurple.json",
+      "size_bytes": 317
+    },
+    {
+      "source": "tags/stealthcrit.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/stealthcrit.json",
+      "size_bytes": 15777
+    },
+    {
+      "source": "tags/teleport4.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/teleport4.json",
+      "size_bytes": 268
+    },
+    {
+      "source": "tags/comboconsume.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/comboconsume.json",
+      "size_bytes": 1426
+    },
+    {
+      "source": "tags/lethal.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/lethal.json",
+      "size_bytes": 5085
+    },
+    {
+      "source": "tags/innerwill.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/innerwill.json",
+      "size_bytes": 333
+    },
+    {
+      "source": "tags/energyrelease.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/energyrelease.json",
+      "size_bytes": 2862
+    },
+    {
+      "source": "tags/hailofbulletslethal.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/hailofbulletslethal.json",
+      "size_bytes": 3047
+    },
+    {
+      "source": "tags/db_bonusaoe1.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/db_bonusaoe1.json",
+      "size_bytes": 3819
+    },
+    {
+      "source": "tags/offensive.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/offensive.json",
+      "size_bytes": 161
+    },
+    {
+      "source": "tags/pvp_maintargetonly.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/pvp_maintargetonly.json",
+      "size_bytes": 15087
+    },
+    {
+      "source": "tags/disintegrate.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/disintegrate.json",
+      "size_bytes": 2869
+    },
+    {
+      "source": "tags/hailofbulletstoxic.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/hailofbulletstoxic.json",
+      "size_bytes": 3046
+    },
+    {
+      "source": "tags/reactiveregeneration.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/reactiveregeneration.json",
+      "size_bytes": 189
+    },
+    {
+      "source": "tags/firedamage.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/firedamage.json",
+      "size_bytes": 6904
+    },
+    {
+      "source": "tags/pvpresist.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/pvpresist.json",
+      "size_bytes": 191
+    },
+    {
+      "source": "tags/schedulea.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/schedulea.json",
+      "size_bytes": 3066
+    },
+    {
+      "source": "tags/hm2tactics.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/hm2tactics.json",
+      "size_bytes": 173
+    },
+    {
+      "source": "tags/interfaceregen.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/interfaceregen.json",
+      "size_bytes": 2194
+    },
+    {
+      "source": "tags/inspheal.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/inspheal.json",
+      "size_bytes": 1820
+    },
+    {
+      "source": "tags/rallycrycrit.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/rallycrycrit.json",
+      "size_bytes": 2383
+    },
+    {
+      "source": "tags/domination.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/domination.json",
+      "size_bytes": 11843
+    },
+    {
+      "source": "tags/energystore.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/energystore.json",
+      "size_bytes": 3196
+    },
+    {
+      "source": "tags/critsmall.json",
+      "reason": "metadata:tags",
+      "layer": 3,
+      "copied_to": "tags/critsmall.json",
+      "size_bytes": 19448
+    },
+    {
+      "source": "exclusion_groups/darkness_group.json",
+      "reason": "metadata:exclusion_groups",
+      "layer": 3,
+      "copied_to": "exclusion_groups/darkness_group.json",
+      "size_bytes": 182
+    },
+    {
+      "source": "exclusion_groups/flying_group.json",
+      "reason": "metadata:exclusion_groups",
+      "layer": 3,
+      "copied_to": "exclusion_groups/flying_group.json",
+      "size_bytes": 3706
+    },
+    {
+      "source": "exclusion_groups/hide_group.json",
+      "reason": "metadata:exclusion_groups",
+      "layer": 3,
+      "copied_to": "exclusion_groups/hide_group.json",
+      "size_bytes": 1548
+    },
+    {
+      "source": "exclusion_groups/fxcostume_group.json",
+      "reason": "metadata:exclusion_groups",
+      "layer": 3,
+      "copied_to": "exclusion_groups/fxcostume_group.json",
+      "size_bytes": 2357
+    },
+    {
+      "source": "exclusion_groups/mineral_armor_group.json",
+      "reason": "metadata:exclusion_groups",
+      "layer": 3,
+      "copied_to": "exclusion_groups/mineral_armor_group.json",
+      "size_bytes": 670
+    },
+    {
+      "source": "exclusion_groups/rest_group.json",
+      "reason": "metadata:exclusion_groups",
+      "layer": 3,
+      "copied_to": "exclusion_groups/rest_group.json",
+      "size_bytes": 1445
+    },
+    {
+      "source": "exclusion_groups/sprintroot_group.json",
+      "reason": "metadata:exclusion_groups",
+      "layer": 3,
+      "copied_to": "exclusion_groups/sprintroot_group.json",
+      "size_bytes": 1985
+    },
+    {
+      "source": "exclusion_groups/rock_armor_group.json",
+      "reason": "metadata:exclusion_groups",
+      "layer": 3,
+      "copied_to": "exclusion_groups/rock_armor_group.json",
+      "size_bytes": 397
+    },
+    {
+      "source": "exclusion_groups/afterburner_group.json",
+      "reason": "metadata:exclusion_groups",
+      "layer": 3,
+      "copied_to": "exclusion_groups/afterburner_group.json",
+      "size_bytes": 280
+    },
+    {
+      "source": "exclusion_groups/vanitypet_group.json",
+      "reason": "metadata:exclusion_groups",
+      "layer": 3,
+      "copied_to": "exclusion_groups/vanitypet_group.json",
+      "size_bytes": 8199
+    },
+    {
+      "source": "exclusion_groups/sprint_group.json",
+      "reason": "metadata:exclusion_groups",
+      "layer": 3,
+      "copied_to": "exclusion_groups/sprint_group.json",
+      "size_bytes": 1981
+    },
+    {
+      "source": "exclusion_groups/primalist_group.json",
+      "reason": "metadata:exclusion_groups",
+      "layer": 3,
+      "copied_to": "exclusion_groups/primalist_group.json",
+      "size_bytes": 257
+    },
+    {
+      "source": "exclusion_groups/leaproot_group.json",
+      "reason": "metadata:exclusion_groups",
+      "layer": 3,
+      "copied_to": "exclusion_groups/leaproot_group.json",
+      "size_bytes": 592
+    },
+    {
+      "source": "exclusion_groups/costume_group.json",
+      "reason": "metadata:exclusion_groups",
+      "layer": 3,
+      "copied_to": "exclusion_groups/costume_group.json",
+      "size_bytes": 51592
+    },
+    {
+      "source": "exclusion_groups/speedroot_group.json",
+      "reason": "metadata:exclusion_groups",
+      "layer": 3,
+      "copied_to": "exclusion_groups/speedroot_group.json",
+      "size_bytes": 677
+    },
+    {
+      "source": "exclusion_groups/brimstone_armor_group.json",
+      "reason": "metadata:exclusion_groups",
+      "layer": 3,
+      "copied_to": "exclusion_groups/brimstone_armor_group.json",
+      "size_bytes": 287
+    },
+    {
+      "source": "exclusion_groups/kheldian_group.json",
+      "reason": "metadata:exclusion_groups",
+      "layer": 3,
+      "copied_to": "exclusion_groups/kheldian_group.json",
+      "size_bytes": 538
+    },
+    {
+      "source": "exclusion_groups/bio_group.json",
+      "reason": "metadata:exclusion_groups",
+      "layer": 3,
+      "copied_to": "exclusion_groups/bio_group.json",
+      "size_bytes": 2019
+    },
+    {
+      "source": "exclusion_groups/ascendant_group.json",
+      "reason": "metadata:exclusion_groups",
+      "layer": 3,
+      "copied_to": "exclusion_groups/ascendant_group.json",
+      "size_bytes": 347
+    },
+    {
+      "source": "exclusion_groups/crystal_armor_group.json",
+      "reason": "metadata:exclusion_groups",
+      "layer": 3,
+      "copied_to": "exclusion_groups/crystal_armor_group.json",
+      "size_bytes": 277
+    },
+    {
+      "source": "exclusion_groups/leap_group.json",
+      "reason": "metadata:exclusion_groups",
+      "layer": 3,
+      "copied_to": "exclusion_groups/leap_group.json",
+      "size_bytes": 965
+    },
+    {
+      "source": "exclusion_groups/speed_group.json",
+      "reason": "metadata:exclusion_groups",
+      "layer": 3,
+      "copied_to": "exclusion_groups/speed_group.json",
+      "size_bytes": 1006
+    },
+    {
+      "source": "exclusion_groups/stealth_group.json",
+      "reason": "metadata:exclusion_groups",
+      "layer": 3,
+      "copied_to": "exclusion_groups/stealth_group.json",
+      "size_bytes": 2509
+    },
+    {
+      "source": "exclusion_groups/ammo_group.json",
+      "reason": "metadata:exclusion_groups",
+      "layer": 3,
+      "copied_to": "exclusion_groups/ammo_group.json",
+      "size_bytes": 2652
+    },
+    {
+      "source": "exclusion_groups/combatpet_group.json",
+      "reason": "metadata:exclusion_groups",
+      "layer": 3,
+      "copied_to": "exclusion_groups/combatpet_group.json",
+      "size_bytes": 1063
+    },
+    {
+      "source": "recharge_groups/afterburner_group.json",
+      "reason": "metadata:recharge_groups",
+      "layer": 3,
+      "copied_to": "recharge_groups/afterburner_group.json",
+      "size_bytes": 268
+    },
+    {
+      "source": "recharge_groups/jumppack_group.json",
+      "reason": "metadata:recharge_groups",
+      "layer": 3,
+      "copied_to": "recharge_groups/jumppack_group.json",
+      "size_bytes": 355
+    },
+    {
+      "source": "recharge_groups/signaturesummon_group.json",
+      "reason": "metadata:recharge_groups",
+      "layer": 3,
+      "copied_to": "recharge_groups/signaturesummon_group.json",
+      "size_bytes": 675
+    },
+    {
+      "source": "recharge_groups/prestigeselfrez_group.json",
+      "reason": "metadata:recharge_groups",
+      "layer": 3,
+      "copied_to": "recharge_groups/prestigeselfrez_group.json",
+      "size_bytes": 289
+    }
+  ]
+}

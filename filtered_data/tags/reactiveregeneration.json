@@ -1,0 +1,10 @@
+{
+  "tag": "ReactiveRegeneration",
+  "bears": [],
+  "affects": [
+    [
+      "Redirects.Regeneration.Reactive Regeneration",
+      "redirects.regeneration.instant_regeneration"
+    ]
+  ]
+}

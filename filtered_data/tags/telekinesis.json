@@ -1,0 +1,23 @@
+{
+  "tag": "Telekinesis",
+  "bears": [
+    [
+      "Controller Control.Mind Control.Telekinesis",
+      "controller_control.mind_control.telekinesis"
+    ],
+    [
+      "Dominator Control.Mind Control.Telekinesis",
+      "dominator_control.mind_control.telekinesis"
+    ],
+    [
+      "Epic.Psionic Mastery.Telekinesis",
+      "epic.psychic_mastery.telekinesis"
+    ]
+  ],
+  "affects": [
+    [
+      "Redirects.Mind Control.Levitate",
+      "redirects.mind_control.levitate"
+    ]
+  ]
+}

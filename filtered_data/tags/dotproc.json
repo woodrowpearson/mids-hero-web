@@ -1,0 +1,34 @@
+{
+  "tag": "DoTProc",
+  "bears": [
+    [
+      "Brute Defense.Stone Armor.Brimstone Armor",
+      "brute_defense.stone_armor.brimstone_armor"
+    ],
+    [
+      "Hero Corps Sig.Vulcannon.Meltdown Armor",
+      "hero_corps_sig.vulcannon.meltdown_armor"
+    ],
+    [
+      "Hero Corps Sig.Vulcannon.Molten Armor",
+      "hero_corps_sig.vulcannon.molten_armor"
+    ],
+    [
+      "Scrapper Defense.Stone Armor.Brimstone Armor",
+      "scrapper_defense.stone_armor.brimstone_armor"
+    ],
+    [
+      "Sentinel Defense.Stone Armor.Brimstone Armor",
+      "sentinel_defense.stone_armor.brimstone_armor"
+    ],
+    [
+      "Stalker Defense.Stone Armor.Brimstone Armor",
+      "stalker_defense.stone_armor.brimstone_armor"
+    ],
+    [
+      "Tanker Defense.Stone Armor.Brimstone Armor",
+      "tanker_defense.stone_armor.brimstone_armor"
+    ]
+  ],
+  "affects": []
+}

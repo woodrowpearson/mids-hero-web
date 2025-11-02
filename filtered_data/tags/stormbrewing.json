@@ -1,0 +1,255 @@
+{
+  "tag": "StormBrewing",
+  "bears": [
+    [
+      "Blaster Ranged.Storm Blast.Category Five",
+      "blaster_ranged.storm_blast.category_five"
+    ],
+    [
+      "Blaster Ranged.Storm Blast.Chain Lightning",
+      "blaster_ranged.storm_blast.chain_lightning"
+    ],
+    [
+      "Blaster Ranged.Storm Blast.Cloudburst",
+      "blaster_ranged.storm_blast.cloudburst"
+    ],
+    [
+      "Blaster Ranged.Storm Blast.Gust",
+      "blaster_ranged.storm_blast.gust"
+    ],
+    [
+      "Blaster Ranged.Storm Blast.Hailstones",
+      "blaster_ranged.storm_blast.hailstones"
+    ],
+    [
+      "Blaster Ranged.Storm Blast.Jet Stream",
+      "blaster_ranged.storm_blast.jet_stream"
+    ],
+    [
+      "Blaster Ranged.Storm Blast.Storm Cell",
+      "blaster_ranged.storm_blast.storm_cell"
+    ],
+    [
+      "Corruptor Ranged.Storm Blast.Category Five",
+      "corruptor_ranged.storm_blast.category_five"
+    ],
+    [
+      "Corruptor Ranged.Storm Blast.Chain Lightning",
+      "corruptor_ranged.storm_blast.chain_lightning"
+    ],
+    [
+      "Corruptor Ranged.Storm Blast.Cloudburst",
+      "corruptor_ranged.storm_blast.cloudburst"
+    ],
+    [
+      "Corruptor Ranged.Storm Blast.Gust",
+      "corruptor_ranged.storm_blast.gust"
+    ],
+    [
+      "Corruptor Ranged.Storm Blast.Hailstones",
+      "corruptor_ranged.storm_blast.hailstones"
+    ],
+    [
+      "Corruptor Ranged.Storm Blast.Jet Stream",
+      "corruptor_ranged.storm_blast.jet_stream"
+    ],
+    [
+      "Corruptor Ranged.Storm Blast.Storm Cell",
+      "corruptor_ranged.storm_blast.storm_cell"
+    ],
+    [
+      "Defender Ranged.Storm Blast.Category Five",
+      "defender_ranged.storm_blast.category_five"
+    ],
+    [
+      "Defender Ranged.Storm Blast.Chain Lightning",
+      "defender_ranged.storm_blast.chain_lightning"
+    ],
+    [
+      "Defender Ranged.Storm Blast.Cloudburst",
+      "defender_ranged.storm_blast.cloudburst"
+    ],
+    [
+      "Defender Ranged.Storm Blast.Gust",
+      "defender_ranged.storm_blast.gust"
+    ],
+    [
+      "Defender Ranged.Storm Blast.Hailstones",
+      "defender_ranged.storm_blast.hailstones"
+    ],
+    [
+      "Defender Ranged.Storm Blast.Jet Stream",
+      "defender_ranged.storm_blast.jet_stream"
+    ],
+    [
+      "Defender Ranged.Storm Blast.Storm Cell",
+      "defender_ranged.storm_blast.storm_cell"
+    ],
+    [
+      "Redirects.Storm Blast.Direct Strike",
+      "redirects.storm_blast.direct_strike_normal"
+    ],
+    [
+      "Redirects.Storm Blast.Direct Strike",
+      "redirects.storm_blast.direct_strike_quick"
+    ],
+    [
+      "Sentinel Ranged.Storm Blast.Category Five",
+      "sentinel_ranged.storm_blast.category_five"
+    ],
+    [
+      "Sentinel Ranged.Storm Blast.Chain Lightning",
+      "sentinel_ranged.storm_blast.chain_lightning"
+    ],
+    [
+      "Sentinel Ranged.Storm Blast.Cloudburst",
+      "sentinel_ranged.storm_blast.cloudburst"
+    ],
+    [
+      "Sentinel Ranged.Storm Blast.Gust",
+      "sentinel_ranged.storm_blast.gust"
+    ],
+    [
+      "Sentinel Ranged.Storm Blast.Hailstones",
+      "sentinel_ranged.storm_blast.hailstones"
+    ],
+    [
+      "Sentinel Ranged.Storm Blast.Jet Stream",
+      "sentinel_ranged.storm_blast.jet_stream"
+    ],
+    [
+      "Sentinel Ranged.Storm Blast.Lightning Strike",
+      "sentinel_ranged.storm_blast.lightning_strike"
+    ],
+    [
+      "Sentinel Ranged.Storm Blast.Storm Cell",
+      "sentinel_ranged.storm_blast.storm_cell"
+    ]
+  ],
+  "affects": [
+    [
+      "Blaster Ranged.Storm Blast.Category Five",
+      "blaster_ranged.storm_blast.category_five"
+    ],
+    [
+      "Blaster Ranged.Storm Blast.Chain Lightning",
+      "blaster_ranged.storm_blast.chain_lightning"
+    ],
+    [
+      "Blaster Ranged.Storm Blast.Cloudburst",
+      "blaster_ranged.storm_blast.cloudburst"
+    ],
+    [
+      "Blaster Ranged.Storm Blast.Gust",
+      "blaster_ranged.storm_blast.gust"
+    ],
+    [
+      "Blaster Ranged.Storm Blast.Hailstones",
+      "blaster_ranged.storm_blast.hailstones"
+    ],
+    [
+      "Blaster Ranged.Storm Blast.Jet Stream",
+      "blaster_ranged.storm_blast.jet_stream"
+    ],
+    [
+      "Blaster Ranged.Storm Blast.Storm Cell",
+      "blaster_ranged.storm_blast.storm_cell"
+    ],
+    [
+      "Corruptor Ranged.Storm Blast.Category Five",
+      "corruptor_ranged.storm_blast.category_five"
+    ],
+    [
+      "Corruptor Ranged.Storm Blast.Chain Lightning",
+      "corruptor_ranged.storm_blast.chain_lightning"
+    ],
+    [
+      "Corruptor Ranged.Storm Blast.Cloudburst",
+      "corruptor_ranged.storm_blast.cloudburst"
+    ],
+    [
+      "Corruptor Ranged.Storm Blast.Gust",
+      "corruptor_ranged.storm_blast.gust"
+    ],
+    [
+      "Corruptor Ranged.Storm Blast.Hailstones",
+      "corruptor_ranged.storm_blast.hailstones"
+    ],
+    [
+      "Corruptor Ranged.Storm Blast.Jet Stream",
+      "corruptor_ranged.storm_blast.jet_stream"
+    ],
+    [
+      "Corruptor Ranged.Storm Blast.Storm Cell",
+      "corruptor_ranged.storm_blast.storm_cell"
+    ],
+    [
+      "Defender Ranged.Storm Blast.Category Five",
+      "defender_ranged.storm_blast.category_five"
+    ],
+    [
+      "Defender Ranged.Storm Blast.Chain Lightning",
+      "defender_ranged.storm_blast.chain_lightning"
+    ],
+    [
+      "Defender Ranged.Storm Blast.Cloudburst",
+      "defender_ranged.storm_blast.cloudburst"
+    ],
+    [
+      "Defender Ranged.Storm Blast.Gust",
+      "defender_ranged.storm_blast.gust"
+    ],
+    [
+      "Defender Ranged.Storm Blast.Hailstones",
+      "defender_ranged.storm_blast.hailstones"
+    ],
+    [
+      "Defender Ranged.Storm Blast.Jet Stream",
+      "defender_ranged.storm_blast.jet_stream"
+    ],
+    [
+      "Defender Ranged.Storm Blast.Storm Cell",
+      "defender_ranged.storm_blast.storm_cell"
+    ],
+    [
+      "Redirects.Storm Blast.Direct Strike",
+      "redirects.storm_blast.direct_strike_normal"
+    ],
+    [
+      "Redirects.Storm Blast.Direct Strike",
+      "redirects.storm_blast.direct_strike_quick"
+    ],
+    [
+      "Sentinel Ranged.Storm Blast.Category Five",
+      "sentinel_ranged.storm_blast.category_five"
+    ],
+    [
+      "Sentinel Ranged.Storm Blast.Chain Lightning",
+      "sentinel_ranged.storm_blast.chain_lightning"
+    ],
+    [
+      "Sentinel Ranged.Storm Blast.Cloudburst",
+      "sentinel_ranged.storm_blast.cloudburst"
+    ],
+    [
+      "Sentinel Ranged.Storm Blast.Gust",
+      "sentinel_ranged.storm_blast.gust"
+    ],
+    [
+      "Sentinel Ranged.Storm Blast.Hailstones",
+      "sentinel_ranged.storm_blast.hailstones"
+    ],
+    [
+      "Sentinel Ranged.Storm Blast.Jet Stream",
+      "sentinel_ranged.storm_blast.jet_stream"
+    ],
+    [
+      "Sentinel Ranged.Storm Blast.Lightning Strike",
+      "sentinel_ranged.storm_blast.lightning_strike"
+    ],
+    [
+      "Sentinel Ranged.Storm Blast.Storm Cell",
+      "sentinel_ranged.storm_blast.storm_cell"
+    ]
+  ]
+}

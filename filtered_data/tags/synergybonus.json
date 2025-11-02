@@ -1,0 +1,10 @@
+{
+  "tag": "SynergyBonus",
+  "bears": [
+    [
+      "Pool.Fighting.Cross Punch",
+      "pool.fighting.cross_punch"
+    ]
+  ],
+  "affects": []
+}

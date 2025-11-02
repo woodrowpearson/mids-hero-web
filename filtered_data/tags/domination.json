@@ -1,0 +1,403 @@
+{
+  "tag": "Domination",
+  "bears": [
+    [
+      "Dominator Assault.Earth Assault.Fissure",
+      "dominator_assault.earth_assault.fissure"
+    ],
+    [
+      "Dominator Assault.Earth Assault.Seismic Smash",
+      "dominator_assault.earth_assault.seismic_smash"
+    ],
+    [
+      "Dominator Assault.Electricity Assault.Charged Brawl",
+      "dominator_assault.electricity_manipulation.charged_brawl"
+    ],
+    [
+      "Dominator Assault.Electricity Assault.Havoc Punch",
+      "dominator_assault.electricity_manipulation.havok_punch"
+    ],
+    [
+      "Dominator Assault.Electricity Assault.Thunder Strike",
+      "dominator_assault.electricity_manipulation.power_sink"
+    ],
+    [
+      "Dominator Assault.Energy Assault.Total Focus",
+      "dominator_assault.energy_assault.total_focus"
+    ],
+    [
+      "Dominator Assault.Psionic Assault.Psychic Shockwave",
+      "dominator_assault.psionic_assault.psychic_shockwave"
+    ],
+    [
+      "Dominator Assault.Psionic Assault.Subdue",
+      "dominator_assault.psionic_assault.subdue"
+    ],
+    [
+      "Dominator Control.Arsenal Control.Cryo Freeze Ray",
+      "dominator_control.arsenal_control.cryo_freeze_ray"
+    ],
+    [
+      "Dominator Control.Arsenal Control.Flash Bang",
+      "dominator_control.arsenal_control.flash_bang"
+    ],
+    [
+      "Dominator Control.Arsenal Control.Tranquilizer",
+      "dominator_control.arsenal_control.tranquilizer"
+    ],
+    [
+      "Dominator Control.Darkness Control.Dark Grasp",
+      "dominator_control.darkness_control.dark_grasp"
+    ],
+    [
+      "Dominator Control.Darkness Control.Fearsome Stare",
+      "dominator_control.darkness_control.fearsome_stare"
+    ],
+    [
+      "Dominator Control.Darkness Control.Heart of Darkness",
+      "dominator_control.darkness_control.heart_of_darkness"
+    ],
+    [
+      "Dominator Control.Darkness Control.Living Shadows",
+      "dominator_control.darkness_control.living_shadows"
+    ],
+    [
+      "Dominator Control.Darkness Control.Possess",
+      "dominator_control.darkness_control.possess"
+    ],
+    [
+      "Dominator Control.Darkness Control.Shadow Field",
+      "dominator_control.darkness_control.shadow_field"
+    ],
+    [
+      "Dominator Control.Darkness Control.Shadowy Binds",
+      "dominator_control.darkness_control.shadowy_binds"
+    ],
+    [
+      "Dominator Control.Earth Control.Fossilize",
+      "dominator_control.earth_control.fossilize"
+    ],
+    [
+      "Dominator Control.Earth Control.Salt Crystals",
+      "dominator_control.earth_control.salt_crystals"
+    ],
+    [
+      "Dominator Control.Earth Control.Stalagmites",
+      "dominator_control.earth_control.stalagmites"
+    ],
+    [
+      "Dominator Control.Earth Control.Stone Cages",
+      "dominator_control.earth_control.stone_cages"
+    ],
+    [
+      "Dominator Control.Earth Control.Stone Prison",
+      "dominator_control.earth_control.stone_prison"
+    ],
+    [
+      "Dominator Control.Electric Control.Chain Fences",
+      "dominator_control.electric_control.chain_fences"
+    ],
+    [
+      "Dominator Control.Electric Control.Electric Fence",
+      "dominator_control.electric_control.electric_fence"
+    ],
+    [
+      "Dominator Control.Electric Control.Synaptic Overload",
+      "dominator_control.electric_control.synaptic_overload"
+    ],
+    [
+      "Dominator Control.Electric Control.Tesla Cage",
+      "dominator_control.electric_control.tesla_cage"
+    ],
+    [
+      "Dominator Control.Fire Control.Char",
+      "dominator_control.fire_control.char"
+    ],
+    [
+      "Dominator Control.Fire Control.Cinders",
+      "dominator_control.fire_control.cinders"
+    ],
+    [
+      "Dominator Control.Fire Control.Fire Cages",
+      "dominator_control.fire_control.fire_cages"
+    ],
+    [
+      "Dominator Control.Fire Control.Flashfire",
+      "dominator_control.fire_control.flashfire"
+    ],
+    [
+      "Dominator Control.Fire Control.Ring of Fire",
+      "dominator_control.fire_control.ring_of_fire"
+    ],
+    [
+      "Dominator Control.Gravity Control.Crush",
+      "dominator_control.gravity_control.crush"
+    ],
+    [
+      "Dominator Control.Gravity Control.Crushing Field",
+      "dominator_control.gravity_control.crushing_field"
+    ],
+    [
+      "Dominator Control.Gravity Control.Gravity Distortion",
+      "dominator_control.gravity_control.gravity_distortion"
+    ],
+    [
+      "Dominator Control.Gravity Control.Wormhole",
+      "dominator_control.gravity_control.wormhole"
+    ],
+    [
+      "Dominator Control.Ice Control.Block of Ice",
+      "dominator_control.ice_control.block_of_ice"
+    ],
+    [
+      "Dominator Control.Ice Control.Chilblain",
+      "dominator_control.ice_control.chilblain"
+    ],
+    [
+      "Dominator Control.Ice Control.Flash Freeze",
+      "dominator_control.ice_control.flash_freeze"
+    ],
+    [
+      "Dominator Control.Ice Control.Frostbite",
+      "dominator_control.ice_control.frostbite"
+    ],
+    [
+      "Dominator Control.Ice Control.Glacier",
+      "dominator_control.ice_control.glacier"
+    ],
+    [
+      "Dominator Control.Illusion Control.Blind",
+      "dominator_control.illusion_control.blind"
+    ],
+    [
+      "Dominator Control.Illusion Control.Deceive",
+      "dominator_control.illusion_control.deceive"
+    ],
+    [
+      "Dominator Control.Illusion Control.Flash",
+      "dominator_control.illusion_control.flash"
+    ],
+    [
+      "Dominator Control.Illusion Control.Gleam",
+      "dominator_control.illusion_control.gleam"
+    ],
+    [
+      "Dominator Control.Illusion Control.Spectral Wall",
+      "dominator_control.illusion_control.spectral_wall"
+    ],
+    [
+      "Dominator Control.Mind Control.Confuse",
+      "dominator_control.mind_control.confuse"
+    ],
+    [
+      "Dominator Control.Mind Control.Dominate",
+      "dominator_control.mind_control.dominate"
+    ],
+    [
+      "Dominator Control.Mind Control.Mass Confusion",
+      "dominator_control.mind_control.mass_confusion"
+    ],
+    [
+      "Dominator Control.Mind Control.Mass Hypnosis",
+      "dominator_control.mind_control.mass_hypnosis"
+    ],
+    [
+      "Dominator Control.Mind Control.Mesmerize",
+      "dominator_control.mind_control.mesmerize"
+    ],
+    [
+      "Dominator Control.Mind Control.Telekinesis",
+      "dominator_control.mind_control.telekinesis"
+    ],
+    [
+      "Dominator Control.Mind Control.Terrify",
+      "dominator_control.mind_control.terrify"
+    ],
+    [
+      "Dominator Control.Mind Control.Total Domination",
+      "dominator_control.mind_control.total_domination"
+    ],
+    [
+      "Dominator Control.Plant Control.Entangle",
+      "dominator_control.plant_control.entangle"
+    ],
+    [
+      "Dominator Control.Plant Control.Roots",
+      "dominator_control.plant_control.roots"
+    ],
+    [
+      "Dominator Control.Plant Control.Seeds of Confusion",
+      "dominator_control.plant_control.seeds_of_confusion"
+    ],
+    [
+      "Dominator Control.Plant Control.Spore Burst",
+      "dominator_control.plant_control.spore_burst"
+    ],
+    [
+      "Dominator Control.Plant Control.Strangler",
+      "dominator_control.plant_control.strangler"
+    ],
+    [
+      "Dominator Control.Pyrotechnic Control.Brilliant Barrage",
+      "dominator_control.pyrotechnic_control.glitz"
+    ],
+    [
+      "Dominator Control.Pyrotechnic Control.Dazzle",
+      "dominator_control.pyrotechnic_control.dazzle"
+    ],
+    [
+      "Dominator Control.Pyrotechnic Control.Explosive Bouquet",
+      "dominator_control.pyrotechnic_control.explosive_bouquet"
+    ],
+    [
+      "Dominator Control.Pyrotechnic Control.Hypnotizing Lights",
+      "dominator_control.pyrotechnic_control.hypnotizing_lights"
+    ],
+    [
+      "Dominator Control.Pyrotechnic Control.Sparkling Cage",
+      "dominator_control.pyrotechnic_control.sparkling_cage"
+    ],
+    [
+      "Dominator Control.Pyrotechnic Control.Sparkling Chain",
+      "dominator_control.pyrotechnic_control.sparkling_field"
+    ],
+    [
+      "Dominator Control.Symphony Control.Aria of Stasis",
+      "dominator_control.symphony_control.aria_of_stasis"
+    ],
+    [
+      "Dominator Control.Symphony Control.Chords of Despair",
+      "dominator_control.symphony_control.chords_of_despair"
+    ],
+    [
+      "Dominator Control.Symphony Control.Confounding Chant",
+      "dominator_control.symphony_control.confounding_chant"
+    ],
+    [
+      "Dominator Control.Symphony Control.Dreadful Discord",
+      "dominator_control.symphony_control.dreadful_discord"
+    ],
+    [
+      "Dominator Control.Symphony Control.Enfeebling Lullaby",
+      "dominator_control.symphony_control.enfeebling_lullaby"
+    ],
+    [
+      "Dominator Control.Symphony Control.Hymn of Dissonance",
+      "dominator_control.symphony_control.hymn_of_dissonance"
+    ],
+    [
+      "Dominator Control.Symphony Control.Melodic Binding",
+      "dominator_control.symphony_control.melodic_binding"
+    ],
+    [
+      "Dominator Control.Wind Control.Breathless",
+      "dominator_control.wind_control.breathless"
+    ],
+    [
+      "Dominator Control.Wind Control.Downdraft",
+      "dominator_control.wind_control.downdraft"
+    ],
+    [
+      "Dominator Control.Wind Control.Keening Winds",
+      "dominator_control.wind_control.keening_winds"
+    ],
+    [
+      "Dominator Control.Wind Control.Microburst",
+      "dominator_control.wind_control.microburst"
+    ],
+    [
+      "Dominator Control.Wind Control.Vacuum",
+      "dominator_control.wind_control.vacuum"
+    ],
+    [
+      "Pets.Wind Control.Vacuum",
+      "pets.wind_control_vacuum_dominator.vacuum_hold_domination"
+    ],
+    [
+      "Pool.Fighting.Cross Punch",
+      "pool.fighting.cross_punch"
+    ],
+    [
+      "Pool.Presence.Intimidate",
+      "pool.manipulation.intimidate"
+    ],
+    [
+      "Pool.Presence.Invoke Panic",
+      "pool.manipulation.invoke_panic"
+    ],
+    [
+      "Redirects.Assault Rifle.Sleep Grenade",
+      "redirects.assault_rifle.sleep_grenade"
+    ],
+    [
+      "Redirects.Assault Rifle.Smoke Canister",
+      "redirects.assault_rifle.smoke_confusion"
+    ],
+    [
+      "Redirects.Assault Rifle.Tear Gas",
+      "redirects.assault_rifle.tear_gas"
+    ],
+    [
+      "Redirects.Assault Rifle.Tear Gas",
+      "redirects.assault_rifle.tear_gas_oneshot"
+    ],
+    [
+      "Redirects.Electric Control.Tesla Coil",
+      "redirects.electric_control.tesla_coil_chain"
+    ],
+    [
+      "Redirects.Electric Control.Tesla Coil",
+      "redirects.electric_control.tesla_coil_oneshot"
+    ],
+    [
+      "Redirects.Gravity Control.Gravity Distortion Field",
+      "redirects.gravity_control.gravity_distortion_field_oneshot"
+    ],
+    [
+      "Redirects.Gravity Control.Gravity Distortion Field",
+      "redirects.gravity_control.gravity_distortion_field_pulse"
+    ],
+    [
+      "Redirects.Ice Control.Cold Snap",
+      "redirects.ice_control.cold_snap_dominator"
+    ],
+    [
+      "Redirects.Mind Control.Total Domination",
+      "redirects.mind_control.total_domination"
+    ],
+    [
+      "Redirects.Pyrotechnic Control.Brilliant Barrage",
+      "redirects.pyrotechnic_control.glitz_burst"
+    ],
+    [
+      "Redirects.Pyrotechnic Control.Hypnotizing Lights (Close)",
+      "redirects.pyrotechnic_control.hypnotizinglights_narrow"
+    ],
+    [
+      "Redirects.Symphony Control.Impassioned Serenade",
+      "redirects.symphony_control.impassioned_serenade_dominator"
+    ],
+    [
+      "Villain Pets.Creeper Patch.Entangle",
+      "villain_pets.creeper_entangle.entangle"
+    ],
+    [
+      "Villain Pets.Static Field Dominator.Static Field",
+      "villain_pets.static_field_dominator.static_field"
+    ],
+    [
+      "Villain Pets.Vines.Vines",
+      "villain_pets.vines.vines_oneshot"
+    ],
+    [
+      "Villain Pets.Vines.Vines",
+      "villain_pets.vines.vines_pulse"
+    ]
+  ],
+  "affects": [
+    [
+      "Inherent.Inherent.Domination",
+      "inherent.inherent.domination_rage"
+    ]
+  ]
+}

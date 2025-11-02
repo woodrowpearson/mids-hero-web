@@ -144,7 +144,7 @@
     "epic2_5": {
       "name": "City of Data Import Preparation",
       "status": "in_progress",
-      "progress": 40,
+      "progress": 70,
       "tasks": [
         "✅ Task 2.5.1: Create comprehensive pruning plan and documentation",
         "✅ Created `just jq` command for JSON processing",
@@ -156,8 +156,14 @@
         "  ✅ Identified Layer 1 explicit categories (pool, epic, inherent, incarnate)",
         "  ✅ Documented boost_sets structure (227 enhancement sets)",
         "  ✅ Created comprehensive 3-layer pruning strategy",
-        "📋 Task 2.5.3: Phase 2 - Execute multi-layered filtering",
-        "📋 Task 2.5.4: Phase 3 - Validate and create manifest",
+        "✅ Task 2.5.3: Phase 2 - Execute multi-layered filtering",
+        "  ✅ Filtered archetypes (66 files - all kept)",
+        "  ✅ Filtered boost_sets (228 files - all kept)",
+        "  ✅ Filtered powers (5,775 files - 36 categories kept, 167 excluded)",
+        "  ✅ Filtered metadata (410 files - 4 directories kept, 1 excluded)",
+        "  ✅ Total filtered: 6,479 files from 43,224 (85% reduction)",
+        "  ✅ Generated 4 manifest fragments for synthesis",
+        "🚧 Task 2.5.4: Phase 3 - Validate and create manifest",
         "📋 Task 2.5.5: Integrate filtered data into import pipeline"
       ],
       "github_issues_created": [
@@ -178,7 +184,18 @@
         ".claude/docs/archetype-category-mapping.json"
       ],
       "scripts": [
-        "scripts/map_archetype_categories.py"
+        "scripts/map_archetype_categories.py",
+        "scripts/filter_archetypes.py",
+        "scripts/filter_boost_sets.py",
+        "scripts/filter_powers.py",
+        "scripts/filter_metadata.py"
+      ],
+      "filtered_data_location": "filtered_data/",
+      "manifest_fragments": [
+        "filtered_data/archetypes_manifest.json",
+        "filtered_data/boost_sets_manifest.json",
+        "filtered_data/powers_manifest.json",
+        "filtered_data/metadata_manifest.json"
       ]
     },
     "epic3": {

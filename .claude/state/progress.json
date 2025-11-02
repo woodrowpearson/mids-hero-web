@@ -141,6 +141,46 @@
       ],
       "completion_date": "2025-08-04"
     },
+    "epic2_5": {
+      "name": "City of Data Import Preparation",
+      "status": "in_progress",
+      "progress": 40,
+      "tasks": [
+        "✅ Task 2.5.1: Create comprehensive pruning plan and documentation",
+        "✅ Created `just jq` command for JSON processing",
+        "✅ Created GitHub tracking issues (#300-305)",
+        "✅ Task 2.5.2: Phase 1 - Map and document City of Data structure",
+        "  ✅ Mapped 9 top-level directories (43,224 total files)",
+        "  ✅ Documented power category schema (205 categories)",
+        "  ✅ Extracted archetype→category mappings (15 archetypes, 30 categories)",
+        "  ✅ Identified Layer 1 explicit categories (pool, epic, inherent, incarnate)",
+        "  ✅ Documented boost_sets structure (227 enhancement sets)",
+        "  ✅ Created comprehensive 3-layer pruning strategy",
+        "📋 Task 2.5.3: Phase 2 - Execute multi-layered filtering",
+        "📋 Task 2.5.4: Phase 3 - Validate and create manifest",
+        "📋 Task 2.5.5: Integrate filtered data into import pipeline"
+      ],
+      "github_issues_created": [
+        "#300 Epic 2.5: City of Data Import Preparation",
+        "#301 Task 2.5.1: Create City of Data Pruning Plan",
+        "#302 Task 2.5.2: Phase 1 - Map and Document Structure",
+        "#303 Task 2.5.3: Phase 2 - Execute Multi-Layered Filtering",
+        "#304 Task 2.5.4: Phase 3 - Validate and Create Manifest",
+        "#305 Task 2.5.5: Integrate Filtered Data into Import Pipeline"
+      ],
+      "current_branch": "fix/claude-review-comment-support",
+      "documentation": [
+        ".claude/docs/city-of-data-pruning-plan.md",
+        ".claude/docs/city-of-data-structure-map.md",
+        ".claude/docs/city-of-data-schema-reference.md",
+        ".claude/docs/player-power-identification.md",
+        ".claude/docs/city-of-data-pruning-strategy.md",
+        ".claude/docs/archetype-category-mapping.json"
+      ],
+      "scripts": [
+        "scripts/map_archetype_categories.py"
+      ]
+    },
     "epic3": {
       "name": "Backend API",
       "status": "in_progress",

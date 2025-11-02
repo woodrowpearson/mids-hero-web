@@ -239,6 +239,54 @@ Load all player archetype files, extract primary_category and secondary_category
 
 **Mapping Output:** See `.claude/docs/archetype-category-mapping.json`
 
+## boost_sets/index.json
+
+**Purpose:** Master index of all enhancement/IO sets
+
+**Structure:**
+```json
+{
+  "revision": "string",
+  "set_names": ["set1", "set2", ...],
+  "set_display_names": ["Display 1", "Display 2", ...]
+}
+```
+
+**Total Boost Sets:** 227
+
+**Player Relevance:** ALL boost sets are player-relevant
+
+## boost_sets/{set_name}.json
+
+**Purpose:** Individual enhancement set definition
+
+**Structure:**
+```json
+{
+  "name": "set_identifier",
+  "display_name": "Set Display Name",
+  "group_name": "Enhancement Category",
+  "min_level": 10,
+  "max_level": 50,
+  "bonuses": [...],
+  "boost_lists": [...],
+  "conversion_groups": [...],
+  "computed": {...}
+}
+```
+
+**Key Fields:**
+- `name`: Internal set identifier
+- `display_name`: User-facing set name
+- `group_name`: Enhancement category (Accuracy, Damage, etc.)
+- `min_level`/`max_level`: Level requirements
+- `bonuses`: Set bonus effects
+- `boost_lists`: Individual enhancement definitions
+
+**Player Relevance:** YES - All enhancements are for player builds
+
+**Filtering Action:** KEEP entire `boost_sets/` directory (Layer 3)
+
 ## Validation Strategy
 
 For each power category:

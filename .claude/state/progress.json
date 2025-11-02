@@ -144,7 +144,7 @@
     "epic2_5": {
       "name": "City of Data Import Preparation",
       "status": "in_progress",
-      "progress": 70,
+      "progress": 90,
       "tasks": [
         "✅ Task 2.5.1: Create comprehensive pruning plan and documentation",
         "✅ Created `just jq` command for JSON processing",
@@ -163,7 +163,15 @@
         "  ✅ Filtered metadata (410 files - 4 directories kept, 1 excluded)",
         "  ✅ Total filtered: 6,479 files from 43,224 (85% reduction)",
         "  ✅ Generated 4 manifest fragments for synthesis",
-        "🚧 Task 2.5.4: Phase 3 - Validate and create manifest",
+        "✅ Task 2.5.4: Phase 3 - Validate and create manifest",
+        "  ✅ Created comprehensive validation script (validate_filtered_data.py)",
+        "  ✅ Validated archetypes (15 player archetypes present, all checks pass)",
+        "  ✅ Validated power categories (36 categories, all required patterns present)",
+        "  ✅ Validated boost sets (228 files)",
+        "  ✅ Validated schema integrity (635 index.json files, all valid)",
+        "  ✅ Generated comprehensive manifest (filtered_data/manifest.json)",
+        "  ✅ Performed manual spot checks (Pool, Epic, Inherent, Incarnate powers confirmed)",
+        "  ✅ Created filtering results documentation",
         "📋 Task 2.5.5: Integrate filtered data into import pipeline"
       ],
       "github_issues_created": [
@@ -181,6 +189,7 @@
         ".claude/docs/city-of-data-schema-reference.md",
         ".claude/docs/player-power-identification.md",
         ".claude/docs/city-of-data-pruning-strategy.md",
+        ".claude/docs/city-of-data-filtering-results.md",
         ".claude/docs/archetype-category-mapping.json"
       ],
       "scripts": [
@@ -188,7 +197,8 @@
         "scripts/filter_archetypes.py",
         "scripts/filter_boost_sets.py",
         "scripts/filter_powers.py",
-        "scripts/filter_metadata.py"
+        "scripts/filter_metadata.py",
+        "scripts/validate_filtered_data.py"
       ],
       "filtered_data_location": "filtered_data/",
       "manifest_fragments": [
@@ -196,7 +206,18 @@
         "filtered_data/boost_sets_manifest.json",
         "filtered_data/powers_manifest.json",
         "filtered_data/metadata_manifest.json"
-      ]
+      ],
+      "final_manifest": "filtered_data/manifest.json",
+      "validation_results": {
+        "total_source_files": 43233,
+        "kept_files": 6479,
+        "excluded_files": 167,
+        "reduction_percentage": 85,
+        "archetypes_pass": true,
+        "power_categories_pass": true,
+        "boost_sets_pass": true,
+        "schema_integrity_pass": true
+      }
     },
     "epic3": {
       "name": "Backend API",

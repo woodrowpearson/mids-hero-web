@@ -190,10 +190,59 @@ Categories for base building (not player character powers):
 **Purpose:** Player archetype powersets (Villain Epic Archetypes)
 **Decision:** KEEP - Player archetypes
 
+## archetypes/{name}.json
+
+**Purpose:** Defines archetype characteristics, including primary/secondary power categories
+
+**Structure:**
+```json
+{
+  "name": "archetype_name",
+  "display_name": "Archetype Display Name",
+  "primary_category": "Category_Name",
+  "secondary_category": "Category_Name",
+  "epic_pool_category": null,
+  "power_pool_category": null,
+  "attrib_base": {...},
+  "attrib_max": {...},
+  // Many other attribute fields
+}
+```
+
+**Key Fields for Filtering:**
+- `name`: Archetype identifier (e.g., "blaster", "tanker")
+- `primary_category`: Power category for primary powersets (e.g., "Blaster_RANGED")
+- `secondary_category`: Power category for secondary powersets (e.g., "Blaster_SUPPORT")
+
+**Player Archetypes:**
+- blaster, controller, defender, scrapper, tanker
+- brute, stalker, mastermind, dominator, corruptor
+- peacebringer, warshade, arachnos_soldier, arachnos_widow, sentinel
+
+**Total Player Archetypes:** 15
+**Total Unique Categories from Archetypes:** 30
+
+**Example - Blaster:**
+```json
+{
+  "name": "Class_Blaster",
+  "display_name": "Blaster",
+  "primary_category": "Blaster_RANGED",
+  "secondary_category": "Blaster_SUPPORT",
+  "epic_pool_category": null,
+  "power_pool_category": null
+}
+```
+
+**Usage for Filtering:**
+Load all player archetype files, extract primary_category and secondary_category values, create set of Layer 2 categories to keep.
+
+**Mapping Output:** See `.claude/docs/archetype-category-mapping.json`
+
 ## Validation Strategy
 
 For each power category:
 1. Check if category name is "pool", "epic", "inherent", or contains "incarnate" → KEEP (Layer 1)
-2. Check if category index.json has `archetypes` list with player archetypes → KEEP (Layer 2)
+2. Check if category in archetype mapping (primary/secondary categories) → KEEP (Layer 2)
 3. Check if category name matches exclusion patterns (enemy groups, base_*) → EXCLUDE
 4. Otherwise → FLAG FOR REVIEW

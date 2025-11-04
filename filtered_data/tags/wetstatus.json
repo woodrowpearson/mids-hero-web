@@ -1,0 +1,390 @@
+{
+  "tag": "WetStatus",
+  "bears": [
+    [
+      "Blaster Ranged.Storm Blast.Cloudburst",
+      "blaster_ranged.storm_blast.cloudburst"
+    ],
+    [
+      "Blaster Ranged.Water Blast.Aqua Bolt",
+      "blaster_ranged.water_blast.aqua_bolt"
+    ],
+    [
+      "Blaster Ranged.Water Blast.Geyser",
+      "blaster_ranged.water_blast.geyser"
+    ],
+    [
+      "Blaster Ranged.Water Blast.Hydro Blast",
+      "blaster_ranged.water_blast.hydro_blast"
+    ],
+    [
+      "Blaster Ranged.Water Blast.Steam Spray",
+      "blaster_ranged.water_blast.steam_spray"
+    ],
+    [
+      "Blaster Ranged.Water Blast.Water Burst",
+      "blaster_ranged.water_blast.water_burst"
+    ],
+    [
+      "Controller Buff.Marine Affinity.Brine",
+      "controller_buff.marine_affinity.brine"
+    ],
+    [
+      "Controller Buff.Marine Affinity.Shifting Tides",
+      "controller_buff.marine_affinity.shifting_tides"
+    ],
+    [
+      "Corruptor Buff.Marine Affinity.Brine",
+      "corruptor_buff.marine_affinity.brine"
+    ],
+    [
+      "Corruptor Buff.Marine Affinity.Shifting Tides",
+      "corruptor_buff.marine_affinity.shifting_tides"
+    ],
+    [
+      "Corruptor Ranged.Storm Blast.Cloudburst",
+      "corruptor_ranged.storm_blast.cloudburst"
+    ],
+    [
+      "Corruptor Ranged.Water Blast.Aqua Bolt",
+      "corruptor_ranged.water_blast.aqua_bolt"
+    ],
+    [
+      "Corruptor Ranged.Water Blast.Geyser",
+      "corruptor_ranged.water_blast.geyser"
+    ],
+    [
+      "Corruptor Ranged.Water Blast.Hydro Blast",
+      "corruptor_ranged.water_blast.hydro_blast"
+    ],
+    [
+      "Corruptor Ranged.Water Blast.Steam Spray",
+      "corruptor_ranged.water_blast.steam_spray"
+    ],
+    [
+      "Corruptor Ranged.Water Blast.Water Burst",
+      "corruptor_ranged.water_blast.water_burst"
+    ],
+    [
+      "Crey Altruist.Sea Ghost Offense.Aqua Bolt",
+      "crey_altruist.altruist_sea_ghost_offense.aqua_bolt"
+    ],
+    [
+      "Crey Altruist.Sea Ghost Offense.Hydro Blast",
+      "crey_altruist.altruist_sea_ghost_offense.hydro_blast"
+    ],
+    [
+      "Crey Altruist.Sea Ghost Offense.Water Burst",
+      "crey_altruist.altruist_sea_ghost_offense.water_burst"
+    ],
+    [
+      "Crey Altruist.Sea Ghost Offense.Water Jet",
+      "crey_altruist.altruist_sea_ghost_offense.water_jet"
+    ],
+    [
+      "Crey Altruist.Sea Ghost Support.Brine",
+      "crey_altruist.altruist_sea_ghost_support.brine"
+    ],
+    [
+      "Defender Buff.Marine Affinity.Brine",
+      "defender_buff.marine_affinity.brine"
+    ],
+    [
+      "Defender Buff.Marine Affinity.Shifting Tides",
+      "defender_buff.marine_affinity.shifting_tides"
+    ],
+    [
+      "Defender Ranged.Storm Blast.Cloudburst",
+      "defender_ranged.storm_blast.cloudburst"
+    ],
+    [
+      "Defender Ranged.Water Blast.Aqua Bolt",
+      "defender_ranged.water_blast.aqua_bolt"
+    ],
+    [
+      "Defender Ranged.Water Blast.Geyser",
+      "defender_ranged.water_blast.geyser"
+    ],
+    [
+      "Defender Ranged.Water Blast.Hydro Blast",
+      "defender_ranged.water_blast.hydro_blast"
+    ],
+    [
+      "Defender Ranged.Water Blast.Steam Spray",
+      "defender_ranged.water_blast.steam_spray"
+    ],
+    [
+      "Defender Ranged.Water Blast.Water Burst",
+      "defender_ranged.water_blast.water_burst"
+    ],
+    [
+      "Mastermind Buff.Marine Affinity.Brine",
+      "mastermind_buff.marine_affinity.brine"
+    ],
+    [
+      "Mastermind Buff.Marine Affinity.Shifting Tides",
+      "mastermind_buff.marine_affinity.shifting_tides"
+    ],
+    [
+      "Mission Maker Attacks.Storm Blast.Cloudburst",
+      "mission_maker_attacks.storm_blast.cloudburst"
+    ],
+    [
+      "Mission Maker Attacks.Water Blast.Aqua Bolt",
+      "mission_maker_attacks.water_blast.aqua_bolt"
+    ],
+    [
+      "Mission Maker Attacks.Water Blast.Geyser",
+      "mission_maker_attacks.water_blast.geyser"
+    ],
+    [
+      "Mission Maker Attacks.Water Blast.Hydro Blast",
+      "mission_maker_attacks.water_blast.hydro_blast"
+    ],
+    [
+      "Mission Maker Attacks.Water Blast.Steam Spray",
+      "mission_maker_attacks.water_blast.steam_spray"
+    ],
+    [
+      "Mission Maker Attacks.Water Blast.Water Burst",
+      "mission_maker_attacks.water_blast.water_burst"
+    ],
+    [
+      "Mission Maker Pets.Water Blast.Enhanced Water Jet",
+      "mission_maker_pets.water_jet.water_jet_fast"
+    ],
+    [
+      "Mission Maker Pets.Water Blast.Water Jet",
+      "mission_maker_pets.water_jet.water_jet_normal"
+    ],
+    [
+      "Mission Maker Secondary.Marine Affinity.Brine",
+      "mission_maker_secondary.marine_affinity.brine"
+    ],
+    [
+      "Mission Maker Secondary.Marine Affinity.Shifting Tides",
+      "mission_maker_secondary.marine_affinity.shifting_tides"
+    ],
+    [
+      "Mission Maker Secondary.Storm Blast.Cloudburst",
+      "mission_maker_secondary.storm_blast.cloudburst"
+    ],
+    [
+      "Mission Maker Secondary.Water Blast.Aqua Bolt",
+      "mission_maker_secondary.water_blast.aqua_bolt"
+    ],
+    [
+      "Mission Maker Secondary.Water Blast.Geyser",
+      "mission_maker_secondary.water_blast.geyser"
+    ],
+    [
+      "Mission Maker Secondary.Water Blast.Hydro Blast",
+      "mission_maker_secondary.water_blast.hydro_blast"
+    ],
+    [
+      "Mission Maker Secondary.Water Blast.Steam Spray",
+      "mission_maker_secondary.water_blast.steam_spray"
+    ],
+    [
+      "Mission Maker Secondary.Water Blast.Water Burst",
+      "mission_maker_secondary.water_blast.water_burst"
+    ],
+    [
+      "Pets.Freezing Rain.FreezingRain",
+      "pets.epic_freezingrain.freezingrain"
+    ],
+    [
+      "Pets.Freezing Rain.FreezingRain",
+      "pets.freezing_rain.freezingrain"
+    ],
+    [
+      "Pets.Freezing Rain.FreezingRain",
+      "pets.freezingrain.freezingrain"
+    ],
+    [
+      "Pets.Freezing Rain.FreezingRain",
+      "pets.freezingrain_controller.freezingrain"
+    ],
+    [
+      "Pets.Water Blast.Enhanced Water Jet",
+      "pets.water_blast_blaster.water_jet_fast"
+    ],
+    [
+      "Pets.Water Blast.Enhanced Water Jet",
+      "pets.water_blast_corruptor.water_jet_fast"
+    ],
+    [
+      "Pets.Water Blast.Enhanced Water Jet",
+      "pets.water_blast_defender.water_jet_fast"
+    ],
+    [
+      "Pets.Water Blast.Enhanced Water Jet",
+      "pets.water_blast_sentinel.water_jet_fast"
+    ],
+    [
+      "Pets.Water Blast.Water Jet",
+      "pets.water_blast_blaster.water_jet_normal"
+    ],
+    [
+      "Pets.Water Blast.Water Jet",
+      "pets.water_blast_corruptor.water_jet_normal"
+    ],
+    [
+      "Pets.Water Blast.Water Jet",
+      "pets.water_blast_defender.water_jet_normal"
+    ],
+    [
+      "Pets.Water Blast.Water Jet",
+      "pets.water_blast_sentinel.water_jet_normal"
+    ],
+    [
+      "Pets.Whirlpool.Whirlpool",
+      "pets.whirlpool_blaster.whirlpool"
+    ],
+    [
+      "Pets.Whirlpool.Whirlpool",
+      "pets.whirlpool_corruptor.whirlpool"
+    ],
+    [
+      "Pets.Whirlpool.Whirlpool",
+      "pets.whirlpool_defender.whirlpool"
+    ],
+    [
+      "Pets.Whirlpool.Whirlpool",
+      "pets.whirlpool_sentinel.whirlpool"
+    ],
+    [
+      "Redirects.Marine Affinity.Soothing Wave",
+      "redirects.marine_affinity.soothing_wave"
+    ],
+    [
+      "Redirects.Marine Affinity.Tide Pool",
+      "redirects.marine_affinity.tidepool_aura_debuff"
+    ],
+    [
+      "Redirects.Marine Affinity.Whitecap Crash",
+      "redirects.marine_affinity.whitecap_arrive"
+    ],
+    [
+      "Redirects.Storm Blast.Category Five",
+      "redirects.storm_blast.category_five"
+    ],
+    [
+      "Redirects.Storm Blast.Category Five",
+      "redirects.storm_blast.category_five_sentinel"
+    ],
+    [
+      "Redirects.Storm Blast.Tempest",
+      "redirects.storm_blast.stormcell_tempest"
+    ],
+    [
+      "Redirects.Storm Blast.Tempest",
+      "redirects.storm_blast.stormcell_tempest_sentinel"
+    ],
+    [
+      "Sentinel Ranged.Storm Blast.Cloudburst",
+      "sentinel_ranged.storm_blast.cloudburst"
+    ],
+    [
+      "Sentinel Ranged.Water Blast.Aqua Bolt",
+      "sentinel_ranged.water_blast.aqua_bolt"
+    ],
+    [
+      "Sentinel Ranged.Water Blast.Geyser",
+      "sentinel_ranged.water_blast.geyser"
+    ],
+    [
+      "Sentinel Ranged.Water Blast.Hydro Blast",
+      "sentinel_ranged.water_blast.hydro_blast"
+    ],
+    [
+      "Sentinel Ranged.Water Blast.Steam Spray",
+      "sentinel_ranged.water_blast.steam_spray"
+    ],
+    [
+      "Sentinel Ranged.Water Blast.Water Burst",
+      "sentinel_ranged.water_blast.water_burst"
+    ],
+    [
+      "V Arachnos Proxy.Marine Affinity.Brine",
+      "v_arachnos_proxy.marine_affinity.brine"
+    ],
+    [
+      "V Arachnos Proxy.Marine Affinity.Shifting Tides",
+      "v_arachnos_proxy.marine_affinity.shifting_tides"
+    ],
+    [
+      "V Arachnos Proxy.Storm Blast.Cloudburst",
+      "v_arachnos_proxy.storm_blast.cloudburst"
+    ],
+    [
+      "V Arachnos Proxy.Water Blast.Aqua Bolt",
+      "v_arachnos_proxy.water_blast.aqua_bolt"
+    ],
+    [
+      "V Arachnos Proxy.Water Blast.Geyser",
+      "v_arachnos_proxy.water_blast.geyser"
+    ],
+    [
+      "V Arachnos Proxy.Water Blast.Hydro Blast",
+      "v_arachnos_proxy.water_blast.hydro_blast"
+    ],
+    [
+      "V Arachnos Proxy.Water Blast.Steam Spray",
+      "v_arachnos_proxy.water_blast.steam_spray"
+    ],
+    [
+      "V Arachnos Proxy.Water Blast.Water Burst",
+      "v_arachnos_proxy.water_blast.water_burst"
+    ],
+    [
+      "V Arachnos.Barracuda AV.Water Spout",
+      "v_arachnos.barracuda_av.water_spout"
+    ],
+    [
+      "V Arachnos.Barracuda EB.Wave of Cold",
+      "v_arachnos.barracuda_eb.wave_of_cold"
+    ],
+    [
+      "V Coralax.Coral Guardian Boss.Water Spout",
+      "v_coralax.coral_guardian_boss.water_spout"
+    ],
+    [
+      "V Coralax.Coral Guardian Lt.Wave of Cold",
+      "v_coralax.coral_guardian_lt.wave_of_cold"
+    ],
+    [
+      "V Coralax.Elite Boss Coralax.Aqua Bolt",
+      "v_coralax.elite_boss_coralax.aqua_bolt"
+    ],
+    [
+      "V Coralax.Elite Boss Coralax.Brine",
+      "v_coralax.elite_boss_coralax.brine"
+    ],
+    [
+      "V Coralax.Elite Boss Coralax.Water Burst",
+      "v_coralax.elite_boss_coralax.water_burst"
+    ],
+    [
+      "V Coralax.Elite Boss Coralax.Water Jet",
+      "v_coralax.elite_boss_coralax.water_jet"
+    ],
+    [
+      "V Coralax.Lt Blue.Wave of Cold",
+      "v_coralax.lt_blue.wave_of_cold"
+    ],
+    [
+      "Villain Pets.Coralax Blue Hybrid.Wave of Cold",
+      "villain_pets.corolax_blue_hybrid.wave_of_cold"
+    ],
+    [
+      "Villain Pets.Water Spout.Water",
+      "villain_pets.water_spout.water_wet"
+    ],
+    [
+      "Villain Pets.Water Spout.Water",
+      "villain_pets.water_spout_stalker.water_wet"
+    ]
+  ],
+  "affects": []
+}

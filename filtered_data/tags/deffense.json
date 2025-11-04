@@ -1,0 +1,10 @@
+{
+  "tag": "Deffense",
+  "bears": [
+    [
+      "Pets.Titan Weapons.Defensive Sweep",
+      "pets.titan_weapons.defensive_sweep_slow"
+    ]
+  ],
+  "affects": []
+}

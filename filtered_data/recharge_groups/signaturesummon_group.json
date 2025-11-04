@@ -1,0 +1,21 @@
+{
+  "group": "SignatureSummon_Group",
+  "powers": [
+    [
+      "Temporary Powers.Temporary Powers.Signature Summon (Melee Damage)",
+      "temporary_powers.temporary_powers.alt_signature_summon_melee"
+    ],
+    [
+      "Temporary Powers.Temporary Powers.Signature Summon (Ranged Damage)",
+      "temporary_powers.temporary_powers.alt_signature_summon_ranged"
+    ],
+    [
+      "Temporary Powers.Temporary Powers.Signature Summon (Support)",
+      "temporary_powers.temporary_powers.alt_signature_summon_support"
+    ],
+    [
+      "Temporary Powers.Temporary Powers.Signature Summon (Tank)",
+      "temporary_powers.temporary_powers.alt_signature_summon_tank"
+    ]
+  ]
+}

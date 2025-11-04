@@ -1,0 +1,54 @@
+{
+  "name": "Marine_Affinity",
+  "display_name": "Marine Affinity",
+  "display_fullname": "Corruptor Buff.Marine Affinity",
+  "display_help": "Command the various powers of the ocean to buff your allies, and wash away your enemies.",
+  "display_short_help": "Marine Affinity",
+  "available_level": [
+    0,
+    0,
+    3,
+    9,
+    15,
+    19,
+    23,
+    27,
+    29
+  ],
+  "source_file": "DEFS/POWERS/CORRUPTOR_BUFF/MARINE_AFFINITY.POWERSETS",
+  "icon": "nature_affinity_set.png",
+  "requires": "",
+  "power_names": [
+    "Corruptor_Buff.Marine_Affinity.Shoal_Rush",
+    "Corruptor_Buff.Marine_Affinity.Soothing_Wave",
+    "Corruptor_Buff.Marine_Affinity.Toroidal_Bubble",
+    "Corruptor_Buff.Marine_Affinity.Whitecap",
+    "Corruptor_Buff.Marine_Affinity.Tide_Pool",
+    "Corruptor_Buff.Marine_Affinity.Brine",
+    "Corruptor_Buff.Marine_Affinity.Shifting_Tides",
+    "Corruptor_Buff.Marine_Affinity.Wellspring",
+    "Corruptor_Buff.Marine_Affinity.Call_Depths"
+  ],
+  "power_display_names": [
+    "Shoal Rush",
+    "Soothing Wave",
+    "Toroidal Bubble",
+    "Whitecap",
+    "Tide Pool",
+    "Brine",
+    "Shifting Tides",
+    "Barrier Reef",
+    "Power of the Depths"
+  ],
+  "power_short_helps": [
+    "Ranged (Targeted AoE), Foe -DEF, -SPD, Special",
+    "Ranged (Facing Cone), Foe -DMG, Team Heal",
+    "PBAoE, Team +Res(All DMG, End Drain), +End, +Recovery, +Jump",
+    "Ranged (Targeted AoE), DMG(Cold), Foe Knockdown, -Resist(All), Self Teleport, Special",
+    "Ranged (Location AoE), Team +DMG, Foe -DMG, -SPD, -Jump, -Stealth, Special",
+    "Ranged, Foe -Resist(All), -MaxHP",
+    "Toggle: Ranged (Targeted AoE), Team +DMG, +ToHit, +Recharge, Special Damage",
+    "Summon Barrier Reef: Team +Absorb, +DEF(All)",
+    "PBAoE, Team +MaxHP, +MaxEnd, +Regen, +Range"
+  ]
+}

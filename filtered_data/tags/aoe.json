@@ -1,0 +1,10 @@
+{
+  "tag": "AoE",
+  "bears": [
+    [
+      "Objects.Debug.Executer",
+      "objects.debug.executer"
+    ]
+  ],
+  "affects": []
+}

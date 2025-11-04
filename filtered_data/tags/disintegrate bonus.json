@@ -1,0 +1,90 @@
+{
+  "tag": "Disintegrate Bonus",
+  "bears": [
+    [
+      "BlackwingIndustries.BWI PEACE Keeper.Plasma Disembowel",
+      "blackwingindustries.keeper.disembowel"
+    ],
+    [
+      "BlackwingIndustries.BWI PEACE Keeper.Plasma Hack",
+      "blackwingindustries.keeper.hack"
+    ],
+    [
+      "BlackwingIndustries.BWI PEACE Keeper.Plasma Head Splitter",
+      "blackwingindustries.keeper.head_splitter"
+    ],
+    [
+      "BlackwingIndustries.BWI PEACE Keeper.Plasma Slice",
+      "blackwingindustries.keeper.slice"
+    ],
+    [
+      "Blaster Ranged.Beam Rifle.Charged Shot",
+      "blaster_ranged.beam_rifle.charged_shot"
+    ],
+    [
+      "Blaster Ranged.Beam Rifle.Lancer Shot",
+      "blaster_ranged.beam_rifle.lancer_shot"
+    ],
+    [
+      "Corruptor Ranged.Beam Rifle.Charged Shot",
+      "corruptor_ranged.beam_rifle.charged_shot"
+    ],
+    [
+      "Corruptor Ranged.Beam Rifle.Lancer Shot",
+      "corruptor_ranged.beam_rifle.lancer_shot"
+    ],
+    [
+      "Defender Ranged.Beam Rifle.Charged Shot",
+      "defender_ranged.beam_rifle.charged_shot"
+    ],
+    [
+      "Defender Ranged.Beam Rifle.Lancer Shot",
+      "defender_ranged.beam_rifle.lancer_shot"
+    ],
+    [
+      "Freaklok.Beam Jerk.Lancer Shot",
+      "freaklok.beam_jerk.lancer_shot"
+    ],
+    [
+      "Freaklok.Beam Jerk.Penetrating Ray",
+      "freaklok.beam_jerk.penetrating_ray"
+    ],
+    [
+      "Freaklok.Beam Jerk.Single Shot",
+      "freaklok.beam_jerk.single_shot"
+    ],
+    [
+      "Mission Maker Attacks.Beam Rifle.Charged Shot",
+      "mission_maker_attacks.beam_rifle.charged_shot"
+    ],
+    [
+      "Mission Maker Attacks.Beam Rifle.Lancer Shot",
+      "mission_maker_attacks.beam_rifle.lancer_shot"
+    ],
+    [
+      "Mission Maker Secondary.Beam Rifle.Charged Shot",
+      "mission_maker_secondary.beam_rifle.charged_shot"
+    ],
+    [
+      "Mission Maker Secondary.Beam Rifle.Lancer Shot",
+      "mission_maker_secondary.beam_rifle.lancer_shot"
+    ],
+    [
+      "Sentinel Ranged.Beam Rifle.Charged Shot",
+      "sentinel_ranged.beam_rifle.charged_shot"
+    ],
+    [
+      "Sentinel Ranged.Beam Rifle.Lancer Shot",
+      "sentinel_ranged.beam_rifle.lancer_shot"
+    ],
+    [
+      "V Arachnos Proxy.Beam Rifle.Charged Shot",
+      "v_arachnos_proxy.beam_rifle.charged_shot"
+    ],
+    [
+      "V Arachnos Proxy.Beam Rifle.Lancer Shot",
+      "v_arachnos_proxy.beam_rifle.lancer_shot"
+    ]
+  ],
+  "affects": []
+}

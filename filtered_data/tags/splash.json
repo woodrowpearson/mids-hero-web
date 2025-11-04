@@ -1,0 +1,42 @@
+{
+  "tag": "Splash",
+  "bears": [
+    [
+      "Blaster Support.Electricity Manipulation.Thunder Strike",
+      "blaster_support.electricity_manipulation.thunder_strike"
+    ],
+    [
+      "Brute Melee.Electrical Melee.Thunder Strike",
+      "brute_melee.electrical_melee.thunder_strike"
+    ],
+    [
+      "Epic.Electricity Mastery.Thunder Strike",
+      "epic.charge_mastery.thunder_strike"
+    ],
+    [
+      "Epic.Electricity Mastery.Thunder Strike",
+      "epic.electricity_mastery.thunder_strike"
+    ],
+    [
+      "Epic.Mu Mastery.Thunder Strike",
+      "epic.mastermind_mu_mastery.thunder_strike"
+    ],
+    [
+      "Epic.Mu Mastery.Thunder Strike",
+      "epic.sentinel_mu_mastery.thunder_strike"
+    ],
+    [
+      "Scrapper Melee.Electrical Melee.Thunder Strike",
+      "scrapper_melee.electrical_melee.thunder_strike"
+    ],
+    [
+      "Stalker Melee.Electrical Melee.Thunder Strike",
+      "stalker_melee.electrical_melee.lightning_clap"
+    ],
+    [
+      "Tanker Melee.Electrical Melee.Thunder Strike",
+      "tanker_melee.electrical_melee.thunder_strike"
+    ]
+  ],
+  "affects": []
+}

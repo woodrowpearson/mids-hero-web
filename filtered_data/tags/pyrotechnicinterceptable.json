@@ -1,0 +1,15 @@
+{
+  "tag": "PyrotechnicInterceptable",
+  "bears": [
+    [
+      "Redirects.Pyrotechnic Control.Blast Off",
+      "redirects.pyrotechnic_control.blast_off"
+    ]
+  ],
+  "affects": [
+    [
+      "Redirects.Pyrotechnic Control.Intercept Proc",
+      "redirects.pyrotechnic_control.catherinewheel_interceptproc"
+    ]
+  ]
+}

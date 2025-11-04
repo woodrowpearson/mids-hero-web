@@ -1,0 +1,144 @@
+{
+  "archetypes": {
+    "blaster": {
+      "primary": "Blaster_RANGED",
+      "secondary": "Blaster_SUPPORT",
+      "epic_pool": null,
+      "power_pool": "Pool",
+      "display_name": "Blaster"
+    },
+    "controller": {
+      "primary": "Controller_CONTROL",
+      "secondary": "Controller_BUFF",
+      "epic_pool": null,
+      "power_pool": "Pool",
+      "display_name": "Controller"
+    },
+    "defender": {
+      "primary": "Defender_BUFF",
+      "secondary": "Defender_RANGED",
+      "epic_pool": null,
+      "power_pool": "Pool",
+      "display_name": "Defender"
+    },
+    "scrapper": {
+      "primary": "Scrapper_MELEE",
+      "secondary": "Scrapper_DEFENSE",
+      "epic_pool": null,
+      "power_pool": "Pool",
+      "display_name": "Scrapper"
+    },
+    "tanker": {
+      "primary": "Tanker_DEFENSE",
+      "secondary": "Tanker_MELEE",
+      "epic_pool": null,
+      "power_pool": "Pool",
+      "display_name": "Tanker"
+    },
+    "brute": {
+      "primary": "Brute_Melee",
+      "secondary": "Brute_DEFENSE",
+      "epic_pool": null,
+      "power_pool": "Pool",
+      "display_name": "Brute"
+    },
+    "stalker": {
+      "primary": "Stalker_Melee",
+      "secondary": "Stalker_Defense",
+      "epic_pool": null,
+      "power_pool": "Pool",
+      "display_name": "Stalker"
+    },
+    "mastermind": {
+      "primary": "Mastermind_Summon",
+      "secondary": "Mastermind_Buff",
+      "epic_pool": null,
+      "power_pool": "Pool",
+      "display_name": "Mastermind"
+    },
+    "dominator": {
+      "primary": "Dominator_CONTROL",
+      "secondary": "Dominator_Assault",
+      "epic_pool": null,
+      "power_pool": "Pool",
+      "display_name": "Dominator"
+    },
+    "corruptor": {
+      "primary": "Corruptor_Ranged",
+      "secondary": "Corruptor_BUFF",
+      "epic_pool": null,
+      "power_pool": "Pool",
+      "display_name": "Corruptor"
+    },
+    "peacebringer": {
+      "primary": "Peacebringer_Offensive",
+      "secondary": "Peacebringer_Defensive",
+      "epic_pool": null,
+      "power_pool": "Pool",
+      "display_name": "Peacebringer"
+    },
+    "warshade": {
+      "primary": "Warshade_Offensive",
+      "secondary": "Warshade_Defensive",
+      "epic_pool": null,
+      "power_pool": "Pool",
+      "display_name": "Warshade"
+    },
+    "arachnos_soldier": {
+      "primary": "Arachnos_Soldiers",
+      "secondary": "Training_Gadgets",
+      "epic_pool": null,
+      "power_pool": "Pool",
+      "display_name": "Arachnos Soldier"
+    },
+    "arachnos_widow": {
+      "primary": "Widow_Training",
+      "secondary": "Teamwork",
+      "epic_pool": null,
+      "power_pool": "Pool",
+      "display_name": "Arachnos Widow"
+    },
+    "sentinel": {
+      "primary": "Sentinel_Ranged",
+      "secondary": "Sentinel_Defense",
+      "epic_pool": null,
+      "power_pool": "Pool",
+      "display_name": "Sentinel"
+    }
+  },
+  "all_categories": [
+    "Arachnos_Soldiers",
+    "Blaster_RANGED",
+    "Blaster_SUPPORT",
+    "Brute_DEFENSE",
+    "Brute_Melee",
+    "Controller_BUFF",
+    "Controller_CONTROL",
+    "Corruptor_BUFF",
+    "Corruptor_Ranged",
+    "Defender_BUFF",
+    "Defender_RANGED",
+    "Dominator_Assault",
+    "Dominator_CONTROL",
+    "Mastermind_Buff",
+    "Mastermind_Summon",
+    "Peacebringer_Defensive",
+    "Peacebringer_Offensive",
+    "Scrapper_DEFENSE",
+    "Scrapper_MELEE",
+    "Sentinel_Defense",
+    "Sentinel_Ranged",
+    "Stalker_Defense",
+    "Stalker_Melee",
+    "Tanker_DEFENSE",
+    "Tanker_MELEE",
+    "Teamwork",
+    "Training_Gadgets",
+    "Warshade_Defensive",
+    "Warshade_Offensive",
+    "Widow_Training"
+  ],
+  "total_archetypes": 15,
+  "total_categories": 30,
+  "generated_date": "2025-11-01"
+}

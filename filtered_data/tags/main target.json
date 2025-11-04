@@ -1,0 +1,22 @@
+{
+  "tag": "Main Target",
+  "bears": [
+    [
+      "Controller Control.Pyrotechnic Control.Sparkling Chain",
+      "controller_control.pyrotechnic_control.sparkling_field"
+    ],
+    [
+      "Dominator Control.Pyrotechnic Control.Sparkling Chain",
+      "dominator_control.pyrotechnic_control.sparkling_field"
+    ],
+    [
+      "Mission Maker Attacks.Pyrotechnic Control.Sparkling Chain",
+      "mission_maker_attacks.pyrotechnic_control.sparkling_field"
+    ],
+    [
+      "Mission Maker Secondary.Pyrotechnic Control.Sparkling Chain",
+      "mission_maker_secondary.pyrotechnic_control.sparkling_field"
+    ]
+  ],
+  "affects": []
+}

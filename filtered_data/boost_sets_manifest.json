@@ -1,0 +1,1602 @@
+{
+  "directory": "boost_sets",
+  "total_files": 228,
+  "entries": [
+    {
+      "source": "boost_sets/positrons_blast.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/positrons_blast.json",
+      "size_bytes": 15961
+    },
+    {
+      "source": "boost_sets/devastation.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/devastation.json",
+      "size_bytes": 15653
+    },
+    {
+      "source": "boost_sets/hibernation.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/hibernation.json",
+      "size_bytes": 12940
+    },
+    {
+      "source": "boost_sets/superior_scrappers_strike.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/superior_scrappers_strike.json",
+      "size_bytes": 12005
+    },
+    {
+      "source": "boost_sets/artillery.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/artillery.json",
+      "size_bytes": 15596
+    },
+    {
+      "source": "boost_sets/adrenal_adjustment.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/adrenal_adjustment.json",
+      "size_bytes": 8409
+    },
+    {
+      "source": "boost_sets/focused_smite.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/focused_smite.json",
+      "size_bytes": 13283
+    },
+    {
+      "source": "boost_sets/freebird.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/freebird.json",
+      "size_bytes": 8697
+    },
+    {
+      "source": "boost_sets/rooting_grasp.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/rooting_grasp.json",
+      "size_bytes": 13386
+    },
+    {
+      "source": "boost_sets/apocalypse.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/apocalypse.json",
+      "size_bytes": 18200
+    },
+    {
+      "source": "boost_sets/timespace_manipulation.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/timespace_manipulation.json",
+      "size_bytes": 9493
+    },
+    {
+      "source": "boost_sets/avalanche.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/avalanche.json",
+      "size_bytes": 10592
+    },
+    {
+      "source": "boost_sets/superior_blasters_wrath.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/superior_blasters_wrath.json",
+      "size_bytes": 11210
+    },
+    {
+      "source": "boost_sets/befuddling_aura.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/befuddling_aura.json",
+      "size_bytes": 13394
+    },
+    {
+      "source": "boost_sets/encouraged_accuracy.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/encouraged_accuracy.json",
+      "size_bytes": 8254
+    },
+    {
+      "source": "boost_sets/superior_kheldians_grace.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/superior_kheldians_grace.json",
+      "size_bytes": 12283
+    },
+    {
+      "source": "boost_sets/kheldians_grace.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/kheldians_grace.json",
+      "size_bytes": 12619
+    },
+    {
+      "source": "boost_sets/superior_might_of_the_tanker.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/superior_might_of_the_tanker.json",
+      "size_bytes": 11532
+    },
+    {
+      "source": "boost_sets/dark_watchers_despair.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/dark_watchers_despair.json",
+      "size_bytes": 16963
+    },
+    {
+      "source": "boost_sets/spiders_bite.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/spiders_bite.json",
+      "size_bytes": 12698
+    },
+    {
+      "source": "boost_sets/detonation.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/detonation.json",
+      "size_bytes": 15577
+    },
+    {
+      "source": "boost_sets/panacea.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/panacea.json",
+      "size_bytes": 17035
+    },
+    {
+      "source": "boost_sets/ruin.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/ruin.json",
+      "size_bytes": 12454
+    },
+    {
+      "source": "boost_sets/siphon_insight.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/siphon_insight.json",
+      "size_bytes": 16189
+    },
+    {
+      "source": "boost_sets/fury_of_the_gladiator.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/fury_of_the_gladiator.json",
+      "size_bytes": 18974
+    },
+    {
+      "source": "boost_sets/superior_scourging_blast.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/superior_scourging_blast.json",
+      "size_bytes": 11370
+    },
+    {
+      "source": "boost_sets/numinas_convalesence.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/numinas_convalesence.json",
+      "size_bytes": 16897
+    },
+    {
+      "source": "boost_sets/smashing_haymaker.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/smashing_haymaker.json",
+      "size_bytes": 10928
+    },
+    {
+      "source": "boost_sets/essence_transfer.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/essence_transfer.json",
+      "size_bytes": 12357
+    },
+    {
+      "source": "boost_sets/assassins_mark.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/assassins_mark.json",
+      "size_bytes": 11746
+    },
+    {
+      "source": "boost_sets/blessing_of_the_zephyr.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/blessing_of_the_zephyr.json",
+      "size_bytes": 9413
+    },
+    {
+      "source": "boost_sets/critical_strikes.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/critical_strikes.json",
+      "size_bytes": 11921
+    },
+    {
+      "source": "boost_sets/aegis.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/aegis.json",
+      "size_bytes": 16462
+    },
+    {
+      "source": "boost_sets/basilisks_gaze.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/basilisks_gaze.json",
+      "size_bytes": 16020
+    },
+    {
+      "source": "boost_sets/superior_opportunity_strikes.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/superior_opportunity_strikes.json",
+      "size_bytes": 11676
+    },
+    {
+      "source": "boost_sets/scourging_blast.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/scourging_blast.json",
+      "size_bytes": 11861
+    },
+    {
+      "source": "boost_sets/unquestioning_loyalty.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/unquestioning_loyalty.json",
+      "size_bytes": 11204
+    },
+    {
+      "source": "boost_sets/rope_a_dope.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/rope_a_dope.json",
+      "size_bytes": 15529
+    },
+    {
+      "source": "boost_sets/performance_shifter.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/performance_shifter.json",
+      "size_bytes": 16791
+    },
+    {
+      "source": "boost_sets/triage.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/triage.json",
+      "size_bytes": 9988
+    },
+    {
+      "source": "boost_sets/makos_bite.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/makos_bite.json",
+      "size_bytes": 15661
+    },
+    {
+      "source": "boost_sets/karma.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/karma.json",
+      "size_bytes": 8148
+    },
+    {
+      "source": "boost_sets/unbounded_leap.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/unbounded_leap.json",
+      "size_bytes": 8944
+    },
+    {
+      "source": "boost_sets/unbreakable_guard.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/unbreakable_guard.json",
+      "size_bytes": 17942
+    },
+    {
+      "source": "boost_sets/superior_gauntleted_fist.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/superior_gauntleted_fist.json",
+      "size_bytes": 11560
+    },
+    {
+      "source": "boost_sets/cacophany.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/cacophany.json",
+      "size_bytes": 15380
+    },
+    {
+      "source": "boost_sets/gauntleted_fist.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/gauntleted_fist.json",
+      "size_bytes": 12025
+    },
+    {
+      "source": "boost_sets/superior_dominion_of_arachnos.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/superior_dominion_of_arachnos.json",
+      "size_bytes": 12133
+    },
+    {
+      "source": "boost_sets/absolute_amazement.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/absolute_amazement.json",
+      "size_bytes": 19430
+    },
+    {
+      "source": "boost_sets/lethargic_repose.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/lethargic_repose.json",
+      "size_bytes": 16188
+    },
+    {
+      "source": "boost_sets/luck_of_the_gambler.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/luck_of_the_gambler.json",
+      "size_bytes": 17340
+    },
+    {
+      "source": "boost_sets/debiliative_action.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/debiliative_action.json",
+      "size_bytes": 16615
+    },
+    {
+      "source": "boost_sets/commanding_presence.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/commanding_presence.json",
+      "size_bytes": 14566
+    },
+    {
+      "source": "boost_sets/expedient_reinforcement.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/expedient_reinforcement.json",
+      "size_bytes": 18395
+    },
+    {
+      "source": "boost_sets/hypersonic.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/hypersonic.json",
+      "size_bytes": 10520
+    },
+    {
+      "source": "boost_sets/pacing_of_the_turtle.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/pacing_of_the_turtle.json",
+      "size_bytes": 16591
+    },
+    {
+      "source": "boost_sets/superior_vigilant_assault.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/superior_vigilant_assault.json",
+      "size_bytes": 11408
+    },
+    {
+      "source": "boost_sets/ghost_widows_embrace.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/ghost_widows_embrace.json",
+      "size_bytes": 16423
+    },
+    {
+      "source": "boost_sets/edict_of_the_master.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/edict_of_the_master.json",
+      "size_bytes": 17525
+    },
+    {
+      "source": "boost_sets/adjusted_targeting.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/adjusted_targeting.json",
+      "size_bytes": 16372
+    },
+    {
+      "source": "boost_sets/volley_fire.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/volley_fire.json",
+      "size_bytes": 7755
+    },
+    {
+      "source": "boost_sets/gladiators_armor.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/gladiators_armor.json",
+      "size_bytes": 19910
+    },
+    {
+      "source": "boost_sets/horror.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/horror.json",
+      "size_bytes": 12495
+    },
+    {
+      "source": "boost_sets/thunderstrike.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/thunderstrike.json",
+      "size_bytes": 16067
+    },
+    {
+      "source": "boost_sets/mark_of_supremacy.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/mark_of_supremacy.json",
+      "size_bytes": 12788
+    },
+    {
+      "source": "boost_sets/superior_dominating_grasp.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/superior_dominating_grasp.json",
+      "size_bytes": 12115
+    },
+    {
+      "source": "boost_sets/gaussians_synchronized_fire-control.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/gaussians_synchronized_fire-control.json",
+      "size_bytes": 19006
+    },
+    {
+      "source": "boost_sets/unrelenting_fury.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/unrelenting_fury.json",
+      "size_bytes": 12294
+    },
+    {
+      "source": "boost_sets/fortunata_hypnosis.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/fortunata_hypnosis.json",
+      "size_bytes": 19360
+    },
+    {
+      "source": "boost_sets/superior_sentinels_ward.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/superior_sentinels_ward.json",
+      "size_bytes": 11210
+    },
+    {
+      "source": "boost_sets/brilliant_leadership.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/brilliant_leadership.json",
+      "size_bytes": 16440
+    },
+    {
+      "source": "boost_sets/perplex.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/perplex.json",
+      "size_bytes": 15162
+    },
+    {
+      "source": "boost_sets/pulverizing_fisticuffs.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/pulverizing_fisticuffs.json",
+      "size_bytes": 8714
+    },
+    {
+      "source": "boost_sets/will_of_the_controller.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/will_of_the_controller.json",
+      "size_bytes": 13024
+    },
+    {
+      "source": "boost_sets/opportunity_strikes.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/opportunity_strikes.json",
+      "size_bytes": 12216
+    },
+    {
+      "source": "boost_sets/celerity.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/celerity.json",
+      "size_bytes": 8721
+    },
+    {
+      "source": "boost_sets/theft_of_essence.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/theft_of_essence.json",
+      "size_bytes": 15981
+    },
+    {
+      "source": "boost_sets/superior_mark_of_supremacy.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/superior_mark_of_supremacy.json",
+      "size_bytes": 12382
+    },
+    {
+      "source": "boost_sets/sudden_acceleration.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/sudden_acceleration.json",
+      "size_bytes": 16784
+    },
+    {
+      "source": "boost_sets/superior_spiders_bite.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/superior_spiders_bite.json",
+      "size_bytes": 12276
+    },
+    {
+      "source": "boost_sets/winters_gift.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/winters_gift.json",
+      "size_bytes": 8936
+    },
+    {
+      "source": "boost_sets/eradication.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/eradication.json",
+      "size_bytes": 15678
+    },
+    {
+      "source": "boost_sets/bruising_blow.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/bruising_blow.json",
+      "size_bytes": 7859
+    },
+    {
+      "source": "boost_sets/explosive_strike.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/explosive_strike.json",
+      "size_bytes": 8094
+    },
+    {
+      "source": "boost_sets/touch_of_death.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/touch_of_death.json",
+      "size_bytes": 16007
+    },
+    {
+      "source": "boost_sets/serendipity.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/serendipity.json",
+      "size_bytes": 15482
+    },
+    {
+      "source": "boost_sets/essence_of_curare.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/essence_of_curare.json",
+      "size_bytes": 16162
+    },
+    {
+      "source": "boost_sets/blistering_cold.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/blistering_cold.json",
+      "size_bytes": 11121
+    },
+    {
+      "source": "boost_sets/might_of_the_tanker.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/might_of_the_tanker.json",
+      "size_bytes": 12013
+    },
+    {
+      "source": "boost_sets/multi_strike.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/multi_strike.json",
+      "size_bytes": 15893
+    },
+    {
+      "source": "boost_sets/obliteration.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/obliteration.json",
+      "size_bytes": 15777
+    },
+    {
+      "source": "boost_sets/brutes_fury.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/brutes_fury.json",
+      "size_bytes": 11855
+    },
+    {
+      "source": "boost_sets/springfoot.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/springfoot.json",
+      "size_bytes": 7486
+    },
+    {
+      "source": "boost_sets/superior_ascendency_of_the_dominator.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/superior_ascendency_of_the_dominator.json",
+      "size_bytes": 12818
+    },
+    {
+      "source": "boost_sets/ragnarok.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/ragnarok.json",
+      "size_bytes": 17782
+    },
+    {
+      "source": "boost_sets/annihilation.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/annihilation.json",
+      "size_bytes": 15931
+    },
+    {
+      "source": "boost_sets/superior_blistering_cold.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/superior_blistering_cold.json",
+      "size_bytes": 10658
+    },
+    {
+      "source": "boost_sets/overwhelming_force.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/overwhelming_force.json",
+      "size_bytes": 9730
+    },
+    {
+      "source": "boost_sets/gladiators_strike.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/gladiators_strike.json",
+      "size_bytes": 18275
+    },
+    {
+      "source": "boost_sets/kinetic_combat.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/kinetic_combat.json",
+      "size_bytes": 13229
+    },
+    {
+      "source": "boost_sets/trap_of_the_hunter.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/trap_of_the_hunter.json",
+      "size_bytes": 16563
+    },
+    {
+      "source": "boost_sets/impervium_armor.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/impervium_armor.json",
+      "size_bytes": 17221
+    },
+    {
+      "source": "boost_sets/crushing_impact.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/crushing_impact.json",
+      "size_bytes": 16198
+    },
+    {
+      "source": "boost_sets/cleaving_blow.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/cleaving_blow.json",
+      "size_bytes": 10524
+    },
+    {
+      "source": "boost_sets/thrust.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/thrust.json",
+      "size_bytes": 10083
+    },
+    {
+      "source": "boost_sets/stalkers_guile.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/stalkers_guile.json",
+      "size_bytes": 11636
+    },
+    {
+      "source": "boost_sets/executioners_contract.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/executioners_contract.json",
+      "size_bytes": 16623
+    },
+    {
+      "source": "boost_sets/entropic_chaos.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/entropic_chaos.json",
+      "size_bytes": 13215
+    },
+    {
+      "source": "boost_sets/command_of_the_mastermind.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/command_of_the_mastermind.json",
+      "size_bytes": 13205
+    },
+    {
+      "source": "boost_sets/deflated_ego.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/deflated_ego.json",
+      "size_bytes": 7777
+    },
+    {
+      "source": "boost_sets/gravitational_anchor.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/gravitational_anchor.json",
+      "size_bytes": 20034
+    },
+    {
+      "source": "boost_sets/frozen_blast.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/frozen_blast.json",
+      "size_bytes": 10851
+    },
+    {
+      "source": "boost_sets/undermined_defenses.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/undermined_defenses.json",
+      "size_bytes": 16782
+    },
+    {
+      "source": "boost_sets/experienced_marksman.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/experienced_marksman.json",
+      "size_bytes": 19996
+    },
+    {
+      "source": "boost_sets/titanium_coating.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/titanium_coating.json",
+      "size_bytes": 16625
+    },
+    {
+      "source": "boost_sets/malice_of_the_corruptor.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/malice_of_the_corruptor.json",
+      "size_bytes": 12478
+    },
+    {
+      "source": "boost_sets/exploit_weakness.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/exploit_weakness.json",
+      "size_bytes": 10669
+    },
+    {
+      "source": "boost_sets/superior_critical_strikes.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/superior_critical_strikes.json",
+      "size_bytes": 11413
+    },
+    {
+      "source": "boost_sets/miracle.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/miracle.json",
+      "size_bytes": 15143
+    },
+    {
+      "source": "boost_sets/superior_command_of_the_mastermind.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/superior_command_of_the_mastermind.json",
+      "size_bytes": 12587
+    },
+    {
+      "source": "boost_sets/superior_essence_transfer.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/superior_essence_transfer.json",
+      "size_bytes": 11876
+    },
+    {
+      "source": "boost_sets/ice_mistrals_torment.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/ice_mistrals_torment.json",
+      "size_bytes": 16867
+    },
+    {
+      "source": "boost_sets/quickfoot.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/quickfoot.json",
+      "size_bytes": 7542
+    },
+    {
+      "source": "boost_sets/annoyance.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/annoyance.json",
+      "size_bytes": 7797
+    },
+    {
+      "source": "boost_sets/impeded_swiftness.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/impeded_swiftness.json",
+      "size_bytes": 16329
+    },
+    {
+      "source": "boost_sets/gladiators_net.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/gladiators_net.json",
+      "size_bytes": 17657
+    },
+    {
+      "source": "boost_sets/sovereign_right.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/sovereign_right.json",
+      "size_bytes": 17093
+    },
+    {
+      "source": "boost_sets/analyze_weakness.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/analyze_weakness.json",
+      "size_bytes": 16452
+    },
+    {
+      "source": "boost_sets/triumphant_insult.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/triumphant_insult.json",
+      "size_bytes": 8070
+    },
+    {
+      "source": "boost_sets/vigilant_assault.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/vigilant_assault.json",
+      "size_bytes": 11906
+    },
+    {
+      "source": "boost_sets/exploited_vulnerability.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/exploited_vulnerability.json",
+      "size_bytes": 8752
+    },
+    {
+      "source": "boost_sets/javelin_volley.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/javelin_volley.json",
+      "size_bytes": 17865
+    },
+    {
+      "source": "boost_sets/kismet.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/kismet.json",
+      "size_bytes": 12727
+    },
+    {
+      "source": "boost_sets/superior_assassins_mark.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/superior_assassins_mark.json",
+      "size_bytes": 11276
+    },
+    {
+      "source": "boost_sets/warp.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/warp.json",
+      "size_bytes": 9817
+    },
+    {
+      "source": "boost_sets/impervious_skin.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/impervious_skin.json",
+      "size_bytes": 14746
+    },
+    {
+      "source": "boost_sets/superior_brutes_fury.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/superior_brutes_fury.json",
+      "size_bytes": 11592
+    },
+    {
+      "source": "boost_sets/superior_malice_of_the_corruptor.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/superior_malice_of_the_corruptor.json",
+      "size_bytes": 11913
+    },
+    {
+      "source": "boost_sets/steadfast_protection.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/steadfast_protection.json",
+      "size_bytes": 10819
+    },
+    {
+      "source": "boost_sets/winters_bite.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/winters_bite.json",
+      "size_bytes": 10902
+    },
+    {
+      "source": "boost_sets/superior_overpowering_presence.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/superior_overpowering_presence.json",
+      "size_bytes": 12503
+    },
+    {
+      "source": "boost_sets/extreme_measures.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/extreme_measures.json",
+      "size_bytes": 16516
+    },
+    {
+      "source": "boost_sets/stagger.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/stagger.json",
+      "size_bytes": 12614
+    },
+    {
+      "source": "boost_sets/razzle_dazzle.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/razzle_dazzle.json",
+      "size_bytes": 15764
+    },
+    {
+      "source": "boost_sets/bonesnap.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/bonesnap.json",
+      "size_bytes": 7590
+    },
+    {
+      "source": "boost_sets/regenerative_tissue.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/regenerative_tissue.json",
+      "size_bytes": 13972
+    },
+    {
+      "source": "boost_sets/decimation.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/decimation.json",
+      "size_bytes": 15825
+    },
+    {
+      "source": "boost_sets/perfect_zinger.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/perfect_zinger.json",
+      "size_bytes": 16029
+    },
+    {
+      "source": "boost_sets/defenders_bastion.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/defenders_bastion.json",
+      "size_bytes": 11914
+    },
+    {
+      "source": "boost_sets/scrappers_strike.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/scrappers_strike.json",
+      "size_bytes": 12410
+    },
+    {
+      "source": "boost_sets/discouraging_words.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/discouraging_words.json",
+      "size_bytes": 8441
+    },
+    {
+      "source": "boost_sets/dominion_of_arachnos.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/dominion_of_arachnos.json",
+      "size_bytes": 12664
+    },
+    {
+      "source": "boost_sets/sting_of_the_manticore.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/sting_of_the_manticore.json",
+      "size_bytes": 17020
+    },
+    {
+      "source": "boost_sets/tempest.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/tempest.json",
+      "size_bytes": 10060
+    },
+    {
+      "source": "boost_sets/kinetic_crash.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/kinetic_crash.json",
+      "size_bytes": 16049
+    },
+    {
+      "source": "boost_sets/rectified_reticle.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/rectified_reticle.json",
+      "size_bytes": 9325
+    },
+    {
+      "source": "boost_sets/harmonized_healing.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/harmonized_healing.json",
+      "size_bytes": 16176
+    },
+    {
+      "source": "boost_sets/maelstroms_fury.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/maelstroms_fury.json",
+      "size_bytes": 10793
+    },
+    {
+      "source": "boost_sets/malaises_illusions.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/malaises_illusions.json",
+      "size_bytes": 16424
+    },
+    {
+      "source": "boost_sets/blasters_wrath.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/blasters_wrath.json",
+      "size_bytes": 11609
+    },
+    {
+      "source": "boost_sets/power_transfer.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/power_transfer.json",
+      "size_bytes": 16337
+    },
+    {
+      "source": "boost_sets/air_burst.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/air_burst.json",
+      "size_bytes": 10144
+    },
+    {
+      "source": "boost_sets/doctored_wounds.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/doctored_wounds.json",
+      "size_bytes": 15826
+    },
+    {
+      "source": "boost_sets/jaunt.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/jaunt.json",
+      "size_bytes": 7227
+    },
+    {
+      "source": "boost_sets/sciroccos_dervish.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/sciroccos_dervish.json",
+      "size_bytes": 16271
+    },
+    {
+      "source": "boost_sets/curtail_speed.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/curtail_speed.json",
+      "size_bytes": 13275
+    },
+    {
+      "source": "boost_sets/paralytic.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/paralytic.json",
+      "size_bytes": 12696
+    },
+    {
+      "source": "boost_sets/entomb.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/entomb.json",
+      "size_bytes": 10237
+    },
+    {
+      "source": "boost_sets/reactive_armor.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/reactive_armor.json",
+      "size_bytes": 16433
+    },
+    {
+      "source": "boost_sets/energy_manipulator.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/energy_manipulator.json",
+      "size_bytes": 8214
+    },
+    {
+      "source": "boost_sets/gift_of_the_ancients.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/gift_of_the_ancients.json",
+      "size_bytes": 17471
+    },
+    {
+      "source": "boost_sets/superior_defenders_bastion.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/superior_defenders_bastion.json",
+      "size_bytes": 11439
+    },
+    {
+      "source": "boost_sets/lockdown.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/lockdown.json",
+      "size_bytes": 15278
+    },
+    {
+      "source": "boost_sets/soaring.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/soaring.json",
+      "size_bytes": 7385
+    },
+    {
+      "source": "boost_sets/ascendency_of_the_dominator.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/ascendency_of_the_dominator.json",
+      "size_bytes": 13453
+    },
+    {
+      "source": "boost_sets/superior_stalkers_guile.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/superior_stalkers_guile.json",
+      "size_bytes": 11235
+    },
+    {
+      "source": "boost_sets/soulbound_allegiance.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/soulbound_allegiance.json",
+      "size_bytes": 19738
+    },
+    {
+      "source": "boost_sets/overpowering_presence.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/overpowering_presence.json",
+      "size_bytes": 13128
+    },
+    {
+      "source": "boost_sets/glimpse_of_the_abyss.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/glimpse_of_the_abyss.json",
+      "size_bytes": 16445
+    },
+    {
+      "source": "boost_sets/launch.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/launch.json",
+      "size_bytes": 10088
+    },
+    {
+      "source": "boost_sets/blood_mandate.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/blood_mandate.json",
+      "size_bytes": 15732
+    },
+    {
+      "source": "boost_sets/armageddon.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/armageddon.json",
+      "size_bytes": 18119
+    },
+    {
+      "source": "boost_sets/cloud_senses.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/cloud_senses.json",
+      "size_bytes": 16052
+    },
+    {
+      "source": "boost_sets/achilles_heel.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/achilles_heel.json",
+      "size_bytes": 7952
+    },
+    {
+      "source": "boost_sets/induced_coma.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/induced_coma.json",
+      "size_bytes": 15538
+    },
+    {
+      "source": "boost_sets/touch_of_the_nictus.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/touch_of_the_nictus.json",
+      "size_bytes": 16348
+    },
+    {
+      "source": "boost_sets/superior_frozen_blast.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/superior_frozen_blast.json",
+      "size_bytes": 10435
+    },
+    {
+      "source": "boost_sets/enfeebled_operation.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/enfeebled_operation.json",
+      "size_bytes": 16892
+    },
+    {
+      "source": "boost_sets/reactive_defenses.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/reactive_defenses.json",
+      "size_bytes": 17365
+    },
+    {
+      "source": "boost_sets/mocking_beratement.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/mocking_beratement.json",
+      "size_bytes": 16507
+    },
+    {
+      "source": "boost_sets/far_strike.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/far_strike.json",
+      "size_bytes": 7681
+    },
+    {
+      "source": "boost_sets/superior_will_of_the_controller.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/superior_will_of_the_controller.json",
+      "size_bytes": 12472
+    },
+    {
+      "source": "boost_sets/touch_of_lady_grey.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/touch_of_lady_grey.json",
+      "size_bytes": 16647
+    },
+    {
+      "source": "boost_sets/cupids_crush.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/cupids_crush.json",
+      "size_bytes": 9596
+    },
+    {
+      "source": "boost_sets/neuronic_shutdown.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/neuronic_shutdown.json",
+      "size_bytes": 16083
+    },
+    {
+      "source": "boost_sets/efficacy_adaptor.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/efficacy_adaptor.json",
+      "size_bytes": 16545
+    },
+    {
+      "source": "boost_sets/index.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/index.json",
+      "size_bytes": 11102
+    },
+    {
+      "source": "boost_sets/dampened_spirits.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/dampened_spirits.json",
+      "size_bytes": 16395
+    },
+    {
+      "source": "boost_sets/preemptive_optimization.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/preemptive_optimization.json",
+      "size_bytes": 17740
+    },
+    {
+      "source": "boost_sets/call_of_the_sandman.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/call_of_the_sandman.json",
+      "size_bytes": 16676
+    },
+    {
+      "source": "boost_sets/pounding_slugfest.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/pounding_slugfest.json",
+      "size_bytes": 10737
+    },
+    {
+      "source": "boost_sets/salvo.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/salvo.json",
+      "size_bytes": 7678
+    },
+    {
+      "source": "boost_sets/bombardment.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/bombardment.json",
+      "size_bytes": 15710
+    },
+    {
+      "source": "boost_sets/call_to_arms.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/call_to_arms.json",
+      "size_bytes": 16807
+    },
+    {
+      "source": "boost_sets/tempered_readiness.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/tempered_readiness.json",
+      "size_bytes": 16560
+    },
+    {
+      "source": "boost_sets/synapses_shock.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/synapses_shock.json",
+      "size_bytes": 17595
+    },
+    {
+      "source": "boost_sets/red_fortune.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/red_fortune.json",
+      "size_bytes": 15546
+    },
+    {
+      "source": "boost_sets/preventive_medicine.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/preventive_medicine.json",
+      "size_bytes": 17597
+    },
+    {
+      "source": "boost_sets/unspeakable_terror.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/unspeakable_terror.json",
+      "size_bytes": 16250
+    },
+    {
+      "source": "boost_sets/shield_wall.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/shield_wall.json",
+      "size_bytes": 18637
+    },
+    {
+      "source": "boost_sets/superior_winters_bite.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/superior_winters_bite.json",
+      "size_bytes": 10473
+    },
+    {
+      "source": "boost_sets/superior_unrelenting_fury.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/superior_unrelenting_fury.json",
+      "size_bytes": 11821
+    },
+    {
+      "source": "boost_sets/force_feedback.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/force_feedback.json",
+      "size_bytes": 16002
+    },
+    {
+      "source": "boost_sets/dominating_grasp.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/dominating_grasp.json",
+      "size_bytes": 12624
+    },
+    {
+      "source": "boost_sets/stupefy.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/stupefy.json",
+      "size_bytes": 15086
+    },
+    {
+      "source": "boost_sets/superior_avalanche.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/superior_avalanche.json",
+      "size_bytes": 10228
+    },
+    {
+      "source": "boost_sets/calibrated_accuracy.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/calibrated_accuracy.json",
+      "size_bytes": 16625
+    },
+    {
+      "source": "boost_sets/sentinels_ward.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/sentinels_ward.json",
+      "size_bytes": 11604
+    },
+    {
+      "source": "boost_sets/superior_defiant_barrage.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/superior_defiant_barrage.json",
+      "size_bytes": 11401
+    },
+    {
+      "source": "boost_sets/volley_of_velocity.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/volley_of_velocity.json",
+      "size_bytes": 8229
+    },
+    {
+      "source": "boost_sets/coercive_persuasion.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/coercive_persuasion.json",
+      "size_bytes": 19729
+    },
+    {
+      "source": "boost_sets/hecatomb.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/hecatomb.json",
+      "size_bytes": 17842
+    },
+    {
+      "source": "boost_sets/unbreakable_constraint.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/unbreakable_constraint.json",
+      "size_bytes": 20004
+    },
+    {
+      "source": "boost_sets/shield_breaker.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/shield_breaker.json",
+      "size_bytes": 16283
+    },
+    {
+      "source": "boost_sets/defiant_barrage.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/defiant_barrage.json",
+      "size_bytes": 11873
+    },
+    {
+      "source": "boost_sets/nightmare.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/nightmare.json",
+      "size_bytes": 15364
+    },
+    {
+      "source": "boost_sets/gladiators_javelin.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/gladiators_javelin.json",
+      "size_bytes": 18380
+    },
+    {
+      "source": "boost_sets/superior_entomb.json",
+      "reason": "layer_3_special_directory:boost_sets",
+      "layer": 3,
+      "copied_to": "boost_sets/superior_entomb.json",
+      "size_bytes": 9915
+    }
+  ]
+}

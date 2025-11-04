@@ -1,0 +1,38 @@
+{
+  "name": "Tank_Dark_Mastery",
+  "display_name": "Dark Mastery",
+  "display_fullname": "Epic.Dark Mastery",
+  "display_help": "You have Mastery over Darkness to control and blast your foes.",
+  "display_short_help": "Dark Mastery",
+  "available_level": [
+    34,
+    34,
+    37,
+    40,
+    43
+  ],
+  "source_file": "DEFS/POWERS/EPIC/TANK_DARK_MASTERY.POWERSETS",
+  "icon": "sentinel_dark_mastery_set.png",
+  "requires": "",
+  "power_names": [
+    "Epic.Tank_Dark_Mastery.Penumbral_Grasp",
+    "Epic.Tank_Dark_Mastery.Petrifying_Gaze",
+    "Epic.Tank_Dark_Mastery.Dark_Blast",
+    "Epic.Tank_Dark_Mastery.Night_Fall",
+    "Epic.Tank_Dark_Mastery.Tar_Patch"
+  ],
+  "power_display_names": [
+    "Penumbral Grasp",
+    "Petrifying Gaze",
+    "Dark Blast",
+    "Night Fall",
+    "Tar Patch"
+  ],
+  "power_short_helps": [
+    "Ranged, DOT(Negative), Foe Immobilize, -To Hit",
+    "Ranged, DMG(Negative), Foe Hold",
+    "Ranged, DMG(Negative), Foe -ACC",
+    "Ranged (Cone), DMG(Negative), Foe -To Hit",
+    "Ranged (Location AoE), Target -Speed, -Res, -Fly"
+  ]
+}

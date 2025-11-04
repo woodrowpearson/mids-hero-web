@@ -1,0 +1,31 @@
+{
+  "tag": "TBomb",
+  "bears": [
+    [
+      "Pets.Bomb Temporal Defender.Temporal Bubble",
+      "pets.bomb_temporal_defender.temporal_bubble"
+    ],
+    [
+      "Pets.Bomb Temporal Defender.Temporal Bubble",
+      "pets.bomb_temporal_defender.temporal_bubble_debuff"
+    ],
+    [
+      "Pets.Bomb Temporal.Temporal Bubble",
+      "pets.bomb_temporal.temporal_bubble"
+    ],
+    [
+      "Pets.Bomb Temporal.Temporal Bubble",
+      "pets.bomb_temporal.temporal_bubble_debuff"
+    ],
+    [
+      "Redirects.Devices.Temporal Bomb",
+      "redirects.gadgets.remote_bomb_info"
+    ]
+  ],
+  "affects": [
+    [
+      "Redirects.Devices.Temporal Bubble",
+      "redirects.gadgets.temporal_bubblefx"
+    ]
+  ]
+}

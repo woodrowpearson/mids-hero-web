@@ -1,0 +1,14 @@
+{
+  "tag": "Resources",
+  "bears": [
+    [
+      "Redirects.Staff Melee.Perfection Level",
+      "redirects.staff_melee.perfection_level"
+    ],
+    [
+      "Redirects.Staff Melee.Perfection Level",
+      "redirects.staff_melee.perfection_level_stalker"
+    ]
+  ],
+  "affects": []
+}

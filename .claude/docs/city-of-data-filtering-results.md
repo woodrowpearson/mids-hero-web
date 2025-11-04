@@ -1,15 +1,17 @@
 # City of Data Filtering Results
 
 > **Completed:** 2025-11-01
-> **Updated:** 2025-11-01 (Manual NPC cleanup)
+> **Updated:** 2025-11-04 (Manual NPC cleanup - boss and lt archetypes)
 > **Epic:** 2.5
 > **GitHub Issue:** #300
 
 ## Summary
 
-Successfully pruned City of Data raw dataset from 43,233 files to 6,400 player-relevant files (14.8% of source data).
+Successfully pruned City of Data raw dataset from 43,233 files to 6,385 player-relevant files (14.8% of source data).
 
-**Manual Cleanup Applied:** Removed 79 NPC boss archetypes, temporary power tags, and related metadata files that were not needed for player build planning.
+**Manual Cleanup Applied:** Removed 93 NPC-related files through two cleanup passes:
+- **Pass 1 (2025-11-01):** 79 files (27 boss_* archetypes, 27 boss_* tables, 9 exclusion_groups, 16 temporary/visual tags)
+- **Pass 2 (2025-11-04):** 14 files (7 lt_* archetypes, 7 lt_* tables)
 
 ## Filtering Statistics
 
@@ -18,8 +20,8 @@ Successfully pruned City of Data raw dataset from 43,233 files to 6,400 player-r
 
 **Total files:**
 - Source: 43,233 files
-- Kept: 6,400 files (14.8%)
-- Excluded: 167 power categories + 79 NPC/metadata files
+- Kept: 6,385 files (14.8%)
+- Excluded: 167 power categories + 93 NPC/metadata files
 - Reduction: 85.2% reduction in dataset size
 
 **By Layer:**
@@ -30,16 +32,18 @@ Successfully pruned City of Data raw dataset from 43,233 files to 6,400 player-r
   - Incarnate powers (3 categories)
 - Layer 2 (Archetype-linked): 3,717 files
   - Primary/secondary powersets for all player archetypes
-- Layer 3 (Special directories): 625 files (reduced from 704 after manual cleanup)
+- Layer 3 (Special directories): 611 files (reduced from 704 after two manual cleanup passes)
   - Archetypes directory (player archetypes only)
   - Complete boost_sets directory
   - Selected metadata directories
 
 **By Directory:**
-- archetypes/: 39 files (15 player + 24 remaining NPC archetypes - removed 27 boss archetypes)
+- archetypes/: 32 files (15 player + 17 remaining NPC archetypes)
+  - Removed: 27 boss_* + 7 lt_* = 34 NPC archetype files
 - boost_sets/: 228 files (100% kept - all enhancement sets)
-- powers/: 5,775 files (36 categories filtered from ~200+ categories)
-- tables/: 38 files (selective - removed 27 boss-specific tables)
+- powers/: 5,773 files (36 categories filtered from ~200+ categories)
+- tables/: 31 files (selective metadata)
+  - Removed: 27 boss_* + 7 lt_* = 34 NPC table files
 - tags/: 300 files (selective - removed 16 temporary/visual tags)
 - exclusion_groups/: 16 files (selective - removed 9 NPC-related groups)
 - recharge_groups/: 4 files (selective - power mechanics)
@@ -54,7 +58,9 @@ Successfully pruned City of Data raw dataset from 43,233 files to 6,400 player-r
 - Brute, Stalker, Mastermind, Dominator, Corruptor
 - Peacebringer, Warshade, Arachnos Soldier, Arachnos Widow, Sentinel
 
-Note: 24 additional NPC archetypes remain (lt_*, minion_* prefixes). All 27 boss_* archetype files were removed during manual cleanup as they are not needed for player build planning.
+**NPC Archetypes:** 17 minion_* archetype files remain (for pet/summon powers). Removed 34 NPC files:
+- 27 boss_* files (Pass 1 - not needed for player build planning)
+- 7 lt_* files (Pass 2 - lieutenant NPCs not needed for player builds)
 
 ### Power Categories
 ✅ All required power category patterns present:

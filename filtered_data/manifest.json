@@ -3,14 +3,14 @@
     "source_dir": "raw_data_homecoming-20250617_6916",
     "filtered_date": "2025-11-04T15:25:09.844972",
     "total_source_files": 43233,
-    "kept_files": 6399,
+    "kept_files": 6385,
     "excluded_files": 167,
-    "manual_cleanup_files": 80,
-    "final_file_count": 6399,
+    "manual_cleanup_files": 93,
+    "final_file_count": 6385,
     "strategy_version": "v1.0",
     "epic": "2.5",
     "github_issue": "#300",
-    "manual_cleanup_note": "After automated filtering, manual review removed 79 NPC-related files: 27 boss_* archetypes, 27 boss_* tables, 9 exclusion_groups, 16 temporary/visual tags. The kept_files array below includes some references to deleted files. Actual directory counts: archetypes/39, boost_sets/228, exclusion_groups/16, powers/5773, recharge_groups/4, tables/38, tags/300."
+    "manual_cleanup_note": "After automated filtering, manual review removed 93 NPC-related files in two passes: Pass 1 (79 files): 27 boss_* archetypes, 27 boss_* tables, 9 exclusion_groups, 16 temporary/visual tags. Pass 2 (14 files): 7 lt_* archetypes, 7 lt_* tables. The kept_files array below includes references to deleted files. Actual directory counts: archetypes/32, boost_sets/228, exclusion_groups/16, powers/5773, recharge_groups/4, tables/31, tags/300."
   },
   "filter_rules": {
     "explicit_categories": [

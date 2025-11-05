@@ -1,0 +1,5 @@
+MCP Registration Status: Registered
+Timestamp: 8/30/2025, 10:35 AM
+Project: /Users/w/code/mids-hero-web
+Server: claude-checkpoints
+Port: 8765

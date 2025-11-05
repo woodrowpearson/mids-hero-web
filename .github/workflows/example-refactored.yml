@@ -20,7 +20,7 @@ jobs:
   # Step 1: Detect what changed
   detect-changes:
     name: Analyze Changes
-    uses: ./.github/workflows/shared/change-detection.yml
+    uses: ./.github/workflows/reusable-change-detection.yml
     with:
       source_files: |
         backend/**/*.py
@@ -38,7 +38,7 @@ jobs:
     name: Token Validation
     needs: detect-changes
     if: needs.detect-changes.outputs.docs_changed == 'true'
-    uses: ./.github/workflows/shared/token-validation.yml
+    uses: ./.github/workflows/reusable-token-validation.yml
     with:
       files_to_check: |
         CLAUDE.md:5000
@@ -49,7 +49,7 @@ jobs:
   # Step 3: Extract PR context
   get-context:
     name: PR Context
-    uses: ./.github/workflows/shared/pr-context.yml
+    uses: ./.github/workflows/reusable-pr-context.yml
     with:
       fetch_diff: true
       fetch_comments: false
@@ -61,7 +61,7 @@ jobs:
     name: Code Review
     needs: [detect-changes, get-context]
     if: needs.detect-changes.outputs.source_changed == 'true'
-    uses: ./.github/workflows/shared/claude-setup.yml
+    uses: ./.github/workflows/reusable-claude-setup.yml
     with:
       prompt: |
         Review this pull request for code quality and best practices.

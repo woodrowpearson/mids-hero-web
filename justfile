@@ -40,6 +40,11 @@ dev-setup:
     @if [ ! -f .env ]; then cp .env.example .env 2>/dev/null || echo "⚠️  No .env.example found"; fi
     @echo "✅ Development environment ready"
 
+# JSON processing with jq
+jq *args:
+    @command -v jq >/dev/null 2>&1 || (echo "❌ jq not installed. Install with: brew install jq" && exit 1)
+    @jq {{args}}
+
 # Start development servers
 dev:
     @echo "🚀 Starting development environment..."

@@ -1,7 +1,8 @@
 """
-Database models for Mids-Web backend.
+Database models for Mids-Web backend - Updated for filtered_data import.
 
-Based on the comprehensive database design for City of Heroes character build planner.
+Redesigned schema to support the rich JSON data from filtered_data directory.
+This represents a clean break from the old MHD-based schema.
 """
 
 from datetime import datetime
@@ -18,6 +19,7 @@ from sqlalchemy import (
     String,
     Text,
     UniqueConstraint,
+    Float,
 )
 from sqlalchemy.orm import relationship
 
@@ -30,25 +32,83 @@ class Archetype(Base):
     __tablename__ = "archetypes"
 
     id = Column(Integer, primary_key=True, index=True)
+
+    # Basic identification
     name = Column(String(100), unique=True, nullable=False, index=True)
-    description = Column(Text)
     display_name = Column(String(100))
-    primary_group = Column(String(50))  # damage, control, defense, support
-    secondary_group = Column(String(50))  # damage, control, defense, support
+    icon = Column(String(255))
+
+    # Help text
+    display_help = Column(Text)
+    display_short_help = Column(Text)
+
+    # Game mechanics
+    default_rank = Column(String(50))
+    class_requires = Column(String(200))
+    restrictions = Column(JSON)  # Array of restrictions
+    level_up_respecs = Column(JSON)  # Array of level-based respecs
+
+    # Power categories
+    primary_category = Column(String(100), index=True)
+    secondary_category = Column(String(100), index=True)
+    power_pool_category = Column(String(100))
+    epic_pool_category = Column(String(100))
+
+    # Stats and modifiers
+    defiant_scale = Column(Numeric(5, 2))
+    deep_sleep_resistance = Column(Numeric(5, 2))
+    off_defiant_hit_points_attrib = Column(Integer)
+
+    # Faction
+    is_villain = Column(Boolean, default=False)
+
+    # Localization
+    class_key = Column(String(100))
+
+    # Base attributes (stored as JSON for flexibility)
+    attrib_base = Column(JSON)  # Complete attrib_base object from filtered_data
+
+    # Legacy fields (can be computed from attrib_base if needed)
     hit_points_base = Column(Integer)
     hit_points_max = Column(Integer)
-    inherent_power_id = Column(Integer, ForeignKey("powers.id"))
-    icon_path = Column(String(255))  # Added for archetype icons
+
+    # Metadata
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     # Relationships
     powersets = relationship("Powerset", back_populates="archetype")
     builds = relationship("Build", back_populates="archetype")
-    inherent_power = relationship("Power", foreign_keys=[inherent_power_id])
+    modifier_tables = relationship("ArchetypeModifierTable", back_populates="archetype")
 
     __table_args__ = (
-        Index("idx_archetype_groups", "primary_group", "secondary_group"),
+        Index("idx_archetype_categories", "primary_category", "secondary_category"),
+    )
+
+
+class ArchetypeModifierTable(Base):
+    """Archetype modifier tables for damage/effect calculations."""
+
+    __tablename__ = "archetype_modifier_tables"
+
+    id = Column(Integer, primary_key=True, index=True)
+    archetype_id = Column(Integer, ForeignKey("archetypes.id"), nullable=False)
+
+    # Table identification
+    table_name = Column(String(100), nullable=False, index=True)  # e.g., "Melee_Damage", "Ranged_Damage"
+
+    # The actual modifier values (array of floats for each level)
+    values = Column(JSON, nullable=False)  # Array of numeric values
+
+    # Metadata
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    # Relationships
+    archetype = relationship("Archetype", back_populates="modifier_tables")
+
+    __table_args__ = (
+        UniqueConstraint("archetype_id", "table_name", name="uq_archetype_table"),
+        Index("idx_archetype_table_name", "archetype_id", "table_name"),
     )
 
 
@@ -58,14 +118,38 @@ class Powerset(Base):
     __tablename__ = "powersets"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(100), nullable=False, index=True)
+
+    # Identification
+    name = Column(String(100), nullable=False, index=True)  # Internal name
     display_name = Column(String(100))
-    description = Column(Text)
-    archetype_id = Column(Integer, ForeignKey("archetypes.id"), nullable=False)
-    powerset_type = Column(
-        String(20), nullable=False
-    )  # primary, secondary, pool, epic, incarnate
-    icon_path = Column(String(255))
+    display_fullname = Column(String(200))
+
+    # Help text
+    display_help = Column(Text)
+    display_short_help = Column(Text)
+
+    # Archetype association
+    archetype_id = Column(Integer, ForeignKey("archetypes.id"))
+
+    # Powerset type
+    powerset_type = Column(String(20), nullable=False, index=True)  # primary, secondary, pool, epic, incarnate
+
+    # Source information
+    source_file = Column(String(500))
+
+    # UI
+    icon = Column(String(255))
+
+    # Requirements
+    requires = Column(Text)  # Expression string for requirements
+
+    # Powers in this set
+    power_names = Column(JSON)  # Array of full power names
+    power_display_names = Column(JSON)  # Array of display names
+    power_short_helps = Column(JSON)  # Array of short help texts
+    available_level = Column(JSON)  # Array of levels when powers become available
+
+    # Metadata
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
@@ -84,154 +168,204 @@ class Powerset(Base):
     )
 
     __table_args__ = (
-        UniqueConstraint(
-            "name", "archetype_id", "powerset_type", name="uq_powerset_archetype_type"
-        ),
+        UniqueConstraint("name", "archetype_id", name="uq_powerset_archetype"),
         Index("idx_powerset_type", "powerset_type"),
     )
 
 
 class Power(Base):
-    """Power model representing individual abilities."""
+    """Power model representing individual abilities - stores complete JSON for complex data."""
 
     __tablename__ = "powers"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(100), nullable=False, index=True)
+
+    # Identification
+    name = Column(String(100), nullable=False, index=True)  # Short name
+    full_name = Column(String(200), unique=True, nullable=False, index=True)  # Full qualified name
     display_name = Column(String(100))
-    description = Column(Text)
-    powerset_id = Column(Integer, ForeignKey("powersets.id"), nullable=False)
-    level_available = Column(Integer, default=1)
-    power_type = Column(String(50))  # attack, defense, control, support, travel
-    target_type = Column(String(50))  # self, ally, enemy, location
+    display_fullname = Column(String(200))
+    short_name = Column(String(50))
 
-    # Base stats
-    accuracy = Column(Numeric(5, 2), default=1.0)
-    damage_scale = Column(Numeric(5, 2))
-    endurance_cost = Column(Numeric(5, 2))
-    recharge_time = Column(Numeric(6, 2))
-    activation_time = Column(Numeric(4, 2))
-    range_feet = Column(Integer)
-    radius_feet = Column(Integer)
-    max_targets = Column(Integer)
+    # Power type
+    type = Column(String(50), index=True)  # Click, Toggle, Auto, etc.
 
-    # Effects stored as JSONB for flexibility
-    effects = Column(JSON)
+    # Help text
+    display_help = Column(Text)
+    display_short_help = Column(Text)
 
-    # Additional power data fields
-    internal_name = Column(String(100))  # Internal power name from game data
-    requires_line_of_sight = Column(Boolean, default=True)
-    modes_required = Column(JSON)  # JSON array of required modes
-    modes_disallowed = Column(JSON)  # JSON array of disallowed modes
-    ai_report = Column(String(50))  # AI behavior type
-    effect_groups = Column(JSON)  # Detailed effect group data
+    # Powerset association
+    powerset_id = Column(Integer, ForeignKey("powersets.id"))
+    powerset_name = Column(String(200), index=True)  # Denormalized for queries
+
+    # Level availability
+    available_level = Column(Integer, index=True)
+    level_bought = Column(Integer, default=-1)
 
     # UI information
-    icon_path = Column(String(255))
-    display_order = Column(Integer)
-    display_info = Column(JSON)  # Additional display information
+    icon = Column(String(255))
+    tray_placement = Column(String(50))
+    tray_number = Column(Integer)
+    tray_slot = Column(Integer)
+    server_tray_priority = Column(Integer)
+
+    # Basic stats (commonly queried fields extracted for performance)
+    accuracy = Column(Numeric(5, 2), default=1.0)
+    activation_time = Column(Numeric(6, 2))
+    recharge_time = Column(Numeric(6, 2))
+    endurance_cost = Column(Numeric(6, 2))
+    range = Column(Numeric(6, 2))
+    radius = Column(Numeric(6, 2))
+    arc = Column(Numeric(6, 4))
+    max_targets_hit = Column(Integer)
+
+    # Target information
+    target_type = Column(String(50))
+    target_visibility = Column(String(50))
+    effect_area = Column(String(50))  # Cone, Sphere, etc.
+
+    # Requirements
+    requires = Column(Text)
+    activate_requires = Column(Text)
+    confirm_requires = Column(Text)
+
+    # Enhancement information
+    max_boosts = Column(Integer, default=6)
+    boosts_allowed = Column(JSON)  # Array of allowed boost types
+    allowed_boostset_cats = Column(JSON)  # Array of allowed boost set categories
+
+    # Complete power data stored as JSON (for complex nested structures)
+    # This includes: effects, templates, messages, flags, expressions, etc.
+    power_data = Column(JSON)  # Complete power JSON from filtered_data
+
+    # Archetypes that can use this power
+    archetypes = Column(JSON)  # Array of archetype names
+
+    # Tags for power interactions
+    tags = Column(JSON)  # Array of tag names this power has
+
+    # Groups
+    exclusion_groups = Column(JSON)  # Array of exclusion group names
+    recharge_groups = Column(JSON)  # Array of recharge group names
+
+    # Metadata
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     # Relationships
     powerset = relationship("Powerset", back_populates="powers")
-    prerequisites = relationship(
-        "PowerPrerequisite",
-        foreign_keys="PowerPrerequisite.power_id",
-        back_populates="power",
-    )
-    required_for = relationship(
-        "PowerPrerequisite",
-        foreign_keys="PowerPrerequisite.required_power_id",
-        back_populates="required_power",
-    )
     build_powers = relationship("BuildPower", back_populates="power")
-    compatibilities = relationship(
-        "PowerEnhancementCompatibility", back_populates="power"
-    )
 
     __table_args__ = (
-        Index("idx_power_level", "level_available"),
-        Index("idx_power_type", "power_type"),
-    )
-
-
-class PowerPrerequisite(Base):
-    """Power prerequisite model for power requirements."""
-
-    __tablename__ = "power_prerequisites"
-
-    id = Column(Integer, primary_key=True, index=True)
-    power_id = Column(Integer, ForeignKey("powers.id"), nullable=False)
-    required_power_id = Column(Integer, ForeignKey("powers.id"), nullable=False)
-    required_level = Column(Integer)
-    prerequisite_type = Column(String(20))  # one_of, all_of
-    created_at = Column(DateTime, default=datetime.utcnow)
-
-    # Relationships
-    power = relationship(
-        "Power", foreign_keys=[power_id], back_populates="prerequisites"
-    )
-    required_power = relationship(
-        "Power", foreign_keys=[required_power_id], back_populates="required_for"
-    )
-
-    __table_args__ = (
-        Index("idx_prereq_power", "power_id"),
-        Index("idx_prereq_required", "required_power_id"),
+        Index("idx_power_level", "available_level"),
+        Index("idx_power_type", "type"),
+        Index("idx_power_powerset", "powerset_name"),
     )
 
 
 class EnhancementSet(Base):
-    """Enhancement set model representing named sets."""
+    """Enhancement set model representing named sets with bonuses."""
 
     __tablename__ = "enhancement_sets"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(100), unique=True, nullable=False)
+
+    # Identification
+    name = Column(String(100), unique=True, nullable=False, index=True)
     display_name = Column(String(100))
-    description = Column(Text)
+
+    # Grouping
+    group_name = Column(String(100), index=True)  # e.g., "Stuns", "Melee Damage"
+
+    # Level range
     min_level = Column(Integer, default=10)
     max_level = Column(Integer, default=50)
+
+    # Conversion groups (for converters)
+    conversion_groups = Column(JSON)  # Array of rarity levels
+
+    # Boost lists (all enhancement variants in this set)
+    boost_lists = Column(JSON)  # Array of arrays of boost full names
+
+    # Set bonuses
+    bonuses = Column(JSON)  # Array of bonus objects with min/max requirements
+
+    # Computed metadata (processed enhancement data)
+    computed = Column(JSON)  # Complete computed object from filtered_data
+
+    # Metadata
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     # Relationships
     enhancements = relationship("Enhancement", back_populates="enhancement_set")
-    set_bonuses = relationship("SetBonus", back_populates="enhancement_set")
+
+    __table_args__ = (
+        Index("idx_enhset_group", "group_name"),
+        Index("idx_enhset_level", "min_level", "max_level"),
+    )
 
 
 class Enhancement(Base):
-    """Enhancement model representing power modifications."""
+    """Enhancement model representing individual enhancements/IOs."""
 
     __tablename__ = "enhancements"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(100), nullable=False, index=True)
-    display_name = Column(String(200))  # Increased size based on data
-    short_name = Column(String(50))  # Added for enhancement abbreviations
-    description = Column(Text)  # Added for enhancement descriptions
-    enhancement_type = Column(
-        String(50), index=True
-    )  # IO, SO, DO, TO, HamiO, set_piece
+
+    # Identification
+    name = Column(String(200), nullable=False, index=True)  # Internal name
+    display_name = Column(String(200))
+    computed_name = Column(String(200))  # Computed display name
+
+    # Set association
     set_id = Column(Integer, ForeignKey("enhancement_sets.id"))
+    boostset_name = Column(String(100), index=True)  # Denormalized for queries
+
+    # Type
+    boost_type = Column(String(100), index=True)  # e.g., "Enhance Disorient"
+
+    # Level information
     level_min = Column(Integer, default=1)
     level_max = Column(Integer, default=50)
+    min_slot_level = Column(Integer)
+    min_bonus_level = Column(Integer)
+    only_at_50 = Column(Boolean, default=False)
 
-    # Enhancement values as percentages
-    accuracy_bonus = Column(Numeric(5, 2))
-    damage_bonus = Column(Numeric(5, 2))
-    endurance_bonus = Column(Numeric(5, 2))
-    recharge_bonus = Column(Numeric(5, 2))
-    defense_bonus = Column(Numeric(5, 2))
-    resistance_bonus = Column(Numeric(5, 2))
+    # Slotting requirements
+    slot_requires = Column(Text)  # Expression for slotting requirements
+    ignores_level_differences = Column(Boolean, default=False)
+    bonuses_ignore_exemplar = Column(Boolean, default=False)
 
-    # Additional bonuses as JSONB
-    other_bonuses = Column(JSON)
-    unique_enhancement = Column(Boolean, default=False)
-    icon_path = Column(String(255))
-    recipe_name = Column(String(100))  # Added for recipe references
-    salvage_name = Column(String(100))  # Added for salvage references
+    # Trading/combining
+    combinable = Column(Boolean, default=False)
+    tradeable = Column(Boolean, default=False)
+    account_bound = Column(Boolean, default=False)
+
+    # Attuned/catalyst system
+    boostable = Column(Boolean, default=False)  # Can be boosted
+    attuned = Column(Boolean, default=False)  # Is attuned
+    catalyzes_to = Column(JSON)  # [internal_name, display_name] if can catalyst
+    superior_scales = Column(Boolean, default=False)
+
+    # Special flags
+    is_proc = Column(Boolean, default=False)
+    is_unique = Column(Boolean, default=False)
+
+    # Restrictions
+    restricted_ats = Column(JSON)  # Array of restricted archetype names
+    unique_group = Column(JSON)  # Array of enhancement names in unique group
+
+    # What this enhancement affects
+    aspects = Column(JSON)  # Array of aspect names (e.g., ["Accuracy", "Damage"])
+
+    # Global bonuses (for procs/globals)
+    global_bonuses = Column(JSON)
+
+    # UI
+    icon = Column(String(255))
+
+    # Metadata
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
@@ -239,57 +373,80 @@ class Enhancement(Base):
     enhancement_set = relationship("EnhancementSet", back_populates="enhancements")
     build_enhancements = relationship("BuildEnhancement", back_populates="enhancement")
 
-    __table_args__ = (Index("idx_enhancement_level", "level_min", "level_max"),)
-
-
-class SetBonus(Base):
-    """Set bonus model representing enhancement set bonuses."""
-
-    __tablename__ = "set_bonuses"
-
-    id = Column(Integer, primary_key=True, index=True)
-    set_id = Column(Integer, ForeignKey("enhancement_sets.id"), nullable=False)
-    pieces_required = Column(Integer, nullable=False, index=True)  # 2, 3, 4, 5, 6
-    bonus_description = Column(Text)
-
-    # Bonus values
-    bonus_type = Column(String(50))  # defense, resistance, recharge, etc.
-    bonus_amount = Column(Numeric(5, 2))
-    bonus_details = Column(JSON)  # For complex bonuses
-    created_at = Column(DateTime, default=datetime.utcnow)
-
-    # Relationships
-    enhancement_set = relationship("EnhancementSet", back_populates="set_bonuses")
-
-    __table_args__ = (Index("idx_set_bonus_set", "set_id"),)
-
-
-class PowerEnhancementCompatibility(Base):
-    """Power enhancement compatibility model."""
-
-    __tablename__ = "power_enhancement_compatibility"
-
-    id = Column(Integer, primary_key=True, index=True)
-    power_id = Column(Integer, ForeignKey("powers.id"), nullable=False)
-    enhancement_type = Column(
-        String(50), nullable=False
-    )  # accuracy, damage, endurance, etc.
-    allowed = Column(Boolean, default=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-
-    # Relationships
-    power = relationship("Power", back_populates="compatibilities")
-
     __table_args__ = (
-        UniqueConstraint(
-            "power_id", "enhancement_type", name="uq_power_enhancement_type"
-        ),
-        Index("idx_compat_power", "power_id"),
-        Index("idx_compat_type", "enhancement_type"),
+        Index("idx_enhancement_set", "set_id"),
+        Index("idx_enhancement_type", "boost_type"),
+        Index("idx_enhancement_level", "level_min", "level_max"),
     )
 
 
-# Character Build Models
+class Tag(Base):
+    """Tag model for power interaction system."""
+
+    __tablename__ = "tags"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    # Tag identification
+    tag = Column(String(200), unique=True, nullable=False, index=True)
+
+    # Powers that have this tag (bears)
+    bears = Column(JSON)  # Array of [display_name, internal_name] pairs
+
+    # Powers affected by this tag
+    affects = Column(JSON)  # Array of [display_name, internal_name] pairs
+
+    # Metadata
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    __table_args__ = (
+        Index("idx_tag_name", "tag"),
+    )
+
+
+class ExclusionGroup(Base):
+    """Exclusion group model for mutually exclusive powers."""
+
+    __tablename__ = "exclusion_groups"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    # Group identification
+    group = Column(String(200), unique=True, nullable=False, index=True)
+
+    # Powers in this group (only one can be slotted)
+    powers = Column(JSON)  # Array of [display_name, internal_name] pairs
+
+    # Metadata
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    __table_args__ = (
+        Index("idx_exclusion_group_name", "group"),
+    )
+
+
+class RechargeGroup(Base):
+    """Recharge group model for powers that share recharge timers."""
+
+    __tablename__ = "recharge_groups"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    # Group identification
+    group = Column(String(200), unique=True, nullable=False, index=True)
+
+    # Powers in this group (share recharge timer)
+    powers = Column(JSON)  # Array of [display_name, internal_name] pairs
+
+    # Metadata
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    __table_args__ = (
+        Index("idx_recharge_group_name", "group"),
+    )
+
+
+# Character Build Models (unchanged from original)
 
 
 class Build(Base):
@@ -380,150 +537,25 @@ class BuildEnhancement(Base):
     )
 
 
-# Game Data Models
-
-
-class Salvage(Base):
-    """Salvage model representing crafting materials."""
-
-    __tablename__ = "salvage"
-
-    id = Column(Integer, primary_key=True, index=True)
-    internal_name = Column(String(100), unique=True, nullable=False, index=True)
-    display_name = Column(String(200), nullable=False)
-    salvage_type = Column(String(50))  # common, uncommon, rare
-    origin = Column(String(50))  # tech, magic, natural
-    level_range = Column(String(20))  # 10-25, 26-40, 41-50
-    icon_path = Column(String(255))
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-
-    # Relationships
-    recipes = relationship("RecipeSalvage", back_populates="salvage")
-
-    __table_args__ = (Index("idx_salvage_type", "salvage_type", "origin"),)
-
-
-class Recipe(Base):
-    """Recipe model representing enhancement crafting recipes."""
-
-    __tablename__ = "recipes"
-
-    id = Column(Integer, primary_key=True, index=True)
-    internal_name = Column(String(100), unique=True, nullable=False, index=True)
-    display_name = Column(String(200), nullable=False)
-    enhancement_id = Column(Integer, ForeignKey("enhancements.id"))
-    recipe_type = Column(String(50))  # common, uncommon, rare, very_rare
-    level_min = Column(Integer, default=10)
-    level_max = Column(Integer, default=50)
-    crafting_cost = Column(Integer)  # Influence/Infamy cost
-    crafting_cost_premium = Column(Integer)  # Premium recipe cost
-    memorized = Column(Boolean, default=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-
-    # Relationships
-    enhancement = relationship("Enhancement")
-    salvage_requirements = relationship("RecipeSalvage", back_populates="recipe")
-
-    __table_args__ = (Index("idx_recipe_level", "level_min", "level_max"),)
-
-
-class RecipeSalvage(Base):
-    """Recipe salvage requirements junction table."""
-
-    __tablename__ = "recipe_salvage"
-
-    id = Column(Integer, primary_key=True, index=True)
-    recipe_id = Column(Integer, ForeignKey("recipes.id"), nullable=False)
-    salvage_id = Column(Integer, ForeignKey("salvage.id"), nullable=False)
-    quantity = Column(Integer, default=1)
-    created_at = Column(DateTime, default=datetime.utcnow)
-
-    # Relationships
-    recipe = relationship("Recipe", back_populates="salvage_requirements")
-    salvage = relationship("Salvage", back_populates="recipes")
-
-    __table_args__ = (
-        UniqueConstraint("recipe_id", "salvage_id", name="uq_recipe_salvage"),
-        Index("idx_recipe_salvage_recipe", "recipe_id"),
-        Index("idx_recipe_salvage_salvage", "salvage_id"),
-    )
-
-
-class AttributeModifier(Base):
-    """Attribute modifier model for detailed power effects."""
-
-    __tablename__ = "attribute_modifiers"
-
-    id = Column(Integer, primary_key=True, index=True)
-    power_id = Column(Integer, ForeignKey("powers.id"))
-    enhancement_id = Column(Integer, ForeignKey("enhancements.id"))
-    attribute_name = Column(String(100), nullable=False, index=True)
-    attribute_type = Column(String(50))  # magnitude, duration, etc.
-    modifier_table = Column(String(100))  # Reference to modifier table
-    scale = Column(Numeric(10, 4))
-    aspect = Column(String(50))  # Current, Max, Strength, etc.
-    application_type = Column(String(50))  # OnTick, OnActivate, etc.
-    target_type = Column(String(50))  # Self, Enemy, Ally, etc.
-    effect_area = Column(String(50))  # SingleTarget, Cone, Sphere, etc.
-    flags = Column(JSON)  # Various flags as JSON
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-
-    # Relationships
-    power = relationship("Power")
-    enhancement = relationship("Enhancement")
-
-    __table_args__ = (
-        Index("idx_attribmod_power", "power_id"),
-        Index("idx_attribmod_enhancement", "enhancement_id"),
-        Index("idx_attribmod_attribute", "attribute_name"),
-    )
-
-
-class TypeGrade(Base):
-    """Type grade model for archetype-specific modifiers."""
-
-    __tablename__ = "type_grades"
-
-    id = Column(Integer, primary_key=True, index=True)
-    archetype_id = Column(Integer, ForeignKey("archetypes.id"))
-    attribute_name = Column(String(100), nullable=False)
-    grade_type = Column(String(50))  # melee_damage, ranged_damage, etc.
-    modifier_value = Column(Numeric(10, 4))
-    level_scaling = Column(JSON)  # Level-based scaling data
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-
-    # Relationships
-    archetype = relationship("Archetype")
-
-    __table_args__ = (
-        UniqueConstraint(
-            "archetype_id", "attribute_name", "grade_type", name="uq_type_grade"
-        ),
-        Index("idx_type_grade_archetype", "archetype_id"),
-        Index("idx_type_grade_attribute", "attribute_name"),
-    )
-
-
-# Data Import Models
+# Import tracking model
 
 
 class ImportLog(Base):
-    """Import log model for tracking data imports from game files."""
+    """Import log model for tracking data imports."""
 
     __tablename__ = "import_logs"
 
     id = Column(Integer, primary_key=True, index=True)
-    import_type = Column(String(50))  # full, incremental, patch
-    source_file = Column(String(255))
-    game_version = Column(String(50))
-    records_processed = Column(Integer)
-    records_imported = Column(Integer)
-    errors = Column(Integer)
-    import_data = Column(JSON)  # Detailed import statistics
-    started_at = Column(DateTime)
+    import_type = Column(String(50), nullable=False, index=True)
+    source_file = Column(String(500))
+    records_processed = Column(Integer, default=0)
+    records_imported = Column(Integer, default=0)
+    errors = Column(Integer, default=0)
+    import_data = Column(JSON)  # Error details, etc.
+    started_at = Column(DateTime, nullable=False)
     completed_at = Column(DateTime)
-    created_at = Column(DateTime, default=datetime.utcnow)
+
+    __table_args__ = (
+        Index("idx_import_type", "import_type"),
+        Index("idx_import_started", "started_at"),
+    )

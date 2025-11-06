@@ -42,7 +42,7 @@ jobs:
     with:
       files_to_check: |
         CLAUDE.md:5000
-        .claude/modules/*/guide.md:3000
+        .claude/modules/*/GUIDE.md:3000
       fail_on_exceed: true
       warning_threshold: 90
   

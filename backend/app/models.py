@@ -19,7 +19,6 @@ from sqlalchemy import (
     String,
     Text,
     UniqueConstraint,
-    Float,
 )
 from sqlalchemy.orm import relationship
 

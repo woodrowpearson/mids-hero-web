@@ -94,7 +94,9 @@ class ArchetypeModifierTable(Base):
     archetype_id = Column(Integer, ForeignKey("archetypes.id"), nullable=False)
 
     # Table identification
-    table_name = Column(String(100), nullable=False, index=True)  # e.g., "Melee_Damage", "Ranged_Damage"
+    table_name = Column(
+        String(100), nullable=False, index=True
+    )  # e.g., "Melee_Damage", "Ranged_Damage"
 
     # The actual modifier values (array of floats for each level)
     values = Column(JSON, nullable=False)  # Array of numeric values
@@ -131,7 +133,9 @@ class Powerset(Base):
     archetype_id = Column(Integer, ForeignKey("archetypes.id"))
 
     # Powerset type
-    powerset_type = Column(String(20), nullable=False, index=True)  # primary, secondary, pool, epic, incarnate
+    powerset_type = Column(
+        String(20), nullable=False, index=True
+    )  # primary, secondary, pool, epic, incarnate
 
     # Source information
     source_file = Column(String(500))
@@ -181,7 +185,9 @@ class Power(Base):
 
     # Identification
     name = Column(String(100), nullable=False, index=True)  # Short name
-    full_name = Column(String(200), unique=True, nullable=False, index=True)  # Full qualified name
+    full_name = Column(
+        String(200), unique=True, nullable=False, index=True
+    )  # Full qualified name
     display_name = Column(String(100))
     display_fullname = Column(String(200))
     short_name = Column(String(50))
@@ -398,9 +404,7 @@ class Tag(Base):
     # Metadata
     created_at = Column(DateTime, default=datetime.utcnow)
 
-    __table_args__ = (
-        Index("idx_tag_name", "tag"),
-    )
+    __table_args__ = (Index("idx_tag_name", "tag"),)
 
 
 class ExclusionGroup(Base):
@@ -419,9 +423,7 @@ class ExclusionGroup(Base):
     # Metadata
     created_at = Column(DateTime, default=datetime.utcnow)
 
-    __table_args__ = (
-        Index("idx_exclusion_group_name", "group"),
-    )
+    __table_args__ = (Index("idx_exclusion_group_name", "group"),)
 
 
 class RechargeGroup(Base):
@@ -440,9 +442,7 @@ class RechargeGroup(Base):
     # Metadata
     created_at = Column(DateTime, default=datetime.utcnow)
 
-    __table_args__ = (
-        Index("idx_recharge_group_name", "group"),
-    )
+    __table_args__ = (Index("idx_recharge_group_name", "group"),)
 
 
 # Character Build Models (unchanged from original)

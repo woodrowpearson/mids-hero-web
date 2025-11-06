@@ -23,7 +23,7 @@ def test_get_powerset_with_powers(client, sample_powerset, sample_power):
     assert data["name"] == "Fire Blast"
     assert len(data["powers"]) == 1
     assert data["powers"][0]["name"] == "Fire Blast"
-    assert data["powers"][0]["level_available"] == 1
+    assert data["powers"][0]["available_level"] == 1
 
 
 def test_get_powerset_without_powers(client, sample_powerset, sample_power):
@@ -72,9 +72,9 @@ def test_get_powerset_powers(client, sample_powerset, sample_power, db_session):
 
     # Powers should be returned in order
     assert data[0]["name"] == "Fire Blast"
-    assert data[0]["level_available"] == 1
+    assert data[0]["available_level"] == 1
     assert data[1]["name"] == "Fire Ball"
-    assert data[1]["level_available"] == 2
+    assert data[1]["available_level"] == 2
 
 
 def test_get_powerset_powers_empty(client, sample_powerset):

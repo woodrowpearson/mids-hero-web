@@ -20,7 +20,7 @@ def test_get_archetypes_with_data(client, sample_archetype):
     assert len(data) == 1
     assert data[0]["name"] == "Blaster"
     assert data[0]["display_name"] == "Blaster"
-    assert data[0]["primary_group"] == "damage"
+    assert data[0]["primary_category"] == "damage"
 
 
 def test_get_archetypes_pagination(client, db_session):

@@ -47,20 +47,20 @@ def test_get_powerset_powers(client, sample_powerset, sample_power, db_session):
     # Add another power
     power2 = Power(
         name="Fire Ball",
+        full_name="Fire_Blast.Fire_Blast.Fire_Ball",
         display_name="Fire Ball",
-        description="Hurl a fire ball that explodes",
+        display_help="Hurl a fire ball that explodes",
         powerset_id=sample_powerset.id,
-        power_type="attack",
-        target_type="enemy",
-        level_available=2,
+        type="Click",
+        target_type="Foe",
+        available_level=2,
         accuracy=1.0,
-        damage_scale=1.5,
         endurance_cost=8.5,
         recharge_time=16.0,
         activation_time=1.0,
-        range_feet=80,
-        max_targets=16,
-        radius_feet=15,
+        range=80,
+        max_targets_hit=16,
+        radius=15,
     )
     db_session.add(power2)
     db_session.commit()

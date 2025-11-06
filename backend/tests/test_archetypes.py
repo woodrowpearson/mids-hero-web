@@ -30,11 +30,11 @@ def test_get_archetypes_pagination(client, db_session):
         Archetype(
             name=f"Archetype{i}",
             display_name=f"Archetype {i}",
-            description=f"Test archetype {i}",
+            display_help=f"Test archetype {i}",
             hit_points_base=1000,
             hit_points_max=1606,
-            primary_group="damage",
-            secondary_group="support",
+            primary_category="damage",
+            secondary_category="support",
         )
         for i in range(5)
     ]
@@ -82,14 +82,14 @@ def test_get_archetype_powersets_filtered(client, sample_archetype, db_session):
     primary = Powerset(
         name="Fire Blast",
         display_name="Fire Blast",
-        description="Primary powerset",
+        display_help="Primary powerset",
         archetype_id=sample_archetype.id,
         powerset_type="primary",
     )
     secondary = Powerset(
         name="Fire Manipulation",
         display_name="Fire Manipulation",
-        description="Secondary powerset",
+        display_help="Secondary powerset",
         archetype_id=sample_archetype.id,
         powerset_type="secondary",
     )

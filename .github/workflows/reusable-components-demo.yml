@@ -1,14 +1,23 @@
-name: Example Refactored Workflow
+name: Reusable Components Demo
 
-# This is an example showing how to use the new reusable components
-# It demonstrates significant code reduction and improved maintainability
+# This workflow demonstrates how to use reusable workflow components
+# It serves as both documentation and a test harness for the components
 
 on:
   pull_request:
     types: [opened, synchronize]
+    paths:
+      - '.github/workflows/reusable-*.yml'
+      - '.github/actions/**'
+  workflow_dispatch:
+    inputs:
+      test_mode:
+        description: 'Run in test mode'
+        type: boolean
+        default: true
 
 concurrency:
-  group: example-${{ github.event.pull_request.number }}
+  group: reusable-demo-${{ github.event.pull_request.number || github.run_id }}
   cancel-in-progress: true
 
 permissions:

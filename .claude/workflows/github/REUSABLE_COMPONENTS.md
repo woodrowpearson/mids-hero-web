@@ -11,17 +11,19 @@ improve maintainability, and ensure consistent behavior across all workflows.
 ```text
 .github/
 ├── workflows/
-│   ├── shared/                    # Reusable workflows
-│   │   ├── change-detection.yml   # File change analysis
-│   │   ├── claude-setup.yml       # Claude AI integration
-│   │   ├── pr-context.yml         # PR metadata extraction
-│   │   └── token-validation.yml   # Token count validation
-│   └── *.yml                       # Main workflows (use shared components)
+│   ├── reusable-change-detection.yml    # File change analysis
+│   ├── reusable-claude-setup.yml        # Claude AI integration
+│   ├── reusable-pr-context.yml          # PR metadata extraction
+│   ├── reusable-token-validation.yml    # Token count validation
+│   ├── ci.yml                            # Main workflows
+│   ├── claude-unified.yml
+│   ├── doc-management.yml
+│   └── reusable-components-demo.yml     # Example implementation
 │
-└── actions/                        # Composite actions
-    ├── setup-project/              # Environment setup
+└── actions/                              # Composite actions
+    ├── setup-project/                    # Environment setup
     │   └── action.yml
-    └── post-comment/               # GitHub commenting
+    └── post-comment/                     # GitHub commenting
         └── action.yml
 ```
 
@@ -35,7 +37,7 @@ improve maintainability, and ensure consistent behavior across all workflows.
 
 ## Reusable Workflows
 
-### 1. Change Detection (`shared/change-detection.yml`)
+### 1. Change Detection (`reusable-change-detection.yml`)
 
 Analyzes file changes in pull requests with configurable patterns.
 
@@ -44,7 +46,7 @@ Analyzes file changes in pull requests with configurable patterns.
 ```yaml
 jobs:
   detect-changes:
-    uses: ./.github/workflows/shared/change-detection.yml
+    uses: ./.github/workflows/reusable-change-detection.yml
     with:
       source_files: |
         backend/**/*.py
@@ -71,7 +73,7 @@ jobs:
 - `pr_size`: Size classification (small/medium/large)
 - `all_changed_files`: Space-delimited list of all changes
 
-### 2. Claude Setup (`shared/claude-setup.yml`)
+### 2. Claude Setup (`reusable-claude-setup.yml`)
 
 Integrates Claude AI for code review and analysis.
 
@@ -80,7 +82,7 @@ Integrates Claude AI for code review and analysis.
 ```yaml
 jobs:
   claude-review:
-    uses: ./.github/workflows/shared/claude-setup.yml
+    uses: ./.github/workflows/reusable-claude-setup.yml
     with:
       prompt: |
         Review this code for security issues and best practices.
@@ -108,7 +110,7 @@ jobs:
 - `response`: Claude's response
 - `comment_url`: URL of posted comment
 
-### 3. PR Context (`shared/pr-context.yml`)
+### 3. PR Context (`reusable-pr-context.yml`)
 
 Extracts comprehensive pull request metadata.
 
@@ -117,7 +119,7 @@ Extracts comprehensive pull request metadata.
 ```yaml
 jobs:
   get-context:
-    uses: ./.github/workflows/shared/pr-context.yml
+    uses: ./.github/workflows/reusable-pr-context.yml
     with:
       fetch_diff: true
       fetch_comments: true
@@ -140,7 +142,7 @@ jobs:
 - `pr_diff`, `pr_comments`, `pr_commits`
 - `context_summary`: Formatted summary
 
-### 4. Token Validation (`shared/token-validation.yml`)
+### 4. Token Validation (`reusable-token-validation.yml`)
 
 Validates documentation files against token limits.
 
@@ -149,7 +151,7 @@ Validates documentation files against token limits.
 ```yaml
 jobs:
   validate-tokens:
-    uses: ./.github/workflows/shared/token-validation.yml
+    uses: ./.github/workflows/reusable-token-validation.yml
     with:
       files_to_check: |
         CLAUDE.md:5000
@@ -247,15 +249,15 @@ jobs:
 ```yaml
 jobs:
   detect-changes:
-    uses: ./.github/workflows/shared/change-detection.yml
-  
+    uses: ./.github/workflows/reusable-change-detection.yml
+
   validate-tokens:
-    uses: ./.github/workflows/shared/token-validation.yml
+    uses: ./.github/workflows/reusable-token-validation.yml
     needs: detect-changes
     if: needs.detect-changes.outputs.docs_changed == 'true'
-  
+
   claude-review:
-    uses: ./.github/workflows/shared/claude-setup.yml
+    uses: ./.github/workflows/reusable-claude-setup.yml
     needs: detect-changes
     with:
       prompt: "Review the changes"
@@ -271,7 +273,7 @@ jobs:
 
 ## Examples
 
-See `.github/workflows/example-refactored.yml` for a complete example using all components.
+See `.github/workflows/reusable-components-demo.yml` for a complete example using all components.
 
 ## Performance Impact
 

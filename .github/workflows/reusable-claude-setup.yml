@@ -47,7 +47,7 @@ on:
       anthropic_api_key:
         description: 'Anthropic API key'
         required: true
-      github_token:
+      gh_token:
         description: 'GitHub token'
         required: true
     
@@ -105,14 +105,14 @@ jobs:
           echo "$CONTEXT" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
         env:
-          GH_TOKEN: ${{ secrets.github_token }}
+          GH_TOKEN: ${{ secrets.gh_token }}
       
       - name: Execute Claude Review
         id: claude
         uses: anthropics/claude-code-action@beta
         with:
           anthropic_api_key: ${{ secrets.anthropic_api_key }}
-          github_token: ${{ secrets.github_token }}
+          github_token: ${{ secrets.gh_token }}
           cache_prompts: ${{ inputs.cache_prompts }}
           cache_control: ${{ inputs.cache_control }}
           timeout_minutes: "${{ inputs.timeout_minutes }}"
@@ -153,4 +153,4 @@ jobs:
           echo "comment_url=$COMMENT_URL" >> $GITHUB_OUTPUT
           echo "Comment posted: $COMMENT_URL" >> $GITHUB_STEP_SUMMARY
         env:
-          GH_TOKEN: ${{ secrets.github_token }}
+          GH_TOKEN: ${{ secrets.gh_token }}

@@ -54,7 +54,7 @@ jobs:
       fetch_diff: true
       fetch_comments: false
     secrets:
-      github_token: ${{ secrets.GITHUB_TOKEN }}
+      gh_token: ${{ secrets.GITHUB_TOKEN }}
   
   # Step 4: Claude review if source changed
   claude-review:
@@ -83,7 +83,7 @@ jobs:
       pr_number: ${{ github.event.pull_request.number }}
     secrets:
       anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-      github_token: ${{ secrets.GITHUB_TOKEN }}
+      gh_token: ${{ secrets.GITHUB_TOKEN }}
   
   # Step 5: Post summary using composite action
   post-summary:

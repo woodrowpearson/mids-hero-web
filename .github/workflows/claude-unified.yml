@@ -4,7 +4,7 @@ on:
   pull_request:
     types: [opened, synchronize]
     paths:
-      # Include only source code and critical config files
+      # Include only source code and critical config files (excluding tests and docs)
       - 'backend/**/*.py'
       - 'frontend/**/*.{js,ts,jsx,tsx}'
       - 'backend/pyproject.toml'
@@ -13,17 +13,12 @@ on:
       - 'Dockerfile'
       - 'justfile'
       - '.github/workflows/*.yml'
-    paths-ignore:
-      # Exclude test files and cache directories
-      - '**/*_test.py'
-      - '**/*.test.{js,ts,jsx,tsx}'
-      - '**/__pycache__/**'
-      - '**/node_modules/**'
-      - '**/*.md'
-      - '.claude/**/*.md'
-      - '**/*.pyc'
-      - '**/.pytest_cache/**'
-      - '**/coverage/**'
+      - '!**/*_test.py'
+      - '!**/*.test.{js,ts,jsx,tsx}'
+      - '!**/__pycache__/**'
+      - '!**/node_modules/**'
+      - '!**/*.md'
+      - '!.claude/**/*.md'
   pull_request_review:
     types: [submitted]
   pull_request_review_comment:

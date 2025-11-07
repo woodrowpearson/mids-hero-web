@@ -1,239 +1,104 @@
 # Import Module Guide
-Last Updated: 2025-08-25 00:00:00 UTC
 
-## Quick Start
+## Overview
+The import system processes JSON game data from the filtered City of Data source located at `filtered_data/`.
 
+## Architecture
+- **JSON manifest-driven**: All imports reference `filtered_data/manifest.json`
+- **Batch processing**: Imports process data in configurable batch sizes
+- **Progress tracking**: Real-time progress with resume capability
+- **Validation**: Comprehensive schema validation before database insert
+
+## Key Components
+
+### JSONDataImporter
+Primary class for importing JSON data.
+
+Location: `backend/app/data_import/json_importer.py`
+
+Methods:
+- `import_archetypes(manifest_path)`: Import character archetypes
+- `import_powersets(manifest_path)`: Import power sets
+- `import_powers(manifest_path)`: Import individual powers
+- `import_enhancements(manifest_path)`: Import enhancement sets
+
+### Data Sources
+
+Filtered data location: `filtered_data/`
+
+Structure:
+```
+filtered_data/
+├── manifest.json              # Master manifest
+├── archetypes/               # 15 player archetypes
+├── powersets/                # Power set definitions
+├── powers/                   # 5,775 individual powers
+└── boost_sets/               # 228 enhancement sets
+```
+
+## Usage
+
+### Import All Data
 ```bash
-# Check system health first
-just import-health
-
-# Import everything from a directory
-just import-all data/exports/
-
-# Import specific data type  
-just i12-import data/imported/I12_powers.json
+just json-import-all
 ```
 
-## Import System Architecture
-
-### High-Performance I12 Parser
-- **Capacity**: 360K+ power records
-- **Memory**: < 1GB with streaming
-- **Speed**: ~1000 records/second
-- **Features**: Resume on failure, progress tracking, validation
-
-### Components
-```
-backend/app/data_import/
-├── i12_streaming_parser.py   # Main I12 parser
-├── base_importer.py         # Base class for all importers
-├── cli.py                   # Command-line interface
-└── validators/              # Data validation
-```
-
-## I12 Power Data Import
-
-### Basic Import
+### Import Specific Category
 ```bash
-# Import with default settings
-just i12-import data/imported/I12_powers.json
-
-# With custom batch size and memory limit
-cd backend
-python scripts/import_i12_data.py data/imported/I12_powers.json \
-    --batch-size 500 \
-    --memory-limit 0.5
+just json-import-archetypes
+just json-import-powersets
+just json-import-powers
+just json-import-enhancements
 ```
 
-### Resume Failed Import
+### Health Check
 ```bash
-# Resume from specific record
-just i12-import-resume data/i12_powers.json 50000
-
-# Or directly
-python scripts/import_i12_data.py data/imported/I12_powers.json \
-    --resume-from 50000
-```
-
-### Validate Without Importing
-```bash
-just i12-validate data/i12_powers.json
-```
-
-## Generic Data Import
-
-### Import All Types
-```bash
-# Import archetypes, powersets, powers, enhancements
-just import-all data/exports/
-
-# With custom batch size
-just import-all data/exports/ 500
-```
-
-### Import Specific Types
-```bash
-just import-archetypes data/imported/archetypes.json
-just import-powersets data/imported/powersets.json  
-just import-powers data/imported/powers.json
-just import-enhancements data/imported/enhancements.json
-```
-
-### Clear and Reimport
-```bash
-# Clear existing data and import fresh
-just import-clear powers data/imported/powers.json
-```
-
-## Monitoring & Health
-
-### System Status
-```bash
-# Overall health check
-just import-health
-
-# Detailed status
-just import-status
-
-# Database record counts
-just import-stats
-
-# Cache performance
-just cache-stats
-```
-
-### Performance Testing
-```bash
-# Run I12 benchmarks
-just perf-bench
-
-# Full performance test suite
-just perf-test-all
+just json-import-health
 ```
 
 ## Implementation Details
 
-### I12 Parser Architecture
-```python
-# Three-layer streaming design
-StreamingJsonReader  # Chunked file reading
-    ↓
-PowerDataProcessor  # Format transformation  
-    ↓
-I12StreamingParser  # Database operations
-```
-
-### Memory Management
-```python
-# Automatic garbage collection
-parser = I12StreamingParser(
-    memory_limit_gb=1.0  # Triggers GC when exceeded
-)
-
-# Manual memory monitoring
-import psutil
-process = psutil.Process()
-memory_mb = process.memory_info().rss / 1024 / 1024
-```
-
-### Error Handling
-```python
-# Parser tracks all errors
-parser.import_data(file_path)
-print(f"Imported: {parser.imported_count}")
-print(f"Errors: {parser.error_count}")
-
-# Error details available
-for error in parser.errors[:10]:
-    print(f"Record {error['record_index']}: {error['error']}")
-```
-
-## Data Formats
-
-### I12 Power Format
+### Manifest Structure
 ```json
 {
-  "Name": "Fire Blast",
-  "InternalName": "Blaster_Ranged.Fire_Blast.Blast",  
-  "PowersetName": "Fire Blast",
-  "ArchetypeName": "Blaster",
-  "Level": 1,
-  "Accuracy": 1.0,
-  "EnduranceCost": 5.2,
-  "RechargeTime": 4.0,
-  "Effects": [
-    {
-      "EffectType": "Damage",
-      "DamageType": "Fire",
-      "Scale": 1.0
+  "version": "2025.06.17",
+  "source": "city_of_data_homecoming",
+  "categories": {
+    "archetypes": {
+      "count": 15,
+      "path": "archetypes/"
+    },
+    "powers": {
+      "count": 5775,
+      "path": "powers/"
     }
-  ]
+  }
 }
 ```
 
-### Database Transform
-```python
-# I12 format → Database model
-{
-    "name": "Fire Blast",
-    "internal_name": "Blaster_Ranged.Fire_Blast.Blast",
-    "powerset_id": 1,  # Resolved from cache
-    "level_available": 1,
-    "accuracy": 1.0,
-    "endurance_cost": 5.2,
-    "recharge_time": 4.0,
-    "effects": [...]  # Preserved as JSON
-}
-```
+### Import Flow
+1. Read manifest.json
+2. Validate manifest schema
+3. Process each category sequentially
+4. Batch database inserts (100 records/batch)
+5. Track progress in import_progress table
+6. Handle errors with rollback capability
 
-## Troubleshooting
+### Error Handling
+- Invalid JSON: Skip file, log error, continue
+- Schema mismatch: Log validation errors, skip record
+- Database errors: Rollback batch, log error, retry
+- Missing files: Log warning, continue with available data
 
-### Common Issues
+## Testing
 
-**"Unknown powerset" errors**:
+Run import tests:
 ```bash
-# Ensure powersets imported first
-just import-powersets data/powersets.json
-just import-powers data/powers.json  # Then powers
+pytest tests/backend/data_import/ -v
 ```
 
-**Memory errors**:
-```bash
-# Reduce batch/chunk sizes
-python scripts/import_i12_data.py data/imported/I12_powers.json \
-    --batch-size 100 \
-    --chunk-size 1000 \
-    --memory-limit 0.5
-```
+Test coverage requirement: >85%
 
-**Resume not working**:
-```bash
-# Check import logs
-just db-shell
-SELECT * FROM import_logs ORDER BY created_at DESC LIMIT 5;
-```
-
-### Debug Mode
-```bash
-# Verbose logging
-cd backend
-export LOG_LEVEL=DEBUG
-python scripts/import_i12_data.py data/imported/I12_powers.json --verbose
-```
-
-### Clear Cache
-```bash
-# If cache corrupted
-python scripts/import_i12_data.py data/imported/I12_powers.json --clear-cache
-```
-
-## Best Practices
-
-1. **Order Matters**: Import archetypes → powersets → powers
-2. **Validate First**: Use validate mode before large imports
-3. **Monitor Progress**: Watch logs for error patterns
-4. **Batch Sizing**: Start with defaults, adjust if needed
-5. **Cache Warm-up**: Import frequently-used data first
-
----
-*For command details, see `.claude/modules/import/commands-reference.md`*
+## Related Skills
+- @database-specialist: For schema questions
+- @backend-specialist: For API integration

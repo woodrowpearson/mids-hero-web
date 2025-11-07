@@ -81,6 +81,11 @@ check-commands:
     @echo "🔍 Checking command compliance..."
     @./scripts/check-forbidden-commands.sh
 
+# Verify MHD cleanup completeness
+verify-cleanup:
+    @echo "🔍 Running cleanup verification..."
+    @./scripts/verify_mhd_cleanup.sh
+
 # Run linters
 lint:
     @echo "🔍 Running linters..."

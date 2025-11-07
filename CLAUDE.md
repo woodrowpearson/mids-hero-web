@@ -70,6 +70,9 @@ just i12-import file   # Import powers
 - **Epic 1**: ✅ Complete (Setup, CI/CD, GitHub Actions optimized)
 - **Epic 2**: ✅ Complete (I12 parser, database integration)
 - **Epic 2.5.2**: ✅ Complete (Native sub-agents, workflows optimized)
+- **Epic 2.5.3**: ✅ Complete (RAG implementation)
+- **Epic 2.5.5**: ✅ Complete (Cleanup & JSON prep)
+- **Epic 2.6**: 📋 Ready to start (JSON migration)
 - **Epic 3**: 🚧 25% (Core API endpoints done)
 - **Epic 4-6**: 📋 Planned (Frontend, Deploy, Optimize)
 

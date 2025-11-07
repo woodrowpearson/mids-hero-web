@@ -1,5 +1,5 @@
 import pytest
-from pathlib import Path
+
 from app.data_import.json_importer import JSONDataImporter
 
 
@@ -11,7 +11,7 @@ def importer():
 def test_json_importer_initialization(importer):
     """Test that JSONDataImporter initializes"""
     assert importer is not None
-    assert hasattr(importer, 'import_archetypes')
+    assert hasattr(importer, "import_archetypes")
 
 
 @pytest.mark.asyncio
@@ -22,4 +22,4 @@ async def test_import_archetypes_from_manifest(importer, tmp_path):
     manifest.write_text('{"archetypes": []}')
 
     result = await importer.import_archetypes(manifest)
-    assert result['success'] is True
+    assert result["success"] is True

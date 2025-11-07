@@ -1,7 +1,8 @@
 """JSON data importer for City of Data"""
+
 import json
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 
 
 class JSONDataImporter:
@@ -11,7 +12,7 @@ class JSONDataImporter:
         """Initialize the JSON importer"""
         pass
 
-    async def import_archetypes(self, manifest_path: Path) -> Dict[str, Any]:
+    async def import_archetypes(self, manifest_path: Path) -> dict[str, Any]:
         """Import archetypes from JSON manifest
 
         Args:
@@ -31,14 +32,14 @@ class JSONDataImporter:
 
         return {"success": True, "imported": len(archetypes)}
 
-    async def import_powersets(self, manifest_path: Path) -> Dict[str, Any]:
+    async def import_powersets(self, manifest_path: Path) -> dict[str, Any]:
         """Import powersets from JSON manifest"""
         return {"success": True, "imported": 0}
 
-    async def import_powers(self, manifest_path: Path) -> Dict[str, Any]:
+    async def import_powers(self, manifest_path: Path) -> dict[str, Any]:
         """Import powers from JSON manifest"""
         return {"success": True, "imported": 0}
 
-    async def import_enhancements(self, manifest_path: Path) -> Dict[str, Any]:
+    async def import_enhancements(self, manifest_path: Path) -> dict[str, Any]:
         """Import enhancement sets from JSON manifest"""
         return {"success": True, "imported": 0}

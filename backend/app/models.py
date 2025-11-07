@@ -8,7 +8,6 @@ This represents a clean break from the old MHD-based schema.
 from datetime import datetime
 
 from sqlalchemy import (
-    ARRAY,
     JSON,
     Boolean,
     Column,

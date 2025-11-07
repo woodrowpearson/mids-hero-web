@@ -35,7 +35,7 @@ fi
 echo "✅ All deleted directories confirmed removed"
 
 # Verify archive structure
-if [ ! -d "archive/mhd-parser" ]; then
+if [ ! -d "archive/epic-2-legacy/mhd-parser" ]; then
   echo "❌ MHD parser not found in archive"
   exit 1
 fi

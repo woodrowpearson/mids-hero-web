@@ -5,7 +5,7 @@ from JSON files into the PostgreSQL database.
 """
 
 from .archetype_importer import ArchetypeImporter
-from .attribute_importer import AttributeImporter
+# Disabled: from .attribute_importer import AttributeImporter
 from .base_importer import BaseImporter
 from .enhancement_importer import EnhancementImporter
 from .i12_streaming_parser import (
@@ -26,7 +26,7 @@ __all__ = [
     "EnhancementImporter",
     # Disabled: "SalvageImporter",
     # Disabled: "RecipeImporter",
-    "AttributeImporter",
+    # Disabled: "AttributeImporter",
     "I12StreamingParser",
     "PowerDataProcessor",
     "StreamingJsonReader",

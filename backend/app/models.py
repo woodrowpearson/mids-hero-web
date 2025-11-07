@@ -8,6 +8,7 @@ This represents a clean break from the old MHD-based schema.
 from datetime import datetime
 
 from sqlalchemy import (
+    ARRAY,
     JSON,
     Boolean,
     Column,
@@ -242,6 +243,9 @@ class Power(Base):
     # Complete power data stored as JSON (for complex nested structures)
     # This includes: effects, templates, messages, flags, expressions, etc.
     power_data = Column(JSON)  # Complete power JSON from filtered_data
+
+    # Source metadata from original JSON
+    source_metadata = Column(JSON, nullable=True, comment="Raw JSON from source")
 
     # Archetypes that can use this power
     archetypes = Column(JSON)  # Array of archetype names

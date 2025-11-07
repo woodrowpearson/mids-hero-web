@@ -73,7 +73,6 @@ class EnhancementSetWithBonuses(schemas.EnhancementSet):
     """Enhancement set schema with bonuses and enhancements."""
 
     enhancements: list[schemas.Enhancement] = []
-    set_bonuses: list[schemas.SetBonus] = []
 
 
 @router.get("/enhancement-sets/{set_id}", response_model=EnhancementSetWithBonuses)
@@ -88,6 +87,8 @@ async def get_enhancement_set(
 
     Returns detailed information about an enhancement set,
     optionally including its enhancements and set bonuses.
+
+    Note: Set bonuses are stored in the 'bonuses' JSON field on the EnhancementSet model.
     """
     enhancement_set = (
         db.query(models.EnhancementSet)
@@ -112,16 +113,9 @@ async def get_enhancement_set(
     else:
         set_data["enhancements"] = []
 
-    # Include bonuses if requested
-    if include_bonuses:
-        bonuses = (
-            db.query(models.SetBonus)
-            .filter(models.SetBonus.set_id == set_id)
-            .order_by(models.SetBonus.pieces_required)
-            .all()
-        )
-        set_data["set_bonuses"] = bonuses
-    else:
-        set_data["set_bonuses"] = []
+    # Bonuses are already in the model as a JSON field
+    # If include_bonuses is False, set to None or empty array
+    if not include_bonuses:
+        set_data["bonuses"] = None
 
     return EnhancementSetWithBonuses(**set_data)

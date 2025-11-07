@@ -9,7 +9,7 @@ on:
         type: string
         default: |
           CLAUDE.md:5000
-          .claude/modules/*/guide.md:3000
+          .claude/modules/*/GUIDE.md:3000
           .claude/workflows/*.md:2000
       fail_on_exceed:
         description: 'Fail workflow if token limit exceeded'

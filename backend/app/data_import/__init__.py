@@ -14,8 +14,9 @@ from .i12_streaming_parser import (
     StreamingJsonReader,
 )
 from .power_importer import PowerImporter, PowersetImporter
-from .recipe_importer import RecipeImporter
-from .salvage_importer import SalvageImporter
+
+# Disabled: from .recipe_importer import RecipeImporter
+# Disabled: from .salvage_importer import SalvageImporter
 
 __all__ = [
     "BaseImporter",
@@ -23,8 +24,8 @@ __all__ = [
     "PowerImporter",
     "PowersetImporter",
     "EnhancementImporter",
-    "SalvageImporter",
-    "RecipeImporter",
+    # Disabled: "SalvageImporter",
+    # Disabled: "RecipeImporter",
     "AttributeImporter",
     "I12StreamingParser",
     "PowerDataProcessor",

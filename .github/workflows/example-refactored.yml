@@ -20,7 +20,7 @@ jobs:
   # Step 1: Detect what changed
   detect-changes:
     name: Analyze Changes
-    uses: ./.github/workflows/shared/change-detection.yml
+    uses: ./.github/workflows/reusable-change-detection.yml
     with:
       source_files: |
         backend/**/*.py
@@ -38,30 +38,30 @@ jobs:
     name: Token Validation
     needs: detect-changes
     if: needs.detect-changes.outputs.docs_changed == 'true'
-    uses: ./.github/workflows/shared/token-validation.yml
+    uses: ./.github/workflows/reusable-token-validation.yml
     with:
       files_to_check: |
         CLAUDE.md:5000
-        .claude/modules/*/guide.md:3000
+        .claude/modules/*/GUIDE.md:3000
       fail_on_exceed: true
       warning_threshold: 90
   
   # Step 3: Extract PR context
   get-context:
     name: PR Context
-    uses: ./.github/workflows/shared/pr-context.yml
+    uses: ./.github/workflows/reusable-pr-context.yml
     with:
       fetch_diff: true
       fetch_comments: false
     secrets:
-      github_token: ${{ secrets.GITHUB_TOKEN }}
+      gh_token: ${{ secrets.GITHUB_TOKEN }}
   
   # Step 4: Claude review if source changed
   claude-review:
     name: Code Review
     needs: [detect-changes, get-context]
     if: needs.detect-changes.outputs.source_changed == 'true'
-    uses: ./.github/workflows/shared/claude-setup.yml
+    uses: ./.github/workflows/reusable-claude-setup.yml
     with:
       prompt: |
         Review this pull request for code quality and best practices.
@@ -83,7 +83,7 @@ jobs:
       pr_number: ${{ github.event.pull_request.number }}
     secrets:
       anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-      github_token: ${{ secrets.GITHUB_TOKEN }}
+      gh_token: ${{ secrets.GITHUB_TOKEN }}
   
   # Step 5: Post summary using composite action
   post-summary:

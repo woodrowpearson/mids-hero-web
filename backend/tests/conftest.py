@@ -147,11 +147,11 @@ def sample_archetype(db_session):
     archetype = Archetype(
         name="Blaster",
         display_name="Blaster",
-        description="Ranged damage dealer",
+        display_help="Ranged damage dealer",
         hit_points_base=1000,
         hit_points_max=1606,
-        primary_group="damage",
-        secondary_group="support",
+        primary_category="damage",
+        secondary_category="support",
     )
     db_session.add(archetype)
     db_session.commit()
@@ -165,10 +165,10 @@ def sample_powerset(db_session, sample_archetype):
     powerset = Powerset(
         name="Fire Blast",
         display_name="Fire Blast",
-        description="Wield fire to blast your foes",
+        display_help="Wield fire to blast your foes",
         archetype_id=sample_archetype.id,
         powerset_type="primary",
-        icon_path="fire_blast.png",
+        icon="fire_blast.png",
     )
     db_session.add(powerset)
     db_session.commit()
@@ -181,20 +181,20 @@ def sample_power(db_session, sample_powerset):
     """Create a sample power for testing."""
     power = Power(
         name="Fire Blast",
+        full_name="Fire_Blast.Fire_Blast.Fire_Blast",
         display_name="Fire Blast",
-        description="Hurl a blast of fire at your target",
+        display_help="Hurl a blast of fire at your target",
         powerset_id=sample_powerset.id,
-        power_type="attack",
-        target_type="enemy",
-        level_available=1,
+        type="Click",
+        target_type="Foe",
+        available_level=1,
         accuracy=1.0,
-        damage_scale=1.0,
         endurance_cost=5.2,
         recharge_time=4.0,
         activation_time=1.67,
-        range_feet=80,
-        max_targets=1,
-        icon_path="fire_blast.png",
+        range=80,
+        max_targets_hit=1,
+        icon="fire_blast.png",
     )
     db_session.add(power)
     db_session.commit()
@@ -208,7 +208,6 @@ def sample_enhancement_set(db_session):
     enhancement_set = EnhancementSet(
         name="Devastation",
         display_name="Devastation",
-        description="Ranged damage enhancement set",
         min_level=30,
         max_level=50,
     )

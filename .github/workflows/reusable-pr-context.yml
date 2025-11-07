@@ -25,7 +25,7 @@ on:
         default: false
     
     secrets:
-      github_token:
+      gh_token:
         description: 'GitHub token'
         required: true
     
@@ -150,7 +150,7 @@ jobs:
           echo "additions=$ADDITIONS" >> $GITHUB_OUTPUT
           echo "deletions=$DELETIONS" >> $GITHUB_OUTPUT
         env:
-          GH_TOKEN: ${{ secrets.github_token }}
+          GH_TOKEN: ${{ secrets.gh_token }}
       
       - name: Fetch PR diff
         id: diff
@@ -168,7 +168,7 @@ jobs:
           fi
           echo "EOF" >> $GITHUB_OUTPUT
         env:
-          GH_TOKEN: ${{ secrets.github_token }}
+          GH_TOKEN: ${{ secrets.gh_token }}
       
       - name: Fetch PR comments
         id: comments
@@ -183,7 +183,7 @@ jobs:
           echo "$COMMENTS" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
         env:
-          GH_TOKEN: ${{ secrets.github_token }}
+          GH_TOKEN: ${{ secrets.gh_token }}
       
       - name: Fetch PR commits
         id: commits
@@ -198,7 +198,7 @@ jobs:
           echo "$COMMITS" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
         env:
-          GH_TOKEN: ${{ secrets.github_token }}
+          GH_TOKEN: ${{ secrets.gh_token }}
       
       - name: Analyze PR size
         id: analyze

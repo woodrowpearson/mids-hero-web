@@ -93,6 +93,22 @@ This directory contains GitHub Actions workflows that automate CI/CD, code revie
 - Creates PRs for documentation updates
 - Reports token limit issues
 
+---
+
+### 🧪 reusable-components-demo.yml - Component Demonstration
+**Triggers**: Pull requests affecting reusable workflows, manual dispatch
+
+**Purpose**: Demonstrates proper usage of all reusable components
+
+**Jobs**:
+- **detect-changes**: Uses reusable-change-detection
+- **validate-tokens**: Uses reusable-token-validation
+- **get-context**: Uses reusable-pr-context
+- **claude-review**: Uses reusable-claude-setup
+- **post-summary**: Composite post-comment action
+
+**Note**: This workflow serves as living documentation and test harness for reusable components. Refer to this workflow when creating new workflows that need to use shared components.
+
 
 ## 🔧 Configuration
 
@@ -110,26 +126,68 @@ All workflows require appropriate permissions:
 - `PYTHON_VERSION: "3.11"`
 - `NODE_VERSION: "18"`
 
-## 📊 Workflow Interactions
+## 📊 Workflow Architecture
 
 ```mermaid
-graph LR
-    PR[Pull Request] --> CI[CI Tests]
-    PR --> CU[Claude Unified]
-    PR --> DM[Doc Management - Review]
-    
-    Code[Code Push] --> CI
-    Code --> DM2[Doc Management - Sync]
-    Code --> CHC[Context Health Check]
-    
-    Comment[@claude] --> CU
-    
-    Schedule[Cron Schedule] --> CHC
-    Schedule --> DM3[Doc Management - Full]
-    
-    Manual[Manual Trigger] --> DM4[Doc Management]
-    Manual --> UCD[Update Claude Docs]
+graph TB
+    subgraph "Triggers"
+        PR[Pull Request]
+        Push[Push to main/develop]
+        Comment[@claude mention]
+        Schedule[Cron Schedule]
+        Manual[Manual Dispatch]
+    end
+
+    subgraph "Main Workflows"
+        CI[ci.yml]
+        CU[claude-unified.yml]
+        DM[doc-management.yml]
+        CHC[context-health-check.yml]
+        UCD[update-claude-docs.yml]
+    end
+
+    subgraph "Reusable Components"
+        CD[reusable-change-detection.yml]
+        CS[reusable-claude-setup.yml]
+        PC[reusable-pr-context.yml]
+        TV[reusable-token-validation.yml]
+    end
+
+    subgraph "Composite Actions"
+        SP[actions/setup-project]
+        PComment[actions/post-comment]
+    end
+
+    PR --> CI
+    PR --> CU
+    PR --> DM
+    Push --> CI
+    Push --> DM
+    Push --> CHC
+    Comment --> CU
+    Schedule --> CHC
+    Schedule --> DM
+    Manual --> DM
+    Manual --> UCD
+
+    CU -.uses.-> CS
+    CU -.uses.-> PC
+    DM -.uses.-> TV
+    DM -.uses.-> CS
+    DM -.uses.-> CD
+
+    CI -.uses.-> SP
+    CU -.uses.-> PComment
+    DM -.uses.-> PComment
 ```
+
+### Workflow Interactions
+
+- **CI** runs on all PRs and pushes, performs linting and tests
+- **Claude Unified** handles code review and @claude interactions
+- **Documentation Management** syncs docs based on code changes
+- **Context Health Check** monitors token usage and file sizes
+- **Reusable Components** are called by main workflows to avoid duplication
 
 ## 💡 Usage Tips
 

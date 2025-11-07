@@ -1,25 +1,32 @@
 # Claude Workflows vs GitHub Workflows
-Last Updated: 2025-08-25 00:00:00 UTC
 
-This directory contains **Claude-specific development workflows** - guides and processes for developers working with Claude Code on the Mids Hero Web project.
+This directory contains **Claude Code development workflow guides** - instructions for developers using Claude Code on the Mids Hero Web project.
 
-## 📁 Directory Purpose
+## 📁 What's Here
 
-- **`.claude/workflows/`** - Human-readable workflow guides for development tasks
-  - `daily.md` - Daily development workflow with Claude
-  - `testing.md` - Testing strategies and processes
-  - `troubleshooting.md` - Common issues and solutions
+- **`daily.md`** - Daily development workflow with Claude
+- **`testing.md`** - Testing strategies
+- **`troubleshooting.md`** - Common issues
+- **`github/`** - GitHub Actions optimization documentation
 
-- **`.github/workflows/`** - GitHub Actions CI/CD automation
-  - YAML files defining automated pipelines
-  - PR checks, tests, deployments
-  - Not for human consumption
+## 🔄 vs GitHub Workflows
 
-## 🎯 Key Difference
+| Location | Purpose | Audience |
+|----------|---------|----------|
+| **`.claude/workflows/`** | Development guides | Developers using Claude Code |
+| **`.github/workflows/`** | CI/CD automation | GitHub Actions (automated) |
 
-- **Claude Workflows**: Instructions for developers using Claude Code
-- **GitHub Workflows**: Automated scripts that run on GitHub's servers
+## 📖 GitHub Actions Documentation
 
-## 📖 Usage
+For GitHub Actions workflows, see:
 
-When Claude loads context based on your task, it may include relevant workflow guides from this directory to help you follow best practices for the project.
+- **Overview**: [.github/README.md](../../.github/README.md)
+- **Detailed Workflows**: [.github/workflows/README.md](../../.github/workflows/README.md)
+- **Reusable Components**: [github/REUSABLE_COMPONENTS.md](github/REUSABLE_COMPONENTS.md)
+- **Optimization History**: [github/OPTIMIZATION_CHANGELOG.md](github/OPTIMIZATION_CHANGELOG.md)
+
+## 🎯 Quick Navigation
+
+**Working on GitHub Actions?** → Start at [github/README.md](github/README.md)
+**Using Claude Code daily?** → Check [daily.md](daily.md)
+**Debugging issues?** → See [troubleshooting.md](troubleshooting.md)

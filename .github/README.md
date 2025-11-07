@@ -1,130 +1,88 @@
 # GitHub Configuration
 
-This directory contains GitHub-specific configuration including workflows, issue templates, and project documentation.
+This directory contains GitHub-specific configuration including workflows, actions, and automation.
 
 ## 📁 Directory Structure
 
 ```
 .github/
 ├── workflows/          # GitHub Actions workflows
-│   ├── ci.yml         # Continuous Integration
-│   ├── claude-*.yml   # Claude Code integrations
-│   ├── doc-*.yml      # Documentation automation
-│   └── ...
-├── ISSUE_TEMPLATE/    # Issue templates (if any)
-├── PULL_REQUEST_TEMPLATE/ # PR templates (if any)
-└── README.md          # This file
+│   ├── ci.yml          # Main CI/CD pipeline
+│   ├── claude-unified.yml    # Claude AI code review
+│   ├── doc-management.yml    # Documentation automation
+│   ├── context-health-check.yml  # Context monitoring
+│   ├── update-claude-docs.yml    # Doc updates
+│   ├── reusable-*.yml        # Reusable workflow components
+│   └── reusable-components-demo.yml  # Demo of reusable components
+├── actions/            # Composite actions
+│   ├── setup-project/  # Project environment setup
+│   └── post-comment/   # PR/issue commenting
+└── README.md           # This file
 ```
 
-## 🤖 GitHub Actions Workflows
+## 🤖 Active Workflows
 
-Our workflows provide automated CI/CD, AI-powered code review, and documentation synchronization. See [workflows/README.md](.github/workflows/README.md) for detailed information.
+See [workflows/README.md](workflows/README.md) for detailed workflow documentation.
 
-### Active Workflows
+### Main Workflows
 
-1. **ci.yml** - Main CI/CD pipeline with tests, linting, and security scanning
-2. **claude-auto-review.yml** - Automatic PR review using Claude
-3. **claude-code-integration.yml** - Interactive Claude assistant via @claude mentions
-4. **context-health-check.yml** - Monitors Claude context system health
-5. **doc-auto-sync.yml** - Automatically updates documentation when code changes
-6. **doc-review.yml** - Reviews PRs for documentation impact
-7. **update-claude-docs.yml** - Updates Claude-specific documentation
-8. **dataexporter-tests.yml** - Tests for the DataExporter module
+| Workflow | Purpose | Trigger |
+|----------|---------|---------|
+| **ci.yml** | CI/CD pipeline | Push, PR |
+| **claude-unified.yml** | AI code review | PR, @claude mentions |
+| **doc-management.yml** | Documentation sync | Code changes, schedule |
+| **context-health-check.yml** | Monitor context health | Schedule, push |
+| **update-claude-docs.yml** | Update Claude docs | Doc changes |
 
-## 🔧 Claude Context System
+### Reusable Components
 
-The Claude context system is located at `.claude/` in the repository root (not in `.github/`). It contains:
+| Component | Purpose | Used By |
+|-----------|---------|---------|
+| **reusable-change-detection.yml** | Analyze file changes | Multiple workflows |
+| **reusable-claude-setup.yml** | Claude AI integration | claude-unified, doc-management |
+| **reusable-pr-context.yml** | Extract PR metadata | Multiple workflows |
+| **reusable-token-validation.yml** | Validate token counts | doc-management |
 
-- **Progressive context loading** based on declared tasks
-- **Token management** with automatic warnings
-- **Native sub-agents** for specialized development tasks
-- **Activity tracking** and session management
+See [Reusable Components Guide](../.claude/workflows/github/REUSABLE_COMPONENTS.md) for usage examples.
 
-See [/.claude/README.md](/.claude/README.md) for complete documentation about the context system.
+## 🚀 Quick Start
 
-## 🚀 Workflow Features
+### For Developers
 
-### Continuous Integration
-- Automated testing for backend (Python/FastAPI) and frontend (React/TypeScript)
-- Code quality checks with ruff, black, ESLint
-- Security scanning with Trivy
-- PostgreSQL integration testing
+1. **Create PR** → Automatic CI + Claude review
+2. **Ask Questions** → Comment `@claude [question]` on PR/issue
+3. **Documentation** → Auto-updated when code changes
 
-### AI-Powered Development
-- **PR Reviews**: Claude automatically reviews code changes
-- **Interactive Help**: Use @claude in PR/issue comments for assistance
-- **Documentation Sync**: Automatic updates when code changes
-- **Context Health**: Monitors token usage and file sizes
+### For Maintainers
 
-### Documentation Automation
-- **Smart Detection**: Identifies which docs need updates based on code changes
-- **Auto-sync**: Updates README files, API docs, and Claude context
-- **Token Validation**: Ensures CLAUDE.md stays under 5K tokens
-- **Weekly Sync**: Full documentation consistency check
+1. **Monitor Actions** → Check Actions tab
+2. **Review Health** → Weekly context health reports
+3. **Manual Sync** → Trigger doc-management workflow
 
 ## 📋 Setup Requirements
 
-1. **Repository Secrets**:
-   - `ANTHROPIC_API_KEY` - Required for Claude features
-   - `CODECOV_TOKEN` - Optional for coverage reporting
+### Repository Secrets
+- `ANTHROPIC_API_KEY` - Required for Claude features
+- `CODECOV_TOKEN` - Optional for coverage reporting
 
-2. **Branch Protection**:
-   - Enable status checks for `ci` workflow
-   - Require PR reviews before merging
-
-3. **Permissions**:
-   - Workflows need write access to PRs and issues
-   - Claude actions need content read permissions
-
-## 💡 Usage Examples
-
-### Getting AI Code Review
-Simply create a PR - Claude will automatically review it. For additional review:
-```
-@claude Can you review the error handling in this PR?
-```
-
-### Asking Claude Questions
-In any PR or issue comment:
-```
-@claude How should I implement the power calculation system?
-@claude What's the current status of Epic 2?
-```
-
-### Manual Documentation Sync
-Trigger the doc-auto-sync workflow manually from the Actions tab with "Force full sync" option.
-
-## 🛠️ Development Guidelines
-
-When modifying workflows:
-
-1. **Test in feature branches** before merging
-2. **Update workflow documentation** in `.github/workflows/README.md`
-3. **Maintain backward compatibility** with existing PRs
-4. **Monitor token usage** to prevent context overflow
-5. **Follow security best practices** for secrets and permissions
-
-## 📊 Monitoring
-
-- **Workflow Runs**: Check Actions tab for execution history
-- **Context Health**: Review weekly health check reports
-- **Token Usage**: Monitor CLAUDE.md size warnings
-- **Documentation Drift**: Check doc-auto-sync summaries
+### Branch Protection
+- Enable required status checks
+- Require PR reviews before merging
 
 ## 🔗 Related Documentation
 
-- [Workflows Documentation](.github/workflows/README.md) - Detailed workflow information
-- [Claude Context System](/.claude/README.md) - AI assistant configuration
-- [Project Overview](/CLAUDE.md) - Main project guide
-- [Development Workflow](/.claude/docs/development-workflow.md) - Development best practices
+- **[Workflows Documentation](workflows/README.md)** - Detailed workflow info
+- **[Claude Context System](../.claude/README.md)** - AI configuration
+- **[Project Guide](../CLAUDE.md)** - Main project documentation
+- **[Reusable Components](../.claude/workflows/github/REUSABLE_COMPONENTS.md)** - Component usage guide
 
 ## ⚠️ Important Notes
 
-1. The `.claude/` directory is at the repository root, not inside `.github/`
-2. All Claude-related configuration is in `.claude/settings.json`
-3. Workflow modifications may affect PR checks - test carefully
-4. Token limits are enforced to maintain Claude performance
+1. Claude context system is at `.claude/` (repository root)
+2. Configuration: `.claude/settings.json`
+3. Token limits enforced for performance
+4. All workflows use reusable components where possible
 
 ---
 
-*For workflow-specific documentation, see [.github/workflows/README.md](.github/workflows/README.md)*
+*For detailed workflow documentation, see [workflows/README.md](workflows/README.md)*

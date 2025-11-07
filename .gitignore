@@ -66,8 +66,8 @@ project.lock.json
 project.fragment.lock.json
 artifacts/
 
-# Archive directory is tracked but ignored by Claude
-# See .claudeignore
+# Archive directory - legacy data and deprecated files
+archive/
 
 # External repositories
 external/

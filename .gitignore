@@ -271,4 +271,4 @@ temp/
 # Alembic
 alembic/versions/*.py
 !alembic/versions/
-alembic/__pycache__/
+alembic/__pycache__/.claudecheckpoints/

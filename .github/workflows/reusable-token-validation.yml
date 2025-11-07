@@ -63,6 +63,7 @@ jobs:
         run: |
           cat > count_tokens.py << 'EOF'
           import sys
+          import os
           import glob
           import json
           from pathlib import Path
@@ -129,7 +130,7 @@ jobs:
               results = validate_files(config, threshold)
               
               # Output for GitHub Actions
-              with open(sys.environ.get('GITHUB_OUTPUT', '/dev/null'), 'a') as f:
+              with open(os.environ.get('GITHUB_OUTPUT', '/dev/null'), 'a') as f:
                   f.write(f"passed={'true' if results['passed'] else 'false'}\n")
                   f.write(f"exceeding={','.join(results['exceeding'])}\n")
                   f.write(f"warnings={','.join(results['warnings'])}\n")

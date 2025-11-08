@@ -141,6 +141,24 @@
       ],
       "completion_date": "2025-08-04"
     },
+    "epic2_5_5": {
+      "name": "Project Cleanup & JSON Migration Preparation",
+      "status": "completed",
+      "progress": 100,
+      "tasks": [
+        "\u2705 Priority 1: Resolved duplicates & conflicts",
+        "\u2705 Priority 2: Removed MHD dependencies",
+        "\u2705 Priority 3: Updated Claude AI context",
+        "\u2705 Priority 4: Migrated Justfile commands",
+        "\u2705 Priority 5: Evaluated incomplete features (calc module not found)",
+        "\u2705 Priority 6: Verified cleanup completeness",
+        "\u2705 Priority 7: Organizational housekeeping complete"
+      ],
+      "completion_date": "2025-11-06",
+      "github_issues_closed": [
+        "#256"
+      ]
+    },
     "epic2_5": {
       "name": "City of Data Import Preparation",
       "status": "in_progress",

@@ -39,10 +39,10 @@
           ]
         },
         "import": {
-          "keywords": ["import", "i12", "data import", "mhd", "parser"],
+          "keywords": ["import", "importer", "json import", "city of data", "filtered data", "archetype import", "powerset import", "enhancement import", "data import", "manifest"],
+          "exclude_keywords": ["mhd", "i12", "binary", "midsreborn", "windows vm"],
           "load_files": [
-            ".claude/modules/import/guide.md",
-            ".claude/modules/import/commands-reference.md"
+            ".claude/modules/import/guide.md"
           ]
         },
         "api": {
@@ -143,7 +143,7 @@
     "import": {
       "focus": "Data import and processing",
       "preferred_tools": ["Read", "Bash", "LS", "Grep"],
-      "preferred_commands": ["python", "just import-*", "just i12-*"],
+      "preferred_commands": ["python", "just import-*", "just json-import-*"],
       "avoid_tools": ["Write", "Edit"],
       "context_hints": "Read-heavy, monitoring focused"
     },

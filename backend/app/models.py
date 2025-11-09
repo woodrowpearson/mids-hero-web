@@ -225,7 +225,7 @@ class Power(Base):
     activation_time = Column(Numeric(6, 2))
     recharge_time = Column(Numeric(6, 2))
     endurance_cost = Column(Numeric(6, 2))
-    range = Column(Numeric(6, 2))
+    range = Column(Numeric(8, 2))  # Increased from 6,2 to handle values like 10000.0
     radius = Column(Numeric(6, 2))
     arc = Column(Numeric(6, 4))
     max_targets_hit = Column(Integer)

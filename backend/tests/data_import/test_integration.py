@@ -1,4 +1,5 @@
 """Integration tests for end-to-end JSON import pipeline"""
+
 import json
 
 import pytest
@@ -24,7 +25,7 @@ def sample_data_dir(tmp_path):
         "primary_category": "ranged_damage",
         "secondary_category": "manipulation",
         "is_villain": False,
-        "attrib_base": {"hit_points": 100}
+        "attrib_base": {"hit_points": 100},
     }
     (arch_dir / "blaster.json").write_text(json.dumps(archetype_data))
 
@@ -38,7 +39,7 @@ def sample_data_dir(tmp_path):
         "group_name": "Ranged Damage",
         "min_level": 30,
         "max_level": 50,
-        "bonuses": [{"min": 2, "effects": [{"type": "accuracy", "value": 0.07}]}]
+        "bonuses": [{"min": 2, "effects": [{"type": "accuracy", "value": 0.07}]}],
     }
     (boost_dir / "thunderstrike.json").write_text(json.dumps(boost_data))
 
@@ -51,7 +52,7 @@ def sample_data_dir(tmp_path):
         "display_name": "Fire Blast",
         "display_fullname": "Blaster Ranged.Fire Blast",
         "power_names": ["Blaster_Ranged.Fire_Blast.Flares"],
-        "available_level": [0]
+        "available_level": [0],
     }
     (powers_dir / "index.json").write_text(json.dumps(powerset_data))
 
@@ -63,7 +64,7 @@ def sample_data_dir(tmp_path):
         "available_level": 1,
         "accuracy": 1.0,
         "activation_time": 1.0,
-        "endurance_cost": 4.2
+        "endurance_cost": 4.2,
     }
     (powers_dir / "flares.json").write_text(json.dumps(power_data))
 
@@ -76,10 +77,12 @@ async def test_end_to_end_import(sample_data_dir, db_session):
 
     # Step 1: Import archetypes
     arch_importer = ArchetypeImporter(db_session)
-    arch_result = await arch_importer.import_from_directory(sample_data_dir / "archetypes")
+    arch_result = await arch_importer.import_from_directory(
+        sample_data_dir / "archetypes"
+    )
 
-    assert arch_result['success'] is True
-    assert arch_result['imported'] == 1
+    assert arch_result["success"] is True
+    assert arch_result["imported"] == 1
 
     # Verify archetype in DB
     archetype = db_session.query(Archetype).filter_by(name="blaster").first()
@@ -88,10 +91,12 @@ async def test_end_to_end_import(sample_data_dir, db_session):
 
     # Step 2: Import enhancement sets
     enh_importer = EnhancementImporter(db_session)
-    enh_result = await enh_importer.import_from_directory(sample_data_dir / "boost_sets")
+    enh_result = await enh_importer.import_from_directory(
+        sample_data_dir / "boost_sets"
+    )
 
-    assert enh_result['success'] is True
-    assert enh_result['sets_imported'] == 1
+    assert enh_result["success"] is True
+    assert enh_result["sets_imported"] == 1
 
     # Verify enhancement set in DB
     boost_set = db_session.query(EnhancementSet).filter_by(name="Thunderstrike").first()
@@ -101,11 +106,13 @@ async def test_end_to_end_import(sample_data_dir, db_session):
     # Step 3: Import powerset with powers
     power_importer = PowerImporter(db_session)
     powerset_dir = sample_data_dir / "powers" / "blaster_ranged" / "fire_blast"
-    ps_result = await power_importer.import_powerset_with_powers(powerset_dir, archetype.id)
+    ps_result = await power_importer.import_powerset_with_powers(
+        powerset_dir, archetype.id
+    )
 
-    assert ps_result['success'] is True
-    assert ps_result['powersets_imported'] == 1
-    assert ps_result['powers_imported'] == 1
+    assert ps_result["success"] is True
+    assert ps_result["powersets_imported"] == 1
+    assert ps_result["powers_imported"] == 1
 
     # Verify powerset in DB
     powerset = db_session.query(Powerset).filter_by(name="Fire_Blast").first()
@@ -134,12 +141,12 @@ async def test_reimport_is_idempotent(sample_data_dir, db_session):
     # Import once
     arch_importer = ArchetypeImporter(db_session)
     result1 = await arch_importer.import_from_directory(sample_data_dir / "archetypes")
-    assert result1['imported'] == 1
+    assert result1["imported"] == 1
 
     # Import again - should skip
     result2 = await arch_importer.import_from_directory(sample_data_dir / "archetypes")
-    assert result2['skipped'] == 1
-    assert result2['imported'] == 0
+    assert result2["skipped"] == 1
+    assert result2["imported"] == 0
 
     # Verify only one archetype in DB
     count = db_session.query(Archetype).filter_by(name="blaster").count()

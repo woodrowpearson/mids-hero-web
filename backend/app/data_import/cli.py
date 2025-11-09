@@ -1,4 +1,5 @@
 """CLI interface for JSON data import"""
+
 import asyncio
 import logging
 from pathlib import Path
@@ -14,7 +15,9 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-async def import_archetypes(directory_path: str, db_session: Session = None) -> dict[str, Any]:
+async def import_archetypes(
+    directory_path: str, db_session: Session = None
+) -> dict[str, Any]:
     """Import all archetypes from directory
 
     Args:
@@ -36,20 +39,24 @@ async def import_archetypes(directory_path: str, db_session: Session = None) -> 
         logger.info(f"Importing archetypes from {directory}")
         result = await importer.import_from_directory(directory)
 
-        logger.info(f"Archetype import complete: {result['imported']} imported, "
-                   f"{result['skipped']} skipped, {len(result['errors'])} errors")
+        logger.info(
+            f"Archetype import complete: {result['imported']} imported, "
+            f"{result['skipped']} skipped, {len(result['errors'])} errors"
+        )
 
         return {
-            'total_imported': result['imported'],
-            'total_skipped': result['skipped'],
-            'errors': result['errors']
+            "total_imported": result["imported"],
+            "total_skipped": result["skipped"],
+            "errors": result["errors"],
         }
     finally:
         if close_session:
             db_session.close()
 
 
-async def import_enhancements(directory_path: str, db_session: Session = None) -> dict[str, Any]:
+async def import_enhancements(
+    directory_path: str, db_session: Session = None
+) -> dict[str, Any]:
     """Import all enhancement sets from directory"""
     close_session = False
     if db_session is None:
@@ -63,15 +70,17 @@ async def import_enhancements(directory_path: str, db_session: Session = None) -
         logger.info(f"Importing enhancement sets from {directory}")
         result = await importer.import_from_directory(directory)
 
-        logger.info(f"Enhancement import complete: {result['sets_imported']} sets, "
-                   f"{result['enhancements_imported']} enhancements, "
-                   f"{result['skipped']} skipped")
+        logger.info(
+            f"Enhancement import complete: {result['sets_imported']} sets, "
+            f"{result['enhancements_imported']} enhancements, "
+            f"{result['skipped']} skipped"
+        )
 
         return {
-            'total_sets': result['sets_imported'],
-            'total_enhancements': result['enhancements_imported'],
-            'total_skipped': result['skipped'],
-            'errors': result['errors']
+            "total_sets": result["sets_imported"],
+            "total_enhancements": result["enhancements_imported"],
+            "total_skipped": result["skipped"],
+            "errors": result["errors"],
         }
     finally:
         if close_session:

@@ -1,4 +1,3 @@
-
 import pytest
 
 from app.data_import.cli import import_archetypes, import_enhancements
@@ -12,8 +11,8 @@ async def test_cli_import_archetypes(db_session, tmp_path):
     archetype_dir.mkdir()
 
     result = await import_archetypes(str(archetype_dir), db_session)
-    assert 'total_imported' in result
-    assert result['total_imported'] == 0  # Empty directory
+    assert "total_imported" in result
+    assert result["total_imported"] == 0  # Empty directory
 
 
 @pytest.mark.asyncio
@@ -24,5 +23,5 @@ async def test_cli_import_enhancements(db_session, tmp_path):
     enhancement_dir.mkdir()
 
     result = await import_enhancements(str(enhancement_dir), db_session)
-    assert 'total_sets' in result
-    assert result['total_sets'] == 0  # Empty directory
+    assert "total_sets" in result
+    assert result["total_sets"] == 0  # Empty directory

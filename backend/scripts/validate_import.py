@@ -88,7 +88,9 @@ def validate_powersets(db):
         if ps.archetype_id:
             archetype = db.query(Archetype).get(ps.archetype_id)
             if not archetype:
-                issues.append(f"Powerset {ps.name} references non-existent archetype {ps.archetype_id}")
+                issues.append(
+                    f"Powerset {ps.name} references non-existent archetype {ps.archetype_id}"
+                )
 
     if issues:
         print(f"❌ Found {len(issues)} issues:")
@@ -120,11 +122,15 @@ def validate_powers(db):
         if power.powerset_id:
             powerset = db.query(Powerset).get(power.powerset_id)
             if not powerset:
-                issues.append(f"Power {power.name} references non-existent powerset {power.powerset_id}")
+                issues.append(
+                    f"Power {power.name} references non-existent powerset {power.powerset_id}"
+                )
 
         # Check power_data
         if not power.power_data and not power.source_metadata:
-            issues.append(f"Power {power.name} missing both power_data and source_metadata")
+            issues.append(
+                f"Power {power.name} missing both power_data and source_metadata"
+            )
 
     if issues:
         print(f"❌ Found {len(issues)} issues:")
@@ -184,11 +190,11 @@ def main():
 
     try:
         results = {
-            'archetypes': validate_archetypes(db),
-            'enhancement_sets': validate_enhancement_sets(db),
-            'powersets': validate_powersets(db),
-            'powers': validate_powers(db),
-            'relationships': validate_relationships(db)
+            "archetypes": validate_archetypes(db),
+            "enhancement_sets": validate_enhancement_sets(db),
+            "powersets": validate_powersets(db),
+            "powers": validate_powers(db),
+            "relationships": validate_relationships(db),
         }
 
         print("\n" + "=" * 60)

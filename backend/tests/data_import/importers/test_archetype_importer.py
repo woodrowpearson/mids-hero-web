@@ -20,7 +20,7 @@ def sample_archetype_json(tmp_path):
         "secondary_category": "manipulation",
         "default_rank": "level_1",
         "is_villain": False,
-        "attrib_base": {"hit_points": 100, "endurance": 100}
+        "attrib_base": {"hit_points": 100, "endurance": 100},
     }
 
     archetype_file = tmp_path / "blaster.json"
@@ -38,8 +38,8 @@ async def test_import_single_archetype(importer, sample_archetype_json, db_sessi
     """Test importing a single archetype from JSON"""
     result = await importer.import_from_file(sample_archetype_json)
 
-    assert result['success'] is True
-    assert result['imported'] == 1
+    assert result["success"] is True
+    assert result["imported"] == 1
 
     # Verify in database
     archetype = db_session.query(Archetype).filter_by(name="Blaster").first()
@@ -50,7 +50,9 @@ async def test_import_single_archetype(importer, sample_archetype_json, db_sessi
 
 
 @pytest.mark.asyncio
-async def test_import_duplicate_archetype_skips(importer, sample_archetype_json, db_session):
+async def test_import_duplicate_archetype_skips(
+    importer, sample_archetype_json, db_session
+):
     """Test that importing duplicate archetype is skipped"""
     # Import once
     await importer.import_from_file(sample_archetype_json)
@@ -58,6 +60,6 @@ async def test_import_duplicate_archetype_skips(importer, sample_archetype_json,
     # Import again - should skip
     result = await importer.import_from_file(sample_archetype_json)
 
-    assert result['success'] is True
-    assert result['skipped'] == 1
+    assert result["success"] is True
+    assert result["skipped"] == 1
     assert db_session.query(Archetype).filter_by(name="Blaster").count() == 1

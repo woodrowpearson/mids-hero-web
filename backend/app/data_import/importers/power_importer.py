@@ -159,6 +159,68 @@ class PowerImporter:
 
         return result
 
+    async def import_powerset_with_powers(self, powerset_dir: Path, archetype_id: int) -> Dict[str, Any]:
+        """Import a powerset and all its powers
+
+        Args:
+            powerset_dir: Directory containing powerset index.json and power files
+            archetype_id: ID of parent archetype
+
+        Returns:
+            Import results with progress tracking
+        """
+        result = {
+            'success': True,
+            'powersets_imported': 0,
+            'powers_imported': 0,
+            'skipped': 0,
+            'errors': []
+        }
+
+        # Import powerset first
+        logger.info(f"Importing powerset from {powerset_dir.name}...")
+        ps_result = await self.import_powerset(powerset_dir, archetype_id)
+        result['powersets_imported'] = ps_result['powersets_imported']
+        result['skipped'] += ps_result['skipped']
+        result['errors'].extend(ps_result['errors'])
+
+        if not ps_result['success']:
+            result['success'] = False
+            return result
+
+        # Get the powerset ID
+        index_file = powerset_dir / "index.json"
+        with open(index_file) as f:
+            ps_data = json.load(f)
+
+        powerset = self.db.query(Powerset).filter_by(name=ps_data['name']).first()
+        if not powerset:
+            result['errors'].append(f"Failed to retrieve powerset {ps_data['name']}")
+            result['success'] = False
+            return result
+
+        # Import all power JSON files
+        power_files = list(powerset_dir.glob("*.json"))
+        power_files = [f for f in power_files if f.name != "index.json"]
+
+        total_powers = len(power_files)
+        logger.info(f"Importing {total_powers} powers from {ps_data['name']}...")
+
+        for idx, power_file in enumerate(power_files, 1):
+            if idx % 10 == 0:  # Progress every 10 powers
+                logger.info(f"  Progress: {idx}/{total_powers} powers")
+
+            power_result = await self.import_power(power_file, powerset.id)
+            result['powers_imported'] += power_result['imported']
+            result['skipped'] += power_result['skipped']
+            result['errors'].extend(power_result['errors'])
+
+            if not power_result['success']:
+                result['success'] = False
+
+        logger.info(f"Completed {ps_data['name']}: {result['powers_imported']} powers imported")
+        return result
+
     async def import_all_powersets(self, powers_root: Path) -> Dict[str, Any]:
         """Import all powersets from root powers directory
 

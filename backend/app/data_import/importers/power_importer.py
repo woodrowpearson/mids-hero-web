@@ -28,7 +28,9 @@ class PowerImporter:
 
         return self._archetype_cache.get(archetype_name)
 
-    def _extract_archetype_from_display_fullname(self, display_fullname: str) -> int | None:
+    def _extract_archetype_from_display_fullname(
+        self, display_fullname: str
+    ) -> int | None:
         """Extract archetype ID from display_fullname like 'Brute Defense.Invulnerability'
 
         Returns:
@@ -85,9 +87,17 @@ class PowerImporter:
         # Special handling for Arachnos Training/Teamwork powersets
         powerset_name = parts[1].strip() if len(parts) > 1 else ""
         if "training" in category_lower or "teamwork" in category_lower:
-            if "widow" in category_lower or "widow" in powerset_name.lower() or "fortunata" in powerset_name.lower():
+            if (
+                "widow" in category_lower
+                or "widow" in powerset_name.lower()
+                or "fortunata" in powerset_name.lower()
+            ):
                 return self._get_archetype_id("arachnos_widow")
-            elif "bane" in category_lower or "crab" in category_lower or "gadgets" in category_lower:
+            elif (
+                "bane" in category_lower
+                or "crab" in category_lower
+                or "gadgets" in category_lower
+            ):
                 return self._get_archetype_id("arachnos_soldier")
             elif "teamwork" in category_lower:
                 return self._get_archetype_id("arachnos_soldier")
@@ -99,13 +109,27 @@ class PowerImporter:
 
         # Try extracting first word
         first_word = category_part.split()[0].lower()
-        if first_word in ["blaster", "brute", "controller", "corruptor", "defender",
-                          "dominator", "mastermind", "scrapper", "stalker", "tanker",
-                          "peacebringer", "warshade", "sentinel"]:
+        if first_word in [
+            "blaster",
+            "brute",
+            "controller",
+            "corruptor",
+            "defender",
+            "dominator",
+            "mastermind",
+            "scrapper",
+            "stalker",
+            "tanker",
+            "peacebringer",
+            "warshade",
+            "sentinel",
+        ]:
             return self._get_archetype_id(first_word)
 
         # Could not determine - log warning and return None
-        logger.warning(f"Could not extract archetype from display_fullname: {display_fullname}")
+        logger.warning(
+            f"Could not extract archetype from display_fullname: {display_fullname}"
+        )
         return None
 
     async def import_powerset(
@@ -149,9 +173,13 @@ class PowerImporter:
             # If archetype_id not provided, try to extract from display_fullname
             if archetype_id is None:
                 display_fullname = data.get("display_fullname", "")
-                archetype_id = self._extract_archetype_from_display_fullname(display_fullname)
+                archetype_id = self._extract_archetype_from_display_fullname(
+                    display_fullname
+                )
                 if archetype_id:
-                    logger.info(f"Extracted archetype_id={archetype_id} from '{display_fullname}'")
+                    logger.info(
+                        f"Extracted archetype_id={archetype_id} from '{display_fullname}'"
+                    )
 
             # Create powerset
             powerset = Powerset(

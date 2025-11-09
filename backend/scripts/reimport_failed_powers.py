@@ -72,18 +72,24 @@ async def reimport_failed_powers(project_root: Path):
             powerset_name = powerset_map.get(powerset_dirname.lower())
             if not powerset_name:
                 # Try capitalizing first letter
-                powerset_name = powerset_dirname.replace("_", " ").title().replace(" ", "_")
+                powerset_name = (
+                    powerset_dirname.replace("_", " ").title().replace(" ", "_")
+                )
 
             # Query powerset by name
             powerset = db.query(Powerset).filter_by(name=powerset_name).first()
 
             if not powerset:
-                error_msg = f"Powerset '{powerset_name}' not found for power {power_file.name}"
+                error_msg = (
+                    f"Powerset '{powerset_name}' not found for power {power_file.name}"
+                )
                 logger.error(error_msg)
                 results["errors"].append(error_msg)
                 continue
 
-            logger.info(f"Importing {power_file.name} into powerset '{powerset_name}'...")
+            logger.info(
+                f"Importing {power_file.name} into powerset '{powerset_name}'..."
+            )
 
             # Use the importer to import the power
             result = await importer.import_power(power_file, powerset.id)
@@ -97,9 +103,9 @@ async def reimport_failed_powers(project_root: Path):
                 logger.error(f"  ✗ Failed: {power_file.name}")
 
         # Print summary
-        logger.info("\n" + "="*60)
+        logger.info("\n" + "=" * 60)
         logger.info("REIMPORT SUMMARY")
-        logger.info("="*60)
+        logger.info("=" * 60)
         logger.info(f"Total attempted: {len(FAILED_POWER_FILES)}")
         logger.info(f"Successfully imported: {results['imported']}")
         logger.info(f"Skipped (already exist): {results['skipped']}")
@@ -122,7 +128,9 @@ def main():
     project_root = Path(__file__).parent.parent.parent
 
     logger.info(f"Project root: {project_root}")
-    logger.info(f"Re-importing {len(FAILED_POWER_FILES)} powers that failed with range overflow...")
+    logger.info(
+        f"Re-importing {len(FAILED_POWER_FILES)} powers that failed with range overflow..."
+    )
 
     asyncio.run(reimport_failed_powers(project_root))
 

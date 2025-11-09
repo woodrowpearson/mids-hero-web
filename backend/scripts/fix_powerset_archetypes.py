@@ -52,9 +52,17 @@ def extract_archetype_from_display_fullname(display_fullname: str) -> str | None
         # Widow Training/Teamwork -> arachnos_widow
         # Also check the powerset name part for widow/fortunata
         powerset_name = parts[1].strip() if len(parts) > 1 else ""
-        if "widow" in category_part.lower() or "widow" in powerset_name.lower() or "fortunata" in powerset_name.lower():
+        if (
+            "widow" in category_part.lower()
+            or "widow" in powerset_name.lower()
+            or "fortunata" in powerset_name.lower()
+        ):
             return "arachnos_widow"
-        elif "bane" in category_part.lower() or "crab" in category_part.lower() or "gadgets" in category_part.lower():
+        elif (
+            "bane" in category_part.lower()
+            or "crab" in category_part.lower()
+            or "gadgets" in category_part.lower()
+        ):
             return "arachnos_soldier"
         # Generic "Teamwork" defaults to arachnos_soldier
         elif "teamwork" in category_part.lower():
@@ -114,7 +122,9 @@ def fix_powerset_archetypes():
             archetype_name = None
             if ps.source_metadata and "display_fullname" in ps.source_metadata:
                 display_fullname = ps.source_metadata["display_fullname"]
-                archetype_name = extract_archetype_from_display_fullname(display_fullname)
+                archetype_name = extract_archetype_from_display_fullname(
+                    display_fullname
+                )
 
             if not archetype_name:
                 logger.debug(f"Powerset {ps.name}: no archetype extracted")
@@ -133,15 +143,17 @@ def fix_powerset_archetypes():
             # Update powerset
             ps.archetype_id = archetype_id
             stats["updated"] += 1
-            logger.info(f"Updated {ps.name}: archetype_id={archetype_id} ({archetype_name})")
+            logger.info(
+                f"Updated {ps.name}: archetype_id={archetype_id} ({archetype_name})"
+            )
 
         # Commit all changes
         db.commit()
 
         # Print summary
-        logger.info("\n" + "="*60)
+        logger.info("\n" + "=" * 60)
         logger.info("FIX ARCHETYPE SUMMARY")
-        logger.info("="*60)
+        logger.info("=" * 60)
         logger.info(f"Total powersets: {len(powersets)}")
         logger.info(f"Updated: {stats['updated']}")
         logger.info(f"Already had archetype: {stats['skipped']}")

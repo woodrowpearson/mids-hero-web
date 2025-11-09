@@ -7,7 +7,7 @@ from typing import Any
 
 from sqlalchemy.orm import Session
 
-from app.models import Power, Powerset
+from app.models import Archetype, Power, Powerset
 
 logger = logging.getLogger(__name__)
 
@@ -17,6 +17,120 @@ class PowerImporter:
 
     def __init__(self, db_session: Session):
         self.db = db_session
+        # Cache archetypes for performance
+        self._archetype_cache = None
+
+    def _get_archetype_id(self, archetype_name: str) -> int | None:
+        """Get archetype ID by name, using cache"""
+        if self._archetype_cache is None:
+            archetypes = self.db.query(Archetype).all()
+            self._archetype_cache = {at.name: at.id for at in archetypes}
+
+        return self._archetype_cache.get(archetype_name)
+
+    def _extract_archetype_from_display_fullname(
+        self, display_fullname: str
+    ) -> int | None:
+        """Extract archetype ID from display_fullname like 'Brute Defense.Invulnerability'
+
+        Returns:
+            Archetype ID if found, None for special powersets (Pool, Epic, Incarnate, etc.)
+        """
+        if not display_fullname:
+            return None
+
+        # Split on first dot
+        parts = display_fullname.split(".", 1)
+        if len(parts) < 2:
+            return None
+
+        category_part = parts[0].strip()
+
+        # Map category prefixes to archetypes
+        category_to_archetype = {
+            "blaster ranged": "blaster",
+            "blaster support": "blaster",
+            "brute melee": "brute",
+            "brute defense": "brute",
+            "controller control": "controller",
+            "controller buff": "controller",
+            "corruptor ranged": "corruptor",
+            "corruptor buff": "corruptor",
+            "defender ranged": "defender",
+            "defender buff": "defender",
+            "dominator control": "dominator",
+            "dominator assault": "dominator",
+            "mastermind buff": "mastermind",
+            "mastermind summon": "mastermind",
+            "scrapper melee": "scrapper",
+            "scrapper defense": "scrapper",
+            "stalker melee": "stalker",
+            "stalker defense": "stalker",
+            "tanker melee": "tanker",
+            "tanker defense": "tanker",
+            "peacebringer defensive": "peacebringer",
+            "peacebringer offensive": "peacebringer",
+            "warshade defensive": "warshade",
+            "warshade offensive": "warshade",
+            "sentinel ranged": "sentinel",
+            "sentinel defense": "sentinel",
+            "arachnos soldiers": "arachnos_soldier",
+            "arachnos widow": "arachnos_widow",
+        }
+
+        # Check for exact match
+        category_lower = category_part.lower()
+        if category_lower in category_to_archetype:
+            archetype_name = category_to_archetype[category_lower]
+            return self._get_archetype_id(archetype_name)
+
+        # Special handling for Arachnos Training/Teamwork powersets
+        powerset_name = parts[1].strip() if len(parts) > 1 else ""
+        if "training" in category_lower or "teamwork" in category_lower:
+            if (
+                "widow" in category_lower
+                or "widow" in powerset_name.lower()
+                or "fortunata" in powerset_name.lower()
+            ):
+                return self._get_archetype_id("arachnos_widow")
+            elif (
+                "bane" in category_lower
+                or "crab" in category_lower
+                or "gadgets" in category_lower
+            ):
+                return self._get_archetype_id("arachnos_soldier")
+            elif "teamwork" in category_lower:
+                return self._get_archetype_id("arachnos_soldier")
+
+        # For special powersets (Pool, Epic, Incarnate, Inherent), return None
+        special_categories = ["pool", "epic", "incarnate", "inherent", "temporary"]
+        if any(cat in category_lower for cat in special_categories):
+            return None
+
+        # Try extracting first word
+        first_word = category_part.split()[0].lower()
+        if first_word in [
+            "blaster",
+            "brute",
+            "controller",
+            "corruptor",
+            "defender",
+            "dominator",
+            "mastermind",
+            "scrapper",
+            "stalker",
+            "tanker",
+            "peacebringer",
+            "warshade",
+            "sentinel",
+        ]:
+            return self._get_archetype_id(first_word)
+
+        # Could not determine - log warning and return None
+        logger.warning(
+            f"Could not extract archetype from display_fullname: {display_fullname}"
+        )
+        return None
 
     async def import_powerset(
         self, powerset_dir: Path, archetype_id: int
@@ -55,6 +169,17 @@ class PowerImporter:
                 result["skipped"] = 1
                 result["success"] = True
                 return result
+
+            # If archetype_id not provided, try to extract from display_fullname
+            if archetype_id is None:
+                display_fullname = data.get("display_fullname", "")
+                archetype_id = self._extract_archetype_from_display_fullname(
+                    display_fullname
+                )
+                if archetype_id:
+                    logger.info(
+                        f"Extracted archetype_id={archetype_id} from '{display_fullname}'"
+                    )
 
             # Create powerset
             powerset = Powerset(

@@ -211,6 +211,20 @@
       ],
       "completion_date": "2025-11-08",
       "github_issues_closed": [],
+      "github_issues_created": [
+        "#315 Fix powers.range column numeric overflow (12 powers failing import)",
+        "#316 Implement archetype-to-powerset relationship mapping"
+      ],
+      "production_import_results": {
+        "date": "2025-11-09",
+        "archetypes_imported": 20,
+        "enhancement_sets_imported": 227,
+        "powersets_imported": 371,
+        "powers_imported": 2273,
+        "powers_failed": 12,
+        "success_rate": "99.5%",
+        "duration_seconds": 20
+      },
       "current_branch": "feature/epic-2.5.5-cleanup"
     },
     "epic2_5": {

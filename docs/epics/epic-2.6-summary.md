@@ -168,20 +168,44 @@ backend/app/data_import/cli.py (complete rewrite for JSON)
 - **Commits:** 9 focused commits
 - **Duration:** ~2 hours (executing plan)
 
+## Production Import Results
+
+**Completed:** 2025-11-09
+
+### Import Summary
+- ✅ **20 Archetypes** imported successfully
+- ✅ **227 Enhancement Sets** imported successfully
+- ✅ **371 Powersets** imported successfully
+- ✅ **2,273 Powers** imported (12 failed with numeric overflow)
+
+### Performance
+- **Total Duration:** ~20 seconds
+- **Data Source:** 6,479 JSON files from filtered_data
+- **Success Rate:** 99.5% (2,273/2,285 powers)
+
+### Validation Results
+- ✅ All data integrity checks passed
+- ✅ All required fields present
+- ✅ No orphaned records
+- ⚠️  Archetype-powerset relationships not yet mapped (documented as future work)
+
 ## Known Issues & Future Work
 
-1. **Schema Mismatches**
-   - `enhancement_sets` table missing `group_name` column
-   - Validation script reveals additional schema gaps
-   - **Action:** Create comprehensive migration in future epic
+1. **Powers.range Column Numeric Overflow** - **[Issue #315](https://github.com/woodrowpearson/mids-hero-web/issues/315)**
+   - 12 powers failed import with range value 10000.0
+   - Database column: `NUMERIC(6,2)` (max: 9,999.99)
+   - Affects: Shadow_Recall, Incandescence_* Incarnate powers
+   - **Fix:** Update column to `NUMERIC(8,2)` and re-import 12 powers
 
-2. **Archetype Association**
-   - Powersets currently import without archetype_id for bulk imports
-   - **Action:** Implement archetype mapping logic in future
+2. **Archetype-Powerset Mapping** - **[Issue #316](https://github.com/woodrowpearson/mids-hero-web/issues/316)**
+   - 371 powersets imported with `archetype_id = NULL`
+   - Prevents build validation and proper filtering
+   - **Fix:** Implement mapping logic using powerset directory structure
 
-3. **Production Import**
-   - Task 2.6.4.1 intentionally skipped during plan execution
-   - **Action:** Run actual import in separate session with monitoring
+3. **Schema Cleanup**
+   - Database schema rebuilt from models during import
+   - May need comprehensive migration for production deployment
+   - **Action:** Create proper Alembic migrations for all schema changes
 
 ## Success Criteria Met
 

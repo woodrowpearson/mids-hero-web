@@ -2,7 +2,8 @@
 import asyncio
 import logging
 from pathlib import Path
-from typing import Dict, Any
+from typing import Any
+
 from sqlalchemy.orm import Session
 
 from app.data_import.importers.archetype_importer import ArchetypeImporter
@@ -13,7 +14,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-async def import_archetypes(directory_path: str, db_session: Session = None) -> Dict[str, Any]:
+async def import_archetypes(directory_path: str, db_session: Session = None) -> dict[str, Any]:
     """Import all archetypes from directory
 
     Args:
@@ -48,7 +49,7 @@ async def import_archetypes(directory_path: str, db_session: Session = None) -> 
             db_session.close()
 
 
-async def import_enhancements(directory_path: str, db_session: Session = None) -> Dict[str, Any]:
+async def import_enhancements(directory_path: str, db_session: Session = None) -> dict[str, Any]:
     """Import all enhancement sets from directory"""
     close_session = False
     if db_session is None:

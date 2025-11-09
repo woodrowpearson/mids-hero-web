@@ -1,8 +1,9 @@
-import pytest
 import json
-from pathlib import Path
+
+import pytest
+
 from app.data_import.importers.power_importer import PowerImporter
-from app.models import Powerset, Power, Archetype
+from app.models import Archetype, Power, Powerset
 
 
 @pytest.fixture

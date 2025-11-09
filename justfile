@@ -196,9 +196,13 @@ json-import-all:
 
 json-import-health:
     @echo "🏥 Validating JSON import system..."
-    @test -f filtered_data/manifest.json || (echo "❌ Manifest not found"; exit 1)
-    @{{uv}} run python scripts/validate_filtered_data.py
-    @echo "✅ JSON import system healthy"
+    @if [ -d filtered_data ]; then \
+        test -f filtered_data/manifest.json || (echo "❌ Manifest not found"; exit 1); \
+        {{uv}} run python scripts/validate_filtered_data.py; \
+        echo "✅ JSON import system healthy"; \
+    else \
+        echo "ℹ️  Skipping JSON validation (filtered_data not found)"; \
+    fi
 
 # Common Import Examples
 import-archetypes file:

@@ -2,10 +2,11 @@
 import json
 import logging
 from pathlib import Path
-from typing import Dict, Any
+from typing import Any
+
 from sqlalchemy.orm import Session
 
-from app.models import Powerset, Power
+from app.models import Power, Powerset
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +17,7 @@ class PowerImporter:
     def __init__(self, db_session: Session):
         self.db = db_session
 
-    async def import_powerset(self, powerset_dir: Path, archetype_id: int) -> Dict[str, Any]:
+    async def import_powerset(self, powerset_dir: Path, archetype_id: int) -> dict[str, Any]:
         """Import a powerset from its directory
 
         Args:
@@ -87,7 +88,7 @@ class PowerImporter:
 
         return result
 
-    async def import_power(self, power_file: Path, powerset_id: int) -> Dict[str, Any]:
+    async def import_power(self, power_file: Path, powerset_id: int) -> dict[str, Any]:
         """Import an individual power from JSON file
 
         Args:
@@ -159,7 +160,7 @@ class PowerImporter:
 
         return result
 
-    async def import_powerset_with_powers(self, powerset_dir: Path, archetype_id: int) -> Dict[str, Any]:
+    async def import_powerset_with_powers(self, powerset_dir: Path, archetype_id: int) -> dict[str, Any]:
         """Import a powerset and all its powers
 
         Args:
@@ -221,7 +222,7 @@ class PowerImporter:
         logger.info(f"Completed {ps_data['name']}: {result['powers_imported']} powers imported")
         return result
 
-    async def import_all_powersets(self, powers_root: Path) -> Dict[str, Any]:
+    async def import_all_powersets(self, powers_root: Path) -> dict[str, Any]:
         """Import all powersets from root powers directory
 
         Args:

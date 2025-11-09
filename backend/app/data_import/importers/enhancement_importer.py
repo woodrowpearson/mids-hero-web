@@ -2,10 +2,11 @@
 import json
 import logging
 from pathlib import Path
-from typing import Dict, Any
+from typing import Any
+
 from sqlalchemy.orm import Session
 
-from app.models import EnhancementSet, Enhancement
+from app.models import EnhancementSet
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +17,7 @@ class EnhancementImporter:
     def __init__(self, db_session: Session):
         self.db = db_session
 
-    async def import_from_file(self, json_path: Path) -> Dict[str, Any]:
+    async def import_from_file(self, json_path: Path) -> dict[str, Any]:
         """Import enhancement set from a single JSON file
 
         Args:
@@ -77,7 +78,7 @@ class EnhancementImporter:
 
         return result
 
-    async def import_from_directory(self, directory: Path) -> Dict[str, Any]:
+    async def import_from_directory(self, directory: Path) -> dict[str, Any]:
         """Import all enhancement sets from directory"""
         result = {
             'success': True,

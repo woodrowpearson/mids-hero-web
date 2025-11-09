@@ -1,8 +1,9 @@
-import pytest
 import json
-from pathlib import Path
+
+import pytest
+
 from app.data_import.importers.enhancement_importer import EnhancementImporter
-from app.models import EnhancementSet, Enhancement
+from app.models import EnhancementSet
 
 
 @pytest.fixture

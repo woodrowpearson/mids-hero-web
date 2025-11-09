@@ -2,9 +2,9 @@
 import json
 import logging
 from pathlib import Path
-from typing import Dict, Any
+from typing import Any
+
 from sqlalchemy.orm import Session
-from sqlalchemy.exc import IntegrityError
 
 from app.models import Archetype
 
@@ -22,7 +22,7 @@ class ArchetypeImporter:
         """
         self.db = db_session
 
-    async def import_from_file(self, json_path: Path) -> Dict[str, Any]:
+    async def import_from_file(self, json_path: Path) -> dict[str, Any]:
         """Import archetype from a single JSON file
 
         Args:
@@ -85,7 +85,7 @@ class ArchetypeImporter:
 
         return result
 
-    async def import_from_directory(self, directory: Path) -> Dict[str, Any]:
+    async def import_from_directory(self, directory: Path) -> dict[str, Any]:
         """Import all archetypes from a directory
 
         Args:

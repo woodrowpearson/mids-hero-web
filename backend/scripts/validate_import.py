@@ -15,7 +15,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from app.database import SessionLocal
-from app.models import Archetype, EnhancementSet, Powerset, Power
+from app.models import Archetype, EnhancementSet, Power, Powerset
 
 
 def validate_archetypes(db):

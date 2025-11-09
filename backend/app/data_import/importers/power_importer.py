@@ -87,6 +87,78 @@ class PowerImporter:
 
         return result
 
+    async def import_power(self, power_file: Path, powerset_id: int) -> Dict[str, Any]:
+        """Import an individual power from JSON file
+
+        Args:
+            power_file: Path to power JSON file
+            powerset_id: ID of parent powerset
+
+        Returns:
+            Import results
+        """
+        result = {
+            'success': False,
+            'imported': 0,
+            'skipped': 0,
+            'errors': []
+        }
+
+        try:
+            with open(power_file) as f:
+                data = json.load(f)
+
+            # Check if power already exists (using name as unique identifier)
+            existing = self.db.query(Power).filter_by(name=data['name']).first()
+            if existing:
+                logger.debug(f"Power {data['name']} already exists")
+                result['skipped'] = 1
+                result['success'] = True
+                return result
+
+            # Create power with basic fields
+            power = Power(
+                name=data['name'],
+                full_name=data.get('full_name', data['name']),
+                display_name=data.get('display_name', data['name']),
+                display_help=data.get('display_help', ''),
+                display_short_help=data.get('display_short_help', ''),
+                powerset_id=powerset_id,
+                type=data.get('type', ''),
+                available_level=data.get('available_level', 1),
+                icon=data.get('icon', ''),
+                accuracy=data.get('accuracy', 1.0),
+                activation_time=data.get('activation_time'),
+                recharge_time=data.get('recharge_time'),
+                endurance_cost=data.get('endurance_cost'),
+                range=data.get('range'),
+                radius=data.get('radius'),
+                arc=data.get('arc'),
+                max_targets_hit=data.get('max_targets_hit'),
+                target_type=data.get('target_type', ''),
+                requires=data.get('requires', ''),
+                max_boosts=data.get('max_boosts', 6),
+                boosts_allowed=data.get('boosts_allowed', []),
+                allowed_boostset_cats=data.get('allowed_boostset_cats', []),
+                power_data=data,  # Store complete JSON
+                source_metadata=data  # Also store in source_metadata
+            )
+
+            self.db.add(power)
+            self.db.commit()
+
+            result['imported'] = 1
+            result['success'] = True
+            logger.debug(f"Imported power: {data['name']}")
+
+        except Exception as e:
+            self.db.rollback()
+            error_msg = f"Error importing power {power_file}: {str(e)}"
+            logger.error(error_msg)
+            result['errors'].append(error_msg)
+
+        return result
+
     async def import_all_powersets(self, powers_root: Path) -> Dict[str, Any]:
         """Import all powersets from root powers directory
 

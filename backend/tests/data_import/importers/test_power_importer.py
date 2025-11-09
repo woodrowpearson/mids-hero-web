@@ -81,3 +81,77 @@ async def test_import_duplicate_powerset_skips(importer, sample_powerset_data, s
     assert result['success'] is True
     assert result['skipped'] == 1
     assert db_session.query(Powerset).filter_by(name="Fire_Blast").count() == 1
+
+
+@pytest.fixture
+def sample_power_json(tmp_path):
+    """Create sample power JSON file"""
+    power_data = {
+        "name": "Fire_Blast",
+        "display_name": "Fire Blast",
+        "display_help": "Hurl a blast of fire at your target",
+        "display_short_help": "Ranged DMG(Fire)",
+        "type": "Click",
+        "available_level": 1,
+        "icon": "fire_blast.png",
+        "accuracy": 1.0,
+        "activation_time": 1.17,
+        "recharge_time": 4.0,
+        "endurance_cost": 5.2,
+        "range": 80,
+        "target_type": "Foe",
+        "max_boosts": 6,
+        "boosts_allowed": ["Enhance Damage", "Enhance Accuracy"],
+        "effects": [
+            {"type": "damage", "damage_type": "fire", "scale": 1.0}
+        ]
+    }
+
+    power_file = tmp_path / "fire_blast.json"
+    power_file.write_text(json.dumps(power_data, indent=2))
+    return power_file
+
+
+@pytest.fixture
+def sample_powerset(db_session, sample_archetype):
+    """Create sample powerset for testing"""
+    powerset = Powerset(
+        name="Fire_Blast",
+        display_name="Fire Blast",
+        archetype_id=sample_archetype.id,
+        powerset_type="primary"
+    )
+    db_session.add(powerset)
+    db_session.commit()
+    return powerset
+
+
+@pytest.mark.asyncio
+async def test_import_individual_power(importer, sample_power_json, sample_powerset, db_session):
+    """Test importing an individual power"""
+    result = await importer.import_power(sample_power_json, sample_powerset.id)
+
+    assert result['success'] is True
+    assert result['imported'] == 1
+
+    # Verify power in database
+    power = db_session.query(Power).filter_by(name="Fire_Blast").first()
+    assert power is not None
+    assert power.display_name == "Fire Blast"
+    assert power.powerset_id == sample_powerset.id
+    assert power.type == "Click"
+    assert power.accuracy == 1.0
+
+
+@pytest.mark.asyncio
+async def test_import_duplicate_power_skips(importer, sample_power_json, sample_powerset, db_session):
+    """Test that importing duplicate power is skipped"""
+    # Import once
+    await importer.import_power(sample_power_json, sample_powerset.id)
+
+    # Import again - should skip
+    result = await importer.import_power(sample_power_json, sample_powerset.id)
+
+    assert result['success'] is True
+    assert result['skipped'] == 1
+    assert db_session.query(Power).filter_by(name="Fire_Blast").count() == 1

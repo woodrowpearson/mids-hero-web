@@ -2,7 +2,6 @@
 """Script to re-import the 12 powers that failed due to range overflow"""
 
 import asyncio
-import json
 import logging
 import sys
 from pathlib import Path
@@ -10,9 +9,9 @@ from pathlib import Path
 # Add parent directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from app.database import SessionLocal
-from app.models import Power, Powerset
 from app.data_import.importers.power_importer import PowerImporter
+from app.database import SessionLocal
+from app.models import Powerset
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -59,7 +58,6 @@ async def reimport_failed_powers(project_root: Path):
             # Determine powerset from directory structure
             # Path format: filtered_data/powers/{category}/{powerset}/power.json
             parts = power_file.parts
-            category = parts[-3]  # e.g., "inherent", "incarnate"
             powerset_dirname = parts[-2]  # e.g., "inherent", "destiny"
 
             # Normalize powerset name (capitalize first letter, replace _ with space)

@@ -2,7 +2,6 @@
 """Script to fix archetype_id for all 371 powersets based on display_fullname"""
 
 import logging
-import re
 import sys
 from pathlib import Path
 

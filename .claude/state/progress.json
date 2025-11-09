@@ -159,10 +159,64 @@
         "#256"
       ]
     },
+    "epic2_6": {
+      "name": "JSON Data Source Migration",
+      "status": "completed",
+      "progress": 100,
+      "tasks": [
+        "✅ Task 2.6.1: JSON Import Pipeline - Archetypes and Enhancements",
+        "  ✅ Subtask 2.6.1.1: Implement Archetype Importer",
+        "  ✅ Subtask 2.6.1.2: Implement Enhancement Set Importer",
+        "  ✅ Subtask 2.6.1.3: Integrate Importers with CLI",
+        "✅ Task 2.6.2: JSON Import Pipeline - Powers",
+        "  ✅ Subtask 2.6.2.1: Implement Power Category and Powerset Importer",
+        "  ✅ Subtask 2.6.2.2: Implement Individual Power Import",
+        "  ✅ Subtask 2.6.2.3: Implement Batch Import with Progress Tracking",
+        "✅ Task 2.6.3: Testing and Validation",
+        "  ✅ Subtask 2.6.3.1: Create End-to-End Import Test",
+        "  ✅ Subtask 2.6.3.2: Create Import Validation Script"
+      ],
+      "implementation_details": {
+        "importers_created": [
+          "ArchetypeImporter - imports archetypes from filtered_data JSON",
+          "EnhancementImporter - imports enhancement sets from boost_sets JSON",
+          "PowerImporter - imports powersets and powers with batch processing"
+        ],
+        "database_updates": [
+          "Added source_metadata JSON column to Archetype, EnhancementSet, Enhancement, Powerset models",
+          "Fixed schema mismatches (description→display_help, primary_group→primary_category, etc.)",
+          "Dropped and recreated database with correct schema from models"
+        ],
+        "testing": {
+          "unit_tests": "10 tests (archetypes, enhancements, powers, CLI)",
+          "integration_tests": "2 tests (end-to-end pipeline, idempotent reimport)",
+          "total_passing": "12/12 tests (100%)"
+        },
+        "cli_interface": {
+          "import_archetypes": "Batch import from directory",
+          "import_enhancements": "Batch import from directory",
+          "import_powerset_with_powers": "Import powerset + all powers with progress tracking"
+        },
+        "validation_script": "backend/scripts/validate_import.py - validates data integrity and relationships"
+      },
+      "commits": [
+        "976ebc79f feat: add archetype JSON importer with tests",
+        "4d09c3b0f feat: add enhancement set JSON importer with tests",
+        "372cd5556 feat: add CLI interface for JSON imports",
+        "c58c901e1 feat: add powerset JSON importer",
+        "555ce6784 feat: add individual power import functionality",
+        "e2d804434 feat: add batch import with progress tracking",
+        "53c44620e test: add end-to-end integration tests",
+        "e70373079 feat: add import validation script"
+      ],
+      "completion_date": "2025-11-08",
+      "github_issues_closed": [],
+      "current_branch": "feature/epic-2.5.5-cleanup"
+    },
     "epic2_5": {
       "name": "City of Data Import Preparation",
-      "status": "in_progress",
-      "progress": 90,
+      "status": "completed",
+      "progress": 100,
       "tasks": [
         "✅ Task 2.5.1: Create comprehensive pruning plan and documentation",
         "✅ Created `just jq` command for JSON processing",

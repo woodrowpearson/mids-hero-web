@@ -71,6 +71,9 @@ class Archetype(Base):
     hit_points_base = Column(Integer)
     hit_points_max = Column(Integer)
 
+    # Source metadata from original JSON
+    source_metadata = Column(JSON, nullable=True, comment="Raw JSON from filtered_data")
+
     # Metadata
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
@@ -151,6 +154,9 @@ class Powerset(Base):
     power_display_names = Column(JSON)  # Array of display names
     power_short_helps = Column(JSON)  # Array of short help texts
     available_level = Column(JSON)  # Array of levels when powers become available
+
+    # Source metadata from original JSON
+    source_metadata = Column(JSON, nullable=True, comment="Raw JSON from filtered_data")
 
     # Metadata
     created_at = Column(DateTime, default=datetime.utcnow)
@@ -301,6 +307,9 @@ class EnhancementSet(Base):
     # Computed metadata (processed enhancement data)
     computed = Column(JSON)  # Complete computed object from filtered_data
 
+    # Source metadata from original JSON
+    source_metadata = Column(JSON, nullable=True, comment="Raw JSON from filtered_data")
+
     # Metadata
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
@@ -372,6 +381,9 @@ class Enhancement(Base):
 
     # UI
     icon = Column(String(255))
+
+    # Source metadata from original JSON
+    source_metadata = Column(JSON, nullable=True, comment="Raw JSON from filtered_data")
 
     # Metadata
     created_at = Column(DateTime, default=datetime.utcnow)

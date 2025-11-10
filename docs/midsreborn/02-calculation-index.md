@@ -27,8 +27,8 @@ This document tracks all 43 calculation specifications that will document the Mi
 
 | Status | Count | Percentage |
 |--------|-------|------------|
-| 🔴 Not Started | 41 | 95% |
-| 🟡 Breadth Complete | 2 | 5% |
+| 🔴 Not Started | 37 | 86% |
+| 🟡 Breadth Complete | 6 | 14% |
 | 🟢 Depth Complete | 0 | 0% |
 
 **Current Milestone**: Milestone 2 (Breadth Coverage) - Creating all 43 specs
@@ -45,9 +45,9 @@ This document tracks all 43 calculation specifications that will document the Mi
 |---|---------------|--------|----------|------------|-------|
 | 01 | [power-effects-core.md](calculations/01-power-effects-core.md) | 🟡 Breadth Complete | Critical | Complex | IEffect interface, GroupedFx.cs - Foundation for all calculations |
 | 02 | [power-damage.md](calculations/02-power-damage.md) | 🟡 Breadth Complete | Critical | Medium | Damage calculation with AT scaling |
-| 03 | [power-buffs-debuffs.md](calculations/03-power-buffs-debuffs.md) | 🔴 Not Started | Critical | Medium | Buff/debuff mechanics and stacking |
-| 04 | [power-control-effects.md](calculations/04-power-control-effects.md) | 🔴 Not Started | High | Medium | Mez mechanics (hold, stun, sleep, etc.) |
-| 05 | [power-healing-absorption.md](calculations/05-power-healing-absorption.md) | 🔴 Not Started | High | Simple | HP restoration and temp HP |
+| 03 | [power-buffs-debuffs.md](calculations/03-power-buffs-debuffs.md) | 🟡 Breadth Complete | Critical | Medium | Buff/debuff mechanics and stacking |
+| 04 | [power-control-effects.md](calculations/04-power-control-effects.md) | 🟡 Breadth Complete | High | Medium | Mez mechanics (hold, stun, sleep, etc.) |
+| 05 | [power-healing-absorption.md](calculations/05-power-healing-absorption.md) | 🟡 Breadth Complete | High | Moderate | HP restoration and temp HP |
 | 06 | [power-endurance-recovery.md](calculations/06-power-endurance-recovery.md) | 🔴 Not Started | Critical | Simple | Endurance cost and recovery |
 | 07 | [power-recharge-modifiers.md](calculations/07-power-recharge-modifiers.md) | 🔴 Not Started | Critical | Medium | Local and global recharge |
 | 08 | [power-accuracy-tohit.md](calculations/08-power-accuracy-tohit.md) | 🔴 Not Started | Critical | Medium | Accuracy vs ToHit distinction |

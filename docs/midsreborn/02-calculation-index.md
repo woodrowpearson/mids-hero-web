@@ -27,11 +27,11 @@ This document tracks all 43 calculation specifications that will document the Mi
 
 | Status | Count | Percentage |
 |--------|-------|------------|
-| 🔴 Not Started | 43 | 100% |
-| 🟡 Breadth Complete | 0 | 0% |
+| 🔴 Not Started | 42 | 98% |
+| 🟡 Breadth Complete | 1 | 2% |
 | 🟢 Depth Complete | 0 | 0% |
 
-**Current Milestone**: Milestone 1 (Foundation) - Creating index
+**Current Milestone**: Milestone 2 (Breadth Coverage) - Creating all 43 specs
 
 **Next Milestone**: Milestone 2 (Breadth Coverage) - Create all 43 specs at high level
 
@@ -43,7 +43,7 @@ This document tracks all 43 calculation specifications that will document the Mi
 
 | # | Specification | Status | Priority | Complexity | Notes |
 |---|---------------|--------|----------|------------|-------|
-| 01 | [power-effects-core.md](calculations/01-power-effects-core.md) | 🔴 Not Started | Critical | Complex | IEffect interface, GroupedFx.cs - Foundation for all calculations |
+| 01 | [power-effects-core.md](calculations/01-power-effects-core.md) | 🟡 Breadth Complete | Critical | Complex | IEffect interface, GroupedFx.cs - Foundation for all calculations |
 | 02 | [power-damage.md](calculations/02-power-damage.md) | 🔴 Not Started | Critical | Medium | Damage calculation with AT scaling |
 | 03 | [power-buffs-debuffs.md](calculations/03-power-buffs-debuffs.md) | 🔴 Not Started | Critical | Medium | Buff/debuff mechanics and stacking |
 | 04 | [power-control-effects.md](calculations/04-power-control-effects.md) | 🔴 Not Started | High | Medium | Mez mechanics (hold, stun, sleep, etc.) |

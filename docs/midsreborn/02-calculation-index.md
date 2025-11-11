@@ -133,7 +133,7 @@ This document tracks all 43 calculation specifications that will document the Mi
 | 33 | [pseudopet-mechanics.md](calculations/33-pseudopet-mechanics.md) | �4 Not Started | Medium | Complex | Invisible pseudopets for power delivery |
 | 34 | [proc-chance-formulas.md](calculations/34-proc-chance-formulas.md) | 🔴 Not Started | High | Complex | Flat % vs PPM formulas |
 | 35 | [proc-interactions.md](calculations/35-proc-interactions.md) | 🔴 Not Started | High | Complex | AoE factor, multi-target, etc. |
-| 36 | [enhancement-boosters.md](calculations/36-enhancement-boosters.md) | 🔴 Not Started | Low | Simple | +5 catalyst mechanics |
+| 36 | [enhancement-boosters.md](calculations/36-enhancement-boosters.md) | ✅ Breadth Complete | Low | Simple | +5 catalyst mechanics |
 | 37 | [attuned-ios.md](calculations/37-attuned-ios.md) | 🔴 Not Started | Medium | Medium | Level-scaling enhancements |
 | 38 | [purple-pvp-ios.md](calculations/38-purple-pvp-ios.md) | 🔴 Not Started | Low | Simple | Special IO types |
 

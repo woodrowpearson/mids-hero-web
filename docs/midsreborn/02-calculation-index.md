@@ -27,12 +27,12 @@ This document tracks all 43 calculation specifications that will document the Mi
 
 | Status | Count | Percentage |
 |--------|-------|------------|
-| 🔴 Not Started | 16 | 37% |
-| 🟡 Breadth Complete | 27 | 63% |
+| 🔴 Not Started | 15 | 35% |
+| 🟡 Breadth Complete | 28 | 65% |
 | 🟢 Depth Complete | 0 | 0% |
 
 **Current Milestone**: Milestone 2 (Breadth Coverage) - Creating all 43 specs
-**Latest**: Spec 25 complete - Buff Stacking Rules (HIGH priority) - **27 specs complete (63%)**
+**Latest**: Spec 30 complete - Incarnate Abilities (MEDIUM priority) - **28 specs complete (65%)**
 
 **Next Milestone**: Milestone 2 (Breadth Coverage) - Create all 43 specs at high level
 
@@ -118,10 +118,10 @@ This document tracks all 43 calculation specifications that will document the Mi
 | # | Specification | Status | Priority | Complexity | Notes |
 |---|---------------|--------|----------|------------|-------|
 | 29 | [incarnate-alpha-shifts.md](calculations/29-incarnate-alpha-shifts.md) | 🔴 Not Started | Medium | Medium | Level shifts and scaling |
-| 30 | [incarnate-abilities.md](calculations/30-incarnate-abilities.md) | 🔴 Not Started | Medium | Complex | Judgment, Interface, Destiny, Lore, Hybrid |
+| 30 | [incarnate-abilities.md](calculations/30-incarnate-abilities.md) | 🟡 Breadth Complete | Medium | Complex | 9 non-alpha slots: Interface, Judgment, Destiny, Lore, Hybrid, Genesis, Vitae, Omega, Stance |
 | 31 | [incarnate-core-radial.md](calculations/31-incarnate-core-radial.md) | 🔴 Not Started | Low | Medium | Core vs Radial path differences |
 
-**Incarnate System Summary**: Important for endgame builds but can be implemented after core system works.
+**Incarnate System Summary**: Spec 30 complete - documents 9 non-alpha Incarnate slots, tier system, level shifts from Lore/Destiny. Important for endgame builds but can be implemented after core system works.
 
 ---
 

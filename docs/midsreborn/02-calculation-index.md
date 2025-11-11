@@ -130,14 +130,14 @@ This document tracks all 43 calculation specifications that will document the Mi
 | # | Specification | Status | Priority | Complexity | Notes |
 |---|---------------|--------|----------|------------|-------|
 | 32 | [pet-calculations.md](calculations/32-pet-calculations.md) | 🟡 Breadth Complete | High | Complex | Summoned entities with inheritance + separate slotting |
-| 33 | [pseudopet-mechanics.md](calculations/33-pseudopet-mechanics.md) | �4 Not Started | Medium | Complex | Invisible pseudopets for power delivery |
+| 33 | [pseudopet-mechanics.md](calculations/33-pseudopet-mechanics.md) | 🟡 Breadth Complete | Medium | Complex | Invisible pseudopets for power delivery |
 | 34 | [proc-chance-formulas.md](calculations/34-proc-chance-formulas.md) | 🟡 Breadth Complete | High | Complex | PPM formula with recharge/cast/area factors |
 | 35 | [proc-interactions.md](calculations/35-proc-interactions.md) | 🟡 Breadth Complete | Low | Low-Moderate | Independent rolling, unique restrictions, mutex system |
 | 36 | [enhancement-boosters.md](calculations/36-enhancement-boosters.md) | 🟡 Breadth Complete | Low | Simple | +5 catalyst mechanics |
 | 37 | [attuned-ios.md](calculations/37-attuned-ios.md) | 🟡 Breadth Complete | Medium | Medium | Level-scaling enhancements - NO exemplar penalty |
 | 38 | [purple-pvp-ios.md](calculations/38-purple-pvp-ios.md) | 🟡 Breadth Complete | Medium | Medium | Purple (rare) and PvP IO sets - Rule of 5 exempt |
 
-**Special Systems Summary**: **BATCH 7 COMPLETE (Partial)** - Spec 32 (Pet Calculations) documents Mastermind pets (6 types with upgrades), Controller/Dominator pets, stat inheritance from caster (accuracy/damage but NOT defense/recharge), separate Pet IO slotting, and upgrade mechanics. Spec 34 (PPM formula) and Spec 35 (Proc Interactions) complete. Spec 38 (Purple/PvP IOs) documents Rule of 5 exemption logic. Pseudopet spec (33) still needed - Spec 37 (Attuned IOs) COMPLETE with level scaling, NO exemplar penalty, ATO/Winter/Movie set detection.
+**Special Systems Summary**: **BATCH 7 COMPLETE!** - All 7 Special Systems specs complete at breadth level! Spec 32 (Pet Calculations) documents Mastermind pets with upgrades and stat inheritance. Spec 33 (Pseudopet Mechanics) distinguishes invisible pseudopets (location-based patches/auras) from controllable pets. Specs 34-35 (Proc formulas/interactions) document PPM system. Spec 36 (Boosters) covers +5 catalysts. Spec 37 (Attuned IOs) documents level scaling. Spec 38 (Purple/PvP IOs) documents Rule of 5 exemption.
 
 ---
 

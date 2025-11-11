@@ -27,12 +27,12 @@ This document tracks all 43 calculation specifications that will document the Mi
 
 | Status | Count | Percentage |
 |--------|-------|------------|
-| 🔴 Not Started | 15 | 35% |
-| 🟡 Breadth Complete | 28 | 65% |
+| 🔴 Not Started | 14 | 33% |
+| 🟡 Breadth Complete | 29 | 67% |
 | 🟢 Depth Complete | 0 | 0% |
 
 **Current Milestone**: Milestone 2 (Breadth Coverage) - Creating all 43 specs
-**Latest**: Spec 30 complete - Incarnate Abilities (MEDIUM priority) - **28 specs complete (65%)**
+**Latest**: Spec 31 complete - Incarnate Core vs Radial (LOW priority) - **29 specs complete (67%)**
 
 **Next Milestone**: Milestone 2 (Breadth Coverage) - Create all 43 specs at high level
 
@@ -119,9 +119,9 @@ This document tracks all 43 calculation specifications that will document the Mi
 |---|---------------|--------|----------|------------|-------|
 | 29 | [incarnate-alpha-shifts.md](calculations/29-incarnate-alpha-shifts.md) | 🔴 Not Started | Medium | Medium | Level shifts and scaling |
 | 30 | [incarnate-abilities.md](calculations/30-incarnate-abilities.md) | 🟡 Breadth Complete | Medium | Complex | 9 non-alpha slots: Interface, Judgment, Destiny, Lore, Hybrid, Genesis, Vitae, Omega, Stance |
-| 31 | [incarnate-core-radial.md](calculations/31-incarnate-core-radial.md) | 🔴 Not Started | Low | Medium | Core vs Radial path differences |
+| 31 | [incarnate-core-radial.md](calculations/31-incarnate-core-radial.md) | 🟡 Breadth Complete | Low | Medium | Core (focused) vs Radial (broad) branching at T3+ |
 
-**Incarnate System Summary**: Spec 30 complete - documents 9 non-alpha Incarnate slots, tier system, level shifts from Lore/Destiny. Important for endgame builds but can be implemented after core system works.
+**Incarnate System Summary**: Specs 30-31 complete - documents 9 non-alpha Incarnate slots, tier system, level shifts, and Core/Radial branching philosophy. Important for endgame builds but can be implemented after core system works. **BATCH 6 (PARTIAL) - Specs 30-31 complete (2 of 3 Incarnate specs)**
 
 ---
 

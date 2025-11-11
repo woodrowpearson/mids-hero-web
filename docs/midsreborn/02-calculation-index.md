@@ -27,12 +27,12 @@ This document tracks all 43 calculation specifications that will document the Mi
 
 | Status | Count | Percentage |
 |--------|-------|------------|
-| 🔴 Not Started | 19 | 44% |
-| 🟡 Breadth Complete | 24 | 56% |
+| 🔴 Not Started | 18 | 42% |
+| 🟡 Breadth Complete | 25 | 58% |
 | 🟢 Depth Complete | 0 | 0% |
 
 **Current Milestone**: Milestone 2 (Breadth Coverage) - Creating all 43 specs
-**Latest**: Spec 20 complete - Build Totals Resistance (CRITICAL) - **24 specs complete (56%)**
+**Latest**: Spec 27 complete - Suppression Mechanics (LOW priority) - **25 specs complete (58%)**
 
 **Next Milestone**: Milestone 2 (Breadth Coverage) - Create all 43 specs at high level
 
@@ -106,7 +106,7 @@ This document tracks all 43 calculation specifications that will document the Mi
 |---|---------------|--------|----------|------------|-------|
 | 25 | [buff-stacking-rules.md](calculations/25-buff-stacking-rules.md) | 🔴 Not Started | High | Complex | Additive vs multiplicative stacking |
 | 26 | [diminishing-returns.md](calculations/26-diminishing-returns.md) | 🔴 Not Started | Medium | Medium | DR beyond ED (if any) |
-| 27 | [suppression-mechanics.md](calculations/27-suppression-mechanics.md) | 🔴 Not Started | Low | Medium | Combat suppression, travel power suppression |
+| 27 | [suppression-mechanics.md](calculations/27-suppression-mechanics.md) | 🟡 Breadth Complete | Low | Moderate | eSuppress flags - combat/stealth/travel suppression |
 | 28 | [combat-attributes.md](calculations/28-combat-attributes.md) | 🔴 Not Started | Medium | Complex | Real Numbers display mimicry |
 
 **Stacking & Interaction Summary**: Buff stacking (spec 25) is high priority. Others can be deferred to later phases.

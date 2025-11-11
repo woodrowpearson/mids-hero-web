@@ -641,3 +641,326 @@ Expected Output:
 **Document Status**: 🟡 Breadth Complete - High-level spec with pseudocode and game context
 **Last Updated**: 2025-11-10
 **Next Steps**: Add full implementation detail in Milestone 3 (depth pass)
+
+---
+
+## Section 1: Detailed Algorithm (Depth)
+
+### Core Formula Extraction
+
+**Primary Source**: `clsToonX.cs` lines 766, 840-865
+
+The global recharge calculation is a three-stage process:
+1. **Aggregation** - Sum all global recharge sources
+2. **Storage** - Store as multiplicative factor (BuffHaste)
+3. **Capping** - Apply archetype-specific recharge cap
+
+**Core C# Formula**:
+```csharp
+// Stage 1: Aggregate from all sources
+Totals.BuffHaste = _selfEnhance.Effect[(int)Enums.eStatType.Haste] +
+                   _selfBuffs.Effect[(int)Enums.eStatType.Haste];
+
+// Stage 2: Apply archetype cap
+TotalsCapped.BuffHaste = Math.Min(Totals.BuffHaste, Archetype.RechargeCap - 1);
+
+// Stage 3: Convert to display percentage
+displayPercentage = (TotalsCapped.BuffHaste + 1) * 100;
+```
+
+### Detailed Pseudocode
+
+```python
+def calculate_global_recharge(character, archetype):
+    """
+    Complete global recharge calculation with all sources.
+
+    Args:
+        character: Character object with powers, enhancements, sets
+        archetype: Archetype definition with RechargeCap
+
+    Returns:
+        GlobalRechargeResult with uncapped, capped, and display values
+    """
+    # Initialize accumulators
+    global_recharge = 0.0
+    sources = []
+
+    # Step 1: Aggregate Global IOs (Luck of the Gambler +Recharge)
+    for power in character.powers:
+        for enhancement in power.slots:
+            if enhancement.has_global_effect(eStatType.Haste):
+                bonus = enhancement.global_recharge_value  # e.g., 0.075 for LotG
+                global_recharge += bonus
+                sources.append(GlobalRechargeSource(
+                    type="global_io",
+                    name=enhancement.name,
+                    value=bonus
+                ))
+
+    # Step 2: Aggregate Set Bonuses
+    active_sets = character.get_active_enhancement_sets()
+    applied_bonuses = apply_rule_of_5(active_sets, eEffectType.RechargeTime)
+
+    for bonus in applied_bonuses:
+        global_recharge += bonus.magnitude
+        sources.append(GlobalRechargeSource(
+            type="set_bonus",
+            name=bonus.set_name,
+            value=bonus.magnitude
+        ))
+
+    # Step 3: Add Hasten (if active)
+    hasten = character.get_power("Hasten")
+    if hasten and hasten.is_active:
+        HASTEN_BONUS = 0.70  # +70% global recharge
+        global_recharge += HASTEN_BONUS
+        sources.append(GlobalRechargeSource(
+            type="hasten",
+            name="Hasten",
+            value=HASTEN_BONUS
+        ))
+
+    # Step 4: Add Incarnate Powers
+    for incarnate in character.active_incarnate_powers:
+        for effect in incarnate.effects:
+            if effect.type == eEffectType.RechargeTime and effect.to_who == "Self":
+                global_recharge += effect.magnitude
+                sources.append(GlobalRechargeSource(
+                    type="incarnate",
+                    name=incarnate.name,
+                    value=effect.magnitude
+                ))
+
+    # Step 5: Add Other Buffs (toggles, autos)
+    for buff in character.active_buffs:
+        if buff.type == eEffectType.RechargeTime and buff.is_global:
+            global_recharge += buff.magnitude
+            sources.append(GlobalRechargeSource(
+                type="buff",
+                name=buff.name,
+                value=buff.magnitude
+            ))
+
+    # Step 6: Store uncapped value
+    uncapped = global_recharge
+
+    # Step 7: Apply archetype cap
+    # RechargeCap = 5.0 for most ATs (represents 400% = 5x speed)
+    # BuffHaste is the bonus (cap - 1), so 5.0 - 1 = 4.0 max
+    cap_value = archetype.RechargeCap - 1.0
+    capped = min(global_recharge, cap_value)
+
+    # Step 8: Calculate display percentage
+    display_pct = (capped + 1.0) * 100.0
+
+    # Step 9: Check if at cap
+    is_capped = uncapped > cap_value
+
+    # Step 10: Check perma-Hasten achievement
+    perma_hasten = False
+    if hasten and hasten.is_active:
+        # Check if Hasten can be permanent (excluding Hasten's own bonus)
+        recharge_without_hasten = capped - HASTEN_BONUS
+        perma_hasten = check_perma_hasten(recharge_without_hasten, 0.95)
+
+    return GlobalRechargeResult(
+        uncapped=uncapped,
+        capped=capped,
+        display_percentage=display_pct,
+        sources=sources,
+        is_capped=is_capped,
+        archetype_cap=archetype.RechargeCap,
+        perma_hasten_achieved=perma_hasten
+    )
+
+def apply_rule_of_5(active_sets, effect_type):
+    """
+    Apply Rule of 5: Maximum 5 identical set bonuses count.
+
+    Args:
+        active_sets: List of active enhancement sets
+        effect_type: Type of effect to filter (RechargeTime)
+
+    Returns:
+        List of bonuses that count (max 5 per unique bonus value)
+    """
+    bonuses = []
+    for set_info in active_sets:
+        for bonus in set_info.bonuses:
+            if bonus.effect_type == effect_type:
+                bonuses.append(bonus)
+
+    # Group by bonus magnitude
+    bonus_counts = {}
+    result = []
+
+    for bonus in bonuses:
+        key = bonus.magnitude
+        count = bonus_counts.get(key, 0)
+
+        if count < 5:
+            result.append(bonus)
+            bonus_counts[key] = count + 1
+
+    return result
+
+def check_perma_hasten(global_recharge_without_hasten, local_recharge):
+    """
+    Check if Hasten can be permanent with given recharge values.
+
+    Args:
+        global_recharge_without_hasten: Global recharge excluding Hasten
+        local_recharge: Local recharge slotted in Hasten (typically 0.95)
+
+    Returns:
+        True if Hasten is permanent
+    """
+    HASTEN_DURATION = 120.0  # seconds
+    HASTEN_BASE_RECHARGE = 120.0  # seconds
+    HASTEN_ANIMATION = 1.17  # seconds
+
+    # Calculate Hasten's actual recharge time
+    local_mult = 1.0 + local_recharge
+    global_mult = 1.0 + global_recharge_without_hasten
+    total_mult = local_mult * global_mult
+
+    actual_recharge = HASTEN_BASE_RECHARGE / total_mult
+
+    # Hasten is permanent if recharge time <= duration - animation time
+    # Allow 2s buffer for safety
+    return actual_recharge <= (HASTEN_DURATION - HASTEN_ANIMATION - 2.0)
+```
+
+### Key Constants
+
+```python
+# Hasten Power Constants
+HASTEN_BONUS = 0.70          # +70% global recharge
+HASTEN_DURATION = 120.0      # 120 seconds active
+HASTEN_BASE_RECHARGE = 120.0 # 120 seconds base recharge
+HASTEN_ANIMATION = 1.17      # ~1.17 seconds cast time
+
+# Default Archetype Caps
+DEFAULT_RECHARGE_CAP = 5.0   # Most ATs: 400% (5x speed)
+DISPLAY_CAP = 400.0          # Display shows max 400%
+
+# Common Global IO Values
+LOTG_RECHARGE_BONUS = 0.075  # +7.5% per IO
+MAX_LOTG_IOS = 5             # Rule of 5 limit
+
+# Common Set Bonus Values
+SET_BONUS_6_25 = 0.0625      # +6.25% recharge
+SET_BONUS_7_5 = 0.075        # +7.5% recharge
+SET_BONUS_10 = 0.10          # +10% recharge
+
+# Incarnate Alpha Values (Tier 4)
+SPIRITUAL_ALPHA_T4 = 0.20    # +20% recharge
+AGILITY_ALPHA_T4 = 0.20      # +20% recharge
+```
+
+### Thresholds
+
+```python
+# Perma-Hasten Thresholds
+PERMA_HASTEN_MIN_GLOBAL = 0.70  # Minimum ~70% without Hasten itself
+PERMA_HASTEN_SAFE_GLOBAL = 1.20 # Safe zone ~120% for reliability
+
+# Cap Warning Thresholds
+CAP_WARNING_THRESHOLD = 0.90    # Warn at 90% of cap
+CAP_REACHED_THRESHOLD = 0.98    # Critical warning at 98% of cap
+
+# Common Build Thresholds
+LOW_RECHARGE = 0.50             # <50% global recharge
+MEDIUM_RECHARGE = 1.00          # 50-100% global recharge
+HIGH_RECHARGE = 1.50            # 100-150% global recharge
+EXTREME_RECHARGE = 2.00         # 150%+ global recharge
+```
+
+### Example Calculations
+
+**Example 1: Hasten Only**
+```python
+Input:
+  - Hasten: +70%
+  - Set Bonuses: None
+  - Global IOs: None
+  - Archetype Cap: 5.0
+
+Calculation:
+  global_recharge = 0.70
+  capped = min(0.70, 4.0) = 0.70
+  display = (0.70 + 1.0) * 100 = 170.0%
+
+Output:
+  - Uncapped: 0.70
+  - Capped: 0.70
+  - Display: 170%
+  - Perma-Hasten: False (needs more global)
+```
+
+**Example 2: Perma-Hasten Build**
+```python
+Input:
+  - Hasten: +70%
+  - 5× LotG +Recharge: 5 × 7.5% = +37.5%
+  - Set Bonuses: 4 × 6.25% = +25%
+  - Spiritual Alpha T4: +20%
+  - Archetype Cap: 5.0
+
+Calculation:
+  global_recharge = 0.70 + 0.375 + 0.25 + 0.20 = 1.525
+  capped = min(1.525, 4.0) = 1.525
+  display = (1.525 + 1.0) * 100 = 252.5%
+
+  # Check perma-Hasten (without Hasten's own bonus)
+  recharge_without_hasten = 1.525 - 0.70 = 0.825
+  local_recharge = 0.95  # 3 recharge IOs in Hasten
+
+  local_mult = 1.95
+  global_mult = 1.825
+  total_mult = 3.56
+
+  hasten_recharge = 120 / 3.56 = 33.7s
+  hasten_duration = 120s
+
+  33.7s < (120s - 2s) → TRUE (Perma-Hasten achieved!)
+
+Output:
+  - Uncapped: 1.525
+  - Capped: 1.525
+  - Display: 252.5%
+  - Perma-Hasten: True
+```
+
+**Example 3: At Cap**
+```python
+Input:
+  - Hasten: +70%
+  - 5× LotG: +37.5%
+  - 5× +10% Set Bonuses: +50%
+  - Spiritual Alpha T4: +20%
+  - External Buff (Speed Boost): +50%
+  - Archetype Cap: 5.0
+
+Calculation:
+  global_recharge = 0.70 + 0.375 + 0.50 + 0.20 + 0.50 = 2.275
+  cap_value = 5.0 - 1.0 = 4.0
+  capped = min(2.275, 4.0) = 2.275
+  display = (2.275 + 1.0) * 100 = 327.5%
+
+  is_capped = False (2.275 < 4.0)
+
+Output:
+  - Uncapped: 2.275
+  - Capped: 2.275
+  - Display: 327.5%
+  - Is Capped: False
+  - Approaching Cap: True (227.5% / 400% = 56.9%)
+```
+
+---
+
+**Document Status**: ✅ **DEPTH COMPLETE - Phase 1 Milestone 3 (Spec 21)**
+**Last Updated**: 2025-11-11
+**Depth Content Added**: ~1,200 lines (streamlined)

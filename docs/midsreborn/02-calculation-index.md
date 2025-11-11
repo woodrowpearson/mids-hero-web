@@ -92,7 +92,7 @@ This document tracks all 43 calculation specifications that will document the Mi
 | 20 | [build-totals-resistance.md](calculations/20-build-totals-resistance.md) | 🔴 Not Started | Critical | Medium | Aggregate resistance by type |
 | 21 | [build-totals-recharge.md](calculations/21-build-totals-recharge.md) | 🟡 Breadth Complete | **CRITICAL** | Simple | Global recharge aggregation - **Hasten, sets, LotG, Incarnate** |
 | 22 | [build-totals-damage.md](calculations/22-build-totals-damage.md) | 🔴 Not Started | Critical | Medium | Global damage bonuses |
-| 23 | [build-totals-accuracy.md](calculations/23-build-totals-accuracy.md) | 🔴 Not Started | Critical | Simple | Global accuracy/ToHit |
+| 23 | [build-totals-accuracy.md](calculations/23-build-totals-accuracy.md) | 🟡 Breadth Complete | **CRITICAL** | Simple | Global accuracy (multiplicative) vs tohit (additive) - **CRITICAL distinction** |
 | 24 | [build-totals-other-stats.md](calculations/24-build-totals-other-stats.md) | 🔴 Not Started | Critical | Medium | HP, endurance, recovery, regen, etc. |
 
 **Build Aggregation Summary**: All 6 specs are critical - these are what users see in the build planner interface.

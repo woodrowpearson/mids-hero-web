@@ -27,12 +27,12 @@ This document tracks all 43 calculation specifications that will document the Mi
 
 | Status | Count | Percentage |
 |--------|-------|------------|
-| 🔴 Not Started | 13 | 30% |
-| 🟡 Breadth Complete | 30 | 70% |
+| 🔴 Not Started | 12 | 28% |
+| 🟡 Breadth Complete | 31 | 72% |
 | 🟢 Depth Complete | 0 | 0% |
 
 **Current Milestone**: Milestone 2 (Breadth Coverage) - Creating all 43 specs
-**Latest**: Spec 29 complete - Incarnate Alpha Shifts (HIGH priority) - **30 specs complete (70%)**
+**Latest**: Spec 34 complete - Proc Chance Formulas (HIGH priority) - **31 specs complete (72%)**
 
 **Next Milestone**: Milestone 2 (Breadth Coverage) - Create all 43 specs at high level
 
@@ -131,7 +131,7 @@ This document tracks all 43 calculation specifications that will document the Mi
 |---|---------------|--------|----------|------------|-------|
 | 32 | [pet-calculations.md](calculations/32-pet-calculations.md) | 🔴 Not Started | Medium | Complex | Summoned entities (Masterminds, etc.) |
 | 33 | [pseudopet-mechanics.md](calculations/33-pseudopet-mechanics.md) | �4 Not Started | Medium | Complex | Invisible pseudopets for power delivery |
-| 34 | [proc-chance-formulas.md](calculations/34-proc-chance-formulas.md) | 🔴 Not Started | High | Complex | Flat % vs PPM formulas |
+| 34 | [proc-chance-formulas.md](calculations/34-proc-chance-formulas.md) | 🟡 Breadth Complete | High | Complex | PPM formula with recharge/cast/area factors |
 | 35 | [proc-interactions.md](calculations/35-proc-interactions.md) | 🔴 Not Started | High | Complex | AoE factor, multi-target, etc. |
 | 36 | [enhancement-boosters.md](calculations/36-enhancement-boosters.md) | ✅ Breadth Complete | Low | Simple | +5 catalyst mechanics |
 | 37 | [attuned-ios.md](calculations/37-attuned-ios.md) | 🔴 Not Started | Medium | Medium | Level-scaling enhancements |

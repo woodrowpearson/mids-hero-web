@@ -27,12 +27,12 @@ This document tracks all 43 calculation specifications that will document the Mi
 
 | Status | Count | Percentage |
 |--------|-------|------------|
-| 🔴 Not Started | 17 | 40% |
-| 🟡 Breadth Complete | 26 | 60% |
+| 🔴 Not Started | 16 | 37% |
+| 🟡 Breadth Complete | 27 | 63% |
 | 🟢 Depth Complete | 0 | 0% |
 
 **Current Milestone**: Milestone 2 (Breadth Coverage) - Creating all 43 specs
-**Latest**: Spec 28 complete - Combat Attributes (MEDIUM priority) - **26 specs complete (60%)**
+**Latest**: Spec 25 complete - Buff Stacking Rules (HIGH priority) - **27 specs complete (63%)**
 
 **Next Milestone**: Milestone 2 (Breadth Coverage) - Create all 43 specs at high level
 
@@ -104,12 +104,12 @@ This document tracks all 43 calculation specifications that will document the Mi
 
 | # | Specification | Status | Priority | Complexity | Notes |
 |---|---------------|--------|----------|------------|-------|
-| 25 | [buff-stacking-rules.md](calculations/25-buff-stacking-rules.md) | 🔴 Not Started | High | Complex | Additive vs multiplicative stacking |
+| 25 | [buff-stacking-rules.md](calculations/25-buff-stacking-rules.md) | 🟡 Breadth Complete | High | Complex | Additive/multiplicative/best-value stacking + Rule of 5 |
 | 26 | [diminishing-returns.md](calculations/26-diminishing-returns.md) | 🟡 Breadth Complete | Medium | Medium | DDR, Elusivity (PvP), Proc caps, Status resistance - BEYOND ED |
 | 27 | [suppression-mechanics.md](calculations/27-suppression-mechanics.md) | 🟡 Breadth Complete | Low | Moderate | eSuppress flags - combat/stealth/travel suppression |
 | 28 | [combat-attributes.md](calculations/28-combat-attributes.md) | 🟡 Breadth Complete | Medium | Medium | Real-time stat display - "Real Numbers" window replication |
 
-**Stacking & Interaction Summary**: Buff stacking (spec 25) is high priority. Spec 26 (DR) covers DDR, Elusivity, proc caps, and status resistance. Others can be deferred to later phases.
+**Stacking & Interaction Summary**: Spec 25 (Buff Stacking) now complete - documents additive/multiplicative/best-value modes + Rule of 5 for set bonuses. Spec 26 (DR) covers DDR, Elusivity, proc caps, and status resistance. **BATCH 5 COMPLETE - All 4 Stacking & Interaction specs at breadth level! (specs 25-28)**
 
 ---
 

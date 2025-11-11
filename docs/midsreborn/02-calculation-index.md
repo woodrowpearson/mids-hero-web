@@ -27,12 +27,12 @@ This document tracks all 43 calculation specifications that will document the Mi
 
 | Status | Count | Percentage |
 |--------|-------|------------|
-| 🔴 Not Started | 12 | 28% |
-| 🟡 Breadth Complete | 31 | 72% |
+| 🔴 Not Started | 8 | 19% |
+| 🟡 Breadth Complete | 35 | 81% |
 | 🟢 Depth Complete | 0 | 0% |
 
 **Current Milestone**: Milestone 2 (Breadth Coverage) - Creating all 43 specs
-**Latest**: Spec 34 complete - Proc Chance Formulas (HIGH priority) - **31 specs complete (72%)**
+**Latest**: Spec 35 complete - Proc Interactions (LOW priority) - **35 specs complete (81%)**
 
 **Next Milestone**: Milestone 2 (Breadth Coverage) - Create all 43 specs at high level
 
@@ -129,15 +129,15 @@ This document tracks all 43 calculation specifications that will document the Mi
 
 | # | Specification | Status | Priority | Complexity | Notes |
 |---|---------------|--------|----------|------------|-------|
-| 32 | [pet-calculations.md](calculations/32-pet-calculations.md) | 🔴 Not Started | Medium | Complex | Summoned entities (Masterminds, etc.) |
+| 32 | [pet-calculations.md](calculations/32-pet-calculations.md) | 🟡 Breadth Complete | Medium | Complex | Summoned entities (Masterminds, etc.) |
 | 33 | [pseudopet-mechanics.md](calculations/33-pseudopet-mechanics.md) | �4 Not Started | Medium | Complex | Invisible pseudopets for power delivery |
 | 34 | [proc-chance-formulas.md](calculations/34-proc-chance-formulas.md) | 🟡 Breadth Complete | High | Complex | PPM formula with recharge/cast/area factors |
-| 35 | [proc-interactions.md](calculations/35-proc-interactions.md) | 🔴 Not Started | High | Complex | AoE factor, multi-target, etc. |
-| 36 | [enhancement-boosters.md](calculations/36-enhancement-boosters.md) | ✅ Breadth Complete | Low | Simple | +5 catalyst mechanics |
+| 35 | [proc-interactions.md](calculations/35-proc-interactions.md) | 🟡 Breadth Complete | Low | Low-Moderate | Independent rolling, unique restrictions, mutex system |
+| 36 | [enhancement-boosters.md](calculations/36-enhancement-boosters.md) | 🟡 Breadth Complete | Low | Simple | +5 catalyst mechanics |
 | 37 | [attuned-ios.md](calculations/37-attuned-ios.md) | 🔴 Not Started | Medium | Medium | Level-scaling enhancements |
-| 38 | [purple-pvp-ios.md](calculations/38-purple-pvp-ios.md) | 🔴 Not Started | Low | Simple | Special IO types |
+| 38 | [purple-pvp-ios.md](calculations/38-purple-pvp-ios.md) | 🟡 Breadth Complete | Medium | Medium | Purple (rare) and PvP IO sets - Rule of 5 exempt |
 
-**Special Systems Summary**: Proc formulas (specs 34-35) are high priority for build optimization. Pet calculations needed for Masterminds.
+**Special Systems Summary**: Spec 38 complete! Purple and PvP IO sets documented with Rule of 5 exemption logic. Proc formulas (specs 34-35) are high priority for build optimization. Pet calculations needed for Masterminds.
 
 ---
 

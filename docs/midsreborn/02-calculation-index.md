@@ -78,9 +78,9 @@ This document tracks all 43 calculation specifications that will document the Mi
 |---|---------------|--------|----------|------------|-------|
 | 16 | [archetype-modifiers.md](calculations/16-archetype-modifiers.md) | 🟡 Breadth Complete | **CRITICAL** | Medium | AT scaling for damage/buffs/control - **FOUNDATION MECHANIC** |
 | 17 | [archetype-caps.md](calculations/17-archetype-caps.md) | 🟡 Breadth Complete | **CRITICAL** | Simple | Defense/resistance/damage caps by AT - **CRITICAL FOR BUILD DISPLAY** |
-| 18 | [archetype-inherents.md](calculations/18-archetype-inherents.md) | 🔴 Not Started | Medium | Complex | Fury, Defiance, Containment, etc. |
+| 18 | [archetype-inherents.md](calculations/18-archetype-inherents.md) | 🟡 Breadth Complete | High | Complex | Fury, Defiance, Containment, Scourge, Domination, etc. - **10 primary inherents** |
 
-**Archetype System Summary**: Spec 16 (AT Modifiers) is **CRITICAL** - without it, all ATs show same damage/buff values. Spec 17 (caps) also critical for correct display. Inherents (spec 18) are complex but can be deferred.
+**Archetype System Summary**: Spec 16 (AT Modifiers) is **CRITICAL** - without it, all ATs show same damage/buff values. Spec 17 (caps) also critical for correct display. Inherents (spec 18) document 10 primary AT-defining mechanics. **BATCH 3 COMPLETE - All 3 Archetype System specs at breadth level!**
 
 ---
 

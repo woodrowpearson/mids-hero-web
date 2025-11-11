@@ -27,11 +27,12 @@ This document tracks all 43 calculation specifications that will document the Mi
 
 | Status | Count | Percentage |
 |--------|-------|------------|
-| 🔴 Not Started | 23 | 53% |
-| 🟡 Breadth Complete | 20 | 47% |
+| 🔴 Not Started | 19 | 44% |
+| 🟡 Breadth Complete | 24 | 56% |
 | 🟢 Depth Complete | 0 | 0% |
 
 **Current Milestone**: Milestone 2 (Breadth Coverage) - Creating all 43 specs
+**Latest**: Spec 24 complete - **BATCH 4 COMPLETE!** All 6 Build Aggregation specs done (19-24)
 
 **Next Milestone**: Milestone 2 (Breadth Coverage) - Create all 43 specs at high level
 
@@ -88,14 +89,14 @@ This document tracks all 43 calculation specifications that will document the Mi
 
 | # | Specification | Status | Priority | Complexity | Notes |
 |---|---------------|--------|----------|------------|-------|
-| 19 | [build-totals-defense.md](calculations/19-build-totals-defense.md) | 🔴 Not Started | Critical | Medium | Aggregate defense (typed + positional) |
-| 20 | [build-totals-resistance.md](calculations/20-build-totals-resistance.md) | 🔴 Not Started | Critical | Medium | Aggregate resistance by type |
+| 19 | [build-totals-defense.md](calculations/19-build-totals-defense.md) | 🟡 Breadth Complete | **CRITICAL** | Medium | Aggregate defense (typed + positional) - **Soft cap tracking** |
+| 20 | [build-totals-resistance.md](calculations/20-build-totals-resistance.md) | 🟡 Breadth Complete | **CRITICAL** | Medium | Aggregate resistance by type - **AT caps vary widely** |
 | 21 | [build-totals-recharge.md](calculations/21-build-totals-recharge.md) | 🟡 Breadth Complete | **CRITICAL** | Simple | Global recharge aggregation - **Hasten, sets, LotG, Incarnate** |
-| 22 | [build-totals-damage.md](calculations/22-build-totals-damage.md) | 🔴 Not Started | Critical | Medium | Global damage bonuses |
+| 22 | [build-totals-damage.md](calculations/22-build-totals-damage.md) | 🟡 Breadth Complete | **CRITICAL** | Medium | Global damage bonuses - **AT caps critical** |
 | 23 | [build-totals-accuracy.md](calculations/23-build-totals-accuracy.md) | 🟡 Breadth Complete | **CRITICAL** | Simple | Global accuracy (multiplicative) vs tohit (additive) - **CRITICAL distinction** |
-| 24 | [build-totals-other-stats.md](calculations/24-build-totals-other-stats.md) | 🔴 Not Started | Critical | Medium | HP, endurance, recovery, regen, etc. |
+| 24 | [build-totals-other-stats.md](calculations/24-build-totals-other-stats.md) | 🟡 Breadth Complete | **CRITICAL** | Medium | HP, endurance, recovery, regen, movement speeds, perception - **ALL OTHER BUILD STATS** |
 
-**Build Aggregation Summary**: All 6 specs are critical - these are what users see in the build planner interface.
+**Build Aggregation Summary**: All 6 specs are critical - these are what users see in the build planner interface. **BATCH 4 COMPLETE - All 6 user-facing Build Aggregation stats at breadth level! (specs 19-24)**
 
 ---
 

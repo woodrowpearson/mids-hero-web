@@ -32,7 +32,7 @@ This document tracks all 43 calculation specifications that will document the Mi
 | 🟢 Depth Complete | 0 | 0% |
 
 **Current Milestone**: Milestone 2 (Breadth Coverage) - Creating all 43 specs
-**Latest**: Spec 24 complete - **BATCH 4 COMPLETE!** All 6 Build Aggregation specs done (19-24)
+**Latest**: Spec 20 complete - Build Totals Resistance (CRITICAL) - **24 specs complete (56%)**
 
 **Next Milestone**: Milestone 2 (Breadth Coverage) - Create all 43 specs at high level
 

@@ -61,14 +61,14 @@ This document tracks all 43 calculation specifications that will document the Mi
 
 | # | Specification | Status | Priority | Complexity | Notes |
 |---|---------------|--------|----------|------------|-------|
-| 10 | [enhancement-schedules.md](calculations/10-enhancement-schedules.md) | 🔴 Not Started | Critical | Complex | ED curves (Schedule A/B/C/D) - CRITICAL |
+| 10 | [enhancement-schedules.md](calculations/10-enhancement-schedules.md) | 🟡 Breadth Complete | **CRITICAL** | Complex | **ED curves (Schedule A/B/C/D) - MOST IMPORTANT SPEC** |
 | 11 | [enhancement-slotting.md](calculations/11-enhancement-slotting.md) | 🔴 Not Started | Critical | Medium | How enhancements combine in slots |
 | 12 | [enhancement-io-procs.md](calculations/12-enhancement-io-procs.md) | 🟡 Breadth Complete | High | Complex | Damage/heal/endurance procs |
 | 13 | [enhancement-set-bonuses.md](calculations/13-enhancement-set-bonuses.md) | 🔴 Not Started | High | Complex | Set activation and Rule of 5 |
 | 14 | [enhancement-special-ios.md](calculations/14-enhancement-special-ios.md) | 🔴 Not Started | High | Medium | Global IOs (LotG, Stealth, etc.) |
 | 15 | [enhancement-frankenslotting.md](calculations/15-enhancement-frankenslotting.md) | 🟡 Breadth Complete | Medium | Simple | Mixed set slotting strategies |
 
-**Enhancement System Summary**: ED curves (spec 10) are absolutely critical. Set bonuses (spec 13) are core to build planning. **2 of 6 Enhancement specs complete (12, 15)**
+**Enhancement System Summary**: ED curves (spec 10) are absolutely critical. Set bonuses (spec 13) are core to build planning. **3 of 6 Enhancement specs complete (10, 12, 15)**
 
 ---
 

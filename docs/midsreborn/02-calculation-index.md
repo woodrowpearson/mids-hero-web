@@ -27,8 +27,8 @@ This document tracks all 43 calculation specifications that will document the Mi
 
 | Status | Count | Percentage |
 |--------|-------|------------|
-| 🔴 Not Started | 36 | 84% |
-| 🟡 Breadth Complete | 7 | 16% |
+| 🔴 Not Started | 35 | 81% |
+| 🟡 Breadth Complete | 8 | 19% |
 | 🟢 Depth Complete | 0 | 0% |
 
 **Current Milestone**: Milestone 2 (Breadth Coverage) - Creating all 43 specs
@@ -48,9 +48,9 @@ This document tracks all 43 calculation specifications that will document the Mi
 | 03 | [power-buffs-debuffs.md](calculations/03-power-buffs-debuffs.md) | 🟡 Breadth Complete | Critical | Medium | Buff/debuff mechanics and stacking |
 | 04 | [power-control-effects.md](calculations/04-power-control-effects.md) | 🟡 Breadth Complete | High | Medium | Mez mechanics (hold, stun, sleep, etc.) |
 | 05 | [power-healing-absorption.md](calculations/05-power-healing-absorption.md) | 🟡 Breadth Complete | High | Moderate | HP restoration and temp HP |
-| 06 | [power-endurance-recovery.md](calculations/06-power-endurance-recovery.md) | 🔴 Not Started | Critical | Simple | Endurance cost and recovery |
+| 06 | [power-endurance-recovery.md](calculations/06-power-endurance-recovery.md) | 🟡 Breadth Complete | Critical | Simple | Endurance cost and recovery |
 | 07 | [power-recharge-modifiers.md](calculations/07-power-recharge-modifiers.md) | 🟡 Breadth Complete | Critical | Medium | Local and global recharge |
-| 08 | [power-accuracy-tohit.md](calculations/08-power-accuracy-tohit.md) | 🔴 Not Started | Critical | Medium | Accuracy vs ToHit distinction |
+| 08 | [power-accuracy-tohit.md](calculations/08-power-accuracy-tohit.md) | 🟡 Breadth Complete | Critical | Medium | Accuracy vs ToHit distinction |
 | 09 | [power-defense-resistance.md](calculations/09-power-defense-resistance.md) | 🔴 Not Started | Critical | Medium | Mitigation mechanics |
 
 **Power System Summary**: These 9 specs cover all fundamental power mechanics. Critical for any build calculations.

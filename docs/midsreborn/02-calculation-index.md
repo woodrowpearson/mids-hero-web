@@ -27,8 +27,8 @@ This document tracks all 43 calculation specifications that will document the Mi
 
 | Status | Count | Percentage |
 |--------|-------|------------|
-| 🔴 Not Started | 35 | 81% |
-| 🟡 Breadth Complete | 8 | 19% |
+| 🔴 Not Started | 34 | 79% |
+| 🟡 Breadth Complete | 9 | 21% |
 | 🟢 Depth Complete | 0 | 0% |
 
 **Current Milestone**: Milestone 2 (Breadth Coverage) - Creating all 43 specs

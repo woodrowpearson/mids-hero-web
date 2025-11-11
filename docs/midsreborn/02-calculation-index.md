@@ -27,8 +27,8 @@ This document tracks all 43 calculation specifications that will document the Mi
 
 | Status | Count | Percentage |
 |--------|-------|------------|
-| 🔴 Not Started | 25 | 58% |
-| 🟡 Breadth Complete | 18 | 42% |
+| 🔴 Not Started | 24 | 56% |
+| 🟡 Breadth Complete | 19 | 44% |
 | 🟢 Depth Complete | 0 | 0% |
 
 **Current Milestone**: Milestone 2 (Breadth Coverage) - Creating all 43 specs
@@ -77,7 +77,7 @@ This document tracks all 43 calculation specifications that will document the Mi
 | # | Specification | Status | Priority | Complexity | Notes |
 |---|---------------|--------|----------|------------|-------|
 | 16 | [archetype-modifiers.md](calculations/16-archetype-modifiers.md) | 🟡 Breadth Complete | **CRITICAL** | Medium | AT scaling for damage/buffs/control - **FOUNDATION MECHANIC** |
-| 17 | [archetype-caps.md](calculations/17-archetype-caps.md) | 🔴 Not Started | Critical | Simple | Defense/resistance/damage caps by AT |
+| 17 | [archetype-caps.md](calculations/17-archetype-caps.md) | 🟡 Breadth Complete | **CRITICAL** | Simple | Defense/resistance/damage caps by AT - **CRITICAL FOR BUILD DISPLAY** |
 | 18 | [archetype-inherents.md](calculations/18-archetype-inherents.md) | 🔴 Not Started | Medium | Complex | Fury, Defiance, Containment, etc. |
 
 **Archetype System Summary**: Spec 16 (AT Modifiers) is **CRITICAL** - without it, all ATs show same damage/buff values. Spec 17 (caps) also critical for correct display. Inherents (spec 18) are complex but can be deferred.

@@ -146,12 +146,12 @@ This document tracks all 43 calculation specifications that will document the Mi
 | # | Specification | Status | Priority | Complexity | Notes |
 |---|---------------|--------|----------|------------|-------|
 | 39 | [power-customization.md](calculations/39-power-customization.md) | 🟡 Breadth Complete | Low | Simple | VFX (no calc impact), power replacements (patron pools), alternate animations |
-| 40 | [powerset-relationships.md](calculations/40-powerset-relationships.md) | 🔴 Not Started | Low | Simple | Primary/secondary/pool interactions |
+| 40 | [powerset-relationships.md](calculations/40-powerset-relationships.md) | 🟡 Breadth Complete | Low | Medium | Cross-powerset synergies, combo systems, mode toggles (Bio Armor, Staff Fighting, Dual Pistols) |
 | 41 | [level-scaling.md](calculations/41-level-scaling.md) | 🔴 Not Started | Medium | Medium | Power scaling 1-50 |
 | 42 | [exemplar-mechanics.md](calculations/42-exemplar-mechanics.md) | 🔴 Not Started | Medium | Complex | Level reduction effects |
 | 43 | [special-cases.md](calculations/43-special-cases.md) | 🔴 Not Started | Low | Varies | Unique mechanics, bugs-as-features |
 
-**Edge Cases Summary**: Spec 39 (Power Customization) documents VFX-only customization (no calc effect), power replacement tables (patron pools, pool replacements like Sorcery), and alternate animations (may affect cast time). Remaining specs mostly low priority except level scaling (spec 41) and exemplar mechanics (spec 42) for level-agnostic builds.
+**Edge Cases Summary**: **BATCH 8 PARTIAL** - Spec 39 (Power Customization) documents VFX-only customization (no calc effect), power replacement tables (patron pools, pool replacements like Sorcery), and alternate animations (may affect cast time). Spec 40 (Powerset Relationships) documents eSpecialCase system (combo levels, Bio Armor adaptations, Staff Fighting forms), Dual Pistols ammo swap, Fighting pool synergies. Remaining specs mostly low priority except level scaling (spec 41) and exemplar mechanics (spec 42) for level-agnostic builds.
 
 ---
 

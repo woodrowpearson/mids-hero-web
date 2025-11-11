@@ -28,13 +28,13 @@ This document tracks all 43 calculation specifications that will document the Mi
 | Status | Count | Percentage |
 |--------|-------|------------|
 | 🔴 Not Started | 0 | 0% |
-| 🟡 Breadth Complete | 43 | 100% |
-| 🟢 Depth Complete | 0 | 0% |
+| 🟡 Breadth Complete | 19 | 44.2% |
+| 🟢 Depth Complete | 24 | 55.8% |
 
-**Current Milestone**: ✅ Milestone 2 (Breadth Coverage) - COMPLETE! All 43 specs created
-**Latest**: Spec 43 complete - Special Cases and Edge Cases (LOW priority) - **43/43 specs complete (100%)**
+**Current Milestone**: 🚧 Milestone 3 (Depth Coverage) - **24/27 high-priority specs complete (88.9%)**!
+**Latest**: Phase 3 complete - Enhancement & Endgame (Specs 11, 13, 23-25, 29, 32, 34)
 
-**Next Milestone**: Milestone 3 (Depth Coverage) - Add detailed implementation to high-priority specs
+**Progress**: All 8 Critical specs + 16 High Priority specs enhanced to depth level with ~40,193 lines of production-ready implementation details!
 
 ---
 
@@ -44,17 +44,17 @@ This document tracks all 43 calculation specifications that will document the Mi
 
 | # | Specification | Status | Priority | Complexity | Notes |
 |---|---------------|--------|----------|------------|-------|
-| 01 | [power-effects-core.md](calculations/01-power-effects-core.md) | 🟡 Breadth Complete | Critical | Complex | IEffect interface, GroupedFx.cs - Foundation for all calculations |
-| 02 | [power-damage.md](calculations/02-power-damage.md) | 🟡 Breadth Complete | Critical | Medium | Damage calculation with AT scaling |
-| 03 | [power-buffs-debuffs.md](calculations/03-power-buffs-debuffs.md) | 🟡 Breadth Complete | Critical | Medium | Buff/debuff mechanics and stacking |
-| 04 | [power-control-effects.md](calculations/04-power-control-effects.md) | 🟡 Breadth Complete | High | Medium | Mez mechanics (hold, stun, sleep, etc.) |
-| 05 | [power-healing-absorption.md](calculations/05-power-healing-absorption.md) | 🟡 Breadth Complete | High | Moderate | HP restoration and temp HP |
-| 06 | [power-endurance-recovery.md](calculations/06-power-endurance-recovery.md) | 🟡 Breadth Complete | Critical | Simple | Endurance cost and recovery |
-| 07 | [power-recharge-modifiers.md](calculations/07-power-recharge-modifiers.md) | 🟡 Breadth Complete | Critical | Medium | Local and global recharge |
-| 08 | [power-accuracy-tohit.md](calculations/08-power-accuracy-tohit.md) | 🟡 Breadth Complete | Critical | Medium | Accuracy vs ToHit distinction |
-| 09 | [power-defense-resistance.md](calculations/09-power-defense-resistance.md) | 🟡 Breadth Complete | Critical | Medium | Mitigation mechanics - defense/resistance/DDR |
+| 01 | [power-effects-core.md](calculations/01-power-effects-core.md) | 🟢 **Depth Complete** | Critical | Complex | IEffect interface, GroupedFx.cs - Foundation for all calculations |
+| 02 | [power-damage.md](calculations/02-power-damage.md) | 🟢 **Depth Complete** | High | Medium | Damage calculation with AT scaling (~1,790 lines) |
+| 03 | [power-buffs-debuffs.md](calculations/03-power-buffs-debuffs.md) | 🟢 **Depth Complete** | High | Medium | Buff/debuff mechanics and stacking (~1,800 lines) |
+| 04 | [power-control-effects.md](calculations/04-power-control-effects.md) | 🟢 **Depth Complete** | High | Medium | Mez mechanics (hold, stun, sleep, etc.) (~1,410 lines) |
+| 05 | [power-healing-absorption.md](calculations/05-power-healing-absorption.md) | 🟢 **Depth Complete** | High | Moderate | HP restoration and temp HP (~1,913 lines) |
+| 06 | [power-endurance-recovery.md](calculations/06-power-endurance-recovery.md) | 🟢 **Depth Complete** | High | Simple | Endurance cost and recovery (~1,760 lines) |
+| 07 | [power-recharge-modifiers.md](calculations/07-power-recharge-modifiers.md) | 🟢 **Depth Complete** | High | Medium | Local and global recharge (~2,800 lines) |
+| 08 | [power-accuracy-tohit.md](calculations/08-power-accuracy-tohit.md) | 🟢 **Depth Complete** | High | Medium | Accuracy vs ToHit distinction (~1,750 lines) |
+| 09 | [power-defense-resistance.md](calculations/09-power-defense-resistance.md) | 🟢 **Depth Complete** | High | Medium | Mitigation mechanics - defense/resistance/DDR (~2,023 lines) |
 
-**Power System Summary**: These 9 specs cover all fundamental power mechanics. Critical for any build calculations. **BATCH 1 COMPLETE - All 9 Power System specs at breadth level!**
+**Power System Summary**: ✅ **ALL 9 SPECS DEPTH COMPLETE!** All fundamental power mechanics documented with production-ready implementation details.
 
 ---
 
@@ -62,14 +62,14 @@ This document tracks all 43 calculation specifications that will document the Mi
 
 | # | Specification | Status | Priority | Complexity | Notes |
 |---|---------------|--------|----------|------------|-------|
-| 10 | [enhancement-schedules.md](calculations/10-enhancement-schedules.md) | 🟡 Breadth Complete | Critical | Complex | ED curves (Schedule A/B/C/D) - CRITICAL foundation |
-| 11 | [enhancement-slotting.md](calculations/11-enhancement-slotting.md) | 🟡 Breadth Complete | Critical | Medium | How enhancements combine in slots |
+| 10 | [enhancement-schedules.md](calculations/10-enhancement-schedules.md) | 🟢 **Depth Complete** | Critical | Complex | ED curves (Schedule A/B/C/D) - CRITICAL foundation (~1,276 lines) |
+| 11 | [enhancement-slotting.md](calculations/11-enhancement-slotting.md) | 🟢 **Depth Complete** | High | Medium | How enhancements combine in slots (~1,400 lines) |
 | 12 | [enhancement-io-procs.md](calculations/12-enhancement-io-procs.md) | 🟡 Breadth Complete | High | Complex | Damage/heal/endurance procs |
-| 13 | [enhancement-set-bonuses.md](calculations/13-enhancement-set-bonuses.md) | 🟡 Breadth Complete | High | Complex | Set activation and Rule of 5 |
+| 13 | [enhancement-set-bonuses.md](calculations/13-enhancement-set-bonuses.md) | 🟢 **Depth Complete** | High | Complex | Set activation and Rule of 5 (~1,936 lines) |
 | 14 | [enhancement-special-ios.md](calculations/14-enhancement-special-ios.md) | 🟡 Breadth Complete | High | Medium | Global IOs (LotG, Stealth, etc.) |
 | 15 | [enhancement-frankenslotting.md](calculations/15-enhancement-frankenslotting.md) | 🟡 Breadth Complete | Medium | Simple | Mixed set slotting strategies |
 
-**Enhancement System Summary**: ED curves (spec 10) are absolutely critical. Set bonuses (spec 13) are core to build planning. **BATCH 2 COMPLETE - All 6 Enhancement System specs at breadth level including CRITICAL ED curves!**
+**Enhancement System Summary**: ✅ **3/6 SPECS DEPTH COMPLETE!** ED curves, slotting mechanics, and set bonuses documented with production-ready detail.
 
 ---
 
@@ -77,11 +77,11 @@ This document tracks all 43 calculation specifications that will document the Mi
 
 | # | Specification | Status | Priority | Complexity | Notes |
 |---|---------------|--------|----------|------------|-------|
-| 16 | [archetype-modifiers.md](calculations/16-archetype-modifiers.md) | 🟡 Breadth Complete | **CRITICAL** | Medium | AT scaling for damage/buffs/control - **FOUNDATION MECHANIC** |
-| 17 | [archetype-caps.md](calculations/17-archetype-caps.md) | 🟡 Breadth Complete | **CRITICAL** | Simple | Defense/resistance/damage caps by AT - **CRITICAL FOR BUILD DISPLAY** |
+| 16 | [archetype-modifiers.md](calculations/16-archetype-modifiers.md) | 🟢 **Depth Complete** | **CRITICAL** | Medium | AT scaling for damage/buffs/control (~1,850 lines) |
+| 17 | [archetype-caps.md](calculations/17-archetype-caps.md) | 🟢 **Depth Complete** | **CRITICAL** | Simple | Defense/resistance/damage caps by AT (~1,942 lines) |
 | 18 | [archetype-inherents.md](calculations/18-archetype-inherents.md) | 🟡 Breadth Complete | High | Complex | Fury, Defiance, Containment, Scourge, Domination, etc. - **10 primary inherents** |
 
-**Archetype System Summary**: Spec 16 (AT Modifiers) is **CRITICAL** - without it, all ATs show same damage/buff values. Spec 17 (caps) also critical for correct display. Inherents (spec 18) document 10 primary AT-defining mechanics. **BATCH 3 COMPLETE - All 3 Archetype System specs at breadth level!**
+**Archetype System Summary**: ✅ **2/3 CRITICAL SPECS DEPTH COMPLETE!** AT modifiers and caps fully documented with exact values for all archetypes.
 
 ---
 
@@ -89,14 +89,14 @@ This document tracks all 43 calculation specifications that will document the Mi
 
 | # | Specification | Status | Priority | Complexity | Notes |
 |---|---------------|--------|----------|------------|-------|
-| 19 | [build-totals-defense.md](calculations/19-build-totals-defense.md) | 🟡 Breadth Complete | **CRITICAL** | Medium | Aggregate defense (typed + positional) - **Soft cap tracking** |
-| 20 | [build-totals-resistance.md](calculations/20-build-totals-resistance.md) | 🟡 Breadth Complete | **CRITICAL** | Medium | Aggregate resistance by type - **AT caps vary widely** |
-| 21 | [build-totals-recharge.md](calculations/21-build-totals-recharge.md) | 🟡 Breadth Complete | **CRITICAL** | Simple | Global recharge aggregation - **Hasten, sets, LotG, Incarnate** |
-| 22 | [build-totals-damage.md](calculations/22-build-totals-damage.md) | 🟡 Breadth Complete | **CRITICAL** | Medium | Global damage bonuses - **AT caps critical** |
-| 23 | [build-totals-accuracy.md](calculations/23-build-totals-accuracy.md) | 🟡 Breadth Complete | **CRITICAL** | Simple | Global accuracy (multiplicative) vs tohit (additive) - **CRITICAL distinction** |
-| 24 | [build-totals-other-stats.md](calculations/24-build-totals-other-stats.md) | 🟡 Breadth Complete | **CRITICAL** | Medium | HP, endurance, recovery, regen, movement speeds, perception - **ALL OTHER BUILD STATS** |
+| 19 | [build-totals-defense.md](calculations/19-build-totals-defense.md) | 🟢 **Depth Complete** | **CRITICAL** | Medium | Aggregate defense (typed + positional) (~2,468 lines) |
+| 20 | [build-totals-resistance.md](calculations/20-build-totals-resistance.md) | 🟢 **Depth Complete** | **CRITICAL** | Medium | Aggregate resistance by type (~1,660 lines) |
+| 21 | [build-totals-recharge.md](calculations/21-build-totals-recharge.md) | 🟢 **Depth Complete** | **CRITICAL** | Simple | Global recharge aggregation (~322 lines) |
+| 22 | [build-totals-damage.md](calculations/22-build-totals-damage.md) | 🟢 **Depth Complete** | **CRITICAL** | Medium | Global damage bonuses (~964 lines) |
+| 23 | [build-totals-accuracy.md](calculations/23-build-totals-accuracy.md) | 🟢 **Depth Complete** | High | Simple | Global accuracy/tohit aggregation (~1,276 lines) |
+| 24 | [build-totals-other-stats.md](calculations/24-build-totals-other-stats.md) | 🟢 **Depth Complete** | High | Medium | HP, endurance, recovery, regen, movement, perception (~950 lines) |
 
-**Build Aggregation Summary**: All 6 specs are critical - these are what users see in the build planner interface. **BATCH 4 COMPLETE - All 6 user-facing Build Aggregation stats at breadth level! (specs 19-24)**
+**Build Aggregation Summary**: ✅ **ALL 6 SPECS DEPTH COMPLETE!** All user-facing build stats documented with production-ready implementation details.
 
 ---
 
@@ -104,12 +104,12 @@ This document tracks all 43 calculation specifications that will document the Mi
 
 | # | Specification | Status | Priority | Complexity | Notes |
 |---|---------------|--------|----------|------------|-------|
-| 25 | [buff-stacking-rules.md](calculations/25-buff-stacking-rules.md) | 🟡 Breadth Complete | High | Complex | Additive/multiplicative/best-value stacking + Rule of 5 |
+| 25 | [buff-stacking-rules.md](calculations/25-buff-stacking-rules.md) | 🟢 **Depth Complete** | High | Complex | Additive/multiplicative/best-value stacking + Rule of 5 (~1,714 lines) |
 | 26 | [diminishing-returns.md](calculations/26-diminishing-returns.md) | 🟡 Breadth Complete | Medium | Medium | DDR, Elusivity (PvP), Proc caps, Status resistance - BEYOND ED |
 | 27 | [suppression-mechanics.md](calculations/27-suppression-mechanics.md) | 🟡 Breadth Complete | Low | Moderate | eSuppress flags - combat/stealth/travel suppression |
 | 28 | [combat-attributes.md](calculations/28-combat-attributes.md) | 🟡 Breadth Complete | Medium | Medium | Real-time stat display - "Real Numbers" window replication |
 
-**Stacking & Interaction Summary**: Spec 25 (Buff Stacking) now complete - documents additive/multiplicative/best-value modes + Rule of 5 for set bonuses. Spec 26 (DR) covers DDR, Elusivity, proc caps, and status resistance. **BATCH 5 COMPLETE - All 4 Stacking & Interaction specs at breadth level! (specs 25-28)**
+**Stacking & Interaction Summary**: ✅ **1/4 HIGH-PRIORITY SPEC DEPTH COMPLETE!** Buff stacking rules documented with exact stacking modes and Rule of 5 implementation.
 
 ---
 
@@ -117,11 +117,11 @@ This document tracks all 43 calculation specifications that will document the Mi
 
 | # | Specification | Status | Priority | Complexity | Notes |
 |---|---------------|--------|----------|------------|-------|
-| 29 | [incarnate-alpha-shifts.md](calculations/29-incarnate-alpha-shifts.md) | 🟡 Breadth Complete | High | Medium | 8 Alpha types, level shift +1/+2/+3, ED applies to bonuses |
+| 29 | [incarnate-alpha-shifts.md](calculations/29-incarnate-alpha-shifts.md) | 🟢 **Depth Complete** | High | Medium | 8 Alpha types, level shift +1/+2/+3, ED applies (~1,474 lines) |
 | 30 | [incarnate-abilities.md](calculations/30-incarnate-abilities.md) | 🟡 Breadth Complete | Medium | Complex | 9 non-alpha slots: Interface, Judgment, Destiny, Lore, Hybrid, Genesis, Vitae, Omega, Stance |
 | 31 | [incarnate-core-radial.md](calculations/31-incarnate-core-radial.md) | 🟡 Breadth Complete | Low | Medium | Core (focused) vs Radial (broad) branching at T3+ |
 
-**Incarnate System Summary**: All 3 specs complete! Spec 29 documents Alpha slot with 8 types (Musculature, Cardiac, Nerve, Spiritual, Agility, Intuition, Resilient, Vigor), level shifts (+1 to +3), and ED application to bonuses. Specs 30-31 document 9 non-alpha Incarnate slots, tier system, and Core/Radial branching. **BATCH 6 COMPLETE - All 3 Incarnate System specs at breadth level! (specs 29-31)**
+**Incarnate System Summary**: ✅ **1/3 HIGH-PRIORITY SPEC DEPTH COMPLETE!** Alpha slot documented with exact boost values, level shift formulas, and purple patch scaling.
 
 ---
 
@@ -129,15 +129,15 @@ This document tracks all 43 calculation specifications that will document the Mi
 
 | # | Specification | Status | Priority | Complexity | Notes |
 |---|---------------|--------|----------|------------|-------|
-| 32 | [pet-calculations.md](calculations/32-pet-calculations.md) | 🟡 Breadth Complete | High | Complex | Summoned entities with inheritance + separate slotting |
+| 32 | [pet-calculations.md](calculations/32-pet-calculations.md) | 🟢 **Depth Complete** | High | Complex | Summoned entities with inheritance + slotting (~2,040 lines) |
 | 33 | [pseudopet-mechanics.md](calculations/33-pseudopet-mechanics.md) | 🟡 Breadth Complete | Medium | Complex | Invisible pseudopets for power delivery |
-| 34 | [proc-chance-formulas.md](calculations/34-proc-chance-formulas.md) | 🟡 Breadth Complete | High | Complex | PPM formula with recharge/cast/area factors |
+| 34 | [proc-chance-formulas.md](calculations/34-proc-chance-formulas.md) | 🟢 **Depth Complete** | High | Complex | PPM formula with recharge/cast/area factors (~2,085 lines) |
 | 35 | [proc-interactions.md](calculations/35-proc-interactions.md) | 🟡 Breadth Complete | Low | Low-Moderate | Independent rolling, unique restrictions, mutex system |
 | 36 | [enhancement-boosters.md](calculations/36-enhancement-boosters.md) | 🟡 Breadth Complete | Low | Simple | +5 catalyst mechanics |
 | 37 | [attuned-ios.md](calculations/37-attuned-ios.md) | 🟡 Breadth Complete | Medium | Medium | Level-scaling enhancements - NO exemplar penalty |
 | 38 | [purple-pvp-ios.md](calculations/38-purple-pvp-ios.md) | 🟡 Breadth Complete | Medium | Medium | Purple (rare) and PvP IO sets - Rule of 5 exempt |
 
-**Special Systems Summary**: **BATCH 7 COMPLETE!** - All 7 Special Systems specs complete at breadth level! Spec 32 (Pet Calculations) documents Mastermind pets with upgrades and stat inheritance. Spec 33 (Pseudopet Mechanics) distinguishes invisible pseudopets (location-based patches/auras) from controllable pets. Specs 34-35 (Proc formulas/interactions) document PPM system. Spec 36 (Boosters) covers +5 catalysts. Spec 37 (Attuned IOs) documents level scaling. Spec 38 (Purple/PvP IOs) documents Rule of 5 exemption.
+**Special Systems Summary**: ✅ **2/7 HIGH-PRIORITY SPECS DEPTH COMPLETE!** Pet calculations and proc chance formulas documented with exact PPM formulas and pet inheritance rules.
 
 ---
 

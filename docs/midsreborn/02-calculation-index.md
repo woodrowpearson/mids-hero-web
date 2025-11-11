@@ -27,8 +27,8 @@ This document tracks all 43 calculation specifications that will document the Mi
 
 | Status | Count | Percentage |
 |--------|-------|------------|
-| 🔴 Not Started | 31 | 72% |
-| 🟡 Breadth Complete | 12 | 28% |
+| 🔴 Not Started | 30 | 70% |
+| 🟡 Breadth Complete | 13 | 30% |
 | 🟢 Depth Complete | 0 | 0% |
 
 **Current Milestone**: Milestone 2 (Breadth Coverage) - Creating all 43 specs
@@ -65,10 +65,10 @@ This document tracks all 43 calculation specifications that will document the Mi
 | 11 | [enhancement-slotting.md](calculations/11-enhancement-slotting.md) | 🔴 Not Started | Critical | Medium | How enhancements combine in slots |
 | 12 | [enhancement-io-procs.md](calculations/12-enhancement-io-procs.md) | 🟡 Breadth Complete | High | Complex | Damage/heal/endurance procs |
 | 13 | [enhancement-set-bonuses.md](calculations/13-enhancement-set-bonuses.md) | 🔴 Not Started | High | Complex | Set activation and Rule of 5 |
-| 14 | [enhancement-special-ios.md](calculations/14-enhancement-special-ios.md) | 🔴 Not Started | High | Medium | Global IOs (LotG, Stealth, etc.) |
+| 14 | [enhancement-special-ios.md](calculations/14-enhancement-special-ios.md) | 🟡 Breadth Complete | High | Medium | Global IOs (LotG, Stealth, etc.) |
 | 15 | [enhancement-frankenslotting.md](calculations/15-enhancement-frankenslotting.md) | 🟡 Breadth Complete | Medium | Simple | Mixed set slotting strategies |
 
-**Enhancement System Summary**: ED curves (spec 10) are absolutely critical. Set bonuses (spec 13) are core to build planning. **3 of 6 Enhancement specs complete (10, 12, 15)**
+**Enhancement System Summary**: ED curves (spec 10) are absolutely critical. Set bonuses (spec 13) are core to build planning. **4 of 6 Enhancement specs complete (10, 12, 14, 15)**
 
 ---
 

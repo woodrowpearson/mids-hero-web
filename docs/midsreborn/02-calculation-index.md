@@ -27,12 +27,12 @@ This document tracks all 43 calculation specifications that will document the Mi
 
 | Status | Count | Percentage |
 |--------|-------|------------|
-| 🔴 Not Started | 7 | 16% |
-| 🟡 Breadth Complete | 36 | 84% |
+| 🔴 Not Started | 6 | 14% |
+| 🟡 Breadth Complete | 37 | 86% |
 | 🟢 Depth Complete | 0 | 0% |
 
 **Current Milestone**: Milestone 2 (Breadth Coverage) - Creating all 43 specs
-**Latest**: Spec 37 complete - Attuned IOs (MEDIUM priority) - **36 specs complete (84%)**
+**Latest**: Spec 40 complete - Powerset Relationships (LOW priority) - **37 specs complete (86%)**
 
 **Next Milestone**: Milestone 2 (Breadth Coverage) - Create all 43 specs at high level
 
@@ -145,13 +145,13 @@ This document tracks all 43 calculation specifications that will document the Mi
 
 | # | Specification | Status | Priority | Complexity | Notes |
 |---|---------------|--------|----------|------------|-------|
-| 39 | [power-customization.md](calculations/39-power-customization.md) | 🔴 Not Started | Low | Simple | Cosmetic changes (usually no calc impact) |
+| 39 | [power-customization.md](calculations/39-power-customization.md) | 🟡 Breadth Complete | Low | Simple | VFX (no calc impact), power replacements (patron pools), alternate animations |
 | 40 | [powerset-relationships.md](calculations/40-powerset-relationships.md) | 🔴 Not Started | Low | Simple | Primary/secondary/pool interactions |
 | 41 | [level-scaling.md](calculations/41-level-scaling.md) | 🔴 Not Started | Medium | Medium | Power scaling 1-50 |
 | 42 | [exemplar-mechanics.md](calculations/42-exemplar-mechanics.md) | 🔴 Not Started | Medium | Complex | Level reduction effects |
 | 43 | [special-cases.md](calculations/43-special-cases.md) | 🔴 Not Started | Low | Varies | Unique mechanics, bugs-as-features |
 
-**Edge Cases Summary**: Mostly low priority except level scaling (spec 41) and exemplar mechanics (spec 42) for level-agnostic builds.
+**Edge Cases Summary**: Spec 39 (Power Customization) documents VFX-only customization (no calc effect), power replacement tables (patron pools, pool replacements like Sorcery), and alternate animations (may affect cast time). Remaining specs mostly low priority except level scaling (spec 41) and exemplar mechanics (spec 42) for level-agnostic builds.
 
 ---
 

@@ -51,9 +51,9 @@ This document tracks all 43 calculation specifications that will document the Mi
 | 06 | [power-endurance-recovery.md](calculations/06-power-endurance-recovery.md) | 🟡 Breadth Complete | Critical | Simple | Endurance cost and recovery |
 | 07 | [power-recharge-modifiers.md](calculations/07-power-recharge-modifiers.md) | 🟡 Breadth Complete | Critical | Medium | Local and global recharge |
 | 08 | [power-accuracy-tohit.md](calculations/08-power-accuracy-tohit.md) | 🟡 Breadth Complete | Critical | Medium | Accuracy vs ToHit distinction |
-| 09 | [power-defense-resistance.md](calculations/09-power-defense-resistance.md) | 🔴 Not Started | Critical | Medium | Mitigation mechanics |
+| 09 | [power-defense-resistance.md](calculations/09-power-defense-resistance.md) | 🟡 Breadth Complete | Critical | Medium | Mitigation mechanics - defense/resistance/DDR |
 
-**Power System Summary**: These 9 specs cover all fundamental power mechanics. Critical for any build calculations.
+**Power System Summary**: These 9 specs cover all fundamental power mechanics. Critical for any build calculations. **BATCH 1 COMPLETE - All 9 Power System specs at breadth level!**
 
 ---
 

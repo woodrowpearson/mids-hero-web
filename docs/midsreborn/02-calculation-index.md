@@ -27,8 +27,8 @@ This document tracks all 43 calculation specifications that will document the Mi
 
 | Status | Count | Percentage |
 |--------|-------|------------|
-| 🔴 Not Started | 24 | 56% |
-| 🟡 Breadth Complete | 19 | 44% |
+| 🔴 Not Started | 23 | 53% |
+| 🟡 Breadth Complete | 20 | 47% |
 | 🟢 Depth Complete | 0 | 0% |
 
 **Current Milestone**: Milestone 2 (Breadth Coverage) - Creating all 43 specs
@@ -90,7 +90,7 @@ This document tracks all 43 calculation specifications that will document the Mi
 |---|---------------|--------|----------|------------|-------|
 | 19 | [build-totals-defense.md](calculations/19-build-totals-defense.md) | 🔴 Not Started | Critical | Medium | Aggregate defense (typed + positional) |
 | 20 | [build-totals-resistance.md](calculations/20-build-totals-resistance.md) | 🔴 Not Started | Critical | Medium | Aggregate resistance by type |
-| 21 | [build-totals-recharge.md](calculations/21-build-totals-recharge.md) | 🔴 Not Started | Critical | Simple | Global recharge calculation |
+| 21 | [build-totals-recharge.md](calculations/21-build-totals-recharge.md) | 🟡 Breadth Complete | **CRITICAL** | Simple | Global recharge aggregation - **Hasten, sets, LotG, Incarnate** |
 | 22 | [build-totals-damage.md](calculations/22-build-totals-damage.md) | 🔴 Not Started | Critical | Medium | Global damage bonuses |
 | 23 | [build-totals-accuracy.md](calculations/23-build-totals-accuracy.md) | 🔴 Not Started | Critical | Simple | Global accuracy/ToHit |
 | 24 | [build-totals-other-stats.md](calculations/24-build-totals-other-stats.md) | 🔴 Not Started | Critical | Medium | HP, endurance, recovery, regen, etc. |

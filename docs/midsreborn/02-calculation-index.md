@@ -134,7 +134,7 @@ This document tracks all 43 calculation specifications that will document the Mi
 | 34 | [proc-chance-formulas.md](calculations/34-proc-chance-formulas.md) | 🟡 Breadth Complete | High | Complex | PPM formula with recharge/cast/area factors |
 | 35 | [proc-interactions.md](calculations/35-proc-interactions.md) | 🟡 Breadth Complete | Low | Low-Moderate | Independent rolling, unique restrictions, mutex system |
 | 36 | [enhancement-boosters.md](calculations/36-enhancement-boosters.md) | 🟡 Breadth Complete | Low | Simple | +5 catalyst mechanics |
-| 37 | [attuned-ios.md](calculations/37-attuned-ios.md) | 🔴 Not Started | Medium | Medium | Level-scaling enhancements |
+| 37 | [attuned-ios.md](calculations/37-attuned-ios.md) | 🟡 Breadth Complete | Medium | Medium | Level-scaling enhancements - NO exemplar penalty |
 | 38 | [purple-pvp-ios.md](calculations/38-purple-pvp-ios.md) | 🟡 Breadth Complete | Medium | Medium | Purple (rare) and PvP IO sets - Rule of 5 exempt |
 
 **Special Systems Summary**: **BATCH 7 COMPLETE (Partial)** - Spec 32 (Pet Calculations) documents Mastermind pets (6 types with upgrades), Controller/Dominator pets, stat inheritance from caster (accuracy/damage but NOT defense/recharge), separate Pet IO slotting, and upgrade mechanics. Spec 34 (PPM formula) and Spec 35 (Proc Interactions) complete. Spec 38 (Purple/PvP IOs) documents Rule of 5 exemption logic. Pseudopets (spec 33) and Attuned IOs (spec 37) still needed.

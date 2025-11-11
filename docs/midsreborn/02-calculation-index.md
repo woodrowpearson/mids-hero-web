@@ -27,12 +27,12 @@ This document tracks all 43 calculation specifications that will document the Mi
 
 | Status | Count | Percentage |
 |--------|-------|------------|
-| 🔴 Not Started | 8 | 19% |
-| 🟡 Breadth Complete | 35 | 81% |
+| 🔴 Not Started | 7 | 16% |
+| 🟡 Breadth Complete | 36 | 84% |
 | 🟢 Depth Complete | 0 | 0% |
 
 **Current Milestone**: Milestone 2 (Breadth Coverage) - Creating all 43 specs
-**Latest**: Spec 35 complete - Proc Interactions (LOW priority) - **35 specs complete (81%)**
+**Latest**: Spec 37 complete - Attuned IOs (MEDIUM priority) - **36 specs complete (84%)**
 
 **Next Milestone**: Milestone 2 (Breadth Coverage) - Create all 43 specs at high level
 
@@ -137,7 +137,7 @@ This document tracks all 43 calculation specifications that will document the Mi
 | 37 | [attuned-ios.md](calculations/37-attuned-ios.md) | 🟡 Breadth Complete | Medium | Medium | Level-scaling enhancements - NO exemplar penalty |
 | 38 | [purple-pvp-ios.md](calculations/38-purple-pvp-ios.md) | 🟡 Breadth Complete | Medium | Medium | Purple (rare) and PvP IO sets - Rule of 5 exempt |
 
-**Special Systems Summary**: **BATCH 7 COMPLETE (Partial)** - Spec 32 (Pet Calculations) documents Mastermind pets (6 types with upgrades), Controller/Dominator pets, stat inheritance from caster (accuracy/damage but NOT defense/recharge), separate Pet IO slotting, and upgrade mechanics. Spec 34 (PPM formula) and Spec 35 (Proc Interactions) complete. Spec 38 (Purple/PvP IOs) documents Rule of 5 exemption logic. Pseudopets (spec 33) and Attuned IOs (spec 37) still needed.
+**Special Systems Summary**: **BATCH 7 COMPLETE (Partial)** - Spec 32 (Pet Calculations) documents Mastermind pets (6 types with upgrades), Controller/Dominator pets, stat inheritance from caster (accuracy/damage but NOT defense/recharge), separate Pet IO slotting, and upgrade mechanics. Spec 34 (PPM formula) and Spec 35 (Proc Interactions) complete. Spec 38 (Purple/PvP IOs) documents Rule of 5 exemption logic. Pseudopet spec (33) still needed - Spec 37 (Attuned IOs) COMPLETE with level scaling, NO exemplar penalty, ATO/Winter/Movie set detection.
 
 ---
 

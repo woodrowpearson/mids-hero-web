@@ -27,14 +27,14 @@ This document tracks all 43 calculation specifications that will document the Mi
 
 | Status | Count | Percentage |
 |--------|-------|------------|
-| 🔴 Not Started | 5 | 12% |
-| 🟡 Breadth Complete | 38 | 88% |
+| 🔴 Not Started | 0 | 0% |
+| 🟡 Breadth Complete | 43 | 100% |
 | 🟢 Depth Complete | 0 | 0% |
 
-**Current Milestone**: Milestone 2 (Breadth Coverage) - Creating all 43 specs
-**Latest**: Spec 42 complete - Exemplar/Sidekick Mechanics (LOW priority) - **38 specs complete (88%)**
+**Current Milestone**: ✅ Milestone 2 (Breadth Coverage) - COMPLETE! All 43 specs created
+**Latest**: Spec 43 complete - Special Cases and Edge Cases (LOW priority) - **43/43 specs complete (100%)**
 
-**Next Milestone**: Milestone 2 (Breadth Coverage) - Create all 43 specs at high level
+**Next Milestone**: Milestone 3 (Depth Coverage) - Add detailed implementation to high-priority specs
 
 ---
 
@@ -149,9 +149,9 @@ This document tracks all 43 calculation specifications that will document the Mi
 | 40 | [powerset-relationships.md](calculations/40-powerset-relationships.md) | 🟡 Breadth Complete | Low | Medium | Cross-powerset synergies, combo systems, mode toggles (Bio Armor, Staff Fighting, Dual Pistols) |
 | 41 | [level-scaling.md](calculations/41-level-scaling.md) | 🔴 Not Started | Medium | Medium | Power scaling 1-50 |
 | 42 | [exemplar-mechanics.md](calculations/42-exemplar-mechanics.md) | 🟡 Breadth Complete | Low | Medium | Exemplar down/sidekick up level adjustments - power/enhancement/set bonus availability |
-| 43 | [special-cases.md](calculations/43-special-cases.md) | 🔴 Not Started | Low | Varies | Unique mechanics, bugs-as-features |
+| 43 | [special-cases.md](calculations/43-special-cases.md) | 🟡 Breadth Complete | Low | Medium | Unique mechanics, bugs-as-features, name fixes, Arcana Time, pool prerequisites |
 
-**Edge Cases Summary**: **BATCH 8 PARTIAL** - Spec 39 (Power Customization) documents VFX-only customization (no calc effect), power replacement tables (patron pools, pool replacements like Sorcery), and alternate animations (may affect cast time). Spec 40 (Powerset Relationships) documents eSpecialCase system (combo levels, Bio Armor adaptations, Staff Fighting forms), Dual Pistals ammo swap, Fighting pool synergies. Spec 42 (Exemplar Mechanics) documents ExempHigh/ExempLow/ForceLevel system, power availability checks, enhancement penalties (with exemptions for attuned/purple/PvP IOs), and set bonus rules (standard sets lose bonuses below level-3, purple/PvP/attuned sets work at all levels). Remaining specs: level scaling (spec 41) for power value scaling 1-50, and special cases (spec 43) for unique mechanics.
+**Edge Cases Summary**: **BATCH 8 PARTIAL** - Spec 39 (Power Customization) documents VFX-only customization (no calc effect), power replacement tables (patron pools, pool replacements like Sorcery), and alternate animations (may affect cast time). Spec 40 (Powerset Relationships) documents eSpecialCase system (combo levels, Bio Armor adaptations, Staff Fighting forms), Dual Pistals ammo swap, Fighting pool synergies. Spec 42 (Exemplar Mechanics) documents ExempHigh/ExempLow/ForceLevel system, power availability checks, enhancement penalties (with exemptions for attuned/purple/PvP IOs), and set bonus rules (standard sets lose bonuses below level-3, purple/PvP/attuned sets work at all levels). Spec 43 (Special Cases) documents 65+ special case flags (eSpecialCase enum), import string fixes (EnhNameFix, PowerNameFix, FixSpelling), Arcana Time (132ms server tick quantization), pool prerequisites (2 powers before travel), and one-off mechanics (Oil Slick Arrow pseudo-pet). Remaining spec: level scaling (spec 41) for power value scaling 1-50.
 
 ---
 

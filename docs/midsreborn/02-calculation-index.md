@@ -27,12 +27,12 @@ This document tracks all 43 calculation specifications that will document the Mi
 
 | Status | Count | Percentage |
 |--------|-------|------------|
-| 🔴 Not Started | 14 | 33% |
-| 🟡 Breadth Complete | 29 | 67% |
+| 🔴 Not Started | 13 | 30% |
+| 🟡 Breadth Complete | 30 | 70% |
 | 🟢 Depth Complete | 0 | 0% |
 
 **Current Milestone**: Milestone 2 (Breadth Coverage) - Creating all 43 specs
-**Latest**: Spec 31 complete - Incarnate Core vs Radial (LOW priority) - **29 specs complete (67%)**
+**Latest**: Spec 29 complete - Incarnate Alpha Shifts (HIGH priority) - **30 specs complete (70%)**
 
 **Next Milestone**: Milestone 2 (Breadth Coverage) - Create all 43 specs at high level
 
@@ -117,11 +117,11 @@ This document tracks all 43 calculation specifications that will document the Mi
 
 | # | Specification | Status | Priority | Complexity | Notes |
 |---|---------------|--------|----------|------------|-------|
-| 29 | [incarnate-alpha-shifts.md](calculations/29-incarnate-alpha-shifts.md) | 🔴 Not Started | Medium | Medium | Level shifts and scaling |
+| 29 | [incarnate-alpha-shifts.md](calculations/29-incarnate-alpha-shifts.md) | 🟡 Breadth Complete | High | Medium | 8 Alpha types, level shift +1/+2/+3, ED applies to bonuses |
 | 30 | [incarnate-abilities.md](calculations/30-incarnate-abilities.md) | 🟡 Breadth Complete | Medium | Complex | 9 non-alpha slots: Interface, Judgment, Destiny, Lore, Hybrid, Genesis, Vitae, Omega, Stance |
 | 31 | [incarnate-core-radial.md](calculations/31-incarnate-core-radial.md) | 🟡 Breadth Complete | Low | Medium | Core (focused) vs Radial (broad) branching at T3+ |
 
-**Incarnate System Summary**: Specs 30-31 complete - documents 9 non-alpha Incarnate slots, tier system, level shifts, and Core/Radial branching philosophy. Important for endgame builds but can be implemented after core system works. **BATCH 6 (PARTIAL) - Specs 30-31 complete (2 of 3 Incarnate specs)**
+**Incarnate System Summary**: All 3 specs complete! Spec 29 documents Alpha slot with 8 types (Musculature, Cardiac, Nerve, Spiritual, Agility, Intuition, Resilient, Vigor), level shifts (+1 to +3), and ED application to bonuses. Specs 30-31 document 9 non-alpha Incarnate slots, tier system, and Core/Radial branching. **BATCH 6 COMPLETE - All 3 Incarnate System specs at breadth level! (specs 29-31)**
 
 ---
 

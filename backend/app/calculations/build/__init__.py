@@ -15,6 +15,19 @@ from .resistance_aggregator import (
     aggregate_resistance_bonuses,
     calculate_damage_reduction
 )
+from .recharge_aggregator import (
+    RechargeValues,
+    aggregate_recharge_bonuses,
+    calculate_recharge_time,
+    RECHARGE_CAP
+)
+from .damage_aggregator import (
+    DamageValues,
+    DamageHeuristic,
+    DamageBuffSource,
+    aggregate_damage_buffs,
+    calculate_damage_with_buff
+)
 from .build_totals import (
     BuildTotals,
     create_build_totals
@@ -32,6 +45,17 @@ __all__ = [
     "ResistanceValues",
     "aggregate_resistance_bonuses",
     "calculate_damage_reduction",
+    # Recharge
+    "RechargeValues",
+    "aggregate_recharge_bonuses",
+    "calculate_recharge_time",
+    "RECHARGE_CAP",
+    # Damage
+    "DamageValues",
+    "DamageHeuristic",
+    "DamageBuffSource",
+    "aggregate_damage_buffs",
+    "calculate_damage_with_buff",
     # Build Totals
     "BuildTotals",
     "create_build_totals",

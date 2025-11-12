@@ -27,6 +27,16 @@ from .resistance_aggregator import (
     ResistanceValues,
     aggregate_resistance_bonuses
 )
+from .recharge_aggregator import (
+    RechargeValues,
+    aggregate_recharge_bonuses
+)
+from .damage_aggregator import (
+    DamageValues,
+    DamageHeuristic,
+    DamageBuffSource,
+    aggregate_damage_buffs
+)
 
 
 @dataclass
@@ -41,10 +51,14 @@ class BuildTotals:
         archetype: Character archetype for cap enforcement
         defense: Aggregated defense values
         resistance: Aggregated resistance values
+        recharge: Aggregated recharge values
+        damage: Aggregated damage values
     """
     archetype: ArchetypeType
     defense: DefenseValues = field(default_factory=lambda: DefenseValues.empty())
     resistance: ResistanceValues = field(default_factory=lambda: ResistanceValues.empty())
+    recharge: RechargeValues = field(default_factory=lambda: RechargeValues.empty())
+    damage: DamageValues = field(default_factory=lambda: DamageValues.empty())
 
     def __post_init__(self):
         """Initialize with archetype-specific empty values."""
@@ -52,6 +66,10 @@ class BuildTotals:
             self.defense = DefenseValues.empty(self.archetype)
         if self.resistance.archetype is None:
             self.resistance = ResistanceValues.empty(self.archetype)
+        if self.recharge.archetype is None:
+            self.recharge = RechargeValues.empty(self.archetype)
+        if self.damage.archetype is None:
+            self.damage = DamageValues.empty(self.archetype)
 
     def add_defense_bonuses(self, bonuses: List[Dict[DefenseType, float]]) -> None:
         """
@@ -120,6 +138,67 @@ class BuildTotals:
         """
         return self.resistance.get_resistance(resistance_type)
 
+    def add_recharge_bonuses(self, bonuses: List[float]) -> None:
+        """
+        Add recharge bonuses to build totals.
+
+        Args:
+            bonuses: List of recharge bonus values
+        """
+        aggregated = aggregate_recharge_bonuses(bonuses, self.archetype)
+        self.recharge.add_recharge(aggregated.get_global_recharge())
+
+    def get_global_recharge(self) -> float:
+        """
+        Get current global recharge bonus.
+
+        Returns:
+            Global recharge value (0.0-4.0)
+        """
+        return self.recharge.get_global_recharge()
+
+    def calculate_power_recharge(self, base_recharge: float) -> float:
+        """
+        Calculate reduced recharge time for a power.
+
+        Args:
+            base_recharge: Base recharge time in seconds
+
+        Returns:
+            Reduced recharge time in seconds
+        """
+        return self.recharge.calculate_reduced_recharge(base_recharge)
+
+    def add_damage_buff(
+        self,
+        name: str,
+        value: float,
+        is_temporary: bool = False,
+        avg_multiplier: float = 1.0
+    ) -> None:
+        """
+        Add a damage buff source to build totals.
+
+        Args:
+            name: Source name
+            value: Damage buff value (0.0-1.0 scale)
+            is_temporary: Whether this is a temporary buff
+            avg_multiplier: Multiplier for AVG mode
+        """
+        self.damage.add_buff(name, value, is_temporary, avg_multiplier)
+
+    def get_damage_buff(self, heuristic: DamageHeuristic = DamageHeuristic.MAX) -> float:
+        """
+        Get total damage buff with given heuristic.
+
+        Args:
+            heuristic: Which heuristic mode to use
+
+        Returns:
+            Total damage buff value
+        """
+        return self.damage.get_capped_damage_buff(heuristic)
+
     def apply_all_caps(self) -> None:
         """
         Apply all archetype-specific caps to build totals.
@@ -128,6 +207,8 @@ class BuildTotals:
         """
         self.defense.apply_caps()
         self.resistance.apply_caps()
+        self.recharge.apply_cap()
+        # Damage caps are applied per-heuristic in get_capped_damage_buff()
 
     def get_summary(self) -> Dict:
         """

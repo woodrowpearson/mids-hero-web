@@ -1,9 +1,11 @@
 # Milestone 4: Calculation Engine Implementation
 
 **Created**: 2025-11-11
-**Status**: Ready to Execute
+**Status**: In Progress
 **Branch**: `feature/calculation-engine-foundation`
 **Prerequisites**: Milestone 3 Complete (24 depth-level specs)
+**Spec Location**: `/Users/w/code/mids-hero-web/docs/midsreborn/calculations/`
+**Spec Mapping**: See `docs/plans/spec-to-implementation-mapping.md` for complete mapping
 
 ---
 
@@ -472,16 +474,16 @@ Phase 1 (Foundation)
 
 ## Completion Checklist
 
-### Phase 1: Core Foundation
-- [ ] Batch 1A: Effect System (Spec 01)
-- [ ] Batch 1B: Enhancement Schedules (Spec 10)
-- [ ] Batch 1C: Archetype Modifiers (Spec 16)
-- [ ] Batch 1D: Archetype Caps (Spec 17)
+### Phase 1: Core Foundation ✅ COMPLETE
+- [x] Batch 1A: Effect System (Spec 01) - `docs/midsreborn/calculations/01-power-effects-core.md`
+- [x] Batch 1B: Enhancement Schedules (Spec 10) - `docs/midsreborn/calculations/10-enhancement-schedules.md`
+- [x] Batch 1C: Archetype Modifiers (Spec 16) - `docs/midsreborn/calculations/16-archetype-modifiers.md`
+- [x] Batch 1D: Archetype Caps (Spec 17) - `docs/midsreborn/calculations/17-archetype-caps.md`
 
-### Phase 2: Build Aggregation
-- [ ] Batch 2A: Defense & Resistance (Specs 19, 20)
-- [ ] Batch 2B: Recharge & Damage (Specs 21, 22)
-- [ ] Batch 2C: Accuracy & Other Stats (Specs 23, 24)
+### Phase 2: Build Aggregation 🟡 IN PROGRESS
+- [x] Batch 2A: Defense & Resistance - `docs/midsreborn/calculations/19-build-totals-defense.md`, `20-build-totals-resistance.md`
+- [x] Batch 2B: Recharge & Damage - `docs/midsreborn/calculations/21-build-totals-recharge.md`, `22-build-totals-damage.md`
+- [ ] Batch 2C: Accuracy & Other Stats ⏳ NEXT - `docs/midsreborn/calculations/23-build-totals-accuracy.md`, `24-build-totals-other-stats.md`
 
 ### Phase 3: Power Calculations
 - [ ] Batch 3A: Damage & Buffs (Specs 02, 03)

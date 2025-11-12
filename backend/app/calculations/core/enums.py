@@ -13,6 +13,7 @@ class ToWho(Enum):
 
     Maps to MidsReborn's Enums.eToWho enum.
     """
+
     TARGET = 0
     SELF = 1
     TEAM = 2
@@ -27,6 +28,7 @@ class PvMode(Enum):
     Maps to MidsReborn's Enums.ePvX enum.
     Effects can have different magnitudes in PvE vs PvP.
     """
+
     ANY = 0
     PVE = 1
     PVP = 2
@@ -43,6 +45,7 @@ class Stacking(Enum):
     STACK: Effect stacks (same as YES)
     REPLACE: New instance replaces old value
     """
+
     NO = 0
     YES = 1
     STACK = 2
@@ -55,11 +58,12 @@ class SpecialCase(Enum):
 
     Maps to MidsReborn's Enums.eSpecialCase enum.
     """
+
     NONE = 0
-    DEFIANCE = 1      # Blaster inherent
-    DOMINATION = 2    # Dominator inherent
-    SCOURGE = 3       # Corruptor inherent
-    FURY = 4          # Brute inherent
+    DEFIANCE = 1  # Blaster inherent
+    DOMINATION = 2  # Dominator inherent
+    SCOURGE = 3  # Corruptor inherent
+    FURY = 4  # Brute inherent
     ASSASSINATION = 5  # Stalker inherent
 
 
@@ -70,10 +74,11 @@ class Suppress(Enum):
     Maps to MidsReborn's Enums.eSuppress enum.
     Some effects are suppressed in combat or when other powers activate.
     """
+
     NONE = 0
-    COMBAT = 1        # Suppressed when in combat
-    MOVEMENT = 2      # Suppressed when moving
-    HELD = 3          # Suppressed when held
-    STUNNED = 4       # Suppressed when stunned
-    SLEEP = 5         # Suppressed when sleeping
-    IMMOBILIZE = 6    # Suppressed when immobilized
+    COMBAT = 1  # Suppressed when in combat
+    MOVEMENT = 2  # Suppressed when moving
+    HELD = 3  # Suppressed when held
+    STUNNED = 4  # Suppressed when stunned
+    SLEEP = 5  # Suppressed when sleeping
+    IMMOBILIZE = 6  # Suppressed when immobilized

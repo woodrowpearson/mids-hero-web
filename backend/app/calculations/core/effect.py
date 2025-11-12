@@ -113,21 +113,15 @@ class Effect:
     def __post_init__(self):
         """Validate properties after initialization."""
         if not (0 <= self.probability <= 1):
-            raise ValueError(
-                f"Probability must be 0-1, got {self.probability}"
-            )
+            raise ValueError(f"Probability must be 0-1, got {self.probability}")
         if not (0 <= self.base_probability <= 1):
             raise ValueError(
                 f"Base probability must be 0-1, got {self.base_probability}"
             )
         if self.duration < 0:
-            raise ValueError(
-                f"Duration cannot be negative, got {self.duration}"
-            )
+            raise ValueError(f"Duration cannot be negative, got {self.duration}")
         if self.scale <= 0:
-            raise ValueError(
-                f"Scale must be positive, got {self.scale}"
-            )
+            raise ValueError(f"Scale must be positive, got {self.scale}")
 
     # Convenience methods
 

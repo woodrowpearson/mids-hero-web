@@ -18,9 +18,7 @@ class TestModifierTableBasics:
     def test_modifier_table_creation(self):
         """Test creating a modifier table"""
         table = ModifierTable(
-            id="Test_Table",
-            base_index=0,
-            table=[[1.0] * 60 for _ in range(55)]
+            id="Test_Table", base_index=0, table=[[1.0] * 60 for _ in range(55)]
         )
 
         assert table.id == "Test_Table"
@@ -34,11 +32,7 @@ class TestModifierTableBasics:
         table_data = [[0.0] * 60 for _ in range(55)]
         table_data[49][1] = -30.5856  # Level 50, Column 1
 
-        table = ModifierTable(
-            id="Test_Damage",
-            base_index=0,
-            table=table_data
-        )
+        table = ModifierTable(id="Test_Damage", base_index=0, table=table_data)
 
         modifier = table.get_modifier(50, 1)  # Level 50, Column 1
         assert abs(modifier - (-30.5856)) < 0.001
@@ -46,9 +40,7 @@ class TestModifierTableBasics:
     def test_get_modifier_level_bounds(self):
         """Test get_modifier level bounds checking"""
         table = ModifierTable(
-            id="Test_Table",
-            base_index=0,
-            table=[[1.0] * 60 for _ in range(55)]
+            id="Test_Table", base_index=0, table=[[1.0] * 60 for _ in range(55)]
         )
 
         # Level too low
@@ -64,9 +56,7 @@ class TestModifierTableBasics:
     def test_get_modifier_column_bounds(self):
         """Test get_modifier column bounds checking"""
         table = ModifierTable(
-            id="Test_Table",
-            base_index=0,
-            table=[[1.0] * 60 for _ in range(55)]
+            id="Test_Table", base_index=0, table=[[1.0] * 60 for _ in range(55)]
         )
 
         # Column too low
@@ -175,10 +165,10 @@ class TestSpec16TestCases:
         table_name = "Melee_Buff_Def"
         level = 50
 
-        tanker_mod = modifiers.get_modifier(table_name, level, 0)     # 0.07
-        scrapper_mod = modifiers.get_modifier(table_name, level, 1)   # 0.09
-        defender_mod = modifiers.get_modifier(table_name, level, 2)   # 0.1
-        controller_mod = modifiers.get_modifier(table_name, level, 3) # 0.075
+        tanker_mod = modifiers.get_modifier(table_name, level, 0)  # 0.07
+        scrapper_mod = modifiers.get_modifier(table_name, level, 1)  # 0.09
+        defender_mod = modifiers.get_modifier(table_name, level, 2)  # 0.1
+        controller_mod = modifiers.get_modifier(table_name, level, 3)  # 0.075
 
         # Defender should have highest buff modifier
         assert defender_mod > tanker_mod
@@ -230,8 +220,9 @@ class TestSpec16TestCases:
         for level in [1, 25, 50]:
             for column in range(5):  # First 5 ATs
                 modifier = modifiers.get_modifier(table_name, level, column)
-                assert abs(modifier - 1.0) < 0.001, \
-                    f"Melee_Ones should be 1.0 for level {level}, column {column}"
+                assert (
+                    abs(modifier - 1.0) < 0.001
+                ), f"Melee_Ones should be 1.0 for level {level}, column {column}"
 
 
 class TestEffectMagnitudeCalculation:
@@ -330,7 +321,7 @@ class TestValidation:
         modifiers.tables["Bad_Table"] = ModifierTable(
             id="Bad_Table",
             base_index=0,
-            table=[[1.0] * 60 for _ in range(50)]  # Only 50 levels
+            table=[[1.0] * 60 for _ in range(50)],  # Only 50 levels
         )
 
         errors = modifiers.validate_structure()
@@ -347,9 +338,7 @@ class TestValidation:
         table_data[10] = [1.0] * 50  # Level 11 has wrong column count
 
         modifiers.tables["Bad_Columns"] = ModifierTable(
-            id="Bad_Columns",
-            base_index=0,
-            table=table_data
+            id="Bad_Columns", base_index=0, table=table_data
         )
 
         errors = modifiers.validate_structure()
@@ -386,10 +375,7 @@ class TestATComparisons:
         modifiers = ArchetypeModifiers.create_test_instance()
 
         # Get melee damage for first 5 ATs
-        at_mods = [
-            modifiers.get_modifier("Melee_Damage", 50, col)
-            for col in range(5)
-        ]
+        at_mods = [modifiers.get_modifier("Melee_Damage", 50, col) for col in range(5)]
 
         # All should be non-zero negative values
         for mod in at_mods:

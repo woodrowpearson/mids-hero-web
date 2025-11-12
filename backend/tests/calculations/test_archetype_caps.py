@@ -349,7 +349,7 @@ class TestEdgeCases:
         assert caps.resistance_cap == 0.90
 
         # Is a dataclass
-        assert hasattr(caps, '__dataclass_fields__')
+        assert hasattr(caps, "__dataclass_fields__")
 
     def test_all_archetypes_have_caps(self):
         """Test all archetype types have cap definitions"""

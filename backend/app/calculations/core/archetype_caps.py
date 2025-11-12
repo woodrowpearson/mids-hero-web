@@ -17,6 +17,7 @@ class ArchetypeType(Enum):
 
     Maps to playable archetypes in City of Heroes.
     """
+
     # Hero ATs
     TANKER = "Tanker"
     SCRAPPER = "Scrapper"
@@ -58,15 +59,16 @@ class ArchetypeCaps:
         recharge_cap: Recharge speed cap (5.0 = 500%)
         perception_cap: Perception range cap (feet)
     """
+
     archetype: ArchetypeType
-    damage_cap: float = 4.0          # Default 400%
-    resistance_cap: float = 0.75     # Default 75%
-    defense_cap: float = 1.75        # Default 175% (display only)
-    hp_cap: float = 5000.0           # Default 5000 HP
-    recovery_cap: float = 5.0        # Default 500% (5x base)
-    regeneration_cap: float = 20.0   # Default 2000% (20x base)
-    recharge_cap: float = 5.0        # Default 500% (5x recharge speed)
-    perception_cap: float = 1153.0   # Default ~1153 feet
+    damage_cap: float = 4.0  # Default 400%
+    resistance_cap: float = 0.75  # Default 75%
+    defense_cap: float = 1.75  # Default 175% (display only)
+    hp_cap: float = 5000.0  # Default 5000 HP
+    recovery_cap: float = 5.0  # Default 500% (5x base)
+    regeneration_cap: float = 20.0  # Default 2000% (20x base)
+    recharge_cap: float = 5.0  # Default 500% (5x recharge speed)
+    perception_cap: float = 1153.0  # Default ~1153 feet
 
     def apply_damage_cap(self, value: float) -> float:
         """
@@ -183,7 +185,7 @@ ARCHETYPE_CAPS_DATA = {
         hp_cap=3534.0,
         recovery_cap=8.0,
         regeneration_cap=25.0,
-        recharge_cap=5.0
+        recharge_cap=5.0,
     ),
     ArchetypeType.BRUTE: ArchetypeCaps(
         archetype=ArchetypeType.BRUTE,
@@ -193,7 +195,7 @@ ARCHETYPE_CAPS_DATA = {
         hp_cap=3212.0,
         recovery_cap=8.0,
         regeneration_cap=25.0,
-        recharge_cap=5.0
+        recharge_cap=5.0,
     ),
     ArchetypeType.SCRAPPER: ArchetypeCaps(
         archetype=ArchetypeType.SCRAPPER,
@@ -203,7 +205,7 @@ ARCHETYPE_CAPS_DATA = {
         hp_cap=2409.0,
         recovery_cap=8.0,
         regeneration_cap=30.0,  # Highest regen cap
-        recharge_cap=5.0
+        recharge_cap=5.0,
     ),
     ArchetypeType.STALKER: ArchetypeCaps(
         archetype=ArchetypeType.STALKER,
@@ -213,7 +215,7 @@ ARCHETYPE_CAPS_DATA = {
         hp_cap=2091.0,
         recovery_cap=8.0,
         regeneration_cap=30.0,  # Highest regen cap
-        recharge_cap=5.0
+        recharge_cap=5.0,
     ),
     ArchetypeType.BLASTER: ArchetypeCaps(
         archetype=ArchetypeType.BLASTER,
@@ -223,7 +225,7 @@ ARCHETYPE_CAPS_DATA = {
         hp_cap=1874.0,
         recovery_cap=8.0,
         regeneration_cap=20.0,
-        recharge_cap=5.0
+        recharge_cap=5.0,
     ),
     ArchetypeType.DEFENDER: ArchetypeCaps(
         archetype=ArchetypeType.DEFENDER,
@@ -233,7 +235,7 @@ ARCHETYPE_CAPS_DATA = {
         hp_cap=1874.0,
         recovery_cap=10.0,  # Higher for support
         regeneration_cap=20.0,
-        recharge_cap=5.0
+        recharge_cap=5.0,
     ),
     ArchetypeType.CONTROLLER: ArchetypeCaps(
         archetype=ArchetypeType.CONTROLLER,
@@ -243,7 +245,7 @@ ARCHETYPE_CAPS_DATA = {
         hp_cap=1874.0,
         recovery_cap=12.0,  # Highest recovery cap
         regeneration_cap=20.0,
-        recharge_cap=5.0
+        recharge_cap=5.0,
     ),
     ArchetypeType.CORRUPTOR: ArchetypeCaps(
         archetype=ArchetypeType.CORRUPTOR,
@@ -253,7 +255,7 @@ ARCHETYPE_CAPS_DATA = {
         hp_cap=1874.0,
         recovery_cap=8.0,
         regeneration_cap=20.0,
-        recharge_cap=5.0
+        recharge_cap=5.0,
     ),
     ArchetypeType.DOMINATOR: ArchetypeCaps(
         archetype=ArchetypeType.DOMINATOR,
@@ -263,7 +265,7 @@ ARCHETYPE_CAPS_DATA = {
         hp_cap=1874.0,
         recovery_cap=12.0,  # High for control
         regeneration_cap=20.0,
-        recharge_cap=5.0
+        recharge_cap=5.0,
     ),
     ArchetypeType.MASTERMIND: ArchetypeCaps(
         archetype=ArchetypeType.MASTERMIND,
@@ -273,7 +275,7 @@ ARCHETYPE_CAPS_DATA = {
         hp_cap=1874.0,
         recovery_cap=12.0,  # High for pet management
         regeneration_cap=20.0,
-        recharge_cap=5.0
+        recharge_cap=5.0,
     ),
     ArchetypeType.SENTINEL: ArchetypeCaps(
         archetype=ArchetypeType.SENTINEL,
@@ -283,7 +285,7 @@ ARCHETYPE_CAPS_DATA = {
         hp_cap=2409.0,
         recovery_cap=8.0,
         regeneration_cap=20.0,
-        recharge_cap=5.0
+        recharge_cap=5.0,
     ),
     ArchetypeType.PEACEBRINGER: ArchetypeCaps(
         archetype=ArchetypeType.PEACEBRINGER,
@@ -293,7 +295,7 @@ ARCHETYPE_CAPS_DATA = {
         hp_cap=2091.0,  # Form-dependent
         recovery_cap=8.0,
         regeneration_cap=20.0,
-        recharge_cap=5.0
+        recharge_cap=5.0,
     ),
     ArchetypeType.WARSHADE: ArchetypeCaps(
         archetype=ArchetypeType.WARSHADE,
@@ -303,7 +305,7 @@ ARCHETYPE_CAPS_DATA = {
         hp_cap=2091.0,  # Form-dependent
         recovery_cap=8.0,
         regeneration_cap=20.0,
-        recharge_cap=5.0
+        recharge_cap=5.0,
     ),
 }
 

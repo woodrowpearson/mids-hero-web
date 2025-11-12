@@ -26,6 +26,7 @@ class ModifierTable:
         base_index: Base index from MidsReborn (legacy field)
         table: 2D array [level][archetype_column] of float modifiers
     """
+
     id: str
     base_index: int
     table: list[list[float]]
@@ -95,7 +96,7 @@ class ArchetypeModifiers:
         self.table_index: dict[str, int] = {}
 
     @classmethod
-    def load_from_json(cls, filepath: Path) -> 'ArchetypeModifiers':
+    def load_from_json(cls, filepath: Path) -> "ArchetypeModifiers":
         """
         Load modifier tables from AttribMod.json.
 
@@ -121,11 +122,11 @@ class ArchetypeModifiers:
 
         instance = cls()
 
-        for idx, table_data in enumerate(data['Modifier']):
+        for idx, table_data in enumerate(data["Modifier"]):
             table = ModifierTable(
-                id=table_data['ID'],
-                base_index=table_data['BaseIndex'],
-                table=table_data['Table']
+                id=table_data["ID"],
+                base_index=table_data["BaseIndex"],
+                table=table_data["Table"],
             )
             instance.tables[table.id] = table
             instance.table_index[table.id] = idx
@@ -133,7 +134,7 @@ class ArchetypeModifiers:
         return instance
 
     @classmethod
-    def create_test_instance(cls) -> 'ArchetypeModifiers':
+    def create_test_instance(cls) -> "ArchetypeModifiers":
         """
         Create instance with test data for unit tests.
 
@@ -156,43 +157,39 @@ class ArchetypeModifiers:
             -30.5856,  # Defender (column 2)
             -62.5615,  # Controller (column 3)
             -52.8297,  # Blaster (column 4)
-        ] + [0.0] * 55  # Pad to 60 columns
+        ] + [
+            0.0
+        ] * 55  # Pad to 60 columns
 
         # Create minimal 55-level table (only need level 50 for tests)
         melee_damage_table = [[0.0] * 60 for _ in range(55)]
         melee_damage_table[49] = melee_damage_level_50  # Level 50 = index 49
 
         instance.tables["Melee_Damage"] = ModifierTable(
-            id="Melee_Damage",
-            base_index=0,
-            table=melee_damage_table
+            id="Melee_Damage", base_index=0, table=melee_damage_table
         )
 
         # Create Melee_Buff_Def table with test values
         melee_buff_def_level_50 = [
-            0.07,   # Tanker
-            0.09,   # Scrapper
-            0.1,    # Defender (highest)
+            0.07,  # Tanker
+            0.09,  # Scrapper
+            0.1,  # Defender (highest)
             0.075,  # Controller
-            0.1,    # Blaster
+            0.1,  # Blaster
         ] + [0.0] * 55
 
         melee_buff_def_table = [[0.0] * 60 for _ in range(55)]
         melee_buff_def_table[49] = melee_buff_def_level_50
 
         instance.tables["Melee_Buff_Def"] = ModifierTable(
-            id="Melee_Buff_Def",
-            base_index=1,
-            table=melee_buff_def_table
+            id="Melee_Buff_Def", base_index=1, table=melee_buff_def_table
         )
 
         # Create Melee_Ones table (all 1.0)
         melee_ones_table = [[1.0] * 60 for _ in range(55)]
 
         instance.tables["Melee_Ones"] = ModifierTable(
-            id="Melee_Ones",
-            base_index=2,
-            table=melee_ones_table
+            id="Melee_Ones", base_index=2, table=melee_ones_table
         )
 
         # Update index
@@ -201,12 +198,7 @@ class ArchetypeModifiers:
 
         return instance
 
-    def get_modifier(
-        self,
-        table_id: str,
-        level: int,
-        archetype_column: int
-    ) -> float:
+    def get_modifier(self, table_id: str, level: int, archetype_column: int) -> float:
         """
         Main lookup function for modifiers.
 
@@ -302,9 +294,7 @@ class ArchetypeModifiers:
 
 
 def calculate_effect_magnitude(
-    base_magnitude: float,
-    scale: float,
-    modifier: float
+    base_magnitude: float, scale: float, modifier: float
 ) -> float:
     """
     Calculate final effect magnitude with archetype modifier.

@@ -14,6 +14,7 @@ class EffectType(Enum):
     Maps to MidsReborn's Enums.eEffectType enum.
     Values match C# enum ordinals for compatibility.
     """
+
     NONE = 0
     ACCURACY = 1
     VIEW_ATTRIB = 2
@@ -108,6 +109,7 @@ class DamageType(Enum):
 
     Maps to MidsReborn's Enums.eDamage enum.
     """
+
     NONE = 0
     SMASHING = 1
     LETHAL = 2
@@ -125,6 +127,7 @@ class MezType(Enum):
 
     Maps to MidsReborn's Enums.eMez enum.
     """
+
     NONE = 0
     HOLD = 1
     STUN = 2

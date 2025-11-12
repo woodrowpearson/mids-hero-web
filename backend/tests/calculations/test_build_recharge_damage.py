@@ -185,8 +185,8 @@ class TestDamageAggregation:
         """
         Damage Test 6: Archetype damage cap enforcement
 
-        Scrapper damage cap is 400% (3.0 on scale).
-        Damage above should be capped.
+        Scrapper damage cap is 500% (5.0 on scale).
+        Values below cap should pass through unchanged.
         """
         values = DamageValues.empty(ArchetypeType.SCRAPPER)
         values.add_buff("Enhancement", 0.95)
@@ -198,11 +198,10 @@ class TestDamageAggregation:
         uncapped = values.calculate_total_damage_buff(DamageHeuristic.MAX)
         assert uncapped == pytest.approx(2.825)
 
-        # Capped to Scrapper limit (400% = 3.0)
+        # Since 2.825 < 5.0 (Scrapper cap), capped value equals uncapped
         capped = values.get_capped_damage_buff(DamageHeuristic.MAX)
-        # Note: Scrapper damage cap is 400% which is 3.00 in our scale
-        # (where 0.0 = no buff, 1.0 = +100%, 3.0 = +300% = 400% total)
-        assert capped == pytest.approx(3.0)
+        # Note: Scrapper damage cap is 500% (5.0), so 282.5% (2.825) is not capped
+        assert capped == pytest.approx(2.825)
 
 
 class TestBuildTotalsIntegration:

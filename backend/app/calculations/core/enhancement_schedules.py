@@ -37,6 +37,7 @@ class EDSchedule(Enum):
     Maps to MidsReborn's Enums.eSchedule enum.
     Each attribute type uses one of four ED curves.
     """
+
     NONE = -1  # No ED applied
     A = 0  # Standard: Damage, Accuracy, Recharge, Heal, etc.
     B = 1  # Defensive: Defense, Resistance, ToHit, Range (most aggressive)
@@ -48,10 +49,26 @@ class EDSchedule(Enum):
 # ED threshold data from Maths.mhd
 # Tuple format: (threshold_1, threshold_2, threshold_3)
 ED_THRESHOLDS = {
-    EDSchedule.A: (ED_SCHEDULE_A_THRESH_1, ED_SCHEDULE_A_THRESH_2, ED_SCHEDULE_A_THRESH_3),
-    EDSchedule.B: (ED_SCHEDULE_B_THRESH_1, ED_SCHEDULE_B_THRESH_2, ED_SCHEDULE_B_THRESH_3),
-    EDSchedule.C: (ED_SCHEDULE_C_THRESH_1, ED_SCHEDULE_C_THRESH_2, ED_SCHEDULE_C_THRESH_3),
-    EDSchedule.D: (ED_SCHEDULE_D_THRESH_1, ED_SCHEDULE_D_THRESH_2, ED_SCHEDULE_D_THRESH_3),
+    EDSchedule.A: (
+        ED_SCHEDULE_A_THRESH_1,
+        ED_SCHEDULE_A_THRESH_2,
+        ED_SCHEDULE_A_THRESH_3,
+    ),
+    EDSchedule.B: (
+        ED_SCHEDULE_B_THRESH_1,
+        ED_SCHEDULE_B_THRESH_2,
+        ED_SCHEDULE_B_THRESH_3,
+    ),
+    EDSchedule.C: (
+        ED_SCHEDULE_C_THRESH_1,
+        ED_SCHEDULE_C_THRESH_2,
+        ED_SCHEDULE_C_THRESH_3,
+    ),
+    EDSchedule.D: (
+        ED_SCHEDULE_D_THRESH_1,
+        ED_SCHEDULE_D_THRESH_2,
+        ED_SCHEDULE_D_THRESH_3,
+    ),
 }
 
 

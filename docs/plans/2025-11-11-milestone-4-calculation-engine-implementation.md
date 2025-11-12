@@ -222,7 +222,7 @@ class ArchetypeCaps:
 - `backend/app/calculations/build/other_stats_aggregator.py` - 30+ stats
 
 **Tests** (12 total: 6 from Spec 23, 6 from Spec 24):
-- Accuracy Test 1: Kismet IO → +6% accuracy (NOT tohit!)
+- Accuracy Test 1: Kismet IO → +6% tohit
 - Other Stats Test 1: HP calculation with accolades
 
 **Validation**: All tests must use exact formulas from specs.

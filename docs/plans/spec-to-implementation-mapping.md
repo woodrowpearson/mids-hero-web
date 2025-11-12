@@ -133,7 +133,7 @@
 - `backend/tests/calculations/build/test_other_stats_aggregator.py` - 12 tests ✅
 
 **Key Test Cases** (from specs):
-- Accuracy Test 1: Kismet IO → +6% accuracy (NOT tohit!) ✅
+- Accuracy Test 1: Kismet IO → +6% tohit ✅
 - Other Stats Test 1: HP calculation with accolades ✅
 
 **Commit**: `093e82a8c` - "feat(calcs): implement Batch 2C - Accuracy & Other Stats aggregation (Specs 23, 24)"

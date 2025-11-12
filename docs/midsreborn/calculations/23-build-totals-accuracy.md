@@ -224,7 +224,7 @@ The dual accuracy/tohit system in City of Heroes creates strategic depth in buil
 
 - **Issue 7 (2006)**: Invention sets introduced with accuracy bonuses. Build planners discovered stacking accuracy set bonuses was more effective than over-slotting accuracy in powers.
 
-- **Issue 9 (2007)**: Kismet +ToHit IO introduced. The "Kismet: Accuracy/ToHit/+ToHit" unique proc grants +6% tohit (additive), which matches its name. It became a staple of builds providing valuable global tohit.
+- **Issue 9 (2007)**: Kismet +Accuracy IO introduced. The "Kismet: Accuracy/ToHit/+ToHit" unique proc grants +6% tohit (additive), NOT accuracy as the name suggests. This naming confusion became a staple of builds.
 
 - **Issue 13 (2008)**: More set bonuses with accuracy/tohit introduced. High-end builds could reach 15-20% global accuracy.
 
@@ -232,7 +232,7 @@ The dual accuracy/tohit system in City of Heroes creates strategic depth in buil
 
 **Known Quirks:**
 
-1. **Kismet IO**: The "Kismet: Accuracy/ToHit/+ToHit" proc grants +6% tohit (additive), which correctly matches its name. It provides valuable global tohit that stacks with other sources.
+1. **Kismet IO Misnomer**: The "Kismet: Accuracy/ToHit/+ToHit" proc grants +6% tohit (additive), NOT +6% accuracy as the name suggests. Despite having "Accuracy" in its name, it actually provides global tohit.
 
 2. **No Hard Cap on Aggregation**: Unlike defense (capped at 45% for most ATs) and resistance (capped at 75-90%), there's no cap on how much global accuracy/tohit you can aggregate. However, final hit chance is still capped at 5%-95%.
 
@@ -529,9 +529,9 @@ FUNCTION format_accuracy_breakdown(global_totals) -> str:
 
 ### Edge Cases
 
-1. **Kismet IO**:
+1. **Kismet IO Misnomer**:
    - Enhancement named "Kismet: Accuracy/ToHit/+ToHit"
-   - Grants **tohit** (additive), as the name suggests
+   - Grants **tohit** (additive), NOT accuracy despite "Accuracy" in name
    - Treated as special IO tohit source
    - Value: +6% tohit (0.06)
 

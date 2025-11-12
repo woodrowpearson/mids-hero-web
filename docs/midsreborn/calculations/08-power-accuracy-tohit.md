@@ -154,7 +154,7 @@ In City of Heroes, the accuracy/tohit system determines whether an attack succes
 
 - **Issue 7 (2006)**: Invention Origin enhancements introduced, including accuracy/tohit set bonuses. Distinction between accuracy (multiplicative) and tohit (additive) became more important for build optimization.
 
-- **Issue 9 (2007)**: Invention system expanded with unique IOs like Kismet +ToHit (which grants +6% tohit, as the name suggests).
+- **Issue 9 (2007)**: Invention system expanded with unique IOs like Kismet +Accuracy (named "Kismet: Accuracy/ToHit/+ToHit" which grants +6% tohit, NOT accuracy as the name suggests - a historical naming quirk).
 
 - **Homecoming (2019+)**: Tohit/accuracy mechanics unchanged from live, but new IOs and set bonuses created more build diversity.
 

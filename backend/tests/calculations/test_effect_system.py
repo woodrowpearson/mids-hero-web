@@ -6,15 +6,16 @@ Validates Effect class, FxId grouping, and EffectAggregator.
 """
 
 import pytest
+
 from app.calculations.core import (
-    Effect,
-    EffectType,
     DamageType,
+    Effect,
+    EffectAggregator,
+    EffectType,
     MezType,
-    ToWho,
     PvMode,
     Stacking,
-    EffectAggregator
+    ToWho,
 )
 
 

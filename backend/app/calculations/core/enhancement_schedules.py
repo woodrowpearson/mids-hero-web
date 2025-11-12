@@ -9,15 +9,24 @@ force build diversification.
 """
 
 from enum import Enum
-from typing import Optional, Tuple
 
 from .constants import (
-    ED_SCHEDULE_A_THRESH_1, ED_SCHEDULE_A_THRESH_2, ED_SCHEDULE_A_THRESH_3,
-    ED_SCHEDULE_B_THRESH_1, ED_SCHEDULE_B_THRESH_2, ED_SCHEDULE_B_THRESH_3,
-    ED_SCHEDULE_C_THRESH_1, ED_SCHEDULE_C_THRESH_2, ED_SCHEDULE_C_THRESH_3,
-    ED_SCHEDULE_D_THRESH_1, ED_SCHEDULE_D_THRESH_2, ED_SCHEDULE_D_THRESH_3,
-    ED_EFFICIENCY_REGION_1, ED_EFFICIENCY_REGION_2,
-    ED_EFFICIENCY_REGION_3, ED_EFFICIENCY_REGION_4
+    ED_EFFICIENCY_REGION_1,
+    ED_EFFICIENCY_REGION_2,
+    ED_EFFICIENCY_REGION_3,
+    ED_EFFICIENCY_REGION_4,
+    ED_SCHEDULE_A_THRESH_1,
+    ED_SCHEDULE_A_THRESH_2,
+    ED_SCHEDULE_A_THRESH_3,
+    ED_SCHEDULE_B_THRESH_1,
+    ED_SCHEDULE_B_THRESH_2,
+    ED_SCHEDULE_B_THRESH_3,
+    ED_SCHEDULE_C_THRESH_1,
+    ED_SCHEDULE_C_THRESH_2,
+    ED_SCHEDULE_C_THRESH_3,
+    ED_SCHEDULE_D_THRESH_1,
+    ED_SCHEDULE_D_THRESH_2,
+    ED_SCHEDULE_D_THRESH_3,
 )
 
 
@@ -103,7 +112,7 @@ def apply_ed(schedule: EDSchedule, value: float) -> float:
     return edm3 + (value - thresh3) * ED_EFFICIENCY_REGION_4
 
 
-def get_schedule(enhance_type: str, enhance_subtype: Optional[int] = None) -> EDSchedule:
+def get_schedule(enhance_type: str, enhance_subtype: int | None = None) -> EDSchedule:
     """
     Determine which ED schedule applies to an enhancement type.
 
@@ -154,7 +163,7 @@ def get_schedule(enhance_type: str, enhance_subtype: Optional[int] = None) -> ED
     return EDSchedule.A
 
 
-def calculate_ed_loss(schedule: EDSchedule, value: float) -> Tuple[float, float, float]:
+def calculate_ed_loss(schedule: EDSchedule, value: float) -> tuple[float, float, float]:
     """
     Calculate how much enhancement value is lost to ED.
 

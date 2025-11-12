@@ -5,11 +5,10 @@ Tests based on Spec 16 test cases and depth coverage.
 Validates modifier table structure and lookup functions.
 """
 
-import pytest
 from app.calculations.core import (
-    ModifierTable,
     ArchetypeModifiers,
-    calculate_effect_magnitude
+    ModifierTable,
+    calculate_effect_magnitude,
 )
 
 

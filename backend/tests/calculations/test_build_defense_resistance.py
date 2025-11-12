@@ -6,20 +6,18 @@ Validates defense aggregation ("highest wins") and resistance aggregation (addit
 """
 
 import pytest
-from app.calculations.core import ArchetypeType
+
 from app.calculations.build import (
-    DefenseType,
-    DefenseValues,
-    aggregate_defense_bonuses,
-    calculate_effective_defense,
     DEFENSE_SOFT_CAP,
+    DefenseType,
     ResistanceType,
-    ResistanceValues,
+    aggregate_defense_bonuses,
     aggregate_resistance_bonuses,
     calculate_damage_reduction,
-    BuildTotals,
-    create_build_totals
+    calculate_effective_defense,
+    create_build_totals,
 )
+from app.calculations.core import ArchetypeType
 
 
 class TestDefenseAggregation:

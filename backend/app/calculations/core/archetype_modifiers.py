@@ -8,10 +8,9 @@ The same power does different amounts of damage/buff/debuff/control for differen
 This is the core mechanic that differentiates archetypes beyond just HP/caps.
 """
 
-from dataclasses import dataclass
-from typing import Dict, List, Optional
-from pathlib import Path
 import json
+from dataclasses import dataclass
+from pathlib import Path
 
 
 @dataclass
@@ -29,7 +28,7 @@ class ModifierTable:
     """
     id: str
     base_index: int
-    table: List[List[float]]
+    table: list[list[float]]
 
     def get_modifier(self, level: int, archetype_column: int) -> float:
         """
@@ -60,7 +59,7 @@ class ModifierTable:
 
         return self.table[level_idx][archetype_column]
 
-    def get_all_at_level(self, level: int) -> List[float]:
+    def get_all_at_level(self, level: int) -> list[float]:
         """
         Get all archetype modifiers at a specific level.
 
@@ -92,8 +91,8 @@ class ArchetypeModifiers:
     """
 
     def __init__(self):
-        self.tables: Dict[str, ModifierTable] = {}
-        self.table_index: Dict[str, int] = {}
+        self.tables: dict[str, ModifierTable] = {}
+        self.table_index: dict[str, int] = {}
 
     @classmethod
     def load_from_json(cls, filepath: Path) -> 'ArchetypeModifiers':
@@ -117,7 +116,7 @@ class ArchetypeModifiers:
             >>> len(modifiers.tables)
             102
         """
-        with open(filepath, 'r') as f:
+        with open(filepath) as f:
             data = json.load(f)
 
         instance = cls()
@@ -233,7 +232,7 @@ class ArchetypeModifiers:
 
         return self.tables[table_id].get_modifier(level, archetype_column)
 
-    def get_table(self, table_id: str) -> Optional[ModifierTable]:
+    def get_table(self, table_id: str) -> ModifierTable | None:
         """
         Get full modifier table by ID.
 
@@ -257,7 +256,7 @@ class ArchetypeModifiers:
         """
         return table_id in self.tables
 
-    def list_tables(self) -> List[str]:
+    def list_tables(self) -> list[str]:
         """
         Get list of all table IDs.
 
@@ -266,7 +265,7 @@ class ArchetypeModifiers:
         """
         return list(self.tables.keys())
 
-    def validate_structure(self) -> List[str]:
+    def validate_structure(self) -> list[str]:
         """
         Validate modifier table structure.
 

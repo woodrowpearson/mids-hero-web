@@ -6,20 +6,18 @@ Validates recharge aggregation (additive, 400% cap) and damage heuristics (max/a
 """
 
 import pytest
-from app.calculations.core import ArchetypeType
+
 from app.calculations.build import (
+    RECHARGE_CAP,
+    DamageHeuristic,
+    DamageValues,
     RechargeValues,
     aggregate_recharge_bonuses,
-    calculate_recharge_time,
-    RECHARGE_CAP,
-    DamageValues,
-    DamageHeuristic,
-    DamageBuffSource,
-    aggregate_damage_buffs,
     calculate_damage_with_buff,
-    BuildTotals,
-    create_build_totals
+    calculate_recharge_time,
+    create_build_totals,
 )
+from app.calculations.core import ArchetypeType
 
 
 class TestRechargeAggregation:
@@ -204,6 +202,7 @@ class TestDamageAggregation:
         capped = values.get_capped_damage_buff(DamageHeuristic.MAX)
         # Note: Scrapper damage cap is 400% which is 3.00 in our scale
         # (where 0.0 = no buff, 1.0 = +100%, 3.0 = +300% = 400% total)
+        assert capped == pytest.approx(3.0)
 
 
 class TestBuildTotalsIntegration:

@@ -6,11 +6,10 @@ Complete property set from Core/IEffect.cs.
 """
 
 from dataclasses import dataclass, field
-from typing import Optional
 from datetime import datetime
 
-from .effect_types import EffectType, DamageType, MezType
-from .enums import ToWho, PvMode, Stacking, SpecialCase, Suppress
+from .effect_types import DamageType, EffectType, MezType
+from .enums import PvMode, SpecialCase, Stacking, Suppress, ToWho
 
 
 @dataclass
@@ -35,19 +34,19 @@ class Effect:
     magnitude: float  # Base (unenhanced) magnitude
 
     # Effect aspects (optional sub-types)
-    damage_type: Optional[DamageType] = None
-    mez_type: Optional[MezType] = None
-    et_modifies: Optional[EffectType] = None  # For enhancement effects
+    damage_type: DamageType | None = None
+    mez_type: MezType | None = None
+    et_modifies: EffectType | None = None  # For enhancement effects
 
     # Magnitude variations
-    buffed_magnitude: Optional[float] = None  # Enhanced magnitude
-    magnitude_percent: Optional[float] = None  # As percentage for display
+    buffed_magnitude: float | None = None  # Enhanced magnitude
+    magnitude_percent: float | None = None  # As percentage for display
 
     # Duration and probability
     duration: float = 0.0  # Seconds (0 = instant/permanent)
     probability: float = 1.0  # 1.0 = always, <1.0 = proc
     base_probability: float = 1.0
-    procs_per_minute: Optional[float] = None  # For PPM procs
+    procs_per_minute: float | None = None  # For PPM procs
 
     # Targeting and context
     to_who: ToWho = ToWho.TARGET
@@ -68,7 +67,7 @@ class Effect:
 
     # Special mechanics
     special_case: SpecialCase = SpecialCase.NONE
-    summon: Optional[str] = None  # Pet/pseudopet ID
+    summon: str | None = None  # Pet/pseudopet ID
     summon_id: int = 0  # Numeric summon ID
     delayed_time: float = 0.0  # Delay before effect applies
     ticks: int = 0  # Number of times effect ticks (for DoTs)
@@ -105,8 +104,8 @@ class Effect:
     atr_mod_interrupt_time: float = 0.0
 
     # Source tracking
-    effect_id: Optional[str] = None  # Original effect ID from game data
-    power_id: Optional[int] = None  # Associated power ID
+    effect_id: str | None = None  # Original effect ID from game data
+    power_id: int | None = None  # Associated power ID
 
     # Metadata
     created_at: datetime = field(default_factory=datetime.now)

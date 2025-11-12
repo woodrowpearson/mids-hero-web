@@ -1,0 +1,38 @@
+{
+  "name": "Darkness_Mastery",
+  "display_name": "Dark Mastery",
+  "display_fullname": "Epic.Dark Mastery",
+  "display_help": "You have Mastery over Darkness to control and blast your foes.",
+  "display_short_help": "Dark Mastery",
+  "available_level": [
+    34,
+    34,
+    37,
+    40,
+    43
+  ],
+  "source_file": "DEFS/POWERS/EPIC/DARKNESS_MASTERY.POWERSETS",
+  "icon": "darkness_mastery_set.png",
+  "requires": "",
+  "power_names": [
+    "Epic.Darkness_Mastery.Torrent",
+    "Epic.Darkness_Mastery.Petrifying_Gaze",
+    "Epic.Darkness_Mastery.Dark_Blast",
+    "Epic.Darkness_Mastery.Night_Fall",
+    "Epic.Darkness_Mastery.Tenebrous_Tentacles"
+  ],
+  "power_display_names": [
+    "Umbral Torrent",
+    "Petrifying Gaze",
+    "Dark Blast",
+    "Night Fall",
+    "Tenebrous Tentacles"
+  ],
+  "power_short_helps": [
+    "Ranged (Cone), DMG(Smashing), Foe -To Hit, Knockback",
+    "Ranged, DMG(Negative), Foe Hold",
+    "Ranged, DMG(Negative), Foe -ACC",
+    "Ranged (Cone), DMG(Negative), Foe -To Hit",
+    "Ranged (Cone), DMG(Negative), Foe Immobilize, -ACC"
+  ]
+}

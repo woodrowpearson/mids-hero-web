@@ -1,0 +1,212 @@
+name: Reusable Token Validation
+
+on:
+  workflow_call:
+    inputs:
+      files_to_check:
+        description: 'Files to validate token counts (multiline string)'
+        required: false
+        type: string
+        default: |
+          CLAUDE.md:5000
+          .claude/modules/*/GUIDE.md:3000
+          .claude/workflows/*.md:2000
+      fail_on_exceed:
+        description: 'Fail workflow if token limit exceeded'
+        required: false
+        type: boolean
+        default: true
+      warning_threshold:
+        description: 'Warning threshold percentage (e.g., 90 for 90%)'
+        required: false
+        type: number
+        default: 90
+    
+    outputs:
+      validation_passed:
+        description: 'Whether all files passed validation'
+        value: ${{ jobs.validate-tokens.outputs.validation_passed }}
+      files_exceeding:
+        description: 'Files exceeding token limits'
+        value: ${{ jobs.validate-tokens.outputs.files_exceeding }}
+      warning_files:
+        description: 'Files approaching token limits'
+        value: ${{ jobs.validate-tokens.outputs.warning_files }}
+      token_report:
+        description: 'Full token count report'
+        value: ${{ jobs.validate-tokens.outputs.token_report }}
+
+jobs:
+  validate-tokens:
+    name: Validate Token Counts
+    runs-on: ubuntu-latest
+    outputs:
+      validation_passed: ${{ steps.validate.outputs.passed }}
+      files_exceeding: ${{ steps.validate.outputs.exceeding }}
+      warning_files: ${{ steps.validate.outputs.warnings }}
+      token_report: ${{ steps.validate.outputs.report }}
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      
+      - name: Install tiktoken
+        run: |
+          pip install tiktoken
+      
+      - name: Create token counter script
+        run: |
+          cat > count_tokens.py << 'EOF'
+          import sys
+          import os
+          import glob
+          import json
+          from pathlib import Path
+          import tiktoken
+          
+          def count_tokens(text, model="gpt-4"):
+              """Count tokens using tiktoken"""
+              try:
+                  encoding = tiktoken.encoding_for_model(model)
+              except KeyError:
+                  encoding = tiktoken.get_encoding("cl100k_base")
+              return len(encoding.encode(text))
+          
+          def validate_files(config_str, warning_threshold=90):
+              """Validate token counts for specified files"""
+              results = {
+                  "passed": True,
+                  "exceeding": [],
+                  "warnings": [],
+                  "report": []
+              }
+              
+              # Parse configuration
+              for line in config_str.strip().split('\n'):
+                  if ':' not in line:
+                      continue
+                  
+                  pattern, limit_str = line.rsplit(':', 1)
+                  limit = int(limit_str)
+                  warning_limit = int(limit * warning_threshold / 100)
+                  
+                  # Find matching files
+                  for filepath in glob.glob(pattern, recursive=True):
+                      if not Path(filepath).is_file():
+                          continue
+                      
+                      try:
+                          with open(filepath, 'r', encoding='utf-8') as f:
+                              content = f.read()
+                          tokens = count_tokens(content)
+                          
+                          status = "✅ PASS"
+                          if tokens > limit:
+                              status = "❌ FAIL"
+                              results["passed"] = False
+                              results["exceeding"].append(f"{filepath} ({tokens}/{limit})")
+                          elif tokens > warning_limit:
+                              status = "⚠️  WARN"
+                              results["warnings"].append(f"{filepath} ({tokens}/{limit})")
+                          
+                          report_entry = f"{status} {filepath}: {tokens}/{limit} tokens ({tokens*100//limit}%)"
+                          results["report"].append(report_entry)
+                          print(report_entry)
+                          
+                      except Exception as e:
+                          print(f"Error processing {filepath}: {e}")
+              
+              return results
+          
+          if __name__ == "__main__":
+              config = sys.argv[1] if len(sys.argv) > 1 else ""
+              threshold = int(sys.argv[2]) if len(sys.argv) > 2 else 90
+              
+              results = validate_files(config, threshold)
+              
+              # Output for GitHub Actions
+              with open(os.environ.get('GITHUB_OUTPUT', '/dev/null'), 'a') as f:
+                  f.write(f"passed={'true' if results['passed'] else 'false'}\n")
+                  f.write(f"exceeding={','.join(results['exceeding'])}\n")
+                  f.write(f"warnings={','.join(results['warnings'])}\n")
+                  f.write(f"report<<EOF\n")
+                  f.write('\n'.join(results['report']))
+                  f.write(f"\nEOF\n")
+              
+              sys.exit(0 if results['passed'] else 1)
+          EOF
+      
+      - name: Validate token counts
+        id: validate
+        run: |
+          # Run validation
+          python count_tokens.py "${{ inputs.files_to_check }}" ${{ inputs.warning_threshold }} || VALIDATION_FAILED=true
+          
+          # Generate summary
+          echo "## 📊 Token Validation Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [[ -f "$GITHUB_OUTPUT" ]]; then
+              # Read the report from GITHUB_OUTPUT
+              REPORT=$(grep -A 1000 "report<<EOF" $GITHUB_OUTPUT | sed '1d;$d' | head -n -1)
+              echo "$REPORT" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Add status summary
+          if [[ "$VALIDATION_FAILED" == "true" ]]; then
+              echo "### ❌ Token validation failed" >> $GITHUB_STEP_SUMMARY
+              echo "Some files exceed their token limits. Please reduce content size." >> $GITHUB_STEP_SUMMARY
+              
+              if [[ "${{ inputs.fail_on_exceed }}" == "true" ]]; then
+                  exit 1
+              fi
+          else
+              echo "### ✅ All files within token limits" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # Check for warnings
+          if [[ -n "$(grep "warnings=" $GITHUB_OUTPUT | cut -d= -f2)" ]]; then
+              echo "" >> $GITHUB_STEP_SUMMARY
+              echo "### ⚠️  Files approaching limits" >> $GITHUB_STEP_SUMMARY
+              echo "Consider optimizing these files to prevent future issues." >> $GITHUB_STEP_SUMMARY
+          fi
+      
+      - name: Post PR comment if validation fails
+        if: failure() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const output = process.env.GITHUB_OUTPUT || '';
+            
+            if (fs.existsSync(output)) {
+              const content = fs.readFileSync(output, 'utf8');
+              const reportMatch = content.match(/report<<EOF\n([\s\S]*?)\nEOF/);
+              
+              if (reportMatch) {
+                const report = reportMatch[1];
+                const comment = `## ❌ Token Validation Failed
+                
+                Some documentation files exceed their token limits:
+                
+                \`\`\`
+                ${report}
+                \`\`\`
+                
+                Please reduce the size of files marked with ❌ to stay within limits.`;
+                
+                github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: context.issue.number,
+                  body: comment
+                });
+              }
+            }

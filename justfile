@@ -40,6 +40,11 @@ dev-setup:
     @if [ ! -f .env ]; then cp .env.example .env 2>/dev/null || echo "⚠️  No .env.example found"; fi
     @echo "✅ Development environment ready"
 
+# JSON processing with jq
+jq *args:
+    @command -v jq >/dev/null 2>&1 || (echo "❌ jq not installed. Install with: brew install jq" && exit 1)
+    @jq {{args}}
+
 # Start development servers
 dev:
     @echo "🚀 Starting development environment..."
@@ -50,6 +55,7 @@ health:
     @echo "🏥 Running health checks..."
     @bash .claude/commands/validate-git-workflow.sh || true
     {{python}} scripts/dev.py setup
+    @just json-import-health
     @echo "✅ Health checks passed"
 
 # Run all tests
@@ -74,6 +80,11 @@ quality:
 check-commands:
     @echo "🔍 Checking command compliance..."
     @./scripts/check-forbidden-commands.sh
+
+# Verify MHD cleanup completeness
+verify-cleanup:
+    @echo "🔍 Running cleanup verification..."
+    @./scripts/verify_mhd_cleanup.sh
 
 # Run linters
 lint:
@@ -158,18 +169,40 @@ import-resume type file resume_from batch_size="1000":
     @echo "🔄 Resuming {{type}} import from record {{resume_from}}..."
     cd backend && {{uv}} run python -m app.data_import.cli --resume-from {{resume_from}} --batch-size {{batch_size}} {{type}} "{{file}}"
 
-# I12 High-Performance Import Operations  
-i12-import file batch_size="1000" chunk_size="5000" memory_limit="1.0":
-    @echo "🚀 Importing I12 power data from {{file}}..."
-    cd backend && {{uv}} run python scripts/import_i12_data.py "{{file}}" --batch-size {{batch_size}} --chunk-size {{chunk_size}} --memory-limit {{memory_limit}}
+# JSON Data Import Commands
+json-import-archetypes:
+    @echo "Importing archetypes from JSON..."
+    {{uv}} run python -m backend.app.data_import.json_importer archetypes
 
-i12-import-resume file resume_from batch_size="1000":
-    @echo "🔄 Resuming I12 import from record {{resume_from}}..."
-    cd backend && {{uv}} run python scripts/import_i12_data.py "{{file}}" --resume-from {{resume_from}} --batch-size {{batch_size}}
+json-import-powersets:
+    @echo "Importing powersets from JSON..."
+    {{uv}} run python -m backend.app.data_import.json_importer powersets
 
-i12-validate file:
-    @echo "✅ Validating I12 data from {{file}}..."
-    cd backend && {{uv}} run python scripts/import_i12_data.py "{{file}}" --validate-only
+json-import-powers:
+    @echo "Importing powers from JSON..."
+    {{uv}} run python -m backend.app.data_import.json_importer powers
+
+json-import-enhancements:
+    @echo "Importing enhancement sets from JSON..."
+    {{uv}} run python -m backend.app.data_import.json_importer enhancements
+
+json-import-all:
+    @echo "Importing all JSON data..."
+    @just json-import-archetypes
+    @just json-import-powersets
+    @just json-import-powers
+    @just json-import-enhancements
+    @echo "✅ All JSON data imported"
+
+json-import-health:
+    @echo "🏥 Validating JSON import system..."
+    @if [ -d filtered_data ]; then \
+        test -f filtered_data/manifest.json || (echo "❌ Manifest not found"; exit 1); \
+        {{uv}} run python scripts/validate_filtered_data.py; \
+        echo "✅ JSON import system healthy"; \
+    else \
+        echo "ℹ️  Skipping JSON validation (filtered_data not found)"; \
+    fi
 
 # Common Import Examples
 import-archetypes file:
@@ -199,15 +232,6 @@ cache-stats:
     @echo "📊 Power cache statistics..."
     @{{uv}} run scripts/cache_stats.py
 
-# Performance Monitoring & Benchmarks
-perf-bench:
-    @echo "⚡ Running I12 performance benchmarks..."
-    cd backend && {{uv}} run pytest tests/test_i12_streaming_parser.py::TestI12StreamingParser::test_performance_benchmark -v
-
-perf-test-all:
-    @echo "⚡ Running all import performance tests..."
-    cd backend && {{uv}} run pytest tests/ -k "test_performance" -v
-
 # Import System Status & Health Checks
 import-status:
     @echo "📊 Import System Status"
@@ -224,15 +248,6 @@ import-status:
 import-stats:
     @echo "📈 Database record counts..."
     @DATABASE_URL={{database_url}} {{uv}} run scripts/db_stats.py
-
-import-health:
-    @echo "🏥 Import System Health Check"
-    @echo "============================"
-    @just import-status
-    @echo "\nPerformance indicators:"
-    @echo "- I12 parser: Ready for 360K+ records"
-    @echo "- Memory limit: 1GB"
-    @echo "- Target query time: <100ms"
 
 # Database Optimization
 db-optimize:
@@ -490,22 +505,18 @@ help:
     @echo "  just git-fix NAME         # Create fix branch"
     @echo "  just git-pr               # Create pull request"
     @echo ""
-    @echo "📥 Data Import (All Parsers):"
+    @echo "📥 Data Import:"
     @echo "  just import-all DIR       # Import all data from directory"
     @echo "  just import-type TYPE FILE # Import specific type"
     @echo "  just import-archetypes FILE"
     @echo "  just import-powers FILE"
-    @echo "  just i12-import FILE      # High-performance I12 import"
     @echo ""
     @echo "📊 System Status:"
-    @echo "  just import-health        # Full import system health"
     @echo "  just import-status        # Import system status"
     @echo "  just import-stats         # Database record counts"
     @echo "  just cache-stats          # Cache performance"
     @echo ""
     @echo "⚡ Performance:"
-    @echo "  just perf-bench           # I12 benchmarks"
-    @echo "  just perf-test-all        # All performance tests"
     @echo "  just db-optimize          # Database optimization"
     @echo ""
     @echo "🗄️ Database:"

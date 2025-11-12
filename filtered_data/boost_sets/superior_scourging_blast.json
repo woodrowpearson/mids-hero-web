@@ -1,0 +1,363 @@
+{
+  "name": "Superior_Scourging_Blast",
+  "display_name": "Superior Scourging Blast",
+  "group_name": "Corruptor Archetype Sets",
+  "conversion_groups": [
+    "Rarity: Superior Archetype",
+    "Category: Superior Corruptor"
+  ],
+  "boost_lists": [
+    [
+      "Boosts.Superior_Attuned_Superior_Scourging_Blast_A.Superior_Attuned_Superior_Scourging_Blast_A"
+    ],
+    [
+      "Boosts.Superior_Attuned_Superior_Scourging_Blast_B.Superior_Attuned_Superior_Scourging_Blast_B"
+    ],
+    [
+      "Boosts.Superior_Attuned_Superior_Scourging_Blast_C.Superior_Attuned_Superior_Scourging_Blast_C"
+    ],
+    [
+      "Boosts.Superior_Attuned_Superior_Scourging_Blast_D.Superior_Attuned_Superior_Scourging_Blast_D"
+    ],
+    [
+      "Boosts.Superior_Attuned_Superior_Scourging_Blast_E.Superior_Attuned_Superior_Scourging_Blast_E"
+    ],
+    [
+      "Boosts.Superior_Attuned_Superior_Scourging_Blast_F.Superior_Attuned_Superior_Scourging_Blast_F"
+    ]
+  ],
+  "min_level": 1,
+  "max_level": 1,
+  "bonuses": [
+    {
+      "min_boosts": 2,
+      "max_boosts": 6,
+      "auto_powers": [
+        "set_bonus.set_bonus.increased_endurance_7"
+      ],
+      "bonus_power": "",
+      "requires": "",
+      "is_pvp_bonus": false
+    },
+    {
+      "min_boosts": 3,
+      "max_boosts": 6,
+      "auto_powers": [
+        "set_bonus.set_bonus.improved_recharge_time_7"
+      ],
+      "bonus_power": "",
+      "requires": "",
+      "is_pvp_bonus": false
+    },
+    {
+      "min_boosts": 4,
+      "max_boosts": 6,
+      "auto_powers": [
+        "set_bonus.set_bonus.accuracy_7"
+      ],
+      "bonus_power": "",
+      "requires": "",
+      "is_pvp_bonus": false
+    },
+    {
+      "min_boosts": 5,
+      "max_boosts": 6,
+      "auto_powers": [
+        "set_bonus.set_bonus.improved_recovery_7"
+      ],
+      "bonus_power": "",
+      "requires": "",
+      "is_pvp_bonus": false
+    },
+    {
+      "min_boosts": 6,
+      "max_boosts": 6,
+      "auto_powers": [
+        "set_bonus.set_bonus.increased_aoe_fire_cold_def_7"
+      ],
+      "bonus_power": "",
+      "requires": "",
+      "is_pvp_bonus": false
+    }
+  ],
+  "computed": {
+    "boost_type": [
+      "Enhance Damage",
+      "Enhance Damage",
+      "Enhance Damage",
+      "Enhance Damage",
+      "Enhance Damage",
+      "Enhance Damage"
+    ],
+    "bonuses": [
+      [
+        [
+          "set_bonus.set_bonus.increased_endurance_7",
+          "Ultimate Increased Endurance Bonus"
+        ]
+      ],
+      [
+        [
+          "set_bonus.set_bonus.improved_recharge_time_7",
+          "Ultimate Improved Recharge Time Bonus"
+        ]
+      ],
+      [
+        [
+          "set_bonus.set_bonus.accuracy_7",
+          "Ultimate Accuracy Bonus"
+        ]
+      ],
+      [
+        [
+          "set_bonus.set_bonus.improved_recovery_7",
+          "Ultimate Improved Recovery Bonus"
+        ]
+      ],
+      [
+        [
+          "set_bonus.set_bonus.increased_aoe_fire_cold_def_7",
+          "Ultimate Increased AoE/Fire/Cold Def Bonus"
+        ]
+      ]
+    ],
+    "globals": {},
+    "icons": [
+      "e_icon_scourging_blast_ato.png",
+      "e_icon_scourging_blast_ato.png",
+      "e_icon_scourging_blast_ato.png",
+      "e_icon_scourging_blast_ato.png",
+      "e_icon_scourging_blast_ato.png",
+      "e_icon_scourging_blast_ato.png"
+    ],
+    "boosts": [
+      [
+        "Attuned Superior Scourging Blast: Accuracy/Damage"
+      ],
+      [
+        "Attuned Superior Scourging Blast: Damage/Recharge"
+      ],
+      [
+        "Attuned Superior Scourging Blast: Accuracy/Damage/Recharge"
+      ],
+      [
+        "Attuned Superior Scourging Blast: Damage/Endurance/Recharge"
+      ],
+      [
+        "Attuned Superior Scourging Blast: Accuracy/Damage/Endurance/Recharge"
+      ],
+      [
+        "Attuned Superior Scourging Blast: Recharge/Chance for +Endurance,+Health"
+      ]
+    ],
+    "boost_infos": {
+      "superior_attuned_superior_scourging_blast_a": {
+        "slot_requires": "(char>arch eq 'Corruptor') && (char>level == 50) && (BoostsSlotted>Attuned_Scourging_Blast_A <= 0) && (BoostsSlotted>Superior_Attuned_Superior_Scourging_Blast_A <= 0)",
+        "ignores_level_differences": true,
+        "bonuses_ignore_exemplar": true,
+        "combinable": false,
+        "tradeable": true,
+        "account_bound": false,
+        "boostable": false,
+        "attuned": true,
+        "catalyzes_to": null,
+        "max_level": 50,
+        "min_slot_level": 49,
+        "min_bonus_level": 1,
+        "computed_name": "Attuned Superior Scourging Blast: Accuracy/Damage",
+        "aspects": [
+          "Accuracy",
+          "Damage"
+        ],
+        "superior_scales": true,
+        "boostset_name": "superior_scourging_blast",
+        "global_bonuses": null,
+        "is_proc": false,
+        "is_unique": false,
+        "restricted_ats": [
+          "Corruptor"
+        ],
+        "unique_group": [
+          "attuned_scourging_blast_a",
+          "superior_attuned_superior_scourging_blast_a"
+        ],
+        "only_at_50": true,
+        "boost_type": "Enhance Damage",
+        "icon": "e_icon_scourging_blast_ato.png"
+      },
+      "superior_attuned_superior_scourging_blast_b": {
+        "slot_requires": "(char>arch eq 'Corruptor') && (char>level == 50) && (BoostsSlotted>Attuned_Scourging_Blast_B <= 0) && (BoostsSlotted>Superior_Attuned_Superior_Scourging_Blast_B <= 0)",
+        "ignores_level_differences": true,
+        "bonuses_ignore_exemplar": true,
+        "combinable": false,
+        "tradeable": true,
+        "account_bound": false,
+        "boostable": false,
+        "attuned": true,
+        "catalyzes_to": null,
+        "max_level": 50,
+        "min_slot_level": 49,
+        "min_bonus_level": 1,
+        "computed_name": "Attuned Superior Scourging Blast: Damage/Recharge",
+        "aspects": [
+          "Damage",
+          "Recharge"
+        ],
+        "superior_scales": true,
+        "boostset_name": "superior_scourging_blast",
+        "global_bonuses": null,
+        "is_proc": false,
+        "is_unique": false,
+        "restricted_ats": [
+          "Corruptor"
+        ],
+        "unique_group": [
+          "attuned_scourging_blast_b",
+          "superior_attuned_superior_scourging_blast_b"
+        ],
+        "only_at_50": true,
+        "boost_type": "Enhance Damage",
+        "icon": "e_icon_scourging_blast_ato.png"
+      },
+      "superior_attuned_superior_scourging_blast_c": {
+        "slot_requires": "(char>arch eq 'Corruptor') && (char>level == 50) && (BoostsSlotted>Attuned_Scourging_Blast_C <= 0) && (BoostsSlotted>Superior_Attuned_Superior_Scourging_Blast_C <= 0)",
+        "ignores_level_differences": true,
+        "bonuses_ignore_exemplar": true,
+        "combinable": false,
+        "tradeable": true,
+        "account_bound": false,
+        "boostable": false,
+        "attuned": true,
+        "catalyzes_to": null,
+        "max_level": 50,
+        "min_slot_level": 49,
+        "min_bonus_level": 1,
+        "computed_name": "Attuned Superior Scourging Blast: Accuracy/Damage/Recharge",
+        "aspects": [
+          "Accuracy",
+          "Damage",
+          "Recharge"
+        ],
+        "superior_scales": true,
+        "boostset_name": "superior_scourging_blast",
+        "global_bonuses": null,
+        "is_proc": false,
+        "is_unique": false,
+        "restricted_ats": [
+          "Corruptor"
+        ],
+        "unique_group": [
+          "attuned_scourging_blast_c",
+          "superior_attuned_superior_scourging_blast_c"
+        ],
+        "only_at_50": true,
+        "boost_type": "Enhance Damage",
+        "icon": "e_icon_scourging_blast_ato.png"
+      },
+      "superior_attuned_superior_scourging_blast_d": {
+        "slot_requires": "(char>arch eq 'Corruptor') && (char>level == 50) && (BoostsSlotted>Attuned_Scourging_Blast_D <= 0) && (BoostsSlotted>Superior_Attuned_Superior_Scourging_Blast_D <= 0)",
+        "ignores_level_differences": true,
+        "bonuses_ignore_exemplar": true,
+        "combinable": false,
+        "tradeable": true,
+        "account_bound": false,
+        "boostable": false,
+        "attuned": true,
+        "catalyzes_to": null,
+        "max_level": 50,
+        "min_slot_level": 49,
+        "min_bonus_level": 1,
+        "computed_name": "Attuned Superior Scourging Blast: Damage/Endurance/Recharge",
+        "aspects": [
+          "Damage",
+          "Endurance",
+          "Recharge"
+        ],
+        "superior_scales": true,
+        "boostset_name": "superior_scourging_blast",
+        "global_bonuses": null,
+        "is_proc": false,
+        "is_unique": false,
+        "restricted_ats": [
+          "Corruptor"
+        ],
+        "unique_group": [
+          "attuned_scourging_blast_d",
+          "superior_attuned_superior_scourging_blast_d"
+        ],
+        "only_at_50": true,
+        "boost_type": "Enhance Damage",
+        "icon": "e_icon_scourging_blast_ato.png"
+      },
+      "superior_attuned_superior_scourging_blast_e": {
+        "slot_requires": "(char>arch eq 'Corruptor') && (char>level == 50) && (BoostsSlotted>Attuned_Scourging_Blast_E <= 0) && (BoostsSlotted>Superior_Attuned_Superior_Scourging_Blast_E <= 0)",
+        "ignores_level_differences": true,
+        "bonuses_ignore_exemplar": true,
+        "combinable": false,
+        "tradeable": true,
+        "account_bound": false,
+        "boostable": false,
+        "attuned": true,
+        "catalyzes_to": null,
+        "max_level": 50,
+        "min_slot_level": 49,
+        "min_bonus_level": 1,
+        "computed_name": "Attuned Superior Scourging Blast: Accuracy/Damage/Endurance/Recharge",
+        "aspects": [
+          "Accuracy",
+          "Damage",
+          "Endurance",
+          "Recharge"
+        ],
+        "superior_scales": true,
+        "boostset_name": "superior_scourging_blast",
+        "global_bonuses": null,
+        "is_proc": false,
+        "is_unique": false,
+        "restricted_ats": [
+          "Corruptor"
+        ],
+        "unique_group": [
+          "attuned_scourging_blast_e",
+          "superior_attuned_superior_scourging_blast_e"
+        ],
+        "only_at_50": true,
+        "boost_type": "Enhance Damage",
+        "icon": "e_icon_scourging_blast_ato.png"
+      },
+      "superior_attuned_superior_scourging_blast_f": {
+        "slot_requires": "(char>arch eq 'Corruptor') && (char>level == 50) && (BoostsSlotted>Attuned_Scourging_Blast_F <= 0) && (BoostsSlotted>Superior_Attuned_Superior_Scourging_Blast_F <= 0)",
+        "ignores_level_differences": true,
+        "bonuses_ignore_exemplar": true,
+        "combinable": false,
+        "tradeable": true,
+        "account_bound": false,
+        "boostable": false,
+        "attuned": true,
+        "catalyzes_to": null,
+        "max_level": 50,
+        "min_slot_level": 49,
+        "min_bonus_level": 1,
+        "computed_name": "Attuned Superior Scourging Blast: Recharge/Chance for +Endurance,+Health",
+        "aspects": [
+          "Recharge"
+        ],
+        "superior_scales": true,
+        "boostset_name": "superior_scourging_blast",
+        "global_bonuses": null,
+        "is_proc": true,
+        "is_unique": false,
+        "restricted_ats": [
+          "Corruptor"
+        ],
+        "unique_group": [
+          "attuned_scourging_blast_f",
+          "superior_attuned_superior_scourging_blast_f"
+        ],
+        "only_at_50": true,
+        "boost_type": "Enhance Damage",
+        "icon": "e_icon_scourging_blast_ato.png"
+      }
+    }
+  }
+}

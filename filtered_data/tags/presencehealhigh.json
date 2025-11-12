@@ -1,0 +1,31 @@
+{
+  "tag": "PresenceHealHigh",
+  "bears": [
+    [
+      "Temporary Powers.Temporary Powers.Unrelenting",
+      "temporary_powers.temporary_powers.presence_unrelenting_heal"
+    ]
+  ],
+  "affects": [
+    [
+      "Peacebringer Defensive.Luminous Aura.Light Form",
+      "peacebringer_defensive.luminous_aura.light_form"
+    ],
+    [
+      "Teamwork.Widow Teamwork.Elude",
+      "teamwork.widow_teamwork.elude"
+    ],
+    [
+      "Temporary Powers.Temporary Powers.Juggernaut End Defense",
+      "temporary_powers.temporary_powers.juggernaut_end_defense"
+    ],
+    [
+      "Temporary Powers.Temporary Powers.Juggernaut End Offense",
+      "temporary_powers.temporary_powers.juggernaut_end_offense"
+    ],
+    [
+      "Temporary Powers.Temporary Powers.Juggernaut End Standard",
+      "temporary_powers.temporary_powers.juggernaut_end_standard"
+    ]
+  ]
+}

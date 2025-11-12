@@ -24,16 +24,16 @@
 | **context-health-check.yml** | `.github/workflows/context-health-check.yml` | Context system monitoring |
 | **doc-management.yml** | `.github/workflows/doc-management.yml` | Documentation management |
 | **update-claude-docs.yml** | `.github/workflows/update-claude-docs.yml` | Claude documentation updates |
-| **example-refactored.yml** | `.github/workflows/example-refactored.yml` | Example implementation |
+| **reusable-components-demo.yml** | `.github/workflows/reusable-components-demo.yml` | Demo and test for reusable components |
 
-### Shared Components (Phase 3)
+### Reusable Components (Phase 3)
 
 | Component | Location | Purpose |
 |-----------|----------|---------|
-| **change-detection.yml** | `.github/workflows/shared/` | Analyzes file changes |
-| **claude-setup.yml** | `.github/workflows/shared/` | Configures Claude AI integration |
-| **pr-context.yml** | `.github/workflows/shared/` | Extracts PR metadata |
-| **token-validation.yml** | `.github/workflows/shared/` | Validates token counts |
+| **reusable-change-detection.yml** | `.github/workflows/` | Analyzes file changes |
+| **reusable-claude-setup.yml** | `.github/workflows/` | Configures Claude AI integration |
+| **reusable-pr-context.yml** | `.github/workflows/` | Extracts PR metadata |
+| **reusable-token-validation.yml** | `.github/workflows/` | Validates token counts |
 
 ## 🚀 Optimization Progress
 

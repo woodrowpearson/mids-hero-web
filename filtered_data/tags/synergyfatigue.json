@@ -1,0 +1,14 @@
+{
+  "tag": "SynergyFatigue",
+  "bears": [
+    [
+      "Pool.Fighting.Boxing",
+      "pool.fighting.boxing"
+    ],
+    [
+      "Pool.Fighting.Kick",
+      "pool.fighting.kick"
+    ]
+  ],
+  "affects": []
+}

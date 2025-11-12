@@ -141,6 +141,170 @@
       ],
       "completion_date": "2025-08-04"
     },
+    "epic2_5_5": {
+      "name": "Project Cleanup & JSON Migration Preparation",
+      "status": "completed",
+      "progress": 100,
+      "tasks": [
+        "\u2705 Priority 1: Resolved duplicates & conflicts",
+        "\u2705 Priority 2: Removed MHD dependencies",
+        "\u2705 Priority 3: Updated Claude AI context",
+        "\u2705 Priority 4: Migrated Justfile commands",
+        "\u2705 Priority 5: Evaluated incomplete features (calc module not found)",
+        "\u2705 Priority 6: Verified cleanup completeness",
+        "\u2705 Priority 7: Organizational housekeeping complete"
+      ],
+      "completion_date": "2025-11-06",
+      "github_issues_closed": [
+        "#256"
+      ]
+    },
+    "epic2_6": {
+      "name": "JSON Data Source Migration",
+      "status": "completed",
+      "progress": 100,
+      "tasks": [
+        "\u2705 Task 2.6.1: JSON Import Pipeline - Archetypes and Enhancements",
+        "  \u2705 Subtask 2.6.1.1: Implement Archetype Importer",
+        "  \u2705 Subtask 2.6.1.2: Implement Enhancement Set Importer",
+        "  \u2705 Subtask 2.6.1.3: Integrate Importers with CLI",
+        "\u2705 Task 2.6.2: JSON Import Pipeline - Powers",
+        "  \u2705 Subtask 2.6.2.1: Implement Power Category and Powerset Importer",
+        "  \u2705 Subtask 2.6.2.2: Implement Individual Power Import",
+        "  \u2705 Subtask 2.6.2.3: Implement Batch Import with Progress Tracking",
+        "\u2705 Task 2.6.3: Testing and Validation",
+        "  \u2705 Subtask 2.6.3.1: Create End-to-End Import Test",
+        "  \u2705 Subtask 2.6.3.2: Create Import Validation Script"
+      ],
+      "implementation_details": {
+        "importers_created": [
+          "ArchetypeImporter - imports archetypes from filtered_data JSON",
+          "EnhancementImporter - imports enhancement sets from boost_sets JSON",
+          "PowerImporter - imports powersets and powers with batch processing"
+        ],
+        "database_updates": [
+          "Added source_metadata JSON column to Archetype, EnhancementSet, Enhancement, Powerset models",
+          "Fixed schema mismatches (description\u2192display_help, primary_group\u2192primary_category, etc.)",
+          "Dropped and recreated database with correct schema from models"
+        ],
+        "testing": {
+          "unit_tests": "10 tests (archetypes, enhancements, powers, CLI)",
+          "integration_tests": "2 tests (end-to-end pipeline, idempotent reimport)",
+          "total_passing": "12/12 tests (100%)"
+        },
+        "cli_interface": {
+          "import_archetypes": "Batch import from directory",
+          "import_enhancements": "Batch import from directory",
+          "import_powerset_with_powers": "Import powerset + all powers with progress tracking"
+        },
+        "validation_script": "backend/scripts/validate_import.py - validates data integrity and relationships"
+      },
+      "commits": [
+        "976ebc79f feat: add archetype JSON importer with tests",
+        "4d09c3b0f feat: add enhancement set JSON importer with tests",
+        "372cd5556 feat: add CLI interface for JSON imports",
+        "c58c901e1 feat: add powerset JSON importer",
+        "555ce6784 feat: add individual power import functionality",
+        "e2d804434 feat: add batch import with progress tracking",
+        "53c44620e test: add end-to-end integration tests",
+        "e70373079 feat: add import validation script"
+      ],
+      "completion_date": "2025-11-08",
+      "github_issues_closed": [],
+      "github_issues_created": [
+        "#315 Fix powers.range column numeric overflow (12 powers failing import)",
+        "#316 Implement archetype-to-powerset relationship mapping"
+      ],
+      "production_import_results": {
+        "date": "2025-11-09",
+        "archetypes_imported": 20,
+        "enhancement_sets_imported": 227,
+        "powersets_imported": 371,
+        "powers_imported": 2273,
+        "powers_failed": 12,
+        "success_rate": "99.5%",
+        "duration_seconds": 20
+      },
+      "current_branch": "feature/epic-2.5.5-cleanup"
+    },
+    "epic2_5": {
+      "name": "City of Data Import Preparation",
+      "status": "completed",
+      "progress": 100,
+      "tasks": [
+        "\u2705 Task 2.5.1: Create comprehensive pruning plan and documentation",
+        "\u2705 Created `just jq` command for JSON processing",
+        "\u2705 Created GitHub tracking issues (#300-305)",
+        "\u2705 Task 2.5.2: Phase 1 - Map and document City of Data structure",
+        "  \u2705 Mapped 9 top-level directories (43,224 total files)",
+        "  \u2705 Documented power category schema (205 categories)",
+        "  \u2705 Extracted archetype\u2192category mappings (15 archetypes, 30 categories)",
+        "  \u2705 Identified Layer 1 explicit categories (pool, epic, inherent, incarnate)",
+        "  \u2705 Documented boost_sets structure (227 enhancement sets)",
+        "  \u2705 Created comprehensive 3-layer pruning strategy",
+        "\u2705 Task 2.5.3: Phase 2 - Execute multi-layered filtering",
+        "  \u2705 Filtered archetypes (66 files - all kept)",
+        "  \u2705 Filtered boost_sets (228 files - all kept)",
+        "  \u2705 Filtered powers (5,775 files - 36 categories kept, 167 excluded)",
+        "  \u2705 Filtered metadata (410 files - 4 directories kept, 1 excluded)",
+        "  \u2705 Total filtered: 6,479 files from 43,224 (85% reduction)",
+        "  \u2705 Generated 4 manifest fragments for synthesis",
+        "\u2705 Task 2.5.4: Phase 3 - Validate and create manifest",
+        "  \u2705 Created comprehensive validation script (validate_filtered_data.py)",
+        "  \u2705 Validated archetypes (15 player archetypes present, all checks pass)",
+        "  \u2705 Validated power categories (36 categories, all required patterns present)",
+        "  \u2705 Validated boost sets (228 files)",
+        "  \u2705 Validated schema integrity (635 index.json files, all valid)",
+        "  \u2705 Generated comprehensive manifest (filtered_data/manifest.json)",
+        "  \u2705 Performed manual spot checks (Pool, Epic, Inherent, Incarnate powers confirmed)",
+        "  \u2705 Created filtering results documentation",
+        "\ud83d\udccb Task 2.5.5: Integrate filtered data into import pipeline"
+      ],
+      "github_issues_created": [
+        "#300 Epic 2.5: City of Data Import Preparation",
+        "#301 Task 2.5.1: Create City of Data Pruning Plan",
+        "#302 Task 2.5.2: Phase 1 - Map and Document Structure",
+        "#303 Task 2.5.3: Phase 2 - Execute Multi-Layered Filtering",
+        "#304 Task 2.5.4: Phase 3 - Validate and Create Manifest",
+        "#305 Task 2.5.5: Integrate Filtered Data into Import Pipeline"
+      ],
+      "current_branch": "fix/claude-review-comment-support",
+      "documentation": [
+        ".claude/docs/city-of-data-pruning-plan.md",
+        ".claude/docs/city-of-data-structure-map.md",
+        ".claude/docs/city-of-data-schema-reference.md",
+        ".claude/docs/player-power-identification.md",
+        ".claude/docs/city-of-data-pruning-strategy.md",
+        ".claude/docs/city-of-data-filtering-results.md",
+        ".claude/docs/archetype-category-mapping.json"
+      ],
+      "scripts": [
+        "scripts/map_archetype_categories.py",
+        "scripts/filter_archetypes.py",
+        "scripts/filter_boost_sets.py",
+        "scripts/filter_powers.py",
+        "scripts/filter_metadata.py",
+        "scripts/validate_filtered_data.py"
+      ],
+      "filtered_data_location": "filtered_data/",
+      "manifest_fragments": [
+        "filtered_data/archetypes_manifest.json",
+        "filtered_data/boost_sets_manifest.json",
+        "filtered_data/powers_manifest.json",
+        "filtered_data/metadata_manifest.json"
+      ],
+      "final_manifest": "filtered_data/manifest.json",
+      "validation_results": {
+        "total_source_files": 43233,
+        "kept_files": 6479,
+        "excluded_files": 167,
+        "reduction_percentage": 85,
+        "archetypes_pass": true,
+        "power_categories_pass": true,
+        "boost_sets_pass": true,
+        "schema_integrity_pass": true
+      }
+    },
     "epic3": {
       "name": "Backend API",
       "status": "in_progress",
@@ -243,5 +407,5 @@
   ],
   "commit_count": 227,
   "files_modified": 1,
-  "last_auto_update": "2025-08-26T20:12:28.914865"
+  "last_auto_update": "2025-11-12T16:46:05.960737"
 }

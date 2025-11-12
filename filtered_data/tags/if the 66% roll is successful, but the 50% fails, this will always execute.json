@@ -1,0 +1,10 @@
+{
+  "tag": "If the 66% roll is successful, but the 50% fails, this will always execute",
+  "bears": [
+    [
+      "Warriors New.Warrior Enchantress Boss.Weapon Imbuement",
+      "warriors_new.warrior_enchantress_boss.enchant_weapon"
+    ]
+  ],
+  "affects": []
+}

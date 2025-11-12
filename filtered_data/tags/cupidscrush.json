@@ -1,0 +1,31 @@
+{
+  "tag": "CupidsCrush",
+  "bears": [
+    [
+      "Boosts.Attuned Cupids Crush F.Dam/Chance for Confuse",
+      "boosts.attuned_cupids_crush_f.attuned_cupids_crush_f"
+    ]
+  ],
+  "affects": [
+    [
+      "Boosts.Attuned Cupids Crush A.Dam/Rech",
+      "boosts.attuned_cupids_crush_a.attuned_cupids_crush_a"
+    ],
+    [
+      "Boosts.Attuned Cupids Crush B.End/Rech",
+      "boosts.attuned_cupids_crush_b.attuned_cupids_crush_b"
+    ],
+    [
+      "Boosts.Attuned Cupids Crush C.Acc/Dam/End",
+      "boosts.attuned_cupids_crush_c.attuned_cupids_crush_c"
+    ],
+    [
+      "Boosts.Attuned Cupids Crush D.Acc/Dam/Rech",
+      "boosts.attuned_cupids_crush_d.attuned_cupids_crush_d"
+    ],
+    [
+      "Boosts.Attuned Cupids Crush E.Acc/Dam/End/Rech",
+      "boosts.attuned_cupids_crush_e.attuned_cupids_crush_e"
+    ]
+  ]
+}

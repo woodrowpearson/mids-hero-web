@@ -1,0 +1,23 @@
+{
+  "tag": "MassLevitate",
+  "bears": [
+    [
+      "Controller Control.Mind Control.Levitate",
+      "controller_control.mind_control.levitate"
+    ],
+    [
+      "Dominator Control.Mind Control.Levitate",
+      "dominator_control.mind_control.levitate"
+    ]
+  ],
+  "affects": [
+    [
+      "Controller Control.Mind Control.Telekinesis",
+      "controller_control.mind_control.telekinesis"
+    ],
+    [
+      "Dominator Control.Mind Control.Telekinesis",
+      "dominator_control.mind_control.telekinesis"
+    ]
+  ]
+}

@@ -1,0 +1,153 @@
+name: Reusable Components Demo
+
+# This workflow demonstrates how to use reusable workflow components
+# It serves as both documentation and a test harness for the components
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - '.github/workflows/reusable-*.yml'
+      - '.github/actions/**'
+  workflow_dispatch:
+    inputs:
+      test_mode:
+        description: 'Run in test mode'
+        type: boolean
+        default: true
+
+concurrency:
+  group: reusable-demo-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  # Step 1: Detect what changed
+  detect-changes:
+    name: Analyze Changes
+    uses: ./.github/workflows/reusable-change-detection.yml
+    with:
+      source_files: |
+        backend/**/*.py
+        frontend/**/*.{js,ts,jsx,tsx}
+      config_files: |
+        pyproject.toml
+        package.json
+        justfile
+      doc_files: |
+        **/*.md
+        .claude/**/*.{md,json}
+  
+  # Step 2: Validate token counts if docs changed
+  validate-tokens:
+    name: Token Validation
+    needs: detect-changes
+    if: needs.detect-changes.outputs.docs_changed == 'true'
+    uses: ./.github/workflows/reusable-token-validation.yml
+    with:
+      files_to_check: |
+        CLAUDE.md:5000
+        .claude/modules/*/GUIDE.md:3000
+      fail_on_exceed: true
+      warning_threshold: 90
+  
+  # Step 3: Extract PR context
+  get-context:
+    name: PR Context
+    uses: ./.github/workflows/reusable-pr-context.yml
+    with:
+      fetch_diff: true
+      fetch_comments: false
+    secrets:
+      gh_token: ${{ secrets.GITHUB_TOKEN }}
+  
+  # Step 4: Claude review if source changed
+  claude-review:
+    name: Code Review
+    needs: [detect-changes, get-context]
+    if: needs.detect-changes.outputs.source_changed == 'true'
+    uses: ./.github/workflows/reusable-claude-setup.yml
+    with:
+      prompt: |
+        Review this pull request for code quality and best practices.
+        
+        PR: ${{ needs.get-context.outputs.pr_title }}
+        Size: ${{ needs.detect-changes.outputs.pr_size }}
+        Files changed: ${{ needs.detect-changes.outputs.file_count }}
+        
+        Focus on:
+        1. Code quality and best practices
+        2. Security concerns
+        3. Performance implications
+        4. Test coverage
+        
+        Changed files: ${{ needs.detect-changes.outputs.source_files_list }}
+      
+      max_turns: 5
+      timeout_minutes: 10
+      pr_number: ${{ github.event.pull_request.number }}
+    secrets:
+      anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+      gh_token: ${{ secrets.GITHUB_TOKEN }}
+  
+  # Step 5: Post summary using composite action
+  post-summary:
+    name: Post Summary
+    runs-on: ubuntu-latest
+    needs: [detect-changes, validate-tokens, claude-review]
+    if: always()
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Generate summary
+        id: summary
+        run: |
+          cat > summary.md << 'EOF'
+          ## 🔍 PR Analysis Complete
+          
+          ### Changes Detected
+          - **Source Code**: ${{ needs.detect-changes.outputs.source_changed == 'true' && '✅ Changed' || '⭕ No changes' }}
+          - **Configuration**: ${{ needs.detect-changes.outputs.config_changed == 'true' && '✅ Changed' || '⭕ No changes' }}
+          - **Documentation**: ${{ needs.detect-changes.outputs.docs_changed == 'true' && '✅ Changed' || '⭕ No changes' }}
+          - **Total Files**: ${{ needs.detect-changes.outputs.file_count }}
+          - **PR Size**: ${{ needs.detect-changes.outputs.pr_size }}
+          
+          ### Validation Results
+          EOF
+          
+          if [[ "${{ needs.validate-tokens.result }}" == "success" ]]; then
+            echo "- ✅ Token validation passed" >> summary.md
+          elif [[ "${{ needs.validate-tokens.result }}" == "failure" ]]; then
+            echo "- ❌ Token validation failed" >> summary.md
+          else
+            echo "- ⭕ Token validation skipped" >> summary.md
+          fi
+          
+          if [[ "${{ needs.claude-review.result }}" == "success" ]]; then
+            echo "- ✅ Claude review completed" >> summary.md
+          elif [[ "${{ needs.claude-review.result }}" == "failure" ]]; then
+            echo "- ❌ Claude review failed" >> summary.md
+          else
+            echo "- ⭕ Claude review skipped" >> summary.md
+          fi
+          
+          echo "" >> summary.md
+          echo "---" >> summary.md
+          echo "*Powered by reusable workflow components • [View run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})*" >> summary.md
+          
+          echo "summary<<EOF" >> $GITHUB_OUTPUT
+          cat summary.md >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+      
+      - name: Post comment
+        uses: ./.github/actions/post-comment
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          comment-body: ${{ steps.summary.outputs.summary }}
+          comment-identifier: pr-analysis-summary
+          update-existing: true
+          add-reactions: rocket

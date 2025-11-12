@@ -1,0 +1,30 @@
+{
+  "tag": "Mind",
+  "bears": [
+    [
+      "Brute Melee.Staff Fighting.Eye of the Storm",
+      "brute_melee.staff_fighting.eye_of_the_storm"
+    ],
+    [
+      "Brute Melee.Staff Fighting.Sky Splitter",
+      "brute_melee.staff_fighting.sky_splitter"
+    ],
+    [
+      "Scrapper Melee.Staff Fighting.Eye of the Storm",
+      "scrapper_melee.staff_fighting.eye_of_the_storm"
+    ],
+    [
+      "Scrapper Melee.Staff Fighting.Sky Splitter",
+      "scrapper_melee.staff_fighting.sky_splitter"
+    ],
+    [
+      "Tanker Melee.Staff Fighting.Eye of the Storm",
+      "tanker_melee.staff_fighting.eye_of_the_storm"
+    ],
+    [
+      "Tanker Melee.Staff Fighting.Sky Splitter",
+      "tanker_melee.staff_fighting.sky_splitter"
+    ]
+  ],
+  "affects": []
+}

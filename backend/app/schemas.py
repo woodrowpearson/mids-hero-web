@@ -2,6 +2,7 @@
 Pydantic schemas for Mids-Web backend.
 
 Comprehensive schema definitions matching the database models.
+Updated for filtered_data schema structure.
 """
 
 from datetime import datetime
@@ -28,10 +29,24 @@ class BaseEntitySchema(BaseModel):
 # Archetype Schemas
 class ArchetypeBase(BaseModel):
     name: str
-    description: str | None = None
     display_name: str | None = None
-    primary_group: str | None = None
-    secondary_group: str | None = None
+    icon: str | None = None
+    display_help: str | None = None
+    display_short_help: str | None = None
+    default_rank: str | None = None
+    class_requires: str | None = None
+    restrictions: dict[str, Any] | None = None
+    level_up_respecs: dict[str, Any] | None = None
+    primary_category: str | None = None
+    secondary_category: str | None = None
+    power_pool_category: str | None = None
+    epic_pool_category: str | None = None
+    defiant_scale: Decimal | None = None
+    deep_sleep_resistance: Decimal | None = None
+    off_defiant_hit_points_attrib: int | None = None
+    is_villain: bool | None = None
+    class_key: str | None = None
+    attrib_base: dict[str, Any] | None = None
     hit_points_base: int | None = None
     hit_points_max: int | None = None
 
@@ -42,71 +57,122 @@ class ArchetypeCreate(ArchetypeBase):
 
 class ArchetypeUpdate(BaseModel):
     name: str | None = None
-    description: str | None = None
     display_name: str | None = None
-    primary_group: str | None = None
-    secondary_group: str | None = None
+    icon: str | None = None
+    display_help: str | None = None
+    display_short_help: str | None = None
+    default_rank: str | None = None
+    class_requires: str | None = None
+    restrictions: dict[str, Any] | None = None
+    level_up_respecs: dict[str, Any] | None = None
+    primary_category: str | None = None
+    secondary_category: str | None = None
+    power_pool_category: str | None = None
+    epic_pool_category: str | None = None
+    defiant_scale: Decimal | None = None
+    deep_sleep_resistance: Decimal | None = None
+    off_defiant_hit_points_attrib: int | None = None
+    is_villain: bool | None = None
+    class_key: str | None = None
+    attrib_base: dict[str, Any] | None = None
     hit_points_base: int | None = None
     hit_points_max: int | None = None
 
 
 class Archetype(ArchetypeBase, TimestampedBase, BaseEntitySchema):
     id: int
-    inherent_power_id: int | None = None
+
+    @field_serializer("defiant_scale", "deep_sleep_resistance", mode="wrap")
+    def serialize_decimal(self, value: Decimal | None, nxt) -> float | None:
+        if value is None:
+            return None
+        if isinstance(value, Decimal):
+            return float(value)
+        return nxt(value)
 
 
 # Powerset Schemas
 class PowersetBase(BaseModel):
     name: str
     display_name: str | None = None
-    description: str | None = None
+    display_fullname: str | None = None
+    display_help: str | None = None
+    display_short_help: str | None = None
     powerset_type: str  # primary, secondary, pool, epic, incarnate
-    icon_path: str | None = None
+    source_file: str | None = None
+    icon: str | None = None
+    requires: str | None = None
+    power_names: dict[str, Any] | None = None
+    power_display_names: dict[str, Any] | None = None
+    power_short_helps: dict[str, Any] | None = None
+    available_level: dict[str, Any] | None = None
 
 
 class PowersetCreate(PowersetBase):
-    archetype_id: int
+    archetype_id: int | None = None
 
 
 class PowersetUpdate(BaseModel):
     name: str | None = None
     display_name: str | None = None
-    description: str | None = None
+    display_fullname: str | None = None
+    display_help: str | None = None
+    display_short_help: str | None = None
     powerset_type: str | None = None
-    icon_path: str | None = None
+    source_file: str | None = None
+    icon: str | None = None
+    requires: str | None = None
+    power_names: dict[str, Any] | None = None
+    power_display_names: dict[str, Any] | None = None
+    power_short_helps: dict[str, Any] | None = None
+    available_level: dict[str, Any] | None = None
 
 
 class Powerset(PowersetBase, TimestampedBase, BaseEntitySchema):
     id: int
-    archetype_id: int
+    archetype_id: int | None = None
 
 
 # Power Schemas
 class PowerBase(BaseModel):
     name: str
+    full_name: str
     display_name: str | None = None
-    description: str | None = None
-    level_available: int = 1
-    power_type: str | None = None  # attack, defense, control, support, travel
-    target_type: str | None = None  # self, ally, enemy, location
+    display_fullname: str | None = None
+    short_name: str | None = None
+    type: str | None = None  # Click, Toggle, Auto, etc.
+    display_help: str | None = None
+    display_short_help: str | None = None
+    powerset_name: str | None = None
+    available_level: int | None = None
+    level_bought: int | None = None
+    icon: str | None = None
+    tray_placement: str | None = None
+    tray_number: int | None = None
+    tray_slot: int | None = None
+    server_tray_priority: int | None = None
     accuracy: Decimal | None = None
-    damage_scale: Decimal | None = None
-    endurance_cost: Decimal | None = None
-    recharge_time: Decimal | None = None
     activation_time: Decimal | None = None
-    range_feet: int | None = None
-    radius_feet: int | None = None
-    max_targets: int | None = None
-    effects: dict[str, Any] | None = None
-    icon_path: str | None = None
-    display_order: int | None = None
-    internal_name: str | None = None
-    requires_line_of_sight: bool = True
-    modes_required: str | None = None
-    modes_disallowed: str | None = None
-    ai_report: str | None = None
-    effect_groups: dict[str, Any] | None = None
-    display_info: dict[str, Any] | None = None
+    recharge_time: Decimal | None = None
+    endurance_cost: Decimal | None = None
+    range: Decimal | None = None
+    radius: Decimal | None = None
+    arc: Decimal | None = None
+    max_targets_hit: int | None = None
+    target_type: str | None = None
+    target_visibility: str | None = None
+    effect_area: str | None = None
+    requires: str | None = None
+    activate_requires: str | None = None
+    confirm_requires: str | None = None
+    max_boosts: int | None = None
+    boosts_allowed: dict[str, Any] | None = None
+    allowed_boostset_cats: dict[str, Any] | None = None
+    power_data: dict[str, Any] | None = None
+    archetypes: dict[str, Any] | None = None
+    tags: dict[str, Any] | None = None
+    exclusion_groups: dict[str, Any] | None = None
+    recharge_groups: dict[str, Any] | None = None
 
 
 class PowerCreate(PowerBase):
@@ -115,29 +181,43 @@ class PowerCreate(PowerBase):
 
 class PowerUpdate(BaseModel):
     name: str | None = None
+    full_name: str | None = None
     display_name: str | None = None
-    description: str | None = None
-    level_available: int | None = None
-    power_type: str | None = None
-    target_type: str | None = None
+    display_fullname: str | None = None
+    short_name: str | None = None
+    type: str | None = None
+    display_help: str | None = None
+    display_short_help: str | None = None
+    powerset_name: str | None = None
+    available_level: int | None = None
+    level_bought: int | None = None
+    icon: str | None = None
+    tray_placement: str | None = None
+    tray_number: int | None = None
+    tray_slot: int | None = None
+    server_tray_priority: int | None = None
     accuracy: Decimal | None = None
-    damage_scale: Decimal | None = None
-    endurance_cost: Decimal | None = None
-    recharge_time: Decimal | None = None
     activation_time: Decimal | None = None
-    range_feet: int | None = None
-    radius_feet: int | None = None
-    max_targets: int | None = None
-    effects: dict[str, Any] | None = None
-    icon_path: str | None = None
-    display_order: int | None = None
-    internal_name: str | None = None
-    requires_line_of_sight: bool | None = None
-    modes_required: str | None = None
-    modes_disallowed: str | None = None
-    ai_report: str | None = None
-    effect_groups: dict[str, Any] | None = None
-    display_info: dict[str, Any] | None = None
+    recharge_time: Decimal | None = None
+    endurance_cost: Decimal | None = None
+    range: Decimal | None = None
+    radius: Decimal | None = None
+    arc: Decimal | None = None
+    max_targets_hit: int | None = None
+    target_type: str | None = None
+    target_visibility: str | None = None
+    effect_area: str | None = None
+    requires: str | None = None
+    activate_requires: str | None = None
+    confirm_requires: str | None = None
+    max_boosts: int | None = None
+    boosts_allowed: dict[str, Any] | None = None
+    allowed_boostset_cats: dict[str, Any] | None = None
+    power_data: dict[str, Any] | None = None
+    archetypes: dict[str, Any] | None = None
+    tags: dict[str, Any] | None = None
+    exclusion_groups: dict[str, Any] | None = None
+    recharge_groups: dict[str, Any] | None = None
 
 
 class Power(PowerBase, TimestampedBase, BaseEntitySchema):
@@ -146,10 +226,12 @@ class Power(PowerBase, TimestampedBase, BaseEntitySchema):
 
     @field_serializer(
         "accuracy",
-        "damage_scale",
-        "endurance_cost",
-        "recharge_time",
         "activation_time",
+        "recharge_time",
+        "endurance_cost",
+        "range",
+        "radius",
+        "arc",
         mode="wrap",
     )
     def serialize_decimal(self, value: Decimal | None, nxt) -> float | None:
@@ -160,31 +242,17 @@ class Power(PowerBase, TimestampedBase, BaseEntitySchema):
         return nxt(value)
 
 
-# Power Prerequisite Schemas
-class PowerPrerequisiteBase(BaseModel):
-    required_level: int | None = None
-    prerequisite_type: str | None = None  # one_of, all_of
-
-
-class PowerPrerequisiteCreate(PowerPrerequisiteBase):
-    power_id: int
-    required_power_id: int
-
-
-class PowerPrerequisite(PowerPrerequisiteBase, BaseEntitySchema):
-    id: int
-    power_id: int
-    required_power_id: int
-    created_at: datetime
-
-
 # Enhancement Set Schemas
 class EnhancementSetBase(BaseModel):
     name: str
     display_name: str | None = None
-    description: str | None = None
+    group_name: str | None = None
     min_level: int = 10
     max_level: int = 50
+    conversion_groups: dict[str, Any] | None = None
+    boost_lists: dict[str, Any] | None = None
+    bonuses: dict[str, Any] | None = None
+    computed: dict[str, Any] | None = None
 
 
 class EnhancementSetCreate(EnhancementSetBase):
@@ -194,9 +262,13 @@ class EnhancementSetCreate(EnhancementSetBase):
 class EnhancementSetUpdate(BaseModel):
     name: str | None = None
     display_name: str | None = None
-    description: str | None = None
+    group_name: str | None = None
     min_level: int | None = None
     max_level: int | None = None
+    conversion_groups: dict[str, Any] | None = None
+    boost_lists: dict[str, Any] | None = None
+    bonuses: dict[str, Any] | None = None
+    computed: dict[str, Any] | None = None
 
 
 class EnhancementSet(EnhancementSetBase, TimestampedBase, BaseEntitySchema):
@@ -207,18 +279,31 @@ class EnhancementSet(EnhancementSetBase, TimestampedBase, BaseEntitySchema):
 class EnhancementBase(BaseModel):
     name: str
     display_name: str | None = None
-    enhancement_type: str | None = None  # IO, SO, DO, TO, HamiO, set_piece
+    computed_name: str | None = None
+    boostset_name: str | None = None
+    boost_type: str | None = None
     level_min: int = 1
     level_max: int = 50
-    accuracy_bonus: Decimal | None = None
-    damage_bonus: Decimal | None = None
-    endurance_bonus: Decimal | None = None
-    recharge_bonus: Decimal | None = None
-    defense_bonus: Decimal | None = None
-    resistance_bonus: Decimal | None = None
-    other_bonuses: dict[str, Any] | None = None
-    unique_enhancement: bool = False
-    icon_path: str | None = None
+    min_slot_level: int | None = None
+    min_bonus_level: int | None = None
+    only_at_50: bool = False
+    slot_requires: str | None = None
+    ignores_level_differences: bool = False
+    bonuses_ignore_exemplar: bool = False
+    combinable: bool = False
+    tradeable: bool = False
+    account_bound: bool = False
+    boostable: bool = False
+    attuned: bool = False
+    catalyzes_to: dict[str, Any] | None = None
+    superior_scales: bool = False
+    is_proc: bool = False
+    is_unique: bool = False
+    restricted_ats: dict[str, Any] | None = None
+    unique_group: dict[str, Any] | None = None
+    aspects: dict[str, Any] | None = None
+    global_bonuses: dict[str, Any] | None = None
+    icon: str | None = None
 
 
 class EnhancementCreate(EnhancementBase):
@@ -228,115 +313,36 @@ class EnhancementCreate(EnhancementBase):
 class EnhancementUpdate(BaseModel):
     name: str | None = None
     display_name: str | None = None
-    enhancement_type: str | None = None
+    computed_name: str | None = None
+    boostset_name: str | None = None
+    boost_type: str | None = None
     level_min: int | None = None
     level_max: int | None = None
-    accuracy_bonus: Decimal | None = None
-    damage_bonus: Decimal | None = None
-    endurance_bonus: Decimal | None = None
-    recharge_bonus: Decimal | None = None
-    defense_bonus: Decimal | None = None
-    resistance_bonus: Decimal | None = None
-    other_bonuses: dict[str, Any] | None = None
-    unique_enhancement: bool | None = None
-    icon_path: str | None = None
+    min_slot_level: int | None = None
+    min_bonus_level: int | None = None
+    only_at_50: bool | None = None
+    slot_requires: str | None = None
+    ignores_level_differences: bool | None = None
+    bonuses_ignore_exemplar: bool | None = None
+    combinable: bool | None = None
+    tradeable: bool | None = None
+    account_bound: bool | None = None
+    boostable: bool | None = None
+    attuned: bool | None = None
+    catalyzes_to: dict[str, Any] | None = None
+    superior_scales: bool | None = None
+    is_proc: bool | None = None
+    is_unique: bool | None = None
+    restricted_ats: dict[str, Any] | None = None
+    unique_group: dict[str, Any] | None = None
+    aspects: dict[str, Any] | None = None
+    global_bonuses: dict[str, Any] | None = None
+    icon: str | None = None
 
 
 class Enhancement(EnhancementBase, TimestampedBase, BaseEntitySchema):
     id: int
     set_id: int | None = None
-
-
-# Set Bonus Schemas
-class SetBonusBase(BaseModel):
-    pieces_required: int
-    bonus_description: str | None = None
-    bonus_type: str | None = None
-    bonus_amount: Decimal | None = None
-    bonus_details: dict[str, Any] | None = None
-
-
-class SetBonusCreate(SetBonusBase):
-    set_id: int
-
-
-class SetBonus(SetBonusBase, BaseEntitySchema):
-    id: int
-    set_id: int
-    created_at: datetime
-
-
-# Power Enhancement Compatibility Schemas
-class PowerEnhancementCompatibilityBase(BaseModel):
-    enhancement_type: str
-    allowed: bool = True
-
-
-class PowerEnhancementCompatibilityCreate(PowerEnhancementCompatibilityBase):
-    power_id: int
-
-
-class PowerEnhancementCompatibility(
-    PowerEnhancementCompatibilityBase, BaseEntitySchema
-):
-    id: int
-    power_id: int
-    created_at: datetime
-
-
-# Salvage Schemas
-class SalvageBase(BaseModel):
-    internal_name: str
-    display_name: str
-    salvage_type: str | None = None  # common, uncommon, rare
-    origin: str | None = None  # tech, magic, natural
-    level_range: str | None = None  # 10-25, 26-40, 41-50
-    icon_path: str | None = None
-
-
-class SalvageCreate(SalvageBase):
-    pass
-
-
-class Salvage(SalvageBase, TimestampedBase, BaseEntitySchema):
-    id: int
-
-
-# Recipe Schemas
-class RecipeBase(BaseModel):
-    internal_name: str
-    display_name: str
-    enhancement_id: int | None = None
-    recipe_type: str | None = None  # common, uncommon, rare, very_rare
-    level_min: int = 10
-    level_max: int = 50
-    crafting_cost: int | None = None
-    crafting_cost_premium: int | None = None
-    memorized: bool = False
-
-
-class RecipeCreate(RecipeBase):
-    pass
-
-
-class Recipe(RecipeBase, TimestampedBase, BaseEntitySchema):
-    id: int
-
-
-# Recipe Salvage Schemas
-class RecipeSalvageBase(BaseModel):
-    recipe_id: int
-    salvage_id: int
-    quantity: int = 1
-
-
-class RecipeSalvageCreate(RecipeSalvageBase):
-    pass
-
-
-class RecipeSalvage(RecipeSalvageBase, BaseEntitySchema):
-    id: int
-    created_at: datetime
 
 
 # Build Schemas
@@ -440,17 +446,15 @@ class PowersetWithPowers(Powerset):
 
 
 class PowerWithDetails(Power):
-    """Power with prerequisites and compatibility info."""
+    """Power with full details."""
 
-    prerequisites: list[PowerPrerequisite] = []
-    compatibilities: list[PowerEnhancementCompatibility] = []
+    pass
 
 
 class EnhancementSetWithDetails(EnhancementSet):
-    """Enhancement set with enhancements and bonuses."""
+    """Enhancement set with enhancements."""
 
     enhancements: list[Enhancement] = []
-    set_bonuses: list[SetBonus] = []
 
 
 class BuildWithDetails(Build):

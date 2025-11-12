@@ -1,0 +1,18 @@
+{
+  "tag": "CorruptorOnly",
+  "bears": [
+    [
+      "Epic.Electricity Mastery.Shocking Bolt",
+      "epic.electricity_mastery.shocking_bolt"
+    ],
+    [
+      "Epic.Leviathan Mastery.School of Sharks",
+      "epic.corruptor_leviathan_mastery.school_of_sharks"
+    ],
+    [
+      "Epic.Leviathan Mastery.Spirit Shark Jaws",
+      "epic.corruptor_leviathan_mastery.spirit_shark_jaws"
+    ]
+  ],
+  "affects": []
+}

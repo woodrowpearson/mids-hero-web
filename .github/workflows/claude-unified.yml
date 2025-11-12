@@ -4,7 +4,7 @@ on:
   pull_request:
     types: [opened, synchronize]
     paths:
-      # Include only source code and critical config files
+      # Include only source code and critical config files (excluding tests and docs)
       - 'backend/**/*.py'
       - 'frontend/**/*.{js,ts,jsx,tsx}'
       - 'backend/pyproject.toml'
@@ -13,17 +13,16 @@ on:
       - 'Dockerfile'
       - 'justfile'
       - '.github/workflows/*.yml'
-    paths-ignore:
-      # Exclude test files and cache directories
-      - '**/*_test.py'
-      - '**/*.test.{js,ts,jsx,tsx}'
-      - '**/__pycache__/**'
-      - '**/node_modules/**'
-      - '**/*.md'
-      - '.claude/**/*.md'
-      - '**/*.pyc'
-      - '**/.pytest_cache/**'
-      - '**/coverage/**'
+      - '!**/*_test.py'
+      - '!**/*.test.{js,ts,jsx,tsx}'
+      - '!**/__pycache__/**'
+      - '!**/node_modules/**'
+      - '!**/*.md'
+      - '!.claude/**/*.md'
+  pull_request_review:
+    types: [submitted]
+  pull_request_review_comment:
+    types: [created]
   issue_comment:
     types: [created]
 
@@ -79,10 +78,35 @@ jobs:
                 TIMEOUT=15
               fi
             fi
+          # Handle pull request reviews
+          elif [[ "${{ github.event_name }}" == "pull_request_review" ]]; then
+            COMMENT="${{ github.event.review.body }}"
+
+            # Check for @claude mentions in review
+            if [[ "$COMMENT" == *"@claude"* ]]; then
+              ACTION_TYPE="review-response"
+              SHOULD_RUN="true"
+              PROMPT_TYPE="review-response"
+              TIMEOUT=15
+              MAX_TURNS=5
+              CHECKOUT_REF="${{ github.event.pull_request.head.ref }}"
+            fi
+          # Handle inline review comments
+          elif [[ "${{ github.event_name }}" == "pull_request_review_comment" ]]; then
+            COMMENT="${{ github.event.comment.body }}"
+
+            # Check for @claude mentions in inline comment
+            if [[ "$COMMENT" == *"@claude"* ]]; then
+              ACTION_TYPE="inline-question"
+              SHOULD_RUN="true"
+              PROMPT_TYPE="inline-question"
+              TIMEOUT=10
+              MAX_TURNS=3
+            fi
           # Handle issue comments
           elif [[ "${{ github.event_name }}" == "issue_comment" ]] && [[ "${{ github.event.issue.pull_request }}" != "" ]]; then
             COMMENT="${{ github.event.comment.body }}"
-            
+
             # Check for different triggers
             if [[ "$COMMENT" == *"@claude"* ]]; then
               ACTION_TYPE="question"
@@ -148,9 +172,21 @@ jobs:
       
       - name: Extract question (for @claude mentions)
         id: extract-question
-        if: needs.determine-action.outputs.action_type == 'question'
+        if: |
+          needs.determine-action.outputs.action_type == 'question' ||
+          needs.determine-action.outputs.action_type == 'review-response' ||
+          needs.determine-action.outputs.action_type == 'inline-question'
         run: |
-          COMMENT="${{ github.event.comment.body }}"
+          COMMENT=""
+
+          if [[ "${{ github.event_name }}" == "issue_comment" ]]; then
+            COMMENT="${{ github.event.comment.body }}"
+          elif [[ "${{ github.event_name }}" == "pull_request_review" ]]; then
+            COMMENT="${{ github.event.review.body }}"
+          elif [[ "${{ github.event_name }}" == "pull_request_review_comment" ]]; then
+            COMMENT="${{ github.event.comment.body }}"
+          fi
+
           QUESTION=$(echo "$COMMENT" | sed 's/@claude//' | sed 's/^[[:space:]]*//')
           echo "question<<EOF" >> $GITHUB_OUTPUT
           echo "$QUESTION" >> $GITHUB_OUTPUT
@@ -236,6 +272,52 @@ jobs:
 
           Ensure all changes are properly committed and pushed."
               ;;
+
+            review-response)
+              PR_NUM="${{ github.event.pull_request.number }}"
+              PROMPT="You are responding to review comments in PR #${PR_NUM} of the Mids Hero Web project.
+
+          Review comment: ${{ steps.extract-question.outputs.question }}
+
+          Tasks:
+          1. Read the review comments carefully
+          2. Address each point raised in the review
+          3. Make necessary code changes to address the feedback
+          4. Commit changes with a descriptive message (e.g., \"fix: address review feedback on [topic]\")
+          5. Post a comment explaining what was changed and how it addresses the review
+
+          Focus on:
+          - Addressing all review feedback points
+          - Maintaining code quality and project standards
+          - Following City of Heroes game mechanics correctly
+          - Testing changes thoroughly
+          - Providing clear explanations of changes made
+
+          Be thorough and professional in your response."
+              ;;
+
+            inline-question)
+              PR_NUM="${{ github.event.pull_request.number }}"
+              FILE_PATH="${{ github.event.comment.path }}"
+              LINE_NUM="${{ github.event.comment.line }}"
+              PROMPT="You are responding to an inline code review comment in PR #${PR_NUM} of the Mids Hero Web project.
+
+          Comment: ${{ steps.extract-question.outputs.question }}
+          File: ${FILE_PATH}
+          Line: ${LINE_NUM}
+
+          Provide a helpful, specific response about the code in question. If the comment requests a change:
+          1. Make the requested change
+          2. Commit with a descriptive message
+          3. Reply to the comment explaining the change
+
+          If it's a question about the code:
+          1. Provide a clear, technical explanation
+          2. Include relevant context about City of Heroes mechanics if applicable
+          3. Suggest improvements if appropriate
+
+          Keep your response focused on the specific code location mentioned."
+              ;;
           esac
           
           # Save prompt to file to handle multi-line content
@@ -265,15 +347,24 @@ jobs:
             const summaries = {
               'pr-review': `${emoji} Claude has ${status === 'success' ? 'completed' : 'failed'} the automated PR review.`,
               'question': `${emoji} Claude has ${status === 'success' ? 'responded to' : 'failed to respond to'} your question.`,
+              'review-response': `${emoji} Claude has ${status === 'success' ? 'addressed' : 'failed to address'} your review comments.`,
+              'inline-question': `${emoji} Claude has ${status === 'success' ? 'responded to' : 'failed to respond to'} your inline comment.`,
               'doc-implement': `${emoji} Documentation suggestions have been ${status === 'success' ? 'implemented' : 'failed to implement'}.`,
               'approval': `${emoji} Approved changes have been ${status === 'success' ? 'applied' : 'failed to apply'}.`
             };
-            
-            if (summaries[actionType] && context.eventName === 'issue_comment') {
+
+            const shouldComment = summaries[actionType] && (
+              context.eventName === 'issue_comment' ||
+              context.eventName === 'pull_request_review' ||
+              context.eventName === 'pull_request_review_comment'
+            );
+
+            if (shouldComment) {
+              const issueNumber = context.issue?.number || context.payload.pull_request?.number;
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: context.issue.number,
+                issue_number: issueNumber,
                 body: summaries[actionType]
               });
             }
@@ -304,6 +395,19 @@ jobs:
               echo "## 💬 Question Response" >> $GITHUB_STEP_SUMMARY
               echo "- Issue/PR: #${{ github.event.issue.number }}" >> $GITHUB_STEP_SUMMARY
               echo "- Triggered by: @${{ github.event.comment.user.login }}" >> $GITHUB_STEP_SUMMARY
+              ;;
+            review-response)
+              echo "## 📋 Review Response" >> $GITHUB_STEP_SUMMARY
+              echo "- PR Number: #${{ github.event.pull_request.number }}" >> $GITHUB_STEP_SUMMARY
+              echo "- Triggered by: @${{ github.event.review.user.login }}" >> $GITHUB_STEP_SUMMARY
+              echo "- Review state: ${{ github.event.review.state }}" >> $GITHUB_STEP_SUMMARY
+              ;;
+            inline-question)
+              echo "## 💡 Inline Comment Response" >> $GITHUB_STEP_SUMMARY
+              echo "- PR Number: #${{ github.event.pull_request.number }}" >> $GITHUB_STEP_SUMMARY
+              echo "- Triggered by: @${{ github.event.comment.user.login }}" >> $GITHUB_STEP_SUMMARY
+              echo "- File: ${{ github.event.comment.path }}" >> $GITHUB_STEP_SUMMARY
+              echo "- Line: ${{ github.event.comment.line }}" >> $GITHUB_STEP_SUMMARY
               ;;
             doc-implement)
               echo "## 📝 Documentation Implementation" >> $GITHUB_STEP_SUMMARY

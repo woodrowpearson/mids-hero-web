@@ -1,0 +1,558 @@
+{
+  "tag": "PVP_MainTargetOnly",
+  "bears": [
+    [
+      "Arachnos Soldiers.Bane Spider Soldier.Crowd Control",
+      "arachnos_soldiers.bane_spider_soldier.crowd_control"
+    ],
+    [
+      "Arachnos Soldiers.Bane Spider Soldier.Mace Beam Blast",
+      "arachnos_soldiers.bane_spider_soldier.mace_beam_blast"
+    ],
+    [
+      "Arachnos Soldiers.Bane Spider Soldier.Mace Beam Volley",
+      "arachnos_soldiers.bane_spider_soldier.mace_beam_volley"
+    ],
+    [
+      "Arachnos Soldiers.Crab Spider Soldier.Arm Lash",
+      "arachnos_soldiers.crab_spider_soldier.arm_lash"
+    ],
+    [
+      "Arachnos Soldiers.Crab Spider Soldier.Frag Grenade",
+      "arachnos_soldiers.crab_spider_soldier.cs_frag_grenade"
+    ],
+    [
+      "Arachnos Soldiers.Crab Spider Soldier.Suppression",
+      "arachnos_soldiers.crab_spider_soldier.suppression"
+    ],
+    [
+      "Arachnos Soldiers.Crab Spider Soldier.Venom Grenade",
+      "arachnos_soldiers.crab_spider_soldier.cs_venom_grenade"
+    ],
+    [
+      "Brute Melee.Battle Axe.Cleave",
+      "brute_melee.battle_axe.cleave"
+    ],
+    [
+      "Brute Melee.Battle Axe.Pendulum",
+      "brute_melee.battle_axe.pendulum"
+    ],
+    [
+      "Brute Melee.Broad Sword.Slice",
+      "brute_melee.broad_sword.slice"
+    ],
+    [
+      "Brute Melee.Claws.Eviscerate",
+      "brute_melee.claws.eviscerate"
+    ],
+    [
+      "Brute Melee.Claws.Shockwave",
+      "brute_melee.claws.shockwave"
+    ],
+    [
+      "Brute Melee.Dark Melee.Shadow Maul",
+      "brute_melee.dark_melee.shadow_maul"
+    ],
+    [
+      "Brute Melee.Dual Blades.One Thousand Cuts",
+      "brute_melee.dual_blades.high_low"
+    ],
+    [
+      "Brute Melee.Dual Blades.Sweeping Strike",
+      "brute_melee.dual_blades.special_2"
+    ],
+    [
+      "Brute Melee.Electrical Melee.Jacobs Ladder",
+      "brute_melee.electrical_melee.jacobs_ladder"
+    ],
+    [
+      "Brute Melee.Energy Melee.Power Crash",
+      "brute_melee.energy_melee.stun"
+    ],
+    [
+      "Brute Melee.Fiery Melee.Breath of Fire",
+      "brute_melee.fiery_melee.breath_of_fire"
+    ],
+    [
+      "Brute Melee.Ice Melee.Frost",
+      "brute_melee.ice_melee.frost"
+    ],
+    [
+      "Brute Melee.Katana.Flashing Steel",
+      "brute_melee.katana.slice"
+    ],
+    [
+      "Brute Melee.Kinetic Melee.Repulsing Torrent",
+      "brute_melee.kinetic_attack.repulsing_torrent"
+    ],
+    [
+      "Brute Melee.Psionic Melee.Psi Blade Sweep",
+      "brute_melee.psionic_melee.psi_blade_sweep"
+    ],
+    [
+      "Brute Melee.Radiation Melee.Proton Sweep",
+      "brute_melee.radiation_melee.proton_sweep"
+    ],
+    [
+      "Brute Melee.Savage Melee.Shred",
+      "brute_melee.savage_melee.shred"
+    ],
+    [
+      "Brute Melee.Spines.Ripper",
+      "brute_melee.spines.ripper"
+    ],
+    [
+      "Brute Melee.Spines.Throw Spines",
+      "brute_melee.spines.throw_spines"
+    ],
+    [
+      "Brute Melee.Staff Fighting.Guarded Spin",
+      "brute_melee.staff_fighting.guarded_spin"
+    ],
+    [
+      "Brute Melee.Staff Fighting.Innocuous Strikes",
+      "brute_melee.staff_fighting.innocuous_strikes"
+    ],
+    [
+      "Brute Melee.Street Justice.Spinning Strike",
+      "brute_melee.brawling.spinning_strike"
+    ],
+    [
+      "Brute Melee.Street Justice.Sweeping Cross",
+      "brute_melee.brawling.sweeping_cross"
+    ],
+    [
+      "Brute Melee.War Mace.Crowd Control",
+      "brute_melee.war_mace.crowd_control"
+    ],
+    [
+      "Brute Melee.War Mace.Shatter",
+      "brute_melee.war_mace.shatter"
+    ],
+    [
+      "Pets.Titan Weapons Tanker.Arc of Destruction",
+      "pets.titan_weapons_tanker.arc_of_destruction_slow"
+    ],
+    [
+      "Pets.Titan Weapons Tanker.Arc of Destruction (Fast)",
+      "pets.titan_weapons_tanker.arc_of_destruction_fast"
+    ],
+    [
+      "Pets.Titan Weapons Tanker.Defensive Sweep",
+      "pets.titan_weapons_tanker.defensive_sweep_slow"
+    ],
+    [
+      "Pets.Titan Weapons Tanker.Defensive Sweep (Fast)",
+      "pets.titan_weapons_tanker.defensive_sweep_fast"
+    ],
+    [
+      "Pets.Titan Weapons Tanker.Titan Sweep",
+      "pets.titan_weapons_tanker.sweeping_strike_slow"
+    ],
+    [
+      "Pets.Titan Weapons Tanker.Titan Sweep (Fast)",
+      "pets.titan_weapons_tanker.sweeping_strike_fast"
+    ],
+    [
+      "Pets.Titan Weapons.Arc of Destruction",
+      "pets.titan_weapons.arc_of_destruction_slow"
+    ],
+    [
+      "Pets.Titan Weapons.Arc of Destruction (Fast)",
+      "pets.titan_weapons.arc_of_destruction_fast"
+    ],
+    [
+      "Pets.Titan Weapons.Defensive Sweep",
+      "pets.titan_weapons.defensive_sweep_slow"
+    ],
+    [
+      "Pets.Titan Weapons.Defensive Sweep (Fast)",
+      "pets.titan_weapons.defensive_sweep_fast"
+    ],
+    [
+      "Pets.Titan Weapons.Titan Sweep",
+      "pets.titan_weapons.sweeping_strike_slow"
+    ],
+    [
+      "Pets.Titan Weapons.Titan Sweep (Fast)",
+      "pets.titan_weapons.sweeping_strike_fast"
+    ],
+    [
+      "Pool.Fighting.Cross Punch",
+      "pool.fighting.cross_punch"
+    ],
+    [
+      "Redirects.Arachnos Soldier.Frag Grenade",
+      "redirects.arachnos_soldier.bane_frag_grenade"
+    ],
+    [
+      "Redirects.Arachnos Soldier.Frag Grenade",
+      "redirects.arachnos_soldier.crab_frag_grenade"
+    ],
+    [
+      "Redirects.Arachnos Soldier.Frag Grenade",
+      "redirects.arachnos_soldier.wolf_frag_grenade"
+    ],
+    [
+      "Redirects.Arachnos Soldier.Heavy Burst",
+      "redirects.arachnos_soldier.crab_heavy_burst"
+    ],
+    [
+      "Redirects.Arachnos Soldier.Heavy Burst",
+      "redirects.arachnos_soldier.wolf_heavy_burst"
+    ],
+    [
+      "Redirects.Arachnos Soldier.Venom Grenade",
+      "redirects.arachnos_soldier.bane_venom_grenade"
+    ],
+    [
+      "Redirects.Arachnos Soldier.Venom Grenade",
+      "redirects.arachnos_soldier.crab_venom_grenade"
+    ],
+    [
+      "Redirects.Arachnos Soldier.Venom Grenade",
+      "redirects.arachnos_soldier.wolf_venom_grenade"
+    ],
+    [
+      "Redirects.Dark Melee.Touch of Fear",
+      "redirects.dark_melee.touch_of_fear_aoe"
+    ],
+    [
+      "Redirects.Dark Melee.Touch of Fear",
+      "redirects.dark_melee.touch_of_fear_aoe_scrapper"
+    ],
+    [
+      "Redirects.Dark Melee.Touch of Fear",
+      "redirects.dark_melee.touch_of_fear_aoe_stalker"
+    ],
+    [
+      "Redirects.Dark Melee.Touch of Fear",
+      "redirects.dark_melee.touch_of_fear_aoe_tanker"
+    ],
+    [
+      "Redirects.Stone Melee.Fault",
+      "redirects.stone_melee.fault_cone_brute"
+    ],
+    [
+      "Redirects.Stone Melee.Fault",
+      "redirects.stone_melee.fault_cone_scrapper"
+    ],
+    [
+      "Redirects.Stone Melee.Fault",
+      "redirects.stone_melee.fault_cone_stalker"
+    ],
+    [
+      "Redirects.Stone Melee.Fault",
+      "redirects.stone_melee.fault_cone_tanker"
+    ],
+    [
+      "Scrapper Melee.Battle Axe.Cleave",
+      "scrapper_melee.battle_axe.cleave"
+    ],
+    [
+      "Scrapper Melee.Battle Axe.Pendulum",
+      "scrapper_melee.battle_axe.pendulum"
+    ],
+    [
+      "Scrapper Melee.Broad Sword.Slice",
+      "scrapper_melee.broad_sword.slice"
+    ],
+    [
+      "Scrapper Melee.Claws.Eviscerate",
+      "scrapper_melee.claws.eviscerate"
+    ],
+    [
+      "Scrapper Melee.Claws.Shockwave",
+      "scrapper_melee.claws.shockwave"
+    ],
+    [
+      "Scrapper Melee.Dark Melee.Shadow Maul",
+      "scrapper_melee.dark_melee.shadow_maul"
+    ],
+    [
+      "Scrapper Melee.Dual Blades.One Thousand Cuts",
+      "scrapper_melee.dual_blades.high_low"
+    ],
+    [
+      "Scrapper Melee.Dual Blades.Sweeping Strike",
+      "scrapper_melee.dual_blades.special_2"
+    ],
+    [
+      "Scrapper Melee.Electrical Melee.Jacobs Ladder",
+      "scrapper_melee.electrical_melee.jacobs_ladder"
+    ],
+    [
+      "Scrapper Melee.Energy Melee.Power Crash",
+      "scrapper_melee.energy_melee.power_crash"
+    ],
+    [
+      "Scrapper Melee.Fiery Melee.Breath of Fire",
+      "scrapper_melee.fiery_melee.breath_of_fire"
+    ],
+    [
+      "Scrapper Melee.Ice Melee.Frost",
+      "scrapper_melee.ice_melee.frost"
+    ],
+    [
+      "Scrapper Melee.Katana.Flashing Steel",
+      "scrapper_melee.katana.slice"
+    ],
+    [
+      "Scrapper Melee.Kinetic Melee.Repulsing Torrent",
+      "scrapper_melee.kinetic_attack.repulsing_torrent"
+    ],
+    [
+      "Scrapper Melee.Psionic Melee.Psi Blade Sweep",
+      "scrapper_melee.psionic_melee.psi_blade_sweep"
+    ],
+    [
+      "Scrapper Melee.Radiation Melee.Proton Sweep",
+      "scrapper_melee.radiation_melee.proton_sweep"
+    ],
+    [
+      "Scrapper Melee.Savage Melee.Shred",
+      "scrapper_melee.savage_melee.shred"
+    ],
+    [
+      "Scrapper Melee.Spines.Ripper",
+      "scrapper_melee.quills.ripper"
+    ],
+    [
+      "Scrapper Melee.Spines.Throw Spines",
+      "scrapper_melee.quills.quill_throwing"
+    ],
+    [
+      "Scrapper Melee.Staff Fighting.Guarded Spin",
+      "scrapper_melee.staff_fighting.guarded_spin"
+    ],
+    [
+      "Scrapper Melee.Staff Fighting.Innocuous Strikes",
+      "scrapper_melee.staff_fighting.innocuous_strikes"
+    ],
+    [
+      "Scrapper Melee.Street Justice.Spinning Strike",
+      "scrapper_melee.brawling.spinning_strike"
+    ],
+    [
+      "Scrapper Melee.Street Justice.Sweeping Cross",
+      "scrapper_melee.brawling.sweeping_cross"
+    ],
+    [
+      "Scrapper Melee.War Mace.Crowd Control",
+      "scrapper_melee.war_mace.crowd_control"
+    ],
+    [
+      "Scrapper Melee.War Mace.Shatter",
+      "scrapper_melee.war_mace.shatter"
+    ],
+    [
+      "Stalker Melee.Claws.Shockwave",
+      "stalker_melee.claws.shockwave"
+    ],
+    [
+      "Stalker Melee.Dark Melee.Shadow Maul",
+      "stalker_melee.dark_melee.shadow_maul"
+    ],
+    [
+      "Stalker Melee.Dual Blades.One Thousand Cuts",
+      "stalker_melee.dual_blades.high_low"
+    ],
+    [
+      "Stalker Melee.Dual Blades.Sweeping Strike",
+      "stalker_melee.dual_blades.special_2"
+    ],
+    [
+      "Stalker Melee.Electrical Melee.Jacobs Ladder",
+      "stalker_melee.electrical_melee.jacobs_ladder"
+    ],
+    [
+      "Stalker Melee.Energy Melee.Power Crash",
+      "stalker_melee.energy_melee.stun"
+    ],
+    [
+      "Stalker Melee.Fiery Melee.Breath of Fire",
+      "stalker_melee.fiery_melee.breath_of_fire"
+    ],
+    [
+      "Stalker Melee.Ice Melee.Frost",
+      "stalker_melee.ice_melee.frost"
+    ],
+    [
+      "Stalker Melee.Ninja Blade.Flashing Steel",
+      "stalker_melee.ninja_sword.slice"
+    ],
+    [
+      "Stalker Melee.Radiation Melee.Proton Sweep",
+      "stalker_melee.radiation_melee.proton_sweep"
+    ],
+    [
+      "Stalker Melee.Savage Melee.Shred",
+      "stalker_melee.savage_melee.shred"
+    ],
+    [
+      "Stalker Melee.Spines.Ripper",
+      "stalker_melee.spines.ripper"
+    ],
+    [
+      "Stalker Melee.Spines.Throw Spines",
+      "stalker_melee.spines.throw_spines"
+    ],
+    [
+      "Stalker Melee.Staff Fighting.Guarded Spin",
+      "stalker_melee.staff_fighting.guarded_spin"
+    ],
+    [
+      "Stalker Melee.Street Justice.Spinning Strike",
+      "stalker_melee.brawling.spinning_strike"
+    ],
+    [
+      "Stalker Melee.Street Justice.Sweeping Cross",
+      "stalker_melee.brawling.sweeping_cross"
+    ],
+    [
+      "Tanker Melee.Battle Axe.Cleave",
+      "tanker_melee.battle_axe.cleave"
+    ],
+    [
+      "Tanker Melee.Battle Axe.Pendulum",
+      "tanker_melee.battle_axe.pendulum"
+    ],
+    [
+      "Tanker Melee.Broad Sword.Slice",
+      "tanker_melee.broad_sword.slice"
+    ],
+    [
+      "Tanker Melee.Claws.Eviscerate",
+      "tanker_melee.claws.eviscerate"
+    ],
+    [
+      "Tanker Melee.Claws.Shockwave",
+      "tanker_melee.claws.shockwave"
+    ],
+    [
+      "Tanker Melee.Dark Melee.Shadow Maul",
+      "tanker_melee.dark_melee.shadow_maul"
+    ],
+    [
+      "Tanker Melee.Dual Blades.One Thousand Cuts",
+      "tanker_melee.dual_blades.high_low"
+    ],
+    [
+      "Tanker Melee.Dual Blades.Sweeping Strike",
+      "tanker_melee.dual_blades.special_2"
+    ],
+    [
+      "Tanker Melee.Electrical Melee.Jacobs Ladder",
+      "tanker_melee.electrical_melee.jacobs_ladder"
+    ],
+    [
+      "Tanker Melee.Energy Melee.Power Crash",
+      "tanker_melee.energy_melee.stun"
+    ],
+    [
+      "Tanker Melee.Fiery Melee.Breath of Fire",
+      "tanker_melee.fiery_melee.breath_of_fire"
+    ],
+    [
+      "Tanker Melee.Ice Melee.Frost",
+      "tanker_melee.ice_melee.frost"
+    ],
+    [
+      "Tanker Melee.Katana.Flashing Steel",
+      "tanker_melee.katana.slice"
+    ],
+    [
+      "Tanker Melee.Kinetic Melee.Repulsing Torrent",
+      "tanker_melee.kinetic_attack.repulsing_torrent"
+    ],
+    [
+      "Tanker Melee.Psionic Melee.Psi Blade Sweep",
+      "tanker_melee.psionic_melee.psi_blade_sweep"
+    ],
+    [
+      "Tanker Melee.Radiation Melee.Proton Sweep",
+      "tanker_melee.radiation_melee.proton_sweep"
+    ],
+    [
+      "Tanker Melee.Savage Melee.Shred",
+      "tanker_melee.savage_melee.shred"
+    ],
+    [
+      "Tanker Melee.Spines.Ripper",
+      "tanker_melee.spines.ripper"
+    ],
+    [
+      "Tanker Melee.Spines.Throw Spines",
+      "tanker_melee.spines.throw_spines"
+    ],
+    [
+      "Tanker Melee.Staff Fighting.Guarded Spin",
+      "tanker_melee.staff_fighting.guarded_spin"
+    ],
+    [
+      "Tanker Melee.Staff Fighting.Innocuous Strikes",
+      "tanker_melee.staff_fighting.innocuous_strikes"
+    ],
+    [
+      "Tanker Melee.Street Justice.Spinning Strike",
+      "tanker_melee.brawling.spinning_strike"
+    ],
+    [
+      "Tanker Melee.Street Justice.Sweeping Cross",
+      "tanker_melee.brawling.sweeping_cross"
+    ],
+    [
+      "Tanker Melee.War Mace.Crowd Control",
+      "tanker_melee.war_mace.crowd_control"
+    ],
+    [
+      "Tanker Melee.War Mace.Shatter",
+      "tanker_melee.war_mace.shatter"
+    ],
+    [
+      "Villain Pets.Titan Weapons Brute.Arc of Destruction",
+      "villain_pets.titan_weapons_brute.arc_of_destruction_slow"
+    ],
+    [
+      "Villain Pets.Titan Weapons Brute.Arc of Destruction (Fast)",
+      "villain_pets.titan_weapons_brute.arc_of_destruction_fast"
+    ],
+    [
+      "Villain Pets.Titan Weapons Brute.Defensive Sweep",
+      "villain_pets.titan_weapons_brute.defensive_sweep_slow"
+    ],
+    [
+      "Villain Pets.Titan Weapons Brute.Defensive Sweep (Fast)",
+      "villain_pets.titan_weapons_brute.defensive_sweep_fast"
+    ],
+    [
+      "Villain Pets.Titan Weapons Brute.Titan Sweep",
+      "villain_pets.titan_weapons_brute.sweeping_strike_slow"
+    ],
+    [
+      "Villain Pets.Titan Weapons Brute.Titan Sweep (Fast)",
+      "villain_pets.titan_weapons_brute.sweeping_strike_fast"
+    ],
+    [
+      "Widow Training.Fortunata Training.Psionic Tornado",
+      "widow_training.fortunata_training.frt_psionic_lance"
+    ],
+    [
+      "Widow Training.Fortunata Training.Psychic Scream",
+      "widow_training.fortunata_training.frt_psychic_scream"
+    ],
+    [
+      "Widow Training.Night Widow Training.Eviscerate",
+      "widow_training.night_widow_training.nw_eviscerate"
+    ],
+    [
+      "Widow Training.Night Widow Training.Psychic Scream",
+      "widow_training.night_widow_training.nw_psychic_scream"
+    ],
+    [
+      "Widow Training.Widow Training.Dart Burst",
+      "widow_training.widow_training.dart_burst"
+    ]
+  ],
+  "affects": []
+}

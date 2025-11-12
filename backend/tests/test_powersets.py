@@ -23,7 +23,7 @@ def test_get_powerset_with_powers(client, sample_powerset, sample_power):
     assert data["name"] == "Fire Blast"
     assert len(data["powers"]) == 1
     assert data["powers"][0]["name"] == "Fire Blast"
-    assert data["powers"][0]["level_available"] == 1
+    assert data["powers"][0]["available_level"] == 1
 
 
 def test_get_powerset_without_powers(client, sample_powerset, sample_power):
@@ -47,20 +47,20 @@ def test_get_powerset_powers(client, sample_powerset, sample_power, db_session):
     # Add another power
     power2 = Power(
         name="Fire Ball",
+        full_name="Fire_Blast.Fire_Blast.Fire_Ball",
         display_name="Fire Ball",
-        description="Hurl a fire ball that explodes",
+        display_help="Hurl a fire ball that explodes",
         powerset_id=sample_powerset.id,
-        power_type="attack",
-        target_type="enemy",
-        level_available=2,
+        type="Click",
+        target_type="Foe",
+        available_level=2,
         accuracy=1.0,
-        damage_scale=1.5,
         endurance_cost=8.5,
         recharge_time=16.0,
         activation_time=1.0,
-        range_feet=80,
-        max_targets=16,
-        radius_feet=15,
+        range=80,
+        max_targets_hit=16,
+        radius=15,
     )
     db_session.add(power2)
     db_session.commit()
@@ -72,9 +72,9 @@ def test_get_powerset_powers(client, sample_powerset, sample_power, db_session):
 
     # Powers should be returned in order
     assert data[0]["name"] == "Fire Blast"
-    assert data[0]["level_available"] == 1
+    assert data[0]["available_level"] == 1
     assert data[1]["name"] == "Fire Ball"
-    assert data[1]["level_available"] == 2
+    assert data[1]["available_level"] == 2
 
 
 def test_get_powerset_powers_empty(client, sample_powerset):

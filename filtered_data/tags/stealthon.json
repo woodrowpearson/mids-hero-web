@@ -1,0 +1,66 @@
+{
+  "tag": "StealthOn",
+  "bears": [
+    [
+      "Brute Defense.Bio Armor.Evolving Armor",
+      "brute_defense.bio_organic_armor.adaptation"
+    ],
+    [
+      "Brute Defense.Invulnerability.Invincibility",
+      "brute_defense.invulnerability.invincibility"
+    ],
+    [
+      "Brute Defense.Psionic Armor.Impose Presence",
+      "brute_defense.psionic_armor.impose_presence"
+    ],
+    [
+      "Brute Defense.Radiation Armor.Beta Decay",
+      "brute_defense.radiation_armor.beta_decay"
+    ],
+    [
+      "Brute Defense.Regeneration.Integration",
+      "brute_defense.regeneration.integration"
+    ],
+    [
+      "Brute Defense.Shield Defense.Against All Odds",
+      "brute_defense.shield_defense.against_all_odds"
+    ],
+    [
+      "Scrapper Defense.Radiation Armor.Beta Decay",
+      "scrapper_defense.radiation_armor.beta_decay"
+    ],
+    [
+      "Sentinel Defense.Energy Aura.Entropy Shield",
+      "sentinel_defense.energy_aura.entropy_shield"
+    ],
+    [
+      "Stalker Defense.Energy Aura.Entropy Shield",
+      "stalker_defense.energy_aura.entropy_shield"
+    ],
+    [
+      "Tanker Defense.Bio Armor.Evolving Armor",
+      "tanker_defense.bio_organic_armor.adaptation"
+    ],
+    [
+      "Tanker Defense.Invulnerability.Invincibility",
+      "tanker_defense.invulnerability.invincibility"
+    ],
+    [
+      "Tanker Defense.Psionic Armor.Impose Presence",
+      "tanker_defense.psionic_armor.impose_presence"
+    ],
+    [
+      "Tanker Defense.Radiation Armor.Beta Decay",
+      "tanker_defense.radiation_armor.beta_decay"
+    ],
+    [
+      "Tanker Defense.Regeneration.Integration",
+      "tanker_defense.regeneration.integration"
+    ],
+    [
+      "Tanker Defense.Shield Defense.Against All Odds",
+      "tanker_defense.shield_defense.against_all_odds"
+    ]
+  ],
+  "affects": []
+}

@@ -1,0 +1,187 @@
+{
+  "tag": "Ice_Enchant",
+  "bears": [
+    [
+      "Warriors New.Agamemnon.Axe Cyclone",
+      "warriors_new.agamemnon.whirling_axe"
+    ],
+    [
+      "Warriors New.Agamemnon.Chop",
+      "warriors_new.agamemnon.chop"
+    ],
+    [
+      "Warriors New.Agamemnon.Gash",
+      "warriors_new.agamemnon.beheader"
+    ],
+    [
+      "Warriors New.Agamemnon.Pendulum",
+      "warriors_new.agamemnon.pendulum"
+    ],
+    [
+      "Warriors New.Agamemnon.Swoop",
+      "warriors_new.agamemnon.swoop"
+    ],
+    [
+      "Warriors New.Warrior Axe Boss.Swoop",
+      "warriors_new.warrior_axe_boss.swoop"
+    ],
+    [
+      "Warriors New.Warrior Axe Lt.Chop",
+      "warriors_new.warrior_axe_lt.chop"
+    ],
+    [
+      "Warriors New.Warrior Axe Lt.Gash",
+      "warriors_new.warrior_axe_lt.beheader"
+    ],
+    [
+      "Warriors New.Warrior Axe Lt.Pendulum",
+      "warriors_new.warrior_axe_lt.pendulum"
+    ],
+    [
+      "Warriors New.Warrior Axe Minion.Beheader",
+      "warriors_new.warrior_axe_minion.gash"
+    ],
+    [
+      "Warriors New.Warrior Brawl Boss.Crushing Uppercut",
+      "warriors_new.warrior_brawl_boss.crushing_uppercut"
+    ],
+    [
+      "Warriors New.Warrior Brawl Lt.Spinning Strike",
+      "warriors_new.warrior_brawl_lt.spinning_strike"
+    ],
+    [
+      "Warriors New.Warrior Brawl Minion.Heavy Blow",
+      "warriors_new.warrior_brawl_minion.heavy_blow"
+    ],
+    [
+      "Warriors New.Warrior Brawl Minion.Initial Strike",
+      "warriors_new.warrior_brawl_minion.initial_strike"
+    ],
+    [
+      "Warriors New.Warrior Brawl Minion.Sweeping Cross",
+      "warriors_new.warrior_brawl_minion.sweeping_cross"
+    ],
+    [
+      "Warriors New.Warrior Javelin Boss.Pilum",
+      "warriors_new.warrior_javelin_boss.pilum"
+    ],
+    [
+      "Warriors New.Warrior Javelin Boss.Shining Pilum",
+      "warriors_new.warrior_javelin_boss.blinding_pilum"
+    ],
+    [
+      "Warriors New.Warrior Javelin Lt.Pilum",
+      "warriors_new.warrior_javelin_lt.pilum"
+    ],
+    [
+      "Warriors New.Warrior Javelin Lt.Withering Pilum",
+      "warriors_new.warrior_javelin_lt.wither_pilum"
+    ],
+    [
+      "Warriors New.Warrior Javelin Minion.Pilum",
+      "warriors_new.warrior_javelin_minion.pilum"
+    ],
+    [
+      "Warriors New.Warrior Mace Boss.Crowd Control",
+      "warriors_new.warrior_mace_boss.crowd_control"
+    ],
+    [
+      "Warriors New.Warrior Mace Lt.Clobber",
+      "warriors_new.warrior_mace_lt.clobber"
+    ],
+    [
+      "Warriors New.Warrior Mace Lt.Pulverize",
+      "warriors_new.warrior_mace_lt.pulverize"
+    ],
+    [
+      "Warriors New.Warrior Mace Lt.Shatter",
+      "warriors_new.warrior_mace_lt.shatter"
+    ],
+    [
+      "Warriors New.Warrior Mace Minion.Bash",
+      "warriors_new.warrior_mace_minion.bash"
+    ],
+    [
+      "Warriors New.Warrior Ranged Boss.Exploding Bolt",
+      "warriors_new.warrior_ranged_boss.exploding_bolt"
+    ],
+    [
+      "Warriors New.Warrior Ranged Boss.Explosive Arrow",
+      "warriors_new.warrior_ranged_boss.explosive_arrow"
+    ],
+    [
+      "Warriors New.Warrior Ranged Lt 2.Crossbow",
+      "warriors_new.warrior_ranged_lt_2.crossbow"
+    ],
+    [
+      "Warriors New.Warrior Ranged Lt 2.Ice Arrow",
+      "warriors_new.warrior_ranged_lt_2.crystal_arrow"
+    ],
+    [
+      "Warriors New.Warrior Ranged Lt.Blazing Arrow",
+      "warriors_new.warrior_ranged_lt.flaming_arrow"
+    ],
+    [
+      "Warriors New.Warrior Ranged Lt.Bow",
+      "warriors_new.warrior_ranged_lt.bow"
+    ],
+    [
+      "Warriors New.Warrior Ranged.Aimed Shot",
+      "warriors_new.warrior_ranged.aimed_shot"
+    ],
+    [
+      "Warriors New.Warrior Ranged.Hand Crossbow",
+      "warriors_new.warrior_ranged.hand_crossbow"
+    ],
+    [
+      "Warriors New.Warrior Staff Boss.Sky Splitter",
+      "warriors_new.warrior_staff_boss.sky_splitter"
+    ],
+    [
+      "Warriors New.Warrior Staff Lt.Eye of the Storm",
+      "warriors_new.warrior_staff_lt.eye_of_the_storm"
+    ],
+    [
+      "Warriors New.Warrior Staff Lt.Guarded Spin",
+      "warriors_new.warrior_staff_lt.guarded_spin"
+    ],
+    [
+      "Warriors New.Warrior Staff Lt.Serpent's Reach",
+      "warriors_new.warrior_staff_lt.serpents_reach"
+    ],
+    [
+      "Warriors New.Warrior Staff Minion.Mercurial Blow",
+      "warriors_new.warrior_staff_minion.mercurial_blow"
+    ],
+    [
+      "Warriors New.Warrior Staff Minion.Precise Strike",
+      "warriors_new.warrior_staff_minion.precise_strike"
+    ],
+    [
+      "Warriors New.Warrior Sword Boss.Head Splitter",
+      "warriors_new.warrior_sword_boss.head_splitter"
+    ],
+    [
+      "Warriors New.Warrior Sword Lt.Hack",
+      "warriors_new.warrior_sword_lt.hack"
+    ],
+    [
+      "Warriors New.Warrior Sword Lt.Parry",
+      "warriors_new.warrior_sword_lt.parry"
+    ],
+    [
+      "Warriors New.Warrior Sword Lt.Whirling Sword",
+      "warriors_new.warrior_sword_lt.whirling_sword"
+    ],
+    [
+      "Warriors New.Warrior Sword Minion.Slash",
+      "warriors_new.warrior_sword_minion.slash"
+    ]
+  ],
+  "affects": [
+    [
+      "Warriors New.Warrior Enchantress Boss.Weapon Imbuement",
+      "warriors_new.warrior_enchantress_boss.enchant_weapon"
+    ]
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "tag": "PerfectionofMind",
+  "bears": [
+    [
+      "Redirects.Staff Melee.Perfection Level",
+      "redirects.staff_melee.perfection_level"
+    ],
+    [
+      "Redirects.Staff Melee.Perfection Level",
+      "redirects.staff_melee.perfection_level_stalker"
+    ],
+    [
+      "RoguesGallery.Sun Xiong.Guarded Spin",
+      "roguesgallery.sun_xiong.guarded_spin"
+    ],
+    [
+      "RoguesGallery.Sun Xiong.Mercurial Blow",
+      "roguesgallery.sun_xiong.mercurial_blow"
+    ],
+    [
+      "RoguesGallery.Sun Xiong.Precise Strike",
+      "roguesgallery.sun_xiong.precise_strike"
+    ],
+    [
+      "RoguesGallery.Sun Xiong.Serpent's Reach",
+      "roguesgallery.sun_xiong.serpents_reach"
+    ]
+  ],
+  "affects": [
+    [
+      "Brute Melee.Staff Fighting.Form of the Body",
+      "brute_melee.staff_fighting.form_of_the_body"
+    ],
+    [
+      "Brute Melee.Staff Fighting.Form of the Mind",
+      "brute_melee.staff_fighting.form_of_the_mind"
+    ],
+    [
+      "Brute Melee.Staff Fighting.Form of the Soul",
+      "brute_melee.staff_fighting.form_of_the_soul"
+    ],
+    [
+      "Scrapper Melee.Staff Fighting.Form of the Body",
+      "scrapper_melee.staff_fighting.form_of_the_body"
+    ],
+    [
+      "Scrapper Melee.Staff Fighting.Form of the Mind",
+      "scrapper_melee.staff_fighting.form_of_the_mind"
+    ],
+    [
+      "Scrapper Melee.Staff Fighting.Form of the Soul",
+      "scrapper_melee.staff_fighting.form_of_the_soul"
+    ],
+    [
+      "Tanker Melee.Staff Fighting.Form of the Body",
+      "tanker_melee.staff_fighting.form_of_the_body"
+    ],
+    [
+      "Tanker Melee.Staff Fighting.Form of the Mind",
+      "tanker_melee.staff_fighting.form_of_the_mind"
+    ],
+    [
+      "Tanker Melee.Staff Fighting.Form of the Soul",
+      "tanker_melee.staff_fighting.form_of_the_soul"
+    ]
+  ]
+}

@@ -8,19 +8,19 @@ CRITICAL DISTINCTION - Accuracy vs ToHit:
 ===========================================
 **Accuracy (Multiplicative)**:
 - Multiplies the final accuracy calculation
-- Comes from: Set bonuses, Kismet IO, Incarnate abilities
+- Comes from: Set bonuses, Incarnate abilities
 - NOT subject to Enhancement Diversification
 - Applied as: (1 + enhancement_accuracy + global_accuracy)
 - Example sources:
   * Thunderstrike 5-set bonus: +9% accuracy
-  * Kismet +ToHit IO: +6% accuracy (despite the name!)
   * Alpha Incarnate: +5% accuracy
 
 **ToHit (Additive)**:
 - Adds to hit chance after accuracy multiplier
-- Comes from: Power buffs (Tactics, Build Up, Aim), some set bonuses
+- Comes from: Power buffs (Tactics, Build Up, Aim), special IOs (Kismet), some set bonuses
 - Applied as: (ScalingToHit + global_tohit)
 - Example sources:
+  * Kismet +ToHit IO: +6% tohit
   * Tactics toggle: +7% tohit (when slotted)
   * Build Up: +20% tohit (temporary)
   * Set bonuses: +3% tohit

@@ -74,19 +74,18 @@ class TestAccuracyAggregator:
         assert len(totals.accuracy_contributions) == 3
         assert len(totals.tohit_contributions) == 0
 
-    # Test Case 3: Kismet +ToHit IO (Actually Accuracy!)
-    def test_kismet_io_accuracy(self):
+    # Test Case 3: Kismet +ToHit IO
+    def test_kismet_io_tohit(self):
         """
         Test Case 3 from Spec 23:
-        CRITICAL: Kismet +ToHit IO grants +6% ACCURACY, not tohit!
-        This is MidsReborn's documented behavior (despite the IO name).
+        Kismet +ToHit IO grants +6% TOHIT (additive).
 
         Expected:
-          - Accuracy: 6% (from Kismet)
-          - ToHit: 0%
+          - Accuracy: 0%
+          - ToHit: 6% (from Kismet)
         """
         special_ios = [
-            {"name": "Kismet +ToHit", "type": "accuracy", "magnitude": 0.06}
+            {"name": "Kismet +ToHit", "type": "tohit", "magnitude": 0.06}
         ]
 
         totals = self.calculator.calculate_accuracy_totals(
@@ -96,12 +95,12 @@ class TestAccuracyAggregator:
             incarnate_bonuses=[]
         )
 
-        assert abs(totals.accuracy - 0.06) < 0.001, "Kismet grants accuracy, not tohit"
-        assert totals.tohit == 0.0, "Kismet should not grant tohit"
-        assert abs(totals.accuracy_percentage - 6.0) < 0.01
-        assert len(totals.accuracy_contributions) == 1
-        assert totals.accuracy_contributions[0].source_name == "Kismet +ToHit"
-        assert totals.accuracy_contributions[0].source_type == AccuracySource.SPECIAL_IO
+        assert totals.accuracy == 0.0
+        assert abs(totals.tohit - 0.06) < 0.001, "Kismet grants tohit"
+        assert abs(totals.tohit_percentage - 6.0) < 0.01
+        assert len(totals.tohit_contributions) == 1
+        assert totals.tohit_contributions[0].source_name == "Kismet +ToHit"
+        assert totals.tohit_contributions[0].source_type == AccuracySource.SPECIAL_IO
 
     # Test Case 4: Tactics Power (ToHit Buff)
     def test_tactics_tohit_buff(self):

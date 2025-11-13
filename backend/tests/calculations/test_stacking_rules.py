@@ -6,13 +6,14 @@ Based on test cases from Spec 25 section 4.
 """
 
 import pytest
-from backend.app.calculations.build.stacking_rules import (
+
+from app.calculations.build.stacking_rules import (
     BuffStackingCalculator,
     StackingMode,
 )
-from backend.app.calculations.core.effect import Effect
-from backend.app.calculations.core.effect_types import DamageType, EffectType
-from backend.app.calculations.core.enums import Stacking, ToWho
+from app.calculations.core.effect import Effect
+from app.calculations.core.effect_types import DamageType, EffectType
+from app.calculations.core.enums import Stacking, ToWho
 
 
 class TestStackingModes:

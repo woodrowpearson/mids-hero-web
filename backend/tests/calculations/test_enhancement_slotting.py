@@ -112,7 +112,7 @@ class TestSlottedPower:
         power = SlottedPower(power_id=1, is_slottable=True)
 
         # Add 6 slots
-        for i in range(6):
+        for _i in range(6):
             assert power.add_slot(slot_level=1)
 
         # 7th slot should fail
@@ -176,7 +176,7 @@ class TestSlotValidation:
         """Test too many slots detected."""
         power = SlottedPower(power_id=1, is_slottable=True, slots=[])
         # Manually add 7 slots (bypassing add_slot validation)
-        for i in range(7):
+        for _i in range(7):
             power.slots.append(SlotEntry(level=1))
 
         errors = validate_slotted_power(power)
@@ -201,7 +201,7 @@ class TestSlotValidation:
 
         # Too many slots
         power = SlottedPower(power_id=1, is_slottable=True)
-        for i in range(6):
+        for _i in range(6):
             power.add_slot(slot_level=1)
 
         with pytest.raises(InvalidSlotCountError):

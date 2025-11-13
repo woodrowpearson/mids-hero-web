@@ -8,8 +8,9 @@ import time
 from statistics import quantiles
 
 import pytest
-from main import app
 from fastapi.testclient import TestClient
+
+from main import app
 
 client = TestClient(app)
 
@@ -239,13 +240,13 @@ class TestPerformance:
         resistance_bonuses = []
 
         # Add 20 defense bonus sources (typical full build with set bonuses)
-        for i in range(20):
+        for _i in range(20):
             defense_bonuses.append(
                 {"bonuses": {"melee": 0.015, "ranged": 0.01, "aoe": 0.01}}
             )
 
         # Add 15 resistance bonus sources
-        for i in range(15):
+        for _i in range(15):
             resistance_bonuses.append(
                 {
                     "bonuses": {

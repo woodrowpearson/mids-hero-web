@@ -16,6 +16,7 @@ client = TestClient(app)
 # Power Damage Calculation Tests
 # ============================================================================
 
+
 class TestPowerDamageCalculation:
     """Tests for POST /api/v1/calculations/power/damage endpoint."""
 
@@ -200,6 +201,7 @@ class TestPowerDamageCalculation:
 # Build Defense Calculation Tests
 # ============================================================================
 
+
 class TestBuildDefenseCalculation:
     """Tests for POST /api/v1/calculations/build/defense endpoint."""
 
@@ -260,6 +262,7 @@ class TestBuildDefenseCalculation:
 # Build Resistance Calculation Tests
 # ============================================================================
 
+
 class TestBuildResistanceCalculation:
     """Tests for POST /api/v1/calculations/build/resistance endpoint."""
 
@@ -319,6 +322,7 @@ class TestBuildResistanceCalculation:
 # Build Totals Tests
 # ============================================================================
 
+
 class TestBuildTotals:
     """Tests for POST /api/v1/calculations/build/totals endpoint."""
 
@@ -350,6 +354,7 @@ class TestBuildTotals:
 # ============================================================================
 # Game Constants Tests
 # ============================================================================
+
 
 class TestGameConstants:
     """Tests for GET /api/v1/calculations/constants endpoint."""
@@ -386,6 +391,7 @@ class TestGameConstants:
 # ============================================================================
 # Proc Calculation Tests
 # ============================================================================
+
 
 class TestProcCalculation:
     """Tests for POST /api/v1/calculations/enhancements/procs endpoint."""
@@ -453,6 +459,7 @@ class TestProcCalculation:
 # Error Handling Tests
 # ============================================================================
 
+
 class TestErrorHandling:
     """Tests for error handling in calculation endpoints."""
 
@@ -510,6 +517,7 @@ class TestErrorHandling:
 # Integration Tests
 # ============================================================================
 
+
 class TestIntegration:
     """Integration tests combining multiple calculation types."""
 
@@ -528,7 +536,9 @@ class TestIntegration:
             ],
         }
 
-        build_response = client.post("/api/v1/calculations/build/totals", json=build_request)
+        build_response = client.post(
+            "/api/v1/calculations/build/totals", json=build_request
+        )
         assert build_response.status_code == 200
 
         # Power damage request
@@ -547,12 +557,16 @@ class TestIntegration:
             "damage_return_mode": "dps",
         }
 
-        power_response = client.post("/api/v1/calculations/power/damage", json=power_request)
+        power_response = client.post(
+            "/api/v1/calculations/power/damage", json=power_request
+        )
         assert power_response.status_code == 200
 
         # Both should succeed
         build_data = build_response.json()
         power_data = power_response.json()
 
-        assert build_data["defense"]["positional"]["melee"] == pytest.approx(0.30, rel=1e-3)
+        assert build_data["defense"]["positional"]["melee"] == pytest.approx(
+            0.30, rel=1e-3
+        )
         assert power_data["total"] > 0

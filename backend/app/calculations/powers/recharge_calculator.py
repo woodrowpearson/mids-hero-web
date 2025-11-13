@@ -214,7 +214,9 @@ class RechargeCalculator:
         return total
 
     def check_perma_hasten(
-        self, global_recharge_without_hasten: float, local_recharge_in_hasten: float = 0.95
+        self,
+        global_recharge_without_hasten: float,
+        local_recharge_in_hasten: float = 0.95,
     ) -> tuple[bool, float]:
         """
         Check if Hasten can be permanent.
@@ -327,7 +329,10 @@ class InvalidRechargeConfigError(RechargeCalculationError):
 
 
 def validate_recharge_config(
-    base_recharge: float, local_bonuses: list[float], global_bonus: float, archetype_cap: float
+    base_recharge: float,
+    local_bonuses: list[float],
+    global_bonus: float,
+    archetype_cap: float,
 ) -> None:
     """
     Validate recharge calculation configuration.
@@ -348,14 +353,18 @@ def validate_recharge_config(
         InvalidRechargeConfigError: Base recharge cannot be negative: -1.0
     """
     if base_recharge < 0:
-        raise InvalidRechargeConfigError(f"Base recharge cannot be negative: {base_recharge}")
+        raise InvalidRechargeConfigError(
+            f"Base recharge cannot be negative: {base_recharge}"
+        )
 
     for bonus in local_bonuses:
         if bonus < 0:
             raise InvalidRechargeConfigError(f"Local bonus cannot be negative: {bonus}")
 
     if global_bonus < 0:
-        raise InvalidRechargeConfigError(f"Global bonus cannot be negative: {global_bonus}")
+        raise InvalidRechargeConfigError(
+            f"Global bonus cannot be negative: {global_bonus}"
+        )
 
     if archetype_cap <= 0:
         raise InvalidRechargeConfigError(

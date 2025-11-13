@@ -1,13 +1,11 @@
 """Pydantic schemas for API requests and responses."""
 
-from .base import (
-    # Archetype schemas
+from .base import (  # Archetype schemas; Build schemas; Enhancement schemas; Import log schemas; Power schemas; Powerset schemas
     Archetype,
     ArchetypeBase,
     ArchetypeCreate,
     ArchetypeUpdate,
     ArchetypeWithPowersets,
-    # Build schemas
     Build,
     BuildBase,
     BuildCreate,
@@ -20,7 +18,6 @@ from .base import (
     BuildStats,
     BuildUpdate,
     BuildWithDetails,
-    # Enhancement schemas
     Enhancement,
     EnhancementBase,
     EnhancementCreate,
@@ -30,15 +27,12 @@ from .base import (
     EnhancementSetUpdate,
     EnhancementSetWithDetails,
     EnhancementUpdate,
-    # Import log schemas
     ImportLog,
     ImportLogBase,
     ImportLogCreate,
-    # Power schemas
     Power,
     PowerBase,
     PowerCreate,
-    # Powerset schemas
     Powerset,
     PowersetBase,
     PowersetCreate,
@@ -47,35 +41,26 @@ from .base import (
     PowerUpdate,
     PowerWithDetails,
 )
-from .calculations import (
-    # Enums
+from .calculations import (  # Enums; Build totals; Damage calculation; Defense calculation; Effect models; Enhancement calculation; Error handling; Constants; Resistance calculation
     ArchetypeEnum,
-    # Build totals
     BuildTotalsRequest,
     BuildTotalsResponse,
-    # Damage calculation
     DamageCalculationRequest,
     DamageCalculationResponse,
     DamageMathModeEnum,
     DamageReturnModeEnum,
     DamageTypeEnum,
-    # Defense calculation
     DefenseBonusInput,
     DefenseCalculationRequest,
     DefenseCalculationResponse,
     DefenseTypeEnum,
-    # Effect models
     EffectRequest,
-    # Enhancement calculation
     EnhancementSlotRequest,
-    # Error handling
     ErrorResponse,
-    # Constants
     GameConstantsResponse,
     PowerTypeEnum,
     ProcCalculationRequest,
     ProcCalculationResponse,
-    # Resistance calculation
     ResistanceBonusInput,
     ResistanceCalculationRequest,
     ResistanceCalculationResponse,

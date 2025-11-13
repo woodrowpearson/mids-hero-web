@@ -18,7 +18,9 @@ client = TestClient(app)
 class TestPerformance:
     """Performance tests for calculation endpoints."""
 
-    def _measure_endpoint_performance(self, method: str, url: str, **kwargs) -> list[float]:
+    def _measure_endpoint_performance(
+        self, method: str, url: str, **kwargs
+    ) -> list[float]:
         """
         Measure endpoint response times.
 
@@ -302,7 +304,9 @@ class TestConcurrentPerformance:
         # Run 50 concurrent requests
         with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
             futures = [executor.submit(make_request) for _ in range(50)]
-            response_times = [f.result() for f in concurrent.futures.as_completed(futures)]
+            response_times = [
+                f.result() for f in concurrent.futures.as_completed(futures)
+            ]
 
         # Calculate 95th percentile
         percentile_values = quantiles(response_times, n=100)

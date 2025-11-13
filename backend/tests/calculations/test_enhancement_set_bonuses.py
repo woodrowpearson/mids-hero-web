@@ -190,14 +190,10 @@ class TestBasicSetBonusActivation:
         calculator = SetBonusCalculator(pv_mode=PvMode.PVE)
 
         slotted_sets = [
-            SlottedSet(
-                power_id=1, set_id=10, slotted_count=1, enhancement_ids=[100]
-            )
+            SlottedSet(power_id=1, set_id=10, slotted_count=1, enhancement_ids=[100])
         ]
 
-        bonuses = calculator.calculate_set_bonuses(
-            slotted_sets, sample_set_definitions
-        )
+        bonuses = calculator.calculate_set_bonuses(slotted_sets, sample_set_definitions)
 
         assert len(bonuses) == 0  # No bonuses with only 1 piece
 
@@ -211,9 +207,7 @@ class TestBasicSetBonusActivation:
             )
         ]
 
-        bonuses = calculator.calculate_set_bonuses(
-            slotted_sets, sample_set_definitions
-        )
+        bonuses = calculator.calculate_set_bonuses(slotted_sets, sample_set_definitions)
 
         # Should get 2-piece bonus: +2% Damage (power ID 1000)
         assert len(bonuses) == 1
@@ -253,9 +247,7 @@ class TestCase1_BasicSetActivation:
             )
         ]
 
-        bonuses = calculator.calculate_set_bonuses(
-            slotted_sets, sample_set_definitions
-        )
+        bonuses = calculator.calculate_set_bonuses(slotted_sets, sample_set_definitions)
 
         # Should activate 2-piece and 3-piece bonuses
         assert len(bonuses) == 2
@@ -282,9 +274,7 @@ class TestCase1_BasicSetActivation:
             )
         ]
 
-        bonuses = calculator.calculate_set_bonuses(
-            slotted_sets, sample_set_definitions
-        )
+        bonuses = calculator.calculate_set_bonuses(slotted_sets, sample_set_definitions)
 
         # Should activate all 5 bonus tiers
         assert len(bonuses) == 5
@@ -401,9 +391,7 @@ class TestCase2_RuleOfFive:
             ),
         ]
 
-        bonuses = calculator.calculate_set_bonuses(
-            slotted_sets, sample_set_definitions
-        )
+        bonuses = calculator.calculate_set_bonuses(slotted_sets, sample_set_definitions)
 
         # Should get:
         # - 3 instances of power 1000 (Thunderstrike 2-piece)
@@ -443,9 +431,7 @@ class TestCase3_PvEVsPvP:
             )
         ]
 
-        bonuses = calculator.calculate_set_bonuses(
-            slotted_sets, sample_set_definitions
-        )
+        bonuses = calculator.calculate_set_bonuses(slotted_sets, sample_set_definitions)
 
         # Should activate:
         # - 2-piece PvE bonus (power 3000)
@@ -472,9 +458,7 @@ class TestCase3_PvEVsPvP:
             )
         ]
 
-        bonuses = calculator.calculate_set_bonuses(
-            slotted_sets, sample_set_definitions
-        )
+        bonuses = calculator.calculate_set_bonuses(slotted_sets, sample_set_definitions)
 
         # Should activate:
         # - 3-piece PvP bonus (power 3001)
@@ -515,9 +499,7 @@ class TestCase4_SpecialEnhancementBonus:
             )
         ]
 
-        bonuses = calculator.calculate_set_bonuses(
-            slotted_sets, sample_set_definitions
-        )
+        bonuses = calculator.calculate_set_bonuses(slotted_sets, sample_set_definitions)
 
         # Should activate:
         # - 2-piece bonus: +10% Accuracy (power 4000)
@@ -528,9 +510,7 @@ class TestCase4_SpecialEnhancementBonus:
 
         assert len(bonuses) == 2
 
-    def test_special_bonus_only_if_specific_enh_slotted(
-        self, sample_set_definitions
-    ):
+    def test_special_bonus_only_if_specific_enh_slotted(self, sample_set_definitions):
         """Test special bonus only activates with specific enhancement."""
         calculator = SetBonusCalculator(pv_mode=PvMode.PVE)
 
@@ -544,9 +524,7 @@ class TestCase4_SpecialEnhancementBonus:
             )
         ]
 
-        bonuses = calculator.calculate_set_bonuses(
-            slotted_sets, sample_set_definitions
-        )
+        bonuses = calculator.calculate_set_bonuses(slotted_sets, sample_set_definitions)
 
         # Should only get regular bonus, not special
         assert 4000 in bonuses  # Regular 2-piece
@@ -586,9 +564,7 @@ class TestHelperFunctions:
         assert len(slotted_sets) == 3
 
         # Check Set 10 in Power 1
-        set_10_p1 = [s for s in slotted_sets if s.power_id == 1 and s.set_id == 10][
-            0
-        ]
+        set_10_p1 = [s for s in slotted_sets if s.power_id == 1 and s.set_id == 10][0]
         assert set_10_p1.slotted_count == 2
         assert 100 in set_10_p1.enhancement_ids
         assert 101 in set_10_p1.enhancement_ids
@@ -669,7 +645,10 @@ class TestValidation:
     def test_validate_slotted_set_mismatch(self):
         """Test slotted set with count/IDs mismatch."""
         invalid = SlottedSet(
-            power_id=1, set_id=10, slotted_count=3, enhancement_ids=[100, 101]  # Only 2!
+            power_id=1,
+            set_id=10,
+            slotted_count=3,
+            enhancement_ids=[100, 101],  # Only 2!
         )
 
         errors = validate_slotted_set(invalid)

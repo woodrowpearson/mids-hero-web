@@ -23,7 +23,6 @@ Endpoints:
         - POST /api/v1/calculations/enhancements/set-bonuses (TODO)
 """
 
-
 from fastapi import APIRouter, HTTPException
 
 from app.calculations.build.defense_aggregator import (
@@ -49,13 +48,11 @@ from app.calculations.powers.damage_calculator import (
     DamageReturnMode,
     PowerType,
 )
-from app.schemas.calculations import (
+from app.schemas.calculations import (  # Request/Response models; Enums
     BuildTotalsRequest,
     BuildTotalsResponse,
-    # Request/Response models
     DamageCalculationRequest,
     DamageCalculationResponse,
-    # Enums
     DamageTypeEnum,
     DefenseCalculationRequest,
     DefenseCalculationResponse,
@@ -75,6 +72,7 @@ router = APIRouter()
 # ============================================================================
 # Helper Functions
 # ============================================================================
+
 
 def convert_effect_request_to_effect(effect_request) -> Effect:
     """Convert API effect request to internal Effect object."""
@@ -108,8 +106,7 @@ def convert_effect_request_to_effect(effect_request) -> Effect:
     }
 
     effect_type = effect_type_map.get(
-        effect_request.effect_type.lower(),
-        EffectType.DAMAGE
+        effect_request.effect_type.lower(), EffectType.DAMAGE
     )
 
     damage_type = None
@@ -188,6 +185,7 @@ def convert_resistance_type_enum(resistance_enum: ResistanceTypeEnum) -> Resista
 # Core Calculation Endpoints
 # ============================================================================
 
+
 @router.post(
     "/v1/calculations/power/damage",
     response_model=DamageCalculationResponse,
@@ -262,6 +260,7 @@ async def calculate_power_damage(
 # ============================================================================
 # Build Calculation Endpoints
 # ============================================================================
+
 
 @router.post(
     "/v1/calculations/build/defense",
@@ -491,6 +490,7 @@ async def get_game_constants() -> GameConstantsResponse:
 # Enhancement Calculation Endpoints
 # ============================================================================
 
+
 @router.post(
     "/v1/calculations/enhancements/procs",
     response_model=ProcCalculationResponse,
@@ -513,7 +513,11 @@ async def calculate_proc_chance(
     """Calculate proc chance for a power."""
     try:
         # Simple PPM formula: chance = PPM × (recharge + cast) / (60 × area_factor)
-        chance = request.ppm * (request.recharge_time + request.cast_time) / (60 * request.area_factor)
+        chance = (
+            request.ppm
+            * (request.recharge_time + request.cast_time)
+            / (60 * request.area_factor)
+        )
 
         # Apply minimum cap: PPM × 0.015 + 0.05
         min_cap = request.ppm * 0.015 + 0.05

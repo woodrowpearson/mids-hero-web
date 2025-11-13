@@ -10,13 +10,12 @@ import pytest
 from app.calculations.core.effect import Effect
 from app.calculations.core.effect_types import EffectType
 from app.calculations.powers.endurance_calculator import (
-    ArchetypeEnduranceStats,
     EnduranceCalculator,
+    InvalidPowerConfigError,
+    InvalidRecoveryConfigError,
     PowerType,
     validate_power_endurance_config,
     validate_recovery_config,
-    InvalidPowerConfigError,
-    InvalidRecoveryConfigError,
 )
 
 

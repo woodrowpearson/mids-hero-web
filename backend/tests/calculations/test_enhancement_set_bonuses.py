@@ -10,7 +10,6 @@ import pytest
 from app.calculations.enhancements.set_bonuses import (
     BonusItem,
     EnhancementSet,
-    InvalidSetError,
     PvMode,
     SetBonusCalculator,
     SlottedSet,

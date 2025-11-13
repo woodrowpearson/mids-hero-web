@@ -4,11 +4,12 @@ Performance tests for Calculation API endpoints.
 Ensures all endpoints meet the < 100ms response time requirement (95th percentile).
 """
 
-import pytest
 import time
 from statistics import quantiles
+
+import pytest
+from main import app
 from fastapi.testclient import TestClient
-from backend.main import app
 
 client = TestClient(app)
 
@@ -306,7 +307,7 @@ class TestConcurrentPerformance:
         percentile_values = quantiles(response_times, n=100)
         p95_time = percentile_values[94]
 
-        print(f"\nConcurrent Performance (50 requests, 10 workers):")
+        print("\nConcurrent Performance (50 requests, 10 workers):")
         print(f"  Average: {sum(response_times) / len(response_times):.2f} ms")
         print(f"  95th percentile: {p95_time:.2f} ms")
 

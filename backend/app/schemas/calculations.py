@@ -5,10 +5,8 @@ Defines request/response models for all calculation endpoints in Phase 5.
 """
 
 from enum import Enum
-from typing import Dict, List, Optional
 
-from pydantic import BaseModel, Field, field_validator
-
+from pydantic import BaseModel, Field
 
 # ============================================================================
 # Core Enums and Types
@@ -106,7 +104,7 @@ class EffectRequest(BaseModel):
     magnitude: float = Field(..., description="Base magnitude value")
     duration: float = Field(default=0.0, description="Duration in seconds (0 for instant)")
     probability: float = Field(default=1.0, ge=0.0, le=1.0, description="Probability of effect occurring")
-    damage_type: Optional[DamageTypeEnum] = Field(None, description="Damage type for damage effects")
+    damage_type: DamageTypeEnum | None = Field(None, description="Damage type for damage effects")
     ticks: int = Field(default=1, ge=1, description="Number of ticks for DoT effects")
     to_who: str = Field(default="target", description="Target of effect (self/target/both)")
 
@@ -130,7 +128,7 @@ class EffectRequest(BaseModel):
 
 class DamageCalculationRequest(BaseModel):
     """Request for power damage calculation."""
-    effects: List[EffectRequest] = Field(..., description="List of power effects")
+    effects: list[EffectRequest] = Field(..., description="List of power effects")
     power_type: PowerTypeEnum = Field(..., description="Power activation type")
     recharge_time: float = Field(default=0.0, ge=0.0, description="Base recharge time in seconds")
     cast_time: float = Field(default=0.0, ge=0.0, description="Animation/cast time in seconds")
@@ -168,10 +166,10 @@ class DamageCalculationRequest(BaseModel):
 class DamageCalculationResponse(BaseModel):
     """Response for power damage calculation."""
     total: float = Field(..., description="Total damage value")
-    by_type: Dict[DamageTypeEnum, float] = Field(..., description="Damage by type")
+    by_type: dict[DamageTypeEnum, float] = Field(..., description="Damage by type")
     has_pvp_difference: bool = Field(default=False, description="True if PvE/PvP differ")
     has_toggle_enhancements: bool = Field(default=False, description="True if toggle has enhancement effects")
-    activate_period: Optional[float] = Field(None, description="For toggles, time between ticks")
+    activate_period: float | None = Field(None, description="For toggles, time between ticks")
     tooltip: str = Field(..., description="Formatted tooltip text")
 
     class Config:
@@ -193,7 +191,7 @@ class DamageCalculationResponse(BaseModel):
 
 class DefenseBonusInput(BaseModel):
     """Defense bonus from a single source (power, enhancement set, etc.)."""
-    bonuses: Dict[DefenseTypeEnum, float] = Field(..., description="Defense bonuses by type")
+    bonuses: dict[DefenseTypeEnum, float] = Field(..., description="Defense bonuses by type")
 
     class Config:
         json_schema_extra = {
@@ -208,7 +206,7 @@ class DefenseBonusInput(BaseModel):
 
 class ResistanceBonusInput(BaseModel):
     """Resistance bonus from a single source."""
-    bonuses: Dict[ResistanceTypeEnum, float] = Field(..., description="Resistance bonuses by type")
+    bonuses: dict[ResistanceTypeEnum, float] = Field(..., description="Resistance bonuses by type")
 
     class Config:
         json_schema_extra = {
@@ -224,7 +222,7 @@ class ResistanceBonusInput(BaseModel):
 class DefenseCalculationRequest(BaseModel):
     """Request for build defense calculation."""
     archetype: ArchetypeEnum = Field(..., description="Character archetype")
-    defense_bonuses: List[DefenseBonusInput] = Field(
+    defense_bonuses: list[DefenseBonusInput] = Field(
         default_factory=list,
         description="List of defense bonuses from all sources"
     )
@@ -243,8 +241,8 @@ class DefenseCalculationRequest(BaseModel):
 
 class DefenseCalculationResponse(BaseModel):
     """Response for build defense calculation."""
-    typed: Dict[DefenseTypeEnum, float] = Field(..., description="Typed defense values")
-    positional: Dict[DefenseTypeEnum, float] = Field(..., description="Positional defense values")
+    typed: dict[DefenseTypeEnum, float] = Field(..., description="Typed defense values")
+    positional: dict[DefenseTypeEnum, float] = Field(..., description="Positional defense values")
     ddr: float = Field(default=0.0, description="Defense Debuff Resistance")
     elusivity: float = Field(default=0.0, description="Elusivity value")
 
@@ -269,7 +267,7 @@ class DefenseCalculationResponse(BaseModel):
 class ResistanceCalculationRequest(BaseModel):
     """Request for build resistance calculation."""
     archetype: ArchetypeEnum = Field(..., description="Character archetype")
-    resistance_bonuses: List[ResistanceBonusInput] = Field(
+    resistance_bonuses: list[ResistanceBonusInput] = Field(
         default_factory=list,
         description="List of resistance bonuses from all sources"
     )
@@ -288,7 +286,7 @@ class ResistanceCalculationRequest(BaseModel):
 
 class ResistanceCalculationResponse(BaseModel):
     """Response for build resistance calculation."""
-    values: Dict[ResistanceTypeEnum, float] = Field(..., description="Resistance values by type")
+    values: dict[ResistanceTypeEnum, float] = Field(..., description="Resistance values by type")
     resistance_debuff_resistance: float = Field(default=0.0, description="Resistance to resistance debuffs")
 
     class Config:
@@ -307,11 +305,11 @@ class ResistanceCalculationResponse(BaseModel):
 class BuildTotalsRequest(BaseModel):
     """Request for complete build totals calculation."""
     archetype: ArchetypeEnum = Field(..., description="Character archetype")
-    defense_bonuses: List[DefenseBonusInput] = Field(
+    defense_bonuses: list[DefenseBonusInput] = Field(
         default_factory=list,
         description="Defense bonuses from all sources"
     )
-    resistance_bonuses: List[ResistanceBonusInput] = Field(
+    resistance_bonuses: list[ResistanceBonusInput] = Field(
         default_factory=list,
         description="Resistance bonuses from all sources"
     )
@@ -361,11 +359,11 @@ class BuildTotalsResponse(BaseModel):
 class GameConstantsResponse(BaseModel):
     """Response for game constants."""
     base_magic: float = Field(..., description="BASE_MAGIC constant (1.666667)")
-    ed_schedule_a_thresholds: List[float] = Field(..., description="Schedule A ED thresholds")
-    ed_schedule_b_thresholds: List[float] = Field(..., description="Schedule B ED thresholds")
-    ed_schedule_c_thresholds: List[float] = Field(..., description="Schedule C ED thresholds")
-    ed_schedule_d_thresholds: List[float] = Field(..., description="Schedule D ED thresholds")
-    ed_efficiencies: List[float] = Field(..., description="ED efficiency multipliers")
+    ed_schedule_a_thresholds: list[float] = Field(..., description="Schedule A ED thresholds")
+    ed_schedule_b_thresholds: list[float] = Field(..., description="Schedule B ED thresholds")
+    ed_schedule_c_thresholds: list[float] = Field(..., description="Schedule C ED thresholds")
+    ed_schedule_d_thresholds: list[float] = Field(..., description="Schedule D ED thresholds")
+    ed_efficiencies: list[float] = Field(..., description="ED efficiency multipliers")
     game_tick_seconds: float = Field(..., description="Game tick rate in seconds (4.0)")
     rule_of_five_limit: int = Field(..., description="Rule of 5 set bonus limit (5)")
     training_origin_value: float = Field(..., description="TO enhancement value")
@@ -459,7 +457,7 @@ class ProcCalculationResponse(BaseModel):
 class ErrorResponse(BaseModel):
     """Standard error response."""
     error: str = Field(..., description="Error message")
-    detail: Optional[str] = Field(None, description="Detailed error information")
+    detail: str | None = Field(None, description="Detailed error information")
 
     class Config:
         json_schema_extra = {

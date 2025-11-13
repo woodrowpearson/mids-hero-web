@@ -23,52 +23,51 @@ Endpoints:
         - POST /api/v1/calculations/enhancements/set-bonuses (TODO)
 """
 
+
 from fastapi import APIRouter, HTTPException
-from typing import Dict
 
-from app.schemas.calculations import (
-    # Request/Response models
-    DamageCalculationRequest,
-    DamageCalculationResponse,
-    DefenseCalculationRequest,
-    DefenseCalculationResponse,
-    ResistanceCalculationRequest,
-    ResistanceCalculationResponse,
-    BuildTotalsRequest,
-    BuildTotalsResponse,
-    GameConstantsResponse,
-    ProcCalculationRequest,
-    ProcCalculationResponse,
-    ErrorResponse,
-    # Enums
-    DamageTypeEnum,
-    DefenseTypeEnum,
-    ResistanceTypeEnum,
-)
-
-# Import calculation modules
-from app.calculations.core import constants
-from app.calculations.core.effect import Effect
-from app.calculations.core.effect_types import EffectType, DamageType
-from app.calculations.core.enums import ToWho, PvMode, ArchetypeType
-from app.calculations.powers.damage_calculator import (
-    DamageCalculator,
-    PowerType,
-    DamageMathMode,
-    DamageReturnMode,
-)
 from app.calculations.build.defense_aggregator import (
     DefenseType,
-    DefenseValues,
     aggregate_defense_bonuses,
 )
 from app.calculations.build.resistance_aggregator import (
     ResistanceType,
-    ResistanceValues,
     aggregate_resistance_bonuses,
 )
-from app.calculations.build.build_totals import BuildTotals
-from app.calculations.enhancements.proc_calculator import ProcCalculator
+
+# Import calculation modules
+from app.calculations.core import constants
+from app.calculations.core.archetype_caps import ArchetypeType
+from app.calculations.core.effect import Effect
+from app.calculations.core.effect_types import DamageType, EffectType
+from app.calculations.core.enums import PvMode, ToWho
+
+# Proc calculator not yet integrated - using simplified formula in endpoint
+from app.calculations.powers.damage_calculator import (
+    DamageCalculator,
+    DamageMathMode,
+    DamageReturnMode,
+    PowerType,
+)
+from app.schemas.calculations import (
+    BuildTotalsRequest,
+    BuildTotalsResponse,
+    # Request/Response models
+    DamageCalculationRequest,
+    DamageCalculationResponse,
+    # Enums
+    DamageTypeEnum,
+    DefenseCalculationRequest,
+    DefenseCalculationResponse,
+    DefenseTypeEnum,
+    ErrorResponse,
+    GameConstantsResponse,
+    ProcCalculationRequest,
+    ProcCalculationResponse,
+    ResistanceCalculationRequest,
+    ResistanceCalculationResponse,
+    ResistanceTypeEnum,
+)
 
 router = APIRouter()
 
@@ -513,17 +512,21 @@ async def calculate_proc_chance(
 ) -> ProcCalculationResponse:
     """Calculate proc chance for a power."""
     try:
-        calculator = ProcCalculator()
+        # Simple PPM formula: chance = PPM × (recharge + cast) / (60 × area_factor)
+        chance = request.ppm * (request.recharge_time + request.cast_time) / (60 * request.area_factor)
 
-        chance = calculator.calculate_proc_chance(
-            ppm=request.ppm,
-            recharge_time=request.recharge_time,
-            cast_time=request.cast_time,
-            area_factor=request.area_factor,
-        )
+        # Apply minimum cap: PPM × 0.015 + 0.05
+        min_cap = request.ppm * 0.015 + 0.05
+        if chance < min_cap:
+            chance = min_cap
+
+        # Apply maximum cap: 90%
+        MAX_PROC_CHANCE = 0.90
+        if chance > MAX_PROC_CHANCE:
+            chance = MAX_PROC_CHANCE
 
         # Check if capped at 90%
-        capped = chance >= 0.90
+        capped = chance >= MAX_PROC_CHANCE
 
         return ProcCalculationResponse(
             chance=chance,

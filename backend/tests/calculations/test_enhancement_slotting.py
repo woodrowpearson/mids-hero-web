@@ -19,7 +19,6 @@ from app.calculations.enhancements.slotting import (
     validate_slotted_power,
 )
 
-
 # Sample multiplier tables (from Maths.mhd)
 MULT_TABLES = {
     "MultTO": [[0.053, 0.035, 0.026, 0.020]],  # Training Origin

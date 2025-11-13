@@ -8,9 +8,9 @@ All expected values are exact calculations from the specification.
 import pytest
 
 from app.calculations.powers.recharge_calculator import (
+    InvalidRechargeConfigError,
     RechargeCalculator,
     validate_recharge_config,
-    InvalidRechargeConfigError,
 )
 
 

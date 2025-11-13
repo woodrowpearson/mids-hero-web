@@ -4,7 +4,6 @@ Tests for Healing and Absorption Calculator
 Based on test cases from Spec 05 section 4.
 """
 
-import math
 
 import pytest
 

@@ -12,7 +12,6 @@ Based on:
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import Optional
 
 from ..core.effect import Effect
 from ..core.effect_types import DamageType as CoreDamageType
@@ -43,7 +42,7 @@ class DamageType(Enum):
     AOE = "aoe"
 
     @classmethod
-    def from_core_damage_type(cls, core_type: Optional[CoreDamageType]) -> "DamageType":
+    def from_core_damage_type(cls, core_type: CoreDamageType | None) -> "DamageType":
         """Convert core DamageType to power DamageType."""
         if core_type is None:
             return cls.NONE
@@ -130,7 +129,7 @@ class DamageSummary:
     total: float
     has_pvp_difference: bool = False
     has_toggle_enhancements: bool = False
-    activate_period: Optional[float] = None
+    activate_period: float | None = None
 
     def __str__(self) -> str:
         """Format like MidsReborn: 'Fire(42.5), Energy(28.3)'"""
@@ -343,7 +342,7 @@ class DamageCalculator:
             else None,
         )
 
-    def calculate_effect_damage(self, effect: Effect) -> Optional[DamageValue]:
+    def calculate_effect_damage(self, effect: Effect) -> DamageValue | None:
         """
         Calculate damage from single effect.
 

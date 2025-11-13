@@ -13,7 +13,7 @@ Based on:
 from dataclasses import dataclass
 from decimal import Decimal
 from enum import Enum
-from typing import Dict, List, Optional, Tuple
+from typing import Optional
 
 from ..core.effect import Effect
 from ..core.effect_types import EffectType
@@ -136,7 +136,7 @@ class BuffDebuffEffect:
         """Check if effect is permanent (duration = 0)."""
         return self.duration == 0
 
-    def get_grouping_key(self) -> Tuple:
+    def get_grouping_key(self) -> tuple:
         """
         Get composite key for grouping effects.
 
@@ -169,7 +169,7 @@ class BuffDebuffCalculator:
     """
 
     # Stacking mode mappings from Spec 03
-    STACKING_MODES: Dict[BuffDebuffType, StackingMode] = {
+    STACKING_MODES: dict[BuffDebuffType, StackingMode] = {
         BuffDebuffType.DEFENSE: StackingMode.ADDITIVE,
         BuffDebuffType.RESISTANCE: StackingMode.ADDITIVE,
         BuffDebuffType.DAMAGE_BUFF: StackingMode.MULTIPLICATIVE,
@@ -194,7 +194,7 @@ class BuffDebuffCalculator:
         enhancement_bonus: Decimal,
         at_modifier: Decimal,
         target_resistance: Decimal = Decimal("0.0"),
-    ) -> Dict[str, Decimal]:
+    ) -> dict[str, Decimal]:
         """
         Calculate final buff/debuff magnitude.
 
@@ -278,7 +278,7 @@ class BuffDebuffCalculator:
         return StackingMode.ADDITIVE
 
     def apply_stacking(
-        self, effects: List[BuffDebuffEffect], mode: StackingMode
+        self, effects: list[BuffDebuffEffect], mode: StackingMode
     ) -> Decimal:
         """
         Apply stacking rules to calculate total magnitude.
@@ -318,8 +318,8 @@ class BuffDebuffCalculator:
         return Decimal("0.0")
 
     def group_effects(
-        self, effects: List[BuffDebuffEffect]
-    ) -> Dict[Tuple, List[BuffDebuffEffect]]:
+        self, effects: list[BuffDebuffEffect]
+    ) -> dict[tuple, list[BuffDebuffEffect]]:
         """
         Group effects by type, aspect, and target.
 
@@ -331,7 +331,7 @@ class BuffDebuffCalculator:
         Returns:
             Dictionary keyed by grouping tuple
         """
-        groups: Dict[Tuple, List[BuffDebuffEffect]] = {}
+        groups: dict[tuple, list[BuffDebuffEffect]] = {}
 
         for effect in effects:
             key = effect.get_grouping_key()
@@ -344,8 +344,8 @@ class BuffDebuffCalculator:
         return groups
 
     def aggregate_effects(
-        self, effects: List[BuffDebuffEffect]
-    ) -> Dict[Tuple, Decimal]:
+        self, effects: list[BuffDebuffEffect]
+    ) -> dict[tuple, Decimal]:
         """
         Aggregate effects with stacking rules applied.
 
@@ -358,7 +358,7 @@ class BuffDebuffCalculator:
             Dictionary mapping effect key to total magnitude
         """
         groups = self.group_effects(effects)
-        aggregated: Dict[Tuple, Decimal] = {}
+        aggregated: dict[tuple, Decimal] = {}
 
         for key, effect_list in groups.items():
             # Determine stacking mode for this group
@@ -426,8 +426,8 @@ class BuffDebuffCalculator:
 def format_buff_display(
     buff_type: BuffDebuffType,
     magnitude: Decimal,
-    damage_type: Optional[str] = None,
-    mez_type: Optional[str] = None,
+    damage_type: str | None = None,
+    mez_type: str | None = None,
 ) -> str:
     """
     Format buff/debuff for display.

@@ -158,10 +158,7 @@ class DamageSummary:
         # Total with breakdown
         total_line = f"Total: {self.total:.2f}"
         breakdown = ", ".join(
-            [
-                f"{dtype.value.title()}: {val:.2f}"
-                for dtype, val in self.by_type.items()
-            ]
+            [f"{dtype.value.title()}: {val:.2f}" for dtype, val in self.by_type.items()]
         )
         lines.append(f"{total_line} ({breakdown})")
 
@@ -272,13 +269,18 @@ class DamageCalculator:
 
             # STEP 6: Apply probability (lines 887-890)
             # Skip probability for cancel-on-miss DoTs (geometric series handles it)
-            if self.damage_math_mode == DamageMathMode.AVERAGE and not is_cancel_on_miss_dot:
+            if (
+                self.damage_math_mode == DamageMathMode.AVERAGE
+                and not is_cancel_on_miss_dot
+            ):
                 effect_damage *= effect.probability
 
             # STEP 7: Toggle enhancement scaling (lines 892-895)
             # Toggle enhancement effects tick every 10s regardless of activate period
             if power_type == PowerType.TOGGLE and effect.is_enhancement_effect:
-                effect_damage *= power_activate_period / self.TOGGLE_ENHANCEMENT_TICK_RATE
+                effect_damage *= (
+                    power_activate_period / self.TOGGLE_ENHANCEMENT_TICK_RATE
+                )
                 has_toggle_enhancements = True
 
             # STEP 8: Handle DoT ticking (lines 897-904)
@@ -337,9 +339,9 @@ class DamageCalculator:
             total=total_damage,
             has_pvp_difference=has_pvp_difference,
             has_toggle_enhancements=has_toggle_enhancements,
-            activate_period=power_activate_period
-            if power_type == PowerType.TOGGLE
-            else None,
+            activate_period=(
+                power_activate_period if power_type == PowerType.TOGGLE else None
+            ),
         )
 
     def calculate_effect_damage(self, effect: Effect) -> DamageValue | None:

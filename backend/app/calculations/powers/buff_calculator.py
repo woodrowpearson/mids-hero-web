@@ -146,7 +146,9 @@ class BuffDebuffEffect:
         Returns:
             Tuple of (effect_type, damage_type, mez_type, to_who, pv_mode)
         """
-        damage_type_value = self.effect.damage_type.value if self.effect.damage_type else None
+        damage_type_value = (
+            self.effect.damage_type.value if self.effect.damage_type else None
+        )
         mez_type_value = self.effect.mez_type.value if self.effect.mez_type else None
 
         return (
@@ -219,13 +221,13 @@ class BuffDebuffCalculator:
         if at_modifier <= 0:
             raise ValueError(f"AT modifier must be positive: {at_modifier}")
         if not (0 <= target_resistance <= 1):
-            raise ValueError(
-                f"Target resistance must be 0-1: {target_resistance}"
-            )
+            raise ValueError(f"Target resistance must be 0-1: {target_resistance}")
 
         # STEP 1: Calculate base magnitude
         # From Effect.cs line 407: Scale * nMagnitude * DatabaseAPI.GetModifier(this)
-        base_mag = Decimal(str(effect.scale)) * Decimal(str(effect.magnitude)) * at_modifier
+        base_mag = (
+            Decimal(str(effect.scale)) * Decimal(str(effect.magnitude)) * at_modifier
+        )
 
         # STEP 2: Apply enhancements if buffable
         # Most buffs/debuffs have buffable = True
@@ -454,7 +456,7 @@ def format_buff_display(
     import re
 
     # Insert space before capital letters (for camelCase like "RechargeTime")
-    name = re.sub(r'([a-z])([A-Z])', r'\1 \2', buff_type.value)
+    name = re.sub(r"([a-z])([A-Z])", r"\1 \2", buff_type.value)
     name = name.replace("_", " ").title()
 
     # Add aspect if present

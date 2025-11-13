@@ -61,7 +61,9 @@ class TestDefenseBuff:
             at_modifier=Decimal("1.0"),  # Scrapper
         )
 
-        assert result["base_mag"] == pytest.approx(Decimal("0.13875"), abs=Decimal("0.00001"))
+        assert result["base_mag"] == pytest.approx(
+            Decimal("0.13875"), abs=Decimal("0.00001")
+        )
         assert result["enhanced_mag"] == pytest.approx(
             Decimal("0.2705625"), abs=Decimal("0.0001")
         )
@@ -113,9 +115,15 @@ class TestResistanceDebuff:
             target_resistance=Decimal("0.20"),  # 20% debuff resistance
         )
 
-        assert result["base_mag"] == pytest.approx(Decimal("-0.30"), abs=Decimal("0.001"))
-        assert result["enhanced_mag"] == pytest.approx(Decimal("-0.468"), abs=Decimal("0.001"))
-        assert result["final_mag"] == pytest.approx(Decimal("-0.3744"), abs=Decimal("0.0001"))
+        assert result["base_mag"] == pytest.approx(
+            Decimal("-0.30"), abs=Decimal("0.001")
+        )
+        assert result["enhanced_mag"] == pytest.approx(
+            Decimal("-0.468"), abs=Decimal("0.001")
+        )
+        assert result["final_mag"] == pytest.approx(
+            Decimal("-0.3744"), abs=Decimal("0.0001")
+        )
         assert result["duration"] == Decimal("30.0")
 
 
@@ -158,7 +166,9 @@ class TestDamageBuff:
             at_modifier=Decimal("0.80"),  # Controller
         )
 
-        assert result["final_mag"] == pytest.approx(Decimal("0.40"), abs=Decimal("0.001"))
+        assert result["final_mag"] == pytest.approx(
+            Decimal("0.40"), abs=Decimal("0.001")
+        )
 
     def test_damage_buff_multiplicative_stacking(self):
         """
@@ -231,7 +241,9 @@ class TestRechargeBuff:
             at_modifier=Decimal("1.0"),
         )
 
-        assert result["enhanced_mag"] == pytest.approx(Decimal("1.365"), abs=Decimal("0.001"))
+        assert result["enhanced_mag"] == pytest.approx(
+            Decimal("1.365"), abs=Decimal("0.001")
+        )
 
         # Recharge time multiplier calculation
         recharge_multiplier = 1.0 / (1.0 + float(result["enhanced_mag"]))
@@ -276,7 +288,9 @@ class TestMovementSpeedBuff:
         )
 
         # Enhancement should not apply
-        assert result["base_mag"] == pytest.approx(Decimal("2.167"), abs=Decimal("0.001"))
+        assert result["base_mag"] == pytest.approx(
+            Decimal("2.167"), abs=Decimal("0.001")
+        )
         assert result["enhanced_mag"] == pytest.approx(
             Decimal("2.167"), abs=Decimal("0.001")
         )  # Same as base
@@ -504,7 +518,10 @@ class TestErrorHandling:
     def test_negative_enhancement_bonus_raises(self):
         """Enhancement bonus cannot be negative."""
         effect = Effect(
-            unique_id=1, effect_type=EffectType.DEFENSE, magnitude=0.15, to_who=ToWho.SELF
+            unique_id=1,
+            effect_type=EffectType.DEFENSE,
+            magnitude=0.15,
+            to_who=ToWho.SELF,
         )
 
         calculator = BuffDebuffCalculator()
@@ -518,7 +535,10 @@ class TestErrorHandling:
     def test_invalid_at_modifier_raises(self):
         """AT modifier must be positive."""
         effect = Effect(
-            unique_id=1, effect_type=EffectType.DEFENSE, magnitude=0.15, to_who=ToWho.SELF
+            unique_id=1,
+            effect_type=EffectType.DEFENSE,
+            magnitude=0.15,
+            to_who=ToWho.SELF,
         )
 
         calculator = BuffDebuffCalculator()
@@ -532,7 +552,10 @@ class TestErrorHandling:
     def test_invalid_target_resistance_raises(self):
         """Target resistance must be 0-1."""
         effect = Effect(
-            unique_id=1, effect_type=EffectType.DEFENSE, magnitude=0.15, to_who=ToWho.TARGET
+            unique_id=1,
+            effect_type=EffectType.DEFENSE,
+            magnitude=0.15,
+            to_who=ToWho.TARGET,
         )
 
         calculator = BuffDebuffCalculator()

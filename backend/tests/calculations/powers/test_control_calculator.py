@@ -301,7 +301,7 @@ class TestControlCalculator:
 
     def test_av_mez_immunity(self):
         """Test that AVs are effectively immune to standard mezzes"""
-        hold = MezEffect(
+        MezEffect(
             mez_type=MezType.HELD, magnitude=3.0, duration=8.0, scale=1.0, stacks=True
         )
 

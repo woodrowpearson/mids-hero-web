@@ -10,13 +10,12 @@ import pytest
 from app.calculations.core.effect import Effect
 from app.calculations.core.effect_types import EffectType
 from app.calculations.powers.endurance_calculator import (
-    ArchetypeEnduranceStats,
     EnduranceCalculator,
+    InvalidPowerConfigError,
+    InvalidRecoveryConfigError,
     PowerType,
     validate_power_endurance_config,
     validate_recovery_config,
-    InvalidPowerConfigError,
-    InvalidRecoveryConfigError,
 )
 
 
@@ -190,7 +189,9 @@ class TestBaseRecovery:
         Expected: 5.57 end/sec
         """
         calculator = EnduranceCalculator()
-        result = calculator.calculate_recovery_rate(recovery_effects=[], max_endurance=100.0)
+        result = calculator.calculate_recovery_rate(
+            recovery_effects=[], max_endurance=100.0
+        )
 
         assert result.recovery_total == pytest.approx(1.0, abs=0.01)
         assert result.recovery_numeric == pytest.approx(5.57, abs=0.01)
@@ -218,9 +219,7 @@ class TestRecoveryWithStamina:
 
         Expected: 6.96 end/sec
         """
-        stamina = Effect(
-            unique_id=1, effect_type=EffectType.RECOVERY, magnitude=0.25
-        )
+        stamina = Effect(unique_id=1, effect_type=EffectType.RECOVERY, magnitude=0.25)
 
         calculator = EnduranceCalculator()
         result = calculator.calculate_recovery_rate(
@@ -251,12 +250,8 @@ class TestRecoveryWithMultiplePowers:
 
         Expected: 7.53 end/sec
         """
-        stamina = Effect(
-            unique_id=1, effect_type=EffectType.RECOVERY, magnitude=0.25
-        )
-        phys_perf = Effect(
-            unique_id=2, effect_type=EffectType.RECOVERY, magnitude=0.10
-        )
+        stamina = Effect(unique_id=1, effect_type=EffectType.RECOVERY, magnitude=0.25)
+        phys_perf = Effect(unique_id=2, effect_type=EffectType.RECOVERY, magnitude=0.10)
 
         calculator = EnduranceCalculator()
         result = calculator.calculate_recovery_rate(
@@ -310,9 +305,7 @@ class TestRecoveryWithIncreasedMaxEnd:
 
         Expected: 7.31 end/sec (5% more than with 100 max end)
         """
-        stamina = Effect(
-            unique_id=1, effect_type=EffectType.RECOVERY, magnitude=0.25
-        )
+        stamina = Effect(unique_id=1, effect_type=EffectType.RECOVERY, magnitude=0.25)
 
         calculator = EnduranceCalculator()
         result = calculator.calculate_recovery_rate(

@@ -10,7 +10,6 @@ import pytest
 from app.calculations.powers.pet_calculator import (
     InheritedCasterBuffs,
     PetCalculator,
-    PetPowerData,
 )
 
 

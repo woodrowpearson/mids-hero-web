@@ -19,7 +19,6 @@ from app.calculations.enhancements.slotting import (
     validate_slotted_power,
 )
 
-
 # Sample multiplier tables (from Maths.mhd)
 MULT_TABLES = {
     "MultTO": [[0.053, 0.035, 0.026, 0.020]],  # Training Origin
@@ -113,7 +112,7 @@ class TestSlottedPower:
         power = SlottedPower(power_id=1, is_slottable=True)
 
         # Add 6 slots
-        for i in range(6):
+        for _i in range(6):
             assert power.add_slot(slot_level=1)
 
         # 7th slot should fail
@@ -177,7 +176,7 @@ class TestSlotValidation:
         """Test too many slots detected."""
         power = SlottedPower(power_id=1, is_slottable=True, slots=[])
         # Manually add 7 slots (bypassing add_slot validation)
-        for i in range(7):
+        for _i in range(7):
             power.slots.append(SlotEntry(level=1))
 
         errors = validate_slotted_power(power)
@@ -202,7 +201,7 @@ class TestSlotValidation:
 
         # Too many slots
         power = SlottedPower(power_id=1, is_slottable=True)
-        for i in range(6):
+        for _i in range(6):
             power.add_slot(slot_level=1)
 
         with pytest.raises(InvalidSlotCountError):
@@ -215,19 +214,37 @@ class TestRelativeLevelMultiplier:
     def test_below_even_multipliers(self, calculator):
         """Test relative level multipliers below even (0)."""
         # Below Even: multiplier = 1.0 + (level * 0.1)
-        assert calculator.get_relative_level_multiplier(RelativeLevel.MINUS_THREE) == pytest.approx(0.70)
-        assert calculator.get_relative_level_multiplier(RelativeLevel.MINUS_TWO) == pytest.approx(0.80)
-        assert calculator.get_relative_level_multiplier(RelativeLevel.MINUS_ONE) == pytest.approx(0.90)
+        assert calculator.get_relative_level_multiplier(
+            RelativeLevel.MINUS_THREE
+        ) == pytest.approx(0.70)
+        assert calculator.get_relative_level_multiplier(
+            RelativeLevel.MINUS_TWO
+        ) == pytest.approx(0.80)
+        assert calculator.get_relative_level_multiplier(
+            RelativeLevel.MINUS_ONE
+        ) == pytest.approx(0.90)
 
     def test_even_and_above_multipliers(self, calculator):
         """Test relative level multipliers at or above even (0)."""
         # At or Above Even: multiplier = 1.0 + (level * 0.05)
-        assert calculator.get_relative_level_multiplier(RelativeLevel.EVEN) == pytest.approx(1.00)
-        assert calculator.get_relative_level_multiplier(RelativeLevel.PLUS_ONE) == pytest.approx(1.05)
-        assert calculator.get_relative_level_multiplier(RelativeLevel.PLUS_TWO) == pytest.approx(1.10)
-        assert calculator.get_relative_level_multiplier(RelativeLevel.PLUS_THREE) == pytest.approx(1.15)
-        assert calculator.get_relative_level_multiplier(RelativeLevel.PLUS_FOUR) == pytest.approx(1.20)
-        assert calculator.get_relative_level_multiplier(RelativeLevel.PLUS_FIVE) == pytest.approx(1.25)
+        assert calculator.get_relative_level_multiplier(
+            RelativeLevel.EVEN
+        ) == pytest.approx(1.00)
+        assert calculator.get_relative_level_multiplier(
+            RelativeLevel.PLUS_ONE
+        ) == pytest.approx(1.05)
+        assert calculator.get_relative_level_multiplier(
+            RelativeLevel.PLUS_TWO
+        ) == pytest.approx(1.10)
+        assert calculator.get_relative_level_multiplier(
+            RelativeLevel.PLUS_THREE
+        ) == pytest.approx(1.15)
+        assert calculator.get_relative_level_multiplier(
+            RelativeLevel.PLUS_FOUR
+        ) == pytest.approx(1.20)
+        assert calculator.get_relative_level_multiplier(
+            RelativeLevel.PLUS_FIVE
+        ) == pytest.approx(1.25)
 
 
 # ====================
@@ -393,9 +410,7 @@ class TestCase4_EnhancementBoosters:
 
     def test_boost_multiplier(self, calculator):
         """Test +5 boost gives ~26% increase."""
-        slot = Slot(
-            enhancement_id=100, io_level=50, is_boosted=True, boost_level=5
-        )
+        slot = Slot(enhancement_id=100, io_level=50, is_boosted=True, boost_level=5)
 
         value = calculator.calculate_slot_value(slot, schedule_index=0)
 
@@ -573,14 +588,10 @@ class TestCase7_DualBuilds:
             # Primary: Pure Recharge IO (ID 100)
             power.slots[i].enhancement = Slot(enhancement_id=100, io_level=50)
             # Secondary: Recharge/End IO (ID 200)
-            power.slots[i].flipped_enhancement = Slot(
-                enhancement_id=200, io_level=50
-            )
+            power.slots[i].flipped_enhancement = Slot(enhancement_id=200, io_level=50)
 
         # Calculate primary build
-        total_build1 = calculator.calculate_total_enhancement(
-            power, schedule_index=0
-        )
+        total_build1 = calculator.calculate_total_enhancement(power, schedule_index=0)
 
         assert total_build1 == pytest.approx(1.272, abs=0.01)
 
@@ -591,9 +602,7 @@ class TestCase7_DualBuilds:
         assert power.slots[0].enhancement.enhancement_id == 200
 
         # Calculate secondary build (would need different calculations for dual-aspect)
-        total_build2 = calculator.calculate_total_enhancement(
-            power, schedule_index=0
-        )
+        total_build2 = calculator.calculate_total_enhancement(power, schedule_index=0)
 
         # Build 2 still has 3 IOs (different ones)
         assert total_build2 == pytest.approx(1.272, abs=0.01)

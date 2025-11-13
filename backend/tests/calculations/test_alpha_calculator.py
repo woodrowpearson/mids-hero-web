@@ -8,7 +8,8 @@ Based on test cases from Spec 29 section 4.
 from decimal import Decimal
 
 import pytest
-from backend.app.calculations.incarnates.alpha_calculator import (
+
+from app.calculations.incarnates.alpha_calculator import (
     AlphaSlotCalculator,
     AlphaSlotFactory,
     AlphaTier,

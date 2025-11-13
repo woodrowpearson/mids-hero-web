@@ -8,9 +8,9 @@ All expected values are exact calculations from the specification.
 import pytest
 
 from app.calculations.powers.recharge_calculator import (
+    InvalidRechargeConfigError,
     RechargeCalculator,
     validate_recharge_config,
-    InvalidRechargeConfigError,
 )
 
 
@@ -318,12 +318,16 @@ class TestValidation:
 
     def test_invalid_negative_local_bonus(self):
         """Test that negative local bonus raises error"""
-        with pytest.raises(InvalidRechargeConfigError, match="Local bonus cannot be negative"):
+        with pytest.raises(
+            InvalidRechargeConfigError, match="Local bonus cannot be negative"
+        ):
             validate_recharge_config(60.0, [-0.5], 0.0, 5.0)
 
     def test_invalid_negative_global_bonus(self):
         """Test that negative global bonus raises error"""
-        with pytest.raises(InvalidRechargeConfigError, match="Global bonus cannot be negative"):
+        with pytest.raises(
+            InvalidRechargeConfigError, match="Global bonus cannot be negative"
+        ):
             validate_recharge_config(60.0, [], -0.5, 5.0)
 
     def test_invalid_zero_cap(self):

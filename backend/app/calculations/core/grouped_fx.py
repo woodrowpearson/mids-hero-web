@@ -6,11 +6,10 @@ Implements FxId composite key and stacking rules.
 """
 
 from dataclasses import dataclass
-from typing import List, Dict, Tuple, Optional
 
 from .effect import Effect
-from .effect_types import EffectType, DamageType, MezType
-from .enums import ToWho, PvMode, Stacking, SpecialCase
+from .effect_types import DamageType, EffectType, MezType
+from .enums import PvMode, SpecialCase, Stacking, ToWho
 
 
 @dataclass
@@ -23,17 +22,18 @@ class FxId:
 
     This acts as a composite key - effects must match ALL fields to be grouped.
     """
+
     effect_type: EffectType
-    mez_type: Optional[MezType]
-    damage_type: Optional[DamageType]
-    et_modifies: Optional[EffectType]  # For enhancement effects
+    mez_type: MezType | None
+    damage_type: DamageType | None
+    et_modifies: EffectType | None  # For enhancement effects
     to_who: ToWho
     pv_mode: PvMode
     summon_id: int
     duration: float
     ignore_scaling: bool
 
-    def to_tuple(self) -> Tuple:
+    def to_tuple(self) -> tuple:
         """
         Convert to hashable tuple for use as dict key.
 
@@ -49,7 +49,7 @@ class FxId:
             self.pv_mode,
             self.summon_id,
             self.duration,
-            self.ignore_scaling
+            self.ignore_scaling,
         )
 
     def __hash__(self):
@@ -78,10 +78,11 @@ class GroupedEffect:
     Maps to MidsReborn's GroupedFx class from GroupedFx.cs lines 27-72.
     Contains the aggregated magnitude from all sources with matching FxId.
     """
+
     fx_id: FxId
     magnitude: float
     alias: str  # Display name like "Defense(Melee)"
-    included_effects: List[int]  # Source effect IDs
+    included_effects: list[int]  # Source effect IDs
     is_enhancement: bool
     special_case: SpecialCase
     is_aggregated: bool = False  # True if from multiple sources
@@ -125,7 +126,7 @@ class EffectAggregator:
     Groups effects by FxId composite key and sums magnitudes.
     """
 
-    def group_effects(self, effects: List[Effect]) -> Dict[FxId, GroupedEffect]:
+    def group_effects(self, effects: list[Effect]) -> dict[FxId, GroupedEffect]:
         """
         Group and aggregate effects by FxId.
 
@@ -143,7 +144,7 @@ class EffectAggregator:
         Returns:
             Dictionary keyed by FxId, values are GroupedEffect
         """
-        groups: Dict[FxId, GroupedEffect] = {}
+        groups: dict[FxId, GroupedEffect] = {}
 
         for effect in effects:
             # Create FxId for this effect
@@ -158,7 +159,7 @@ class EffectAggregator:
                     included_effects=[effect.unique_id],
                     is_enhancement=effect.is_enhancement_effect,
                     special_case=effect.special_case,
-                    is_aggregated=False
+                    is_aggregated=False,
                 )
             else:
                 # Additional effect of same type - aggregate
@@ -185,14 +186,12 @@ class EffectAggregator:
             pv_mode=effect.pv_mode,
             summon_id=effect.summon_id,
             duration=effect.duration,
-            ignore_scaling=effect.ignore_scaling
+            ignore_scaling=effect.ignore_scaling,
         )
 
     def apply_archetype_scaling(
-        self,
-        groups: Dict[FxId, GroupedEffect],
-        at_scales: Dict[EffectType, float]
-    ) -> Dict[FxId, GroupedEffect]:
+        self, groups: dict[FxId, GroupedEffect], at_scales: dict[EffectType, float]
+    ) -> dict[FxId, GroupedEffect]:
         """
         Apply archetype-specific scaling to grouped effects.
 
@@ -222,7 +221,7 @@ class EffectAggregator:
                     included_effects=group.included_effects.copy(),
                     is_enhancement=group.is_enhancement,
                     special_case=group.special_case,
-                    is_aggregated=group.is_aggregated
+                    is_aggregated=group.is_aggregated,
                 )
                 scaled_groups[fx_id] = scaled_group
             else:
@@ -231,10 +230,8 @@ class EffectAggregator:
         return scaled_groups
 
     def apply_caps(
-        self,
-        groups: Dict[FxId, GroupedEffect],
-        caps: Dict[EffectType, float]
-    ) -> Dict[FxId, GroupedEffect]:
+        self, groups: dict[FxId, GroupedEffect], caps: dict[EffectType, float]
+    ) -> dict[FxId, GroupedEffect]:
         """
         Apply archetype caps to grouped effects.
 
@@ -261,7 +258,7 @@ class EffectAggregator:
                     included_effects=group.included_effects.copy(),
                     is_enhancement=group.is_enhancement,
                     special_case=group.special_case,
-                    is_aggregated=group.is_aggregated
+                    is_aggregated=group.is_aggregated,
                 )
                 capped_groups[fx_id] = capped_group
             else:
@@ -270,10 +267,8 @@ class EffectAggregator:
         return capped_groups
 
     def get_effects_by_type(
-        self,
-        groups: Dict[FxId, GroupedEffect],
-        effect_type: EffectType
-    ) -> List[GroupedEffect]:
+        self, groups: dict[FxId, GroupedEffect], effect_type: EffectType
+    ) -> list[GroupedEffect]:
         """
         Filter grouped effects by effect type.
 
@@ -287,14 +282,11 @@ class EffectAggregator:
             List of grouped effects matching the type
         """
         return [
-            group for fx_id, group in groups.items()
-            if fx_id.effect_type == effect_type
+            group for fx_id, group in groups.items() if fx_id.effect_type == effect_type
         ]
 
     def get_total_magnitude(
-        self,
-        groups: Dict[FxId, GroupedEffect],
-        effect_type: EffectType
+        self, groups: dict[FxId, GroupedEffect], effect_type: EffectType
     ) -> float:
         """
         Get sum of all magnitudes for an effect type.

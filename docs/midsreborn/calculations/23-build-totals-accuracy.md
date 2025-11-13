@@ -29,7 +29,6 @@
 - Source: `_selfEnhance.Effect[(int)Enums.eStatType.BuffAcc]` + `_selfBuffs.Effect[(int)Enums.eStatType.BuffAcc]`
 - Comes from:
   - Enhancement set bonuses (e.g., "3.13% Accuracy")
-  - Special IOs (e.g., Kismet +ToHit IO - despite the name, grants +6% accuracy)
   - Some Incarnate abilities
 - Effect: Multiplies the final accuracy calculation
 - Applied in power calculation as: `(1 + enhancement_accuracy + global_accuracy_buff)`
@@ -43,6 +42,7 @@
 - Comes from:
   - Power buffs (Build Up, Aim, Focused Accuracy)
   - Team buffs (Tactics, Vengeance)
+  - Special IOs (Kismet +ToHit IO grants +6% tohit)
   - Enhancement set bonuses (e.g., "3% ToHit")
   - Some Incarnate abilities
 - Effect: Adds to hit chance after accuracy multiplier
@@ -224,7 +224,7 @@ The dual accuracy/tohit system in City of Heroes creates strategic depth in buil
 
 - **Issue 7 (2006)**: Invention sets introduced with accuracy bonuses. Build planners discovered stacking accuracy set bonuses was more effective than over-slotting accuracy in powers.
 
-- **Issue 9 (2007)**: Kismet +ToHit IO introduced. Despite the name "Kismet: Accuracy/ToHit/+ToHit", the unique proc grants +6% accuracy (multiplicative), not +6% tohit (additive). This naming confusion persists today but became a staple of builds.
+- **Issue 9 (2007)**: Kismet +Accuracy IO introduced. The "Kismet: Accuracy/ToHit/+ToHit" unique proc grants +6% tohit (additive), NOT accuracy as the name suggests. This naming confusion became a staple of builds.
 
 - **Issue 13 (2008)**: More set bonuses with accuracy/tohit introduced. High-end builds could reach 15-20% global accuracy.
 
@@ -232,7 +232,7 @@ The dual accuracy/tohit system in City of Heroes creates strategic depth in buil
 
 **Known Quirks:**
 
-1. **Kismet IO Misnomer**: The "Kismet: Accuracy/ToHit/+ToHit" proc grants +6% accuracy (multiplicative), NOT +6% tohit (additive). This is the opposite of what the name suggests and confuses new players.
+1. **Kismet IO Misnomer**: The "Kismet: Accuracy/ToHit/+ToHit" proc grants +6% tohit (additive), NOT +6% accuracy as the name suggests. Despite having "Accuracy" in its name, it actually provides global tohit.
 
 2. **No Hard Cap on Aggregation**: Unlike defense (capped at 45% for most ATs) and resistance (capped at 75-90%), there's no cap on how much global accuracy/tohit you can aggregate. However, final hit chance is still capped at 5%-95%.
 
@@ -334,30 +334,19 @@ FUNCTION calculate_build_accuracy_totals(build) -> GlobalAccuracyTotals:
                         effect.modifies == Accuracy AND
                         NOT is_enhancement_pass):
 
-                        magnitude = effect.magnitude  # e.g., 0.06 for Kismet
+                        magnitude = effect.magnitude
 
-                        # CRITICAL: Kismet is named "+ToHit" but grants accuracy
-                        IF enhancement.name == "Kismet: Accuracy/ToHit/+ToHit":
-                            enhance_accuracy += magnitude
+                        # Global accuracy IOs
+                        enhance_accuracy += magnitude
 
-                            accuracy_contributions.append(AccuracyContribution(
-                                source_name="Kismet +ToHit",
-                                source_type=AccuracySource.SPECIAL_IO,
-                                is_accuracy=True,  # Despite the name!
-                                magnitude=magnitude
-                            ))
-                        ELSE:
-                            # Other global accuracy IOs
-                            enhance_accuracy += magnitude
+                        accuracy_contributions.append(AccuracyContribution(
+                            source_name=enhancement.name,
+                            source_type=AccuracySource.SPECIAL_IO,
+                            is_accuracy=True,
+                            magnitude=magnitude
+                        ))
 
-                            accuracy_contributions.append(AccuracyContribution(
-                                source_name=enhancement.name,
-                                source_type=AccuracySource.SPECIAL_IO,
-                                is_accuracy=True,
-                                magnitude=magnitude
-                            ))
-
-                    # Check for global tohit effects
+                    # Check for global tohit effects (including Kismet)
                     ELSE IF effect.effect_type == ToHitBuff:
                         magnitude = effect.magnitude
 
@@ -542,9 +531,9 @@ FUNCTION format_accuracy_breakdown(global_totals) -> str:
 
 1. **Kismet IO Misnomer**:
    - Enhancement named "Kismet: Accuracy/ToHit/+ToHit"
-   - Despite name suggesting tohit, it grants **accuracy** (multiplicative)
-   - Must check by name and treat as accuracy, not tohit
-   - Value: +6% accuracy (0.06)
+   - Grants **tohit** (additive), NOT accuracy despite "Accuracy" in name
+   - Treated as special IO tohit source
+   - Value: +6% tohit (0.06)
 
 2. **Power Ignore Flags**:
    - Auto-hit powers: `power.IgnoreBuff(Accuracy) == True`
@@ -577,7 +566,7 @@ FUNCTION format_accuracy_breakdown(global_totals) -> str:
 
 7. **Mixed Sources**:
    - Set bonuses (5 different sets): Stack additively within accuracy category
-   - Special IOs (Kismet): Adds to accuracy total
+   - Special IOs (Kismet): Adds to tohit total
    - Power buffs (Tactics): Adds to tohit total
    - All accuracy sources sum together, all tohit sources sum together
    - Categories remain separate (not mixed)
@@ -737,10 +726,10 @@ COMMENT ON TABLE build_totals_accuracy IS
 'Stores aggregated global accuracy and tohit bonuses for builds. Maps to MidsReborn Totals.BuffAcc and Totals.BuffToHit.';
 
 COMMENT ON COLUMN build_totals_accuracy.accuracy_total IS
-'Total global accuracy bonus (multiplicative). Sum of all set bonuses, special IOs (Kismet), and incarnate accuracy. Stored as decimal (0.09 = 9%).';
+'Total global accuracy bonus (multiplicative). Sum of all set bonuses and incarnate accuracy. Stored as decimal (0.09 = 9%).';
 
 COMMENT ON COLUMN build_totals_accuracy.tohit_total IS
-'Total global tohit bonus (additive). Sum of all power buffs (Tactics, Build Up), set bonuses, and incarnate tohit. Stored as decimal (0.07 = 7%).';
+'Total global tohit bonus (additive). Sum of all power buffs (Tactics, Build Up), special IOs (Kismet), set bonuses, and incarnate tohit. Stored as decimal (0.07 = 7%).';
 
 
 -- Individual accuracy/tohit contributions (for detailed breakdown)
@@ -951,13 +940,13 @@ build_accuracy_contributions:
 
 ---
 
-### Test Case 3: Kismet +ToHit IO (Actually Grants Accuracy)
+### Test Case 3: Kismet +ToHit IO
 
 **Scenario**: Build has Kismet: Accuracy/ToHit/+ToHit IO slotted (the unique proc).
 
 **Input**:
 - Set bonuses: []
-- Special IOs: [{"name": "Kismet: Accuracy/ToHit/+ToHit", "effect_type": "accuracy", "magnitude": 0.06}]
+- Special IOs: [{"name": "Kismet: Accuracy/ToHit/+ToHit", "effect_type": "tohit", "magnitude": 0.06}]
 - Power buffs: []
 - Incarnate bonuses: []
 
@@ -970,30 +959,29 @@ Step 1: Initialize
 Step 2: Skip (no set bonuses)
 
 Step 3: Process special IOs
-  Kismet: effect_type = "accuracy", magnitude = 0.06
-  (Note: Despite name "+ToHit", it grants accuracy)
-  enhance_accuracy += 0.06
-  accuracy_total = 0.06
+  Kismet: effect_type = "tohit", magnitude = 0.06
+  buff_tohit += 0.06
+  tohit_total = 0.06
 
 Steps 4-5: No other sources
 
 Step 6: Final totals
-  accuracy_total = 0.06
-  tohit_total = 0.0
+  accuracy_total = 0.0
+  tohit_total = 0.06
 ```
 
 **Expected Output**:
-- `GlobalAccuracyTotals.accuracy = 0.06` (6.00%)
-- `GlobalAccuracyTotals.tohit = 0.0` (0.00%)
-- `accuracy_contributions = [AccuracyContribution("Kismet +ToHit", SPECIAL_IO, True, 0.06)]`
-- `tohit_contributions = []`
+- `GlobalAccuracyTotals.accuracy = 0.0` (0.00%)
+- `GlobalAccuracyTotals.tohit = 0.06` (6.00%)
+- `accuracy_contributions = []`
+- `tohit_contributions = [AccuracyContribution("Kismet +ToHit", SPECIAL_IO, False, 0.06)]`
 
 **Database**:
 ```sql
-build_totals_accuracy: (build_id=3, accuracy_total=0.06, tohit_total=0.0)
+build_totals_accuracy: (build_id=3, accuracy_total=0.0, tohit_total=0.06)
 build_accuracy_contributions:
   (id=2, build_id=3, source_name='Kismet +ToHit', source_type='special_io',
-   is_accuracy=TRUE, magnitude=0.06, power_id=NULL)
+   is_accuracy=FALSE, magnitude=0.06, power_id=NULL)
 ```
 
 ---
@@ -1099,7 +1087,7 @@ build_accuracy_contributions:
   - Decimation (5 pieces): +9% accuracy
   - Adjusted Targeting (5 pieces): +9% accuracy
 - Special IOs:
-  - Kismet +ToHit: +6% accuracy
+  - Kismet +ToHit: +6% tohit
 - Power buffs:
   - Tactics (slotted): +7% tohit
 - Incarnate bonuses:
@@ -1118,12 +1106,13 @@ Step 2: Process set bonuses
   buff_accuracy = 0.09 + 0.09 + 0.09 = 0.27
 
 Step 3: Process special IOs
-  Kismet: +0.06 accuracy
-  enhance_accuracy = 0.06
+  Kismet: +0.06 tohit
+  buff_tohit = 0.06
 
 Step 4: Process power buffs
   Tactics: +0.07 tohit
-  buff_tohit = 0.07
+  buff_tohit += 0.07
+  buff_tohit = 0.06 + 0.07 = 0.13
 
 Step 5: Process incarnate bonuses
   Alpha: +0.05 accuracy
@@ -1131,29 +1120,28 @@ Step 5: Process incarnate bonuses
   buff_accuracy = 0.27 + 0.05 = 0.32
 
 Step 6: Final totals
-  accuracy_total = enhance_accuracy + buff_accuracy
-                 = 0.06 + 0.32
-                 = 0.38
-  tohit_total = 0.07
+  accuracy_total = buff_accuracy
+                 = 0.32
+  tohit_total = 0.13
 ```
 
 **Expected Output**:
-- `GlobalAccuracyTotals.accuracy = 0.38` (38.00%)
-- `GlobalAccuracyTotals.tohit = 0.07` (7.00%)
+- `GlobalAccuracyTotals.accuracy = 0.32` (32.00%)
+- `GlobalAccuracyTotals.tohit = 0.13` (13.00%)
 - `accuracy_contributions = [
     AccuracyContribution("Thunderstrike", SET_BONUS, True, 0.09),
     AccuracyContribution("Decimation", SET_BONUS, True, 0.09),
     AccuracyContribution("Adjusted Targeting", SET_BONUS, True, 0.09),
-    AccuracyContribution("Kismet +ToHit", SPECIAL_IO, True, 0.06),
     AccuracyContribution("Alpha - Musculature Core Paragon", INCARNATE, True, 0.05)
   ]`
 - `tohit_contributions = [
+    AccuracyContribution("Kismet +ToHit", SPECIAL_IO, False, 0.06),
     AccuracyContribution("Tactics", POWER_BUFF, False, 0.07, "Tactics")
   ]`
 
 **Database**:
 ```sql
-build_totals_accuracy: (build_id=6, accuracy_total=0.38, tohit_total=0.07)
+build_totals_accuracy: (build_id=6, accuracy_total=0.32, tohit_total=0.13)
 build_accuracy_contributions:
   (id=5, build_id=6, source_name='Thunderstrike', source_type='set_bonus',
    is_accuracy=TRUE, magnitude=0.09, power_id=NULL),
@@ -1162,7 +1150,7 @@ build_accuracy_contributions:
   (id=7, build_id=6, source_name='Adjusted Targeting', source_type='set_bonus',
    is_accuracy=TRUE, magnitude=0.09, power_id=NULL),
   (id=8, build_id=6, source_name='Kismet +ToHit', source_type='special_io',
-   is_accuracy=TRUE, magnitude=0.06, power_id=NULL),
+   is_accuracy=FALSE, magnitude=0.06, power_id=NULL),
   (id=9, build_id=6, source_name='Alpha - Musculature Core Paragon',
    source_type='incarnate', is_accuracy=TRUE, magnitude=0.05, power_id=NULL),
   (id=10, build_id=6, source_name='Tactics', source_type='power_buff',
@@ -1178,21 +1166,21 @@ When applying these global totals to a specific power with:
 
 ```
 Application (from clsToonX.cs lines 1995-1999):
-  nAcc = 0.38 (global accuracy)
-  nToHit = 0.07 (global tohit)
+  nAcc = 0.32 (global accuracy)
+  nToHit = 0.13 (global tohit)
 
-  powerBuffed.Accuracy = 1.0 * (1 + 0.95 + 0.38) * (0.48 + 0.07)
-                       = 1.0 * 2.33 * 0.55
-                       = 1.2815
-                       = 128.15%
+  powerBuffed.Accuracy = 1.0 * (1 + 0.95 + 0.32) * (0.48 + 0.13)
+                       = 1.0 * 2.27 * 0.61
+                       = 1.3847
+                       = 138.47%
 
-  powerBuffed.AccuracyMult = 1.0 * (1 + 0.95 + 0.38)
-                           = 1.0 * 2.33
-                           = 2.33
-                           = 233% (accuracy multiplier)
+  powerBuffed.AccuracyMult = 1.0 * (1 + 0.95 + 0.32)
+                           = 1.0 * 2.27
+                           = 2.27
+                           = 227% (accuracy multiplier)
 ```
 
-This demonstrates how global accuracy (38%) and global tohit (7%) combine with slotted accuracy (95%) to dramatically increase hit chance, especially against high-level enemies.
+This demonstrates how global accuracy (32%) and global tohit (13%) combine with slotted accuracy (95%) to dramatically increase hit chance, especially against high-level enemies.
 
 ---
 
@@ -1201,8 +1189,8 @@ This demonstrates how global accuracy (38%) and global tohit (7%) combine with s
 **Scenario**: Auto-hit power (e.g., pet summon) that ignores accuracy/tohit buffs.
 
 **Input**:
-- Global accuracy total: 0.38 (from Test Case 6)
-- Global tohit total: 0.07 (from Test Case 6)
+- Global accuracy total: 0.32 (from Test Case 6)
+- Global tohit total: 0.13 (from Test Case 6)
 - Power: Dark Servant (Mastermind pet summon)
 - Power.IgnoreBuff(Accuracy) = True
 - Power.IgnoreBuff(ToHit) = True

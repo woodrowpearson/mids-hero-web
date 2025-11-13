@@ -6,20 +6,18 @@ Validates defense aggregation ("highest wins") and resistance aggregation (addit
 """
 
 import pytest
-from app.calculations.core import ArchetypeType
+
 from app.calculations.build import (
-    DefenseType,
-    DefenseValues,
-    aggregate_defense_bonuses,
-    calculate_effective_defense,
     DEFENSE_SOFT_CAP,
+    DefenseType,
     ResistanceType,
-    ResistanceValues,
+    aggregate_defense_bonuses,
     aggregate_resistance_bonuses,
     calculate_damage_reduction,
-    BuildTotals,
-    create_build_totals
+    calculate_effective_defense,
+    create_build_totals,
 )
+from app.calculations.core import ArchetypeType
 
 
 class TestDefenseAggregation:
@@ -59,10 +57,7 @@ class TestDefenseAggregation:
         Character has 30% typed smashing and 40% positional melee.
         Against a melee smashing attack, 40% applies (highest wins).
         """
-        bonuses = [
-            {DefenseType.SMASHING: 0.30},
-            {DefenseType.MELEE: 0.40}
-        ]
+        bonuses = [{DefenseType.SMASHING: 0.30}, {DefenseType.MELEE: 0.40}]
         result = aggregate_defense_bonuses(bonuses)
 
         typed_val = result.get_defense(DefenseType.SMASHING)
@@ -115,7 +110,7 @@ class TestDefenseAggregation:
         bonuses = [
             {DefenseType.SMASHING: 0.15, DefenseType.LETHAL: 0.15},
             {DefenseType.SMASHING: 0.10, DefenseType.LETHAL: 0.10},
-            {DefenseType.SMASHING: 0.05, DefenseType.LETHAL: 0.05}
+            {DefenseType.SMASHING: 0.05, DefenseType.LETHAL: 0.05},
         ]
         result = aggregate_defense_bonuses(bonuses)
 
@@ -131,7 +126,7 @@ class TestDefenseAggregation:
         bonuses = [
             {DefenseType.MELEE: 0.05},
             {DefenseType.MELEE: 0.05},
-            {DefenseType.MELEE: 0.05}
+            {DefenseType.MELEE: 0.05},
         ]
         result = aggregate_defense_bonuses(bonuses)
 
@@ -148,10 +143,7 @@ class TestResistanceAggregation:
         From plan line 194.
         Character has a single power granting 30% S/L resistance.
         """
-        bonuses = [{
-            ResistanceType.SMASHING: 0.30,
-            ResistanceType.LETHAL: 0.30
-        }]
+        bonuses = [{ResistanceType.SMASHING: 0.30, ResistanceType.LETHAL: 0.30}]
         result = aggregate_resistance_bonuses(bonuses)
 
         assert result.get_resistance(ResistanceType.SMASHING) == 0.30
@@ -168,7 +160,7 @@ class TestResistanceAggregation:
         bonuses = [
             {ResistanceType.SMASHING: 0.30, ResistanceType.LETHAL: 0.30},
             {ResistanceType.SMASHING: 0.20, ResistanceType.LETHAL: 0.20},
-            {ResistanceType.SMASHING: 0.25, ResistanceType.LETHAL: 0.25}
+            {ResistanceType.SMASHING: 0.25, ResistanceType.LETHAL: 0.25},
         ]
         result = aggregate_resistance_bonuses(bonuses)
 
@@ -195,9 +187,7 @@ class TestResistanceAggregation:
         Scrapper resistance caps at 75%.
         100% resistance should be capped to 75%.
         """
-        bonuses = [{
-            ResistanceType.SMASHING: 1.00  # 100% uncapped
-        }]
+        bonuses = [{ResistanceType.SMASHING: 1.00}]  # 100% uncapped
         result = aggregate_resistance_bonuses(bonuses, ArchetypeType.SCRAPPER)
 
         assert result.get_resistance(ResistanceType.SMASHING) == 0.75  # Capped
@@ -224,7 +214,7 @@ class TestBuildTotals:
 
         defense_bonuses = [
             {DefenseType.SMASHING: 0.15, DefenseType.LETHAL: 0.15},
-            {DefenseType.MELEE: 0.20}
+            {DefenseType.MELEE: 0.20},
         ]
         totals.add_defense_bonuses(defense_bonuses)
 
@@ -239,7 +229,7 @@ class TestBuildTotals:
 
         resistance_bonuses = [
             {ResistanceType.SMASHING: 0.30, ResistanceType.LETHAL: 0.30},
-            {ResistanceType.SMASHING: 0.20, ResistanceType.LETHAL: 0.20}
+            {ResistanceType.SMASHING: 0.20, ResistanceType.LETHAL: 0.20},
         ]
         totals.add_resistance_bonuses(resistance_bonuses)
 
@@ -255,15 +245,11 @@ class TestBuildTotals:
         """
         totals = create_build_totals(ArchetypeType.SCRAPPER)
 
-        defense_bonuses = [
-            {DefenseType.SMASHING: 0.30},
-            {DefenseType.MELEE: 0.40}
-        ]
+        defense_bonuses = [{DefenseType.SMASHING: 0.30}, {DefenseType.MELEE: 0.40}]
         totals.add_defense_bonuses(defense_bonuses)
 
         effective = totals.calculate_effective_defense_against(
-            DefenseType.SMASHING,
-            DefenseType.MELEE
+            DefenseType.SMASHING, DefenseType.MELEE
         )
 
         assert effective == 0.40  # Highest wins
@@ -308,7 +294,7 @@ class TestEdgeCases:
         bonuses = [
             {ResistanceType.SMASHING: 0.75, ResistanceType.LETHAL: 0.75},
             {ResistanceType.FIRE: 0.30, ResistanceType.COLD: 0.30},
-            {ResistanceType.ENERGY: 0.20}
+            {ResistanceType.ENERGY: 0.20},
         ]
         result = aggregate_resistance_bonuses(bonuses)
 

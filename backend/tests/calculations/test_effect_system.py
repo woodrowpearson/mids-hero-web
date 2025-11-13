@@ -6,15 +6,16 @@ Validates Effect class, FxId grouping, and EffectAggregator.
 """
 
 import pytest
+
 from app.calculations.core import (
-    Effect,
-    EffectType,
     DamageType,
+    Effect,
+    EffectAggregator,
+    EffectType,
     MezType,
-    ToWho,
     PvMode,
     Stacking,
-    EffectAggregator
+    ToWho,
 )
 
 
@@ -33,7 +34,7 @@ class TestEffectCreation:
             magnitude=50.0,
             damage_type=DamageType.FIRE,
             duration=0.0,
-            probability=1.0
+            probability=1.0,
         )
 
         assert effect.effect_type == EffectType.DAMAGE
@@ -56,7 +57,7 @@ class TestEffectCreation:
             magnitude=10.0,
             damage_type=DamageType.TOXIC,
             duration=10.0,
-            probability=0.5
+            probability=0.5,
         )
 
         assert effect.magnitude == 10.0
@@ -82,22 +83,22 @@ class TestEffectAggregation:
                 effect_type=EffectType.DEFENSE,
                 magnitude=50.0,
                 to_who=ToWho.SELF,
-                pv_mode=PvMode.ANY
+                pv_mode=PvMode.ANY,
             ),
             Effect(
                 unique_id=2,
                 effect_type=EffectType.DEFENSE,
                 magnitude=40.0,
                 to_who=ToWho.SELF,
-                pv_mode=PvMode.ANY
+                pv_mode=PvMode.ANY,
             ),
             Effect(
                 unique_id=3,
                 effect_type=EffectType.DEFENSE,
                 magnitude=30.0,
                 to_who=ToWho.SELF,
-                pv_mode=PvMode.ANY
-            )
+                pv_mode=PvMode.ANY,
+            ),
         ]
 
         aggregator = EffectAggregator()
@@ -127,22 +128,22 @@ class TestEffectAggregation:
                 effect_type=EffectType.DAMAGE,
                 magnitude=30.0,
                 damage_type=DamageType.FIRE,
-                stacking=Stacking.REPLACE
+                stacking=Stacking.REPLACE,
             ),
             Effect(
                 unique_id=2,
                 effect_type=EffectType.DAMAGE,
                 magnitude=40.0,
                 damage_type=DamageType.FIRE,
-                stacking=Stacking.REPLACE
+                stacking=Stacking.REPLACE,
             ),
             Effect(
                 unique_id=3,
                 effect_type=EffectType.DAMAGE,
                 magnitude=50.0,
                 damage_type=DamageType.FIRE,
-                stacking=Stacking.REPLACE
-            )
+                stacking=Stacking.REPLACE,
+            ),
         ]
 
         aggregator = EffectAggregator()
@@ -169,14 +170,14 @@ class TestEffectAggregation:
                 unique_id=1,
                 effect_type=EffectType.DEFENSE,
                 magnitude=20.0,
-                to_who=ToWho.SELF
+                to_who=ToWho.SELF,
             ),
             Effect(
                 unique_id=2,
                 effect_type=EffectType.DEFENSE,
                 magnitude=15.0,
-                to_who=ToWho.TARGET
-            )
+                to_who=ToWho.TARGET,
+            ),
         ]
 
         aggregator = EffectAggregator()
@@ -205,15 +206,15 @@ class TestEffectAggregation:
                 effect_type=EffectType.DAMAGE,
                 magnitude=100.0,
                 damage_type=DamageType.ENERGY,
-                pv_mode=PvMode.PVE
+                pv_mode=PvMode.PVE,
             ),
             Effect(
                 unique_id=2,
                 effect_type=EffectType.DAMAGE,
                 magnitude=70.0,
                 damage_type=DamageType.ENERGY,
-                pv_mode=PvMode.PVP
-            )
+                pv_mode=PvMode.PVP,
+            ),
         ]
 
         aggregator = EffectAggregator()
@@ -240,7 +241,7 @@ class TestEffectValidation:
                 unique_id=1,
                 effect_type=EffectType.DAMAGE,
                 magnitude=100.0,
-                probability=1.5  # Invalid
+                probability=1.5,  # Invalid
             )
 
         with pytest.raises(ValueError, match="Probability must be 0-1"):
@@ -248,7 +249,7 @@ class TestEffectValidation:
                 unique_id=1,
                 effect_type=EffectType.DAMAGE,
                 magnitude=100.0,
-                probability=-0.1  # Invalid
+                probability=-0.1,  # Invalid
             )
 
     def test_duration_validation(self):
@@ -258,7 +259,7 @@ class TestEffectValidation:
                 unique_id=1,
                 effect_type=EffectType.DAMAGE,
                 magnitude=100.0,
-                duration=-1.0  # Invalid
+                duration=-1.0,  # Invalid
             )
 
     def test_scale_validation(self):
@@ -268,7 +269,7 @@ class TestEffectValidation:
                 unique_id=1,
                 effect_type=EffectType.DAMAGE,
                 magnitude=100.0,
-                scale=0.0  # Invalid
+                scale=0.0,  # Invalid
             )
 
 
@@ -281,28 +282,21 @@ class TestEffectMethods:
             unique_id=1,
             effect_type=EffectType.DEFENSE,
             magnitude=15.0,
-            buffed_magnitude=25.0  # Enhanced
+            buffed_magnitude=25.0,  # Enhanced
         )
 
         assert effect.get_effective_magnitude() == 25.0
 
     def test_get_effective_magnitude_unbuffed(self):
         """Test effective magnitude returns base value if no buffed value"""
-        effect = Effect(
-            unique_id=1,
-            effect_type=EffectType.DEFENSE,
-            magnitude=15.0
-        )
+        effect = Effect(unique_id=1, effect_type=EffectType.DEFENSE, magnitude=15.0)
 
         assert effect.get_effective_magnitude() == 15.0
 
     def test_apply_at_scaling(self):
         """Test archetype scaling application"""
         effect = Effect(
-            unique_id=1,
-            effect_type=EffectType.DEFENSE,
-            magnitude=15.0,
-            scale=1.0
+            unique_id=1, effect_type=EffectType.DEFENSE, magnitude=15.0, scale=1.0
         )
 
         # Apply 0.75 AT scale
@@ -315,7 +309,7 @@ class TestEffectMethods:
             unique_id=1,
             effect_type=EffectType.DEFENSE,
             magnitude=15.0,
-            ignore_scaling=True
+            ignore_scaling=True,
         )
 
         # Even with 0.5 AT scale, should return unchanged
@@ -329,7 +323,7 @@ class TestEffectMethods:
             unique_id=1,
             effect_type=EffectType.DAMAGE,
             magnitude=100.0,
-            damage_type=DamageType.FIRE
+            damage_type=DamageType.FIRE,
         )
         assert effect1.get_display_alias() == "Damage(Fire)"
 
@@ -338,15 +332,13 @@ class TestEffectMethods:
             unique_id=2,
             effect_type=EffectType.MEZ,
             magnitude=3.0,
-            mez_type=MezType.HOLD
+            mez_type=MezType.HOLD,
         )
         assert effect2.get_display_alias() == "Mez(Hold)"
 
         # No aspect
         effect3 = Effect(
-            unique_id=3,
-            effect_type=EffectType.REGENERATION,
-            magnitude=10.0
+            unique_id=3, effect_type=EffectType.REGENERATION, magnitude=10.0
         )
         assert effect3.get_display_alias() == "Regeneration"
 
@@ -361,14 +353,14 @@ class TestStackingModes:
                 unique_id=1,
                 effect_type=EffectType.RESISTANCE,
                 magnitude=30.0,
-                stacking=Stacking.YES
+                stacking=Stacking.YES,
             ),
             Effect(
                 unique_id=2,
                 effect_type=EffectType.RESISTANCE,
                 magnitude=20.0,
-                stacking=Stacking.YES
-            )
+                stacking=Stacking.YES,
+            ),
         ]
 
         aggregator = EffectAggregator()
@@ -384,14 +376,14 @@ class TestStackingModes:
                 unique_id=1,
                 effect_type=EffectType.RANGE,
                 magnitude=50.0,
-                stacking=Stacking.NO
+                stacking=Stacking.NO,
             ),
             Effect(
                 unique_id=2,
                 effect_type=EffectType.RANGE,
                 magnitude=100.0,
-                stacking=Stacking.NO
-            )
+                stacking=Stacking.NO,
+            ),
         ]
 
         aggregator = EffectAggregator()
@@ -407,20 +399,20 @@ class TestStackingModes:
                 unique_id=1,
                 effect_type=EffectType.SPEED_RUNNING,
                 magnitude=10.0,
-                stacking=Stacking.REPLACE
+                stacking=Stacking.REPLACE,
             ),
             Effect(
                 unique_id=2,
                 effect_type=EffectType.SPEED_RUNNING,
                 magnitude=20.0,
-                stacking=Stacking.REPLACE
+                stacking=Stacking.REPLACE,
             ),
             Effect(
                 unique_id=3,
                 effect_type=EffectType.SPEED_RUNNING,
                 magnitude=15.0,
-                stacking=Stacking.REPLACE
-            )
+                stacking=Stacking.REPLACE,
+            ),
         ]
 
         aggregator = EffectAggregator()

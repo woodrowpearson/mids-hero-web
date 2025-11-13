@@ -5,13 +5,12 @@ Tests based on Spec 17 and Milestone 4 Implementation Plan test cases.
 Validates cap values and cap application logic for all archetypes.
 """
 
-import pytest
 from app.calculations.core import (
-    ArchetypeType,
     ArchetypeCaps,
-    get_archetype_caps,
+    ArchetypeType,
     apply_cap,
-    is_at_cap
+    get_archetype_caps,
+    is_at_cap,
 )
 
 
@@ -350,7 +349,7 @@ class TestEdgeCases:
         assert caps.resistance_cap == 0.90
 
         # Is a dataclass
-        assert hasattr(caps, '__dataclass_fields__')
+        assert hasattr(caps, "__dataclass_fields__")
 
     def test_all_archetypes_have_caps(self):
         """Test all archetype types have cap definitions"""

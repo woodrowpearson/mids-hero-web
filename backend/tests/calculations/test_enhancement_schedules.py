@@ -5,13 +5,12 @@ Tests based on Spec 10 test cases from the plan.
 Validates ED curve calculations for all 4 schedules (A, B, C, D).
 """
 
-import pytest
 from app.calculations.core import (
     EDSchedule,
     apply_ed,
-    get_schedule,
     calculate_ed_loss,
-    constants
+    constants,
+    get_schedule,
 )
 
 
@@ -57,7 +56,6 @@ class TestEDScheduleApplication:
         result = apply_ed(EDSchedule.A, 0.95)
 
         # Pre-calculate cumulative values
-        edm1 = 0.70
         edm2 = 0.70 + (0.90 - 0.70) * 0.90  # = 0.88
         expected = edm2 + (0.95 - 0.90) * 0.70  # = 0.915
 
@@ -79,7 +77,6 @@ class TestEDScheduleApplication:
         result = apply_ed(EDSchedule.B, 1.00)
 
         # Pre-calculate cumulative values
-        edm1 = 0.40
         edm2 = 0.40 + (0.50 - 0.40) * 0.90  # = 0.49
         edm3 = edm2 + (0.60 - 0.50) * 0.70  # = 0.56
         expected = edm3 + (1.00 - 0.60) * 0.15  # = 0.62
@@ -102,7 +99,6 @@ class TestEDScheduleApplication:
         result = apply_ed(EDSchedule.C, 1.50)
 
         # Pre-calculate cumulative values
-        edm1 = 0.80
         edm2 = 0.80 + (1.00 - 0.80) * 0.90  # = 0.98
         edm3 = edm2 + (1.20 - 1.00) * 0.70  # = 1.12
         expected = edm3 + (1.50 - 1.20) * 0.15  # = 1.165
@@ -125,7 +121,6 @@ class TestEDScheduleApplication:
         result = apply_ed(EDSchedule.D, 2.00)
 
         # Pre-calculate cumulative values
-        edm1 = 1.20
         edm2 = 1.20 + (1.50 - 1.20) * 0.90  # = 1.47
         edm3 = edm2 + (1.80 - 1.50) * 0.70  # = 1.68
         expected = edm3 + (2.00 - 1.80) * 0.15  # = 1.71
@@ -194,7 +189,6 @@ class TestRealisticExamples:
         result = apply_ed(EDSchedule.A, 1.0)
 
         # Calculate expected
-        edm1 = 0.70
         edm2 = 0.70 + (0.90 - 0.70) * 0.90  # = 0.88
         expected = edm2 + (1.00 - 0.90) * 0.70  # = 0.95
 
@@ -213,7 +207,6 @@ class TestRealisticExamples:
         result = apply_ed(EDSchedule.A, 2.0)
 
         # Calculate expected
-        edm1 = 0.70
         edm2 = 0.70 + (0.90 - 0.70) * 0.90  # = 0.88
         edm3 = edm2 + (1.00 - 0.90) * 0.70  # = 0.95
         expected = edm3 + (2.00 - 1.00) * 0.15  # = 1.10
@@ -233,7 +226,6 @@ class TestRealisticExamples:
         result = apply_ed(EDSchedule.B, 1.0)
 
         # Calculate expected
-        edm1 = 0.40
         edm2 = 0.40 + (0.50 - 0.40) * 0.90  # = 0.49
         edm3 = edm2 + (0.60 - 0.50) * 0.70  # = 0.56
         expected = edm3 + (1.00 - 0.60) * 0.15  # = 0.62

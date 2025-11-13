@@ -119,28 +119,30 @@
 
 ---
 
-### Batch 2C: Accuracy & Other Stats (NEXT ⏳)
+### Batch 2C: Accuracy & Other Stats (IMPLEMENTED ✅)
 **Specs**:
 - `23-build-totals-accuracy.md`
 - `24-build-totals-other-stats.md`
 
-**Implementation Files TO CREATE**:
-- `backend/app/calculations/build/accuracy_aggregator.py` - Global accuracy/tohit
-- `backend/app/calculations/build/other_stats_aggregator.py` - 30+ stats
+**Implementation Files**:
+- `backend/app/calculations/build/accuracy_aggregator.py` - Global accuracy/tohit (370 lines)
+- `backend/app/calculations/build/other_stats_aggregator.py` - HP, endurance, movement (547 lines)
 
-**Tests TO CREATE**:
-- `backend/tests/calculations/build/test_accuracy_aggregator.py`
-- `backend/tests/calculations/build/test_other_stats_aggregator.py`
+**Tests**:
+- `backend/tests/calculations/build/test_accuracy_aggregator.py` - 11 tests ✅
+- `backend/tests/calculations/build/test_other_stats_aggregator.py` - 12 tests ✅
 
 **Key Test Cases** (from specs):
-- Accuracy Test 1: Kismet IO → +6% accuracy (NOT tohit!)
-- Other Stats Test 1: HP calculation with accolades
+- Accuracy Test 1: Kismet IO → +6% tohit ✅
+- Other Stats Test 1: HP calculation with accolades ✅
+
+**Commit**: `093e82a8c` - "feat(calcs): implement Batch 2C - Accuracy & Other Stats aggregation (Specs 23, 24)"
 
 ---
 
-## Phase 3: Power Calculations (PLANNED 📋)
+## Phase 3: Power Calculations (NEXT ⏳)
 
-### Batch 3A: Damage & Buffs
+### Batch 3A: Damage & Buffs (NEXT ⏳)
 **Specs**:
 - `02-power-damage.md`
 - `03-power-buffs-debuffs.md`

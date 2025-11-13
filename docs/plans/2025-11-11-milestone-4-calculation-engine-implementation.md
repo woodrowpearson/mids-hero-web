@@ -222,7 +222,7 @@ class ArchetypeCaps:
 - `backend/app/calculations/build/other_stats_aggregator.py` - 30+ stats
 
 **Tests** (12 total: 6 from Spec 23, 6 from Spec 24):
-- Accuracy Test 1: Kismet IO → +6% accuracy (NOT tohit!)
+- Accuracy Test 1: Kismet IO → +6% tohit
 - Other Stats Test 1: HP calculation with accolades
 
 **Validation**: All tests must use exact formulas from specs.
@@ -480,13 +480,13 @@ Phase 1 (Foundation)
 - [x] Batch 1C: Archetype Modifiers (Spec 16) - `docs/midsreborn/calculations/16-archetype-modifiers.md`
 - [x] Batch 1D: Archetype Caps (Spec 17) - `docs/midsreborn/calculations/17-archetype-caps.md`
 
-### Phase 2: Build Aggregation 🟡 IN PROGRESS
+### Phase 2: Build Aggregation ✅ COMPLETE
 - [x] Batch 2A: Defense & Resistance - `docs/midsreborn/calculations/19-build-totals-defense.md`, `20-build-totals-resistance.md`
 - [x] Batch 2B: Recharge & Damage - `docs/midsreborn/calculations/21-build-totals-recharge.md`, `22-build-totals-damage.md`
-- [ ] Batch 2C: Accuracy & Other Stats ⏳ NEXT - `docs/midsreborn/calculations/23-build-totals-accuracy.md`, `24-build-totals-other-stats.md`
+- [x] Batch 2C: Accuracy & Other Stats - `docs/midsreborn/calculations/23-build-totals-accuracy.md`, `24-build-totals-other-stats.md`
 
-### Phase 3: Power Calculations
-- [ ] Batch 3A: Damage & Buffs (Specs 02, 03)
+### Phase 3: Power Calculations ⏳ NEXT
+- [ ] Batch 3A: Damage & Buffs (Specs 02, 03) ⏳ NEXT
 - [ ] Batch 3B: Control & Healing (Specs 04, 05)
 - [ ] Batch 3C: Endurance & Recharge (Specs 06, 07)
 - [ ] Batch 3D: Accuracy & Defense (Specs 08, 09)

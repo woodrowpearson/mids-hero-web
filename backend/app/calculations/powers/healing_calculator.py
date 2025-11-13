@@ -41,7 +41,7 @@ class ArchetypeHealthStats:
     base_regen: float = DEFAULT_BASE_REGEN
     regen_cap: float = DEFAULT_REGEN_CAP
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         """Validate properties"""
         if self.base_hitpoints <= 0:
             raise ValueError(
@@ -80,7 +80,7 @@ class HealEffect:
             else self.magnitude
         )
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         """Validate properties"""
         if self.magnitude < 0:
             raise ValueError(f"magnitude cannot be negative, got {self.magnitude}")
@@ -151,7 +151,7 @@ class AbsorbEffect:
     stacks_with_self: bool = False  # Usually false
     priority: int = 0
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         """Validate properties"""
         if self.magnitude < 0:
             raise ValueError(f"magnitude cannot be negative, got {self.magnitude}")

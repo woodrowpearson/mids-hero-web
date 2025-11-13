@@ -213,7 +213,7 @@ class ControlCalculator:
     Maps to MidsReborn's mez calculation logic.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize calculator with standard protection values."""
         self.standard_protection = self._init_standard_protection()
 

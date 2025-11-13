@@ -537,18 +537,18 @@ Phase 1 (Foundation)
 - [x] Batch 2B: Recharge & Damage - `docs/midsreborn/calculations/21-build-totals-recharge.md`, `22-build-totals-damage.md`
 - [x] Batch 2C: Accuracy & Other Stats - `docs/midsreborn/calculations/23-build-totals-accuracy.md`, `24-build-totals-other-stats.md`
 
-### Phase 3: Power Calculations ⏳ NEXT
+### Phase 3: Power Calculations ⏳ IN PROGRESS
 
-- [x] Batch 3A: Damage & Buffs (Specs 02, 03) ⏳ NEXT
-- [ ] Batch 3B: Control & Healing (Specs 04, 05)
-- [ ] Batch 3C: Endurance & Recharge (Specs 06, 07)
+- [x] Batch 3A: Damage & Buffs (Specs 02, 03)
+- [x] Batch 3B: Control & Healing (Specs 04, 05) ✅ COMPLETE
+- [ ] Batch 3C: Endurance & Recharge (Specs 06, 07) ⏳ NEXT
 - [ ] Batch 3D: Accuracy & Defense (Specs 08, 09)
 
 ### Phase 4: Advanced Features
 
 - [ ] Batch 4A: Enhancement System (Specs 11, 13)
 - [ ] Batch 4B: Stacking & Incarnates (Specs 25, 29)
-- [ ] Batch 4C: Pets & Procs (Specs 32, 34)
+- [x] Batch 4C: Pets & Procs (Specs 32, 34) ✅ COMPLETE
 
 ### Phase 5: API Integration
 

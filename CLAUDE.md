@@ -27,7 +27,7 @@ Always Loaded:
 
 Native Sub-Agents:
 ├── Database → database-specialist
-├── Import   → import-specialist  
+├── Import   → import-specialist
 ├── API      → backend-specialist
 ├── Frontend → frontend-specialist
 ├── Testing  → testing-specialist
@@ -37,6 +37,7 @@ Native Sub-Agents:
 ```
 
 **Tell Claude your task** to automatically delegate to the right specialist:
+
 - "I need to work on database migrations"
 - "Help me import I12 power data"
 - "Let's build an API endpoint"
@@ -93,24 +94,12 @@ just i12-import file   # Import powers
 - **Dev Guide**: `.claude/docs/development-workflow.md`
 - **Progress**: `.claude/state/progress.json`
 
-## 🔧 For Specific Work
-
-| Task | Say This | Auto-Delegates To |
-|------|----------|-------------------|
-| Database | "work on database" | `database-specialist` |
-| Import | "import data" | `import-specialist` |
-| API | "build API" | `backend-specialist` |
-| Frontend | "React component" | `frontend-specialist` |
-| Testing | "write tests" | `testing-specialist` |
-| Calculations | "implement formulas" | `calculation-specialist` |
-| DevOps | "deploy changes" | `devops-specialist` |
-| Documentation | "update docs" | `documentation-specialist` |
-
 ## ⚠️ CRITICAL Command Compliance
 
 **ALWAYS use these commands:**
+
 - ✅ `fd` - NEVER use `find`
-- ✅ `rg` (ripgrep) - NEVER use `grep`  
+- ✅ `rg` (ripgrep) - NEVER use `grep`
 - ✅ `trash` - NEVER use `rm -rf`
 - ✅ `uv` - NEVER use `pip`
 
@@ -123,5 +112,5 @@ just i12-import file   # Import powers
 
 ---
 
-*Claude's context system explained: `.claude/README.md`*
-*Full documentation: `.claude/docs/`*
+_Claude's context system explained: `.claude/README.md`_
+_Full documentation: `.claude/docs/`_

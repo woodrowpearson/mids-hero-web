@@ -1,19 +1,27 @@
 # Code Review Command
 
-Automatically review pull requests using multiple specialized agents.
+Automatically review pull requests using the superpowers plugin's code review functionality.
 
 ## Usage
 
-Run: `/code-review` in any PR context
+Tell Claude: "code review this PR" or "review PR #XXX"
+
+This invokes the `superpowers:requesting-code-review` skill.
+
+## How It Works
+
+The superpowers plugin dispatches a `superpowers:code-reviewer` subagent that:
+- Reviews code against CLAUDE.md requirements
+- Detects potential bugs in changes
+- Analyzes historical context via git blame
+- Provides confidence-scored feedback
 
 ## Configuration
 
-**Confidence Threshold**: 80 (issues below this score are filtered)
-
-**Agent Types**:
-- CLAUDE.md compliance auditors (2x for redundancy)
-- Bug detection agent (focuses on changes only)
-- Historical context analyzer (uses git blame)
+**Via Superpowers Plugin**:
+- Uses official Anthropic code review implementation
+- Confidence threshold: 80 (issues below this score are filtered)
+- Multiple specialized review agents for redundancy
 
 ## Behavior
 
@@ -22,4 +30,4 @@ Run: `/code-review` in any PR context
 - Trivial/automated changes
 - Previously reviewed PRs
 
-**Output**: Review comments with CLAUDE.md references and GitHub blob links
+**Output**: Review comments with references and links to specific code locations

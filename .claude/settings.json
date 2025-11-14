@@ -150,19 +150,7 @@
   },
 
   "hooks": {
-    "UserPromptSubmit": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 .claude/hooks/context-validator.py",
-            "timeout_seconds": 10,
-            "run_in_background": true
-          }
-        ]
-      }
-    ],
+    "_disabled_UserPromptSubmit": "DISABLED 2025-11-13: context-validator.py depends on deprecated context-map.json",
     "PreToolUse": [
       {
         "matcher": "Bash",
@@ -178,11 +166,6 @@
       {
         "matcher": "Edit|MultiEdit|Write",
         "hooks": [
-          {
-            "type": "command",
-            "command": "python3 .claude/hooks/token-limiter.py",
-            "timeout_seconds": 5
-          },
           {
             "type": "command",
             "command": "python3 .claude/hooks/activity-logger.py",
@@ -236,12 +219,6 @@
       {
         "matcher": "Task",
         "hooks": [
-          {
-            "type": "command",
-            "command": "python3 .claude/hooks/subagent-state-tracker.py",
-            "timeout_seconds": 5,
-            "run_in_background": true
-          },
           {
             "type": "command",
             "command": "python3 .claude/hooks/activity-logger.py",

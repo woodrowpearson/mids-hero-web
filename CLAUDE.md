@@ -15,32 +15,36 @@ just health    # REQUIRED before any work
 just dev       # Start services
 ```
 
-## 📍 Context System
+## 📍 Development Workflow
 
-Claude uses **native sub-agents** with automatic delegation based on your task:
+**Superpowers Plugin Workflow**:
+- `/superpowers:write-plan` - Create detailed implementation plans
+- `/superpowers:execute-plan` - Execute plans with quality gates
+- `.claude/skills/frontend-development` - Orchestrates frontend epics
 
-```
-Always Loaded:
-├── CLAUDE.md (this file)        # ~2K tokens
-├── .claude/settings.json        # Configuration
-└── .claude/context-map.json     # Loading rules
+**Code Review**:
+Use `/code-review` command to automatically review PRs:
+- CLAUDE.md compliance checking
+- Bug detection
+- Historical context analysis
+- Confidence-scored feedback (threshold: 80)
 
-Native Sub-Agents:
-├── Database → database-specialist
-├── Import   → import-specialist
-├── API      → backend-specialist
-├── Frontend → frontend-specialist
-├── Testing  → testing-specialist
-├── DevOps   → devops-specialist
-├── Calculations → calculation-specialist
-└── Documentation → documentation-specialist
-```
+**Current Focus**: Frontend development using superpowers workflow
 
-**Tell Claude your task** to automatically delegate to the right specialist:
+**How to Use**:
+1. Tell Claude: "start epic 1.1" or describe frontend task
+2. Claude invokes `.claude/skills/frontend-development`
+3. Workflow:
+   - Analyzes MidsReborn UI
+   - Creates plan via `/superpowers:write-plan`
+   - Gets your approval
+   - Executes via `/superpowers:execute-plan`
+   - Generates checkpoint for review
 
-- "I need to work on database migrations"
-- "Help me import I12 power data"
-- "Let's build an API endpoint"
+**Documentation**:
+- Frontend: `docs/frontend/` (architecture, epic breakdown, UI analysis)
+- Backend: Complete (see `backend/README.md`, `api/README.md`)
+- MidsReborn Specs: `docs/midsreborn/` (reverse-engineering reference)
 
 ## 🚀 Essential Commands
 
@@ -68,14 +72,17 @@ just i12-import file   # Import powers
 
 ## 📊 Current Status
 
-- **Epic 1**: ✅ Complete (Setup, CI/CD, GitHub Actions optimized)
-- **Epic 2**: ✅ Complete (I12 parser, database integration)
-- **Epic 2.5.2**: ✅ Complete (Native sub-agents, workflows optimized)
-- **Epic 2.5.3**: ✅ Complete (RAG implementation)
-- **Epic 2.5.5**: ✅ Complete (Cleanup & JSON prep)
-- **Epic 2.6**: 📋 Ready to start (JSON migration)
-- **Epic 3**: 🚧 25% (Core API endpoints done)
-- **Epic 4-6**: 📋 Planned (Frontend, Deploy, Optimize)
+**Backend**: ✅ **100% Complete**
+- Epic 1: Setup & CI/CD ✅
+- Epic 2: I12 Parser & Database ✅
+- Epic 3: Calculation APIs ✅ (100% test coverage)
+
+**Frontend**: 🚧 **In Development**
+- Epic 1.1: Next.js + Design System (READY TO START)
+- Epic 1.2-1.4: State Management, Layout, API Client (Planned)
+- Epic 2-7: See `docs/frontend/epic-breakdown.md`
+
+**See**: `docs/PROJECT_STATUS.md` for detailed progress
 
 ## 🛠️ Critical Rules
 
@@ -89,10 +96,12 @@ just i12-import file   # Import powers
 
 ## 📁 Key Locations
 
-- **Workflows**: `.claude/workflows/daily.md`
-- **Modules**: `.claude/modules/{task}/guide.md`
-- **Dev Guide**: `.claude/docs/development-workflow.md`
-- **Progress**: `.claude/state/progress.json`
+- **Project Status**: `docs/PROJECT_STATUS.md`
+- **Frontend Docs**: `docs/frontend/` (architecture, epics, UI analysis)
+- **Frontend Skill**: `.claude/skills/frontend-development/`
+- **MidsReborn Specs**: `docs/midsreborn/` (calculation reference)
+- **Implementation Plans**: `docs/plans/`
+- **GitHub Workflows**: `.claude/workflows/github/`
 
 ## ⚠️ CRITICAL Command Compliance
 
@@ -112,5 +121,5 @@ just i12-import file   # Import powers
 
 ---
 
-_Claude's context system explained: `.claude/README.md`_
-_Full documentation: `.claude/docs/`_
+_Full documentation: `docs/` and `.claude/`_
+_Development workflow: Use superpowers plugin for planning and execution_

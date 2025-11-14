@@ -70,6 +70,21 @@ just import-health     # Check system
 just i12-import file   # Import powers
 ```
 
+## 📝 Changelog
+
+Update CHANGELOG.md for significant changes:
+
+```bash
+# Manual updates (current approach)
+# Tell Claude: "Update changelog for version X.Y.Z"
+# Or: "Add changelog entry for [feature]"
+
+# Changelog follows Keep a Changelog format
+# Uses Semantic Versioning (MAJOR.MINOR.PATCH)
+```
+
+**Note**: Full versioning starts after v1.0.0 launch
+
 ## 📊 Current Status
 
 **Backend**: ✅ **100% Complete**

@@ -103,16 +103,16 @@ just i12-import file   # Import powers
 - **Implementation Plans**: `docs/plans/`
 - **GitHub Workflows**: `.claude/workflows/github/`
 
-## ⚠️ CRITICAL Command Compliance
+## ⚠️ Command Standards
 
-**ALWAYS use these commands:**
+Command standards are automatically enforced via hooks:
 
-- ✅ `fd` - NEVER use `find`
-- ✅ `rg` (ripgrep) - NEVER use `grep`
-- ✅ `trash` - NEVER use `rm -rf`
-- ✅ `uv` - NEVER use `pip`
+- ✅ `fd` - NOT `find`
+- ✅ `rg` - NOT `grep`
+- ✅ `trash` - NOT `rm -rf`
+- ✅ `uv` - NOT `pip`
 
-**GitHub Actions will FAIL if you use forbidden commands!**
+Violations will be blocked automatically.
 
 ## ⚠️ Remember
 

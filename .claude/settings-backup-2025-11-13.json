@@ -1,0 +1,256 @@
+{
+  "version": "1.0",
+  "description": "Claude Code settings for Mids Hero Web project",
+  "last_updated": "2025-07-19",
+
+  "project": {
+    "name": "mids-hero-web",
+    "type": "web-application",
+    "primary_languages": ["python", "typescript", "sql"],
+    "context_strategy": "progressive-loading"
+  },
+
+  "permissions": {
+    "allowed_commands": [
+      "Bash(git:*)",
+      "Bash(just:*)",
+      "Bash(cd:*)",
+      "Bash(ls:*)",
+      "Bash(echo:*)",
+      "Bash(cat:*)",
+      "Bash(export:*)",
+      "Bash(docker:*)",
+      "Bash(docker-compose:*)",
+      "Bash(python:*)",
+      "Bash(npm:*)",
+      "Bash(fd:*)",
+      "Bash(rg:*)",
+      "Bash(uv:*)",
+      "Bash(trash:*)",
+      "Bash(gh:*)",
+      "Bash(pytest:*)",
+      "Bash(black:*)",
+      "Bash(ruff:*)",
+      "Bash(mypy:*)",
+      "Bash(isort:*)",
+      "Bash(alembic:*)",
+      "Bash(psql:*)",
+    ],
+    "denied_commands": [
+      "Bash(rm -rf:*)",
+      "Bash(find:*)",
+      "Bash(sudo:*)",
+      "Bash(chmod 777:*)",
+      "Bash(curl * | bash:*)",
+      "Bash(wget * | bash:*)"
+    ]
+  },
+
+  "context_management": {
+    "always_include": [
+      "CLAUDE.md",
+      ".claude/settings.json",
+      ".claude/context-map.json"
+    ],
+    "token_limits": {
+      "max_context": 128000,
+      "warning_threshold": 90000,
+      "auto_compact_threshold": 110000,
+      "core_context_target": 10000
+    },
+    "auto_context_management": true,
+    "context_pruning_enabled": true,
+    "prefer_concise_responses": true
+  },
+
+  "chat_preferences": {
+    "response_style": "concise",
+    "code_style": "explicit",
+    "explanation_depth": "balanced",
+    "emoji_usage": "disabled",
+    "progress_indicators": true
+  },
+
+  "tool_preferences": {
+    "prefer_just_commands": true,
+    "batch_operations": true,
+    "parallel_execution": true,
+    "error_recovery": "automatic",
+    "validation_before_execution": true
+  },
+
+  "custom_commands": {
+    "shortcuts": {
+      "dev": "just dev",
+      "test": "just test",
+      "quality": "just quality",
+      "update": "just update-progress",
+      "health": "just health"
+    }
+  },
+
+  "monitoring": {
+    "track_token_usage": true,
+    "alert_on_high_usage": true,
+    "log_command_execution": true,
+    "track_error_patterns": true
+  },
+
+  "debug_mode": {
+    "enabled": false,
+    "stricter_limits": {
+      "max_context": 64000,
+      "warning_threshold": 50000,
+      "auto_compact_threshold": 60000
+    },
+    "additional_logging": true,
+    "verbose_errors": true
+  },
+
+  "workspace_preferences": {
+    "auto_save": true,
+    "format_on_save": true,
+    "organize_imports": true,
+    "fix_on_save": true
+  },
+
+  "safety_features": {
+    "confirm_destructive_operations": true,
+    "backup_before_major_changes": true,
+    "validate_migrations": true,
+    "test_before_deploy": true,
+    "prevent_main_commits": true,
+    "require_feature_branches": true,
+    "enforce_pr_workflow": true
+  },
+
+  "documentation_enforcement": {
+    "require_timestamps": true,
+    "timestamp_format": "YYYY-MM-DD HH:MM:SS UTC",
+    "auto_add_timestamps": true,
+    "validate_on_save": true,
+    "timestamp_tool": ".claude/scripts/add_timestamp.py",
+    "check_script": "scripts/check-documentation-timestamps.sh"
+  },
+
+  "git_workflow": {
+    "protected_branches": ["main", "master"],
+    "branch_naming_pattern": "^(feature|fix|docs|test|chore|refactor|perf)/.*",
+    "require_pull_requests": true,
+    "auto_create_branch": true,
+    "branch_prefix_mapping": {
+      "feat": "feature",
+      "fix": "fix",
+      "docs": "docs",
+      "test": "test",
+      "chore": "chore",
+      "refactor": "refactor",
+      "perf": "perf"
+    }
+  },
+
+  "hooks": {
+    "_disabled_UserPromptSubmit": "DISABLED 2025-11-13: context-validator.py depends on deprecated context-map.json",
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 .claude/hooks/bash_command_validator.py",
+            "continue_on_error": false,
+            "description": "Validate bash commands against project standards"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|MultiEdit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 .claude/hooks/activity-logger.py",
+            "run_in_background": true
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|MultiEdit|Write(.claude/.*\\.md)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 .claude/scripts/add_timestamp.py $CLAUDE_FILE_PATH",
+            "timeout_seconds": 5,
+            "run_in_background": true,
+            "description": "Auto-update timestamp on documentation edits"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 .claude/hooks/activity-logger.py",
+            "run_in_background": true
+          }
+        ]
+      },
+      {
+        "matcher": "Bash(git commit:*)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/git-commit-hook.sh",
+            "timeout_seconds": 10,
+            "continue_on_error": false
+          }
+        ]
+      },
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 .claude/hooks/activity-logger.py",
+            "run_in_background": true
+          }
+        ]
+      },
+      {
+        "matcher": "Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 .claude/hooks/activity-logger.py",
+            "run_in_background": true
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|MultiEdit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"$(date '+%Y-%m-%d %H:%M:%S') File modified: $CLAUDE_FILE_PATHS\" >> .claude/state/logs/file-changes.log",
+            "run_in_background": true
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -c \"import json; from pathlib import Path; stats_file = Path('.claude/state/session-stats.json'); stats = json.loads(stats_file.read_text()) if stats_file.exists() else {}; print(f'Session summary: {stats.get(\\\"tool_usage\\\", {})} tools used, {stats.get(\\\"files_modified\\\", 0)} files modified, {stats.get(\\\"commands_run\\\", 0)} commands run')\"",
+            "timeout_seconds": 5,
+            "run_in_background": true
+          }
+        ]
+      }
+    ]
+  }
+}

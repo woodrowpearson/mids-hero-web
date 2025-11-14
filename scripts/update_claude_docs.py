@@ -34,33 +34,24 @@ def update_readme():
 
 def check_file_sizes():
     """Check and report files exceeding token limits."""
-    context_map = json.loads(Path(".claude/context-map.json").read_text())
-    limits = context_map["file_health_checks"]["max_file_sizes"]
-    
+    # Native Claude Code handles token management now
+    # Simple check for CLAUDE.md only (recommended max: 5K tokens)
     issues = []
-    
+
     # Check CLAUDE.md
     claude_md = Path("CLAUDE.md")
     if claude_md.exists():
         tokens = count_tokens(claude_md.read_text())
-        limit = limits["CLAUDE.md"]
+        limit = 5000  # Recommended limit from research
         if tokens > limit * 0.9:  # 90% threshold
             issues.append(f"CLAUDE.md: {tokens}/{limit} tokens (>90%)")
-    
-    # Check module guides
-    modules_dir = Path(".claude/modules")
-    for module_path in modules_dir.glob("*/guide.md"):
-        tokens = count_tokens(module_path.read_text())
-        limit = limits["module_guide"]
-        if tokens > limit * 0.9:
-            issues.append(f"{module_path}: {tokens}/{limit} tokens (>90%)")
-    
+
     if issues:
         print("⚠️  Files approaching token limits:")
         for issue in issues:
             print(f"  - {issue}")
-        
-        # Create issue if needed
+
+        # Create warning file if needed
         with open("token_limit_warnings.txt", "w") as f:
             f.write("\n".join(issues))
 

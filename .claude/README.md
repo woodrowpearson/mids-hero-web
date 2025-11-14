@@ -1,207 +1,99 @@
-# Claude Context System
-Last Updated: 2025-08-25 00:00:00 UTC
+# .claude/ Directory
 
-This directory contains the Claude Code context management system for the Mids Hero Web project.
+**Purpose**: Claude Code configuration and project-specific customization
 
-## 📁 Directory Structure
+**Last Updated**: 2025-11-13
 
-- **`agents/`** - Native Claude Code sub-agents for specialized tasks
-- **`docs/`** - All project documentation
-- **`hooks/`** - Active Claude Code hooks for automation
-- **`modules/`** - Task-based context modules (database, api, frontend, etc.)
-- **`sessions/`** - Session data and summaries
-- **`state/`** - Runtime state including progress tracking and logs
-- **`workflows/`** - Development workflow guides
+## Structure
 
-## 🔧 Configuration Files
-
-- **`settings.json`** - Claude Code configuration and permissions
-- **`context-map.json`** - Context loading rules and thresholds
-- **`CLEANUP_LOG.md`** - Recent directory reorganization details
-
-## 📖 How It Works
-
-1. **Progressive Loading**: Claude loads only the context needed for your declared task
-2. **Token Management**: Automatic warnings when approaching limits
-3. **Activity Tracking**: All actions logged for session continuity
-4. **Native Sub-Agents**: Specialized agents for database, frontend, API work
-
-## 🚀 Quick Start
-
-Tell Claude what you're working on:
-- "I need to work on database migrations"
-- "Help me import I12 power data"
-- "I want to build API endpoints"
-
-Claude will automatically load the appropriate modules and tools for your task.
-
-## 📊 Context Health
-
-Run `just context-validate` to check:
-- File sizes and token counts
-- Required files presence
-- Module organization
-- Loading scenarios
-
-## 🔗 Related Documentation
-
-- Main guide: `/CLAUDE.md`
-- Development workflow: `.claude/docs/development-workflow.md`
-- Session management: `.claude/docs/session-management.md`
-
-### 🔧 Quick Commands
-
-**Import operations:**
-```bash
-# Claude loads import module for import tasks
-"I need to import I12 power data"
+```
+.claude/
+├── skills/                    # Project-specific skills
+│   └── frontend-development/  # Frontend orchestration skill
+├── commands/                  # Slash commands
+│   ├── code-review.md        # PR review automation
+│   └── update-changelog.md   # Changelog management
+├── hooks/                     # Event hooks
+│   ├── bash_command_validator.py  # Command standards enforcement
+│   ├── git-commit-hook.sh         # Git safety checks
+│   └── activity-logger.py         # Development activity logging
+├── workflows/                 # Workflow documentation
+│   ├── claude/               # Claude-specific workflows
+│   └── github/               # GitHub Actions docs
+├── archive/                   # Deprecated/archived files
+│   ├── deprecated-modules/   # Old custom context system
+│   ├── deprecated-context-map.json  # Old context config
+│   └── old-state/            # Historical state files
+├── settings.json             # Claude Code configuration
+├── settings-backup-2025-11-13.json  # Pre-modernization backup
+└── README.md                 # This file
 ```
 
-**Context health checks:**
-```bash
-just context-check      # Full validation and analysis
-just context-validate   # Check structure and limits
-just token-analyze      # Analyze token usage
-```
+## Official Plugins
 
-### ⚡ Best Practices
+This project uses official Anthropic plugins:
 
-1. **Start with task declaration** - Helps Claude load right context
-2. **Use /clear between tasks** - Prevents context pollution  
-3. **Check token usage** - Run `just context-check` regularly
-4. **One task per session** - Maintains focus
-5. **Validate before commits** - Ensure context stays healthy
+- **superpowers** - Planning and execution workflow
+- **frontend-design** - Distinctive UI generation (via superpowers)
+- **code-review** - Automated PR review (via superpowers)
 
-### 🤖 Automation Status
+Access via global plugin cache, not project-local.
 
-```mermaid
-graph LR
-    subgraph "ACTIVE NOW ✨"
-        Hooks[Claude Code Hooks<br/>UserPromptSubmit<br/>PreToolUse<br/>PostToolUse<br/>Stop]
-        Auto[Automatic Validation<br/>Token Limiting<br/>Activity Logging]
-    end
-    
-    subgraph "Manual Backup"
-        Manual[Manual Commands<br/>just context-check<br/>just token-analyze]
-    end
-    
-    Hooks --> Auto
-    Auto --> Manual
-    
-    style Hooks fill:#99ff99
-    style Auto fill:#99ff99
-    style Manual fill:#ccccff
-```
+## Custom Configuration
 
-**Current**: ✅ Hooks run automatically on every Claude interaction
-**Backup**: Manual commands available for debugging and analysis
+### Skills
+- `skills/frontend-development/` - Orchestrates frontend epic development
 
-### 🪝 Hook Execution
+### Commands
+- `/code-review` - Multi-agent PR review with confidence scoring
+- `/update-changelog` - Manage CHANGELOG.md entries
 
-Hooks are configured in `.claude/settings.json` under the `"hooks"` section.
-Claude triggers them at several points:
+### Hooks
+- **Bash command validator** - Enforces `fd`, `rg`, `trash`, `uv` usage
+- **Git commit hook** - Prevents direct commits to `main`
+- **Activity logger** - Tracks development activity for session insights
 
-- **UserPromptSubmit** – right after you send a message.
-- **PreToolUse** – before any tool or command executes.
-- **PostToolUse** – after a tool finishes running.
-- **Stop** – when the session ends.
+## Removed/Deprecated
 
-Each hook lists commands that Claude runs automatically, powering
-context validation, token limits and activity logging.
+**As of 2025-11-13**:
+- ❌ Custom modules system → Native context loading
+- ❌ context-map.json → Native automatic context
+- ❌ Custom token management → Native management
+- ❌ Manual context triggers → Claude decides context
+- ❌ context-validator.py → Native validation
+- ❌ token-limiter.py → Native token management
+- ❌ subagent-state-tracker.py → Superpowers native tracking
 
-### 🔧 Available Commands
+See `archive/deprecated-modules/README.md` for migration details.
 
-```bash
-# Context validation
-just context-check      # Full health check (validate + analyze)
-just context-validate   # Validate structure against limits
-just token-analyze      # Analyze token usage in directories
+## Development Workflow
 
-# Manual hook execution (if needed)
-# Hooks are now automatically managed via .claude/settings.json
-# No manual execution needed
-```
+**Frontend Development**:
+1. Tell Claude: "start epic 1.1" or describe frontend task
+2. Claude invokes `skills/frontend-development/`
+3. Workflow: Plan → Approve → Execute → Review
 
-### ⚙️ Customization
+**Code Review**:
+1. Create PR
+2. Tell Claude: `/code-review`
+3. Multi-agent review with confidence-scored feedback
 
-Edit `.claude/context-map.json` to:
-- Adjust token limits
-- Change loading rules
-- Add new modules
-- Set file size limits
-- Configure tool loadouts per task
+**Changelog**:
+1. Tell Claude: "update changelog for version X.Y.Z"
+2. Follows Keep a Changelog format
 
-### ❓ Troubleshooting
+## Best Practices
 
-**Context overflow?**
-- Use /clear command
-- Start new session
-- Check for large files in modules/
+- ✅ Rely on native Claude Code features for context
+- ✅ Use official plugins when available
+- ✅ Keep configuration simple
+- ✅ Document custom hooks/commands
+- ❌ Don't create custom context-loading systems
+- ❌ Don't manually manage tokens/context
 
-**Missing context?**
-- Explicitly mention your task domain
-- Check context-map.json rules
-- Verify file exists in expected location
+## Resources
 
-**Conflicting information?**
-- Check for duplicates across modules
-- Ensure single source of truth
-- Report in GitHub issue
-
-## 🔧 GitHub Integration
-
-The Claude context system integrates seamlessly with GitHub workflows to provide:
-
-### Automated Features
-
-1. **PR Code Review** (claude-auto-review.yml)
-   - Automatic review on every PR
-   - City of Heroes domain knowledge
-   - Inline code suggestions
-
-2. **Interactive Assistant** (claude-code-integration.yml)
-   - Use `@claude` in PR/issue comments
-   - Get help with implementation
-   - Ask about project status
-
-3. **Documentation Sync** (doc-auto-sync.yml)
-   - Automatic updates when code changes
-   - Weekly consistency checks
-   - Token limit enforcement
-
-4. **Context Health** (context-health-check.yml)
-   - Runs every 6 hours
-   - Monitors file sizes
-   - Validates structure
-
-### Working with Workflows
-
-**Local Development**:
-- Claude Code hooks trigger automatically
-- Context loads based on your task
-- Activity tracked for continuity
-
-**GitHub Integration**:
-- PRs get automatic review
-- Documentation stays in sync
-- Health checks prevent issues
-
-**Example Workflow**:
-```bash
-# 1. Create feature branch
-git checkout -b feature/new-power
-
-# 2. Tell Claude your task
-"I need to add a new power calculation"
-
-# 3. Make changes (Claude loads calculation context)
-# 4. Create PR (automatic review starts)
-# 5. Use @claude for help in PR comments
-# 6. Documentation updates suggested automatically
-```
-
-See [/.github/workflows/README.md](/.github/workflows/README.md) for detailed workflow documentation.
-
----
-
-*Based on context management best practices from ["How Contexts Fail"](https://www.dbreunig.com/2025/06/22/how-contexts-fail-and-how-to-fix-them.html)*
+- [Claude Code Documentation](https://code.claude.com/docs/)
+- [Superpowers Plugin](https://github.com/chadmcrowell/superpowers)
+- [Research: Best Practices](../docs/research/claude-code-best-practices.md)
+- [Research: Hook Audit](../docs/research/hook-audit-results.md)

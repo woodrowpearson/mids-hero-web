@@ -46,6 +46,10 @@ backend/uv.lock
 
 # bi-directional sync between ai and local user
 /shared/
+# But include midsreborn screenshots for frontend development
+!shared/
+!shared/user/
+!shared/user/midsreborn-screenshots/
 
 # Git worktrees
 .worktrees/
@@ -75,6 +79,11 @@ archive/
 
 # External repositories
 external/
+# But include MidsReborn codebase for frontend UI reference
+!external/
+!external/dev/
+!external/dev/MidsReborn/
+!external/dev/MidsReborn/MidsReborn/
 *.spec
 
 # Installer logs

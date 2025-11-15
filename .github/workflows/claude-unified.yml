@@ -206,7 +206,7 @@ jobs:
         id: build-prompt
         run: |
           PROMPT=""
-          
+
           case "${{ needs.determine-action.outputs.prompt_type }}" in
             review)
               PROMPT="Review PR #${{ github.event.pull_request.number }} for the Mids Hero Web project.
@@ -226,7 +226,7 @@ jobs:
 
           Keep feedback concise and actionable. Use inline comments for specific issues."
               ;;
-            
+
             question)
               PROMPT="You are responding to a question in PR #${{ github.event.issue.number }} of the Mids Hero Web project.
 
@@ -235,7 +235,7 @@ jobs:
           Provide a helpful response about the codebase, epic progress, or City of Heroes mechanics as requested.
           Keep your response concise and relevant to the question."
               ;;
-            
+
             implement)
               PROMPT="This is an automated task to implement documentation suggestions for PR #${{ github.event.issue.number }}.
 
@@ -251,7 +251,7 @@ jobs:
 
           The user comment was: \"${{ github.event.comment.body }}\""
               ;;
-            
+
             approval)
               PROMPT="This is an automated task to process approval comments and apply approved changes for PR #${{ github.event.issue.number }}.
 
@@ -319,21 +319,21 @@ jobs:
           Keep your response focused on the specific code location mentioned."
               ;;
           esac
-          
-          # Save prompt to file to handle multi-line content
-          echo "$PROMPT" > claude_prompt.txt
-          echo "Prompt saved to file"
+
+          # Output prompt to GitHub outputs for use in subsequent steps
+          echo "prompt<<EOF" >> $GITHUB_OUTPUT
+          echo "$PROMPT" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          echo "Prompt prepared and output to next step"
       
       - name: Claude Action Execution
         uses: anthropics/claude-code-action@beta
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          cache_prompts: true
-          cache_control: ephemeral
+          prompt: ${{ steps.build-prompt.outputs.prompt }}
           timeout_minutes: "${{ needs.determine-action.outputs.timeout }}"
           max_turns: "${{ needs.determine-action.outputs.max_turns }}"
-          direct_prompt_file: claude_prompt.txt
       
       - name: Post summary comment
         if: always()

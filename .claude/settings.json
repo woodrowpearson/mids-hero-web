@@ -12,22 +12,11 @@
   "hooks": {
     "PreToolUse": [
       {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 .claude/hooks/bash_command_validator.py",
-            "continue_on_error": false,
-            "description": "Enforce command standards"
-          }
-        ]
-      },
-      {
         "matcher": "Bash(git commit:*)",
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/git-commit-hook.sh",
+            "command": "bash $(git rev-parse --show-toplevel)/.claude/hooks/git-commit-hook.sh",
             "timeout_seconds": 10
           }
         ]

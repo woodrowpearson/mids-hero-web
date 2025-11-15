@@ -82,11 +82,20 @@ jobs:
           
           def check_file_sizes():
               """Check and report files exceeding token limits."""
-              context_map = json.loads(Path(".claude/context-map.json").read_text())
-              limits = context_map["file_health_checks"]["max_file_sizes"]
-              
+              # Use hardcoded limits if context-map.json doesn't exist
+              context_map_path = Path(".claude/context-map.json")
+              if context_map_path.exists():
+                  context_map = json.loads(context_map_path.read_text())
+                  limits = context_map["file_health_checks"]["max_file_sizes"]
+              else:
+                  # Hardcoded limits when context-map.json is not available
+                  limits = {
+                      "CLAUDE.md": 5000,
+                      "module_guide": 3000,
+                  }
+
               issues = []
-              
+
               # Check CLAUDE.md
               claude_md = Path("CLAUDE.md")
               if claude_md.exists():
@@ -94,20 +103,21 @@ jobs:
                   limit = limits["CLAUDE.md"]
                   if tokens > limit * 0.9:  # 90% threshold
                       issues.append(f"CLAUDE.md: {tokens}/{limit} tokens (>90%)")
-              
+
               # Check module guides
               modules_dir = Path(".claude/modules")
-              for module_path in modules_dir.glob("*/guide.md"):
-                  tokens = count_tokens(module_path.read_text())
-                  limit = limits["module_guide"]
-                  if tokens > limit * 0.9:
-                      issues.append(f"{module_path}: {tokens}/{limit} tokens (>90%)")
-              
+              if modules_dir.exists():
+                  for module_path in modules_dir.glob("*/guide.md"):
+                      tokens = count_tokens(module_path.read_text())
+                      limit = limits["module_guide"]
+                      if tokens > limit * 0.9:
+                          issues.append(f"{module_path}: {tokens}/{limit} tokens (>90%)")
+
               if issues:
                   print("⚠️  Files approaching token limits:")
                   for issue in issues:
                       print(f"  - {issue}")
-                  
+
                   # Create issue if needed
                   with open("token_limit_warnings.txt", "w") as f:
                       f.write("\n".join(issues))

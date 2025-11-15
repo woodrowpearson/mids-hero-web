@@ -201,7 +201,9 @@ def convert_defense_type_to_api(internal_dtype: DefenseType) -> DefenseTypeEnum:
     return reverse_map.get(internal_dtype, DefenseTypeEnum.SMASHING)
 
 
-def convert_resistance_type_to_api(internal_rtype: ResistanceType) -> ResistanceTypeEnum:
+def convert_resistance_type_to_api(
+    internal_rtype: ResistanceType,
+) -> ResistanceTypeEnum:
     """Convert internal ResistanceType to API ResistanceTypeEnum."""
     reverse_map = {
         ResistanceType.SMASHING: ResistanceTypeEnum.SMASHING,
@@ -248,7 +250,10 @@ async def calculate_power_damage(
     """Calculate damage from a power's effects."""
     try:
         # Convert request effects to internal Effect objects
-        effects = [convert_effect_request_to_effect(e, idx) for idx, e in enumerate(request.effects)]
+        effects = [
+            convert_effect_request_to_effect(e, idx)
+            for idx, e in enumerate(request.effects)
+        ]
 
         # Convert enums
         power_type = PowerType(request.power_type.value)

@@ -1,46 +1,107 @@
-# Getting Started with Create React App
+# Mids Hero Web - Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Modern Next.js 14 frontend for Mids Hero Web build planner.
 
-## Available Scripts
+## Tech Stack
 
-In the project directory, you can run:
+- **Framework**: Next.js 14 (App Router)
+- **Language**: TypeScript 5.x (strict mode)
+- **Styling**: Tailwind CSS 3.x
+- **Components**: shadcn/ui
+- **Testing**: Vitest + React Testing Library
 
-### `npm start`
+## Getting Started
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Prerequisites
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- Node.js 18.x or higher
+- npm or yarn
 
-### `npm test`
+### Installation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+npm install
+```
 
-### `npm run build`
+### Development
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+npm run dev
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Open http://localhost:3000
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Testing
 
-### `npm run eject`
+```bash
+# Run tests
+npm test
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+# Run tests with UI
+npm run test:ui
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+# Run tests with coverage
+npm run test:coverage
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Build
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```bash
+npm run build
+npm start
+```
 
-## Learn More
+## Project Structure
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```
+frontend/
+├── app/                    # Next.js App Router
+│   ├── layout.tsx          # Root layout
+│   ├── page.tsx            # Homepage
+│   ├── providers.tsx       # React context providers
+│   └── globals.css         # Global styles
+├── components/
+│   ├── ui/                 # shadcn/ui components
+│   └── layout/             # Layout components (TopNav, Footer)
+│       └── __tests__/      # Component tests
+├── lib/
+│   └── utils.ts            # Utility functions
+└── test/
+    └── setup.ts            # Test configuration
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Design System
+
+### Colors
+
+MidsReborn-inspired dark theme:
+
+- **Background**: `#000000` (pure black)
+- **Panels**: `#1a1a1a`, `#222222`
+- **Hero Blue**: `#0066FF`
+- **Hero Cyan**: `#00CCFF`
+- **Villain Red**: `#CC0000`
+- **Accent Orange**: `#FF9900`
+
+See `app/globals.css` for full color palette.
+
+### Components
+
+Initial shadcn/ui components installed:
+- Button
+- Dialog
+- Select
+- Tabs
+- Tooltip
+
+## Next Steps
+
+- Epic 1.2: State Management Setup (TanStack Query + Zustand)
+- Epic 1.3: Layout Shell + Navigation
+- Epic 1.4: API Client Integration
+
+## References
+
+- [Architecture](../docs/frontend/architecture.md)
+- [Epic Breakdown](../docs/frontend/epic-breakdown.md)
+- [MidsReborn UI Analysis](../docs/frontend/analysis/MIDSREBORN-UI-ANALYSIS-epic-1.1.md)

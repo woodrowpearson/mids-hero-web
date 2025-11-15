@@ -29,6 +29,7 @@ downloads/
 eggs/
 .eggs/
 lib/
+!frontend/lib/
 lib64/
 parts/
 sdist/
@@ -45,6 +46,9 @@ backend/uv.lock
 
 # bi-directional sync between ai and local user
 /shared/
+
+# Git worktrees
+.worktrees/
 
 # data files for db import
 /data/

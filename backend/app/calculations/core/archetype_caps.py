@@ -35,6 +35,8 @@ class ArchetypeType(Enum):
     # Epic ATs
     PEACEBRINGER = "Peacebringer"
     WARSHADE = "Warshade"
+    ARACHNOS_SOLDIER = "Arachnos Soldier"
+    ARACHNOS_WIDOW = "Arachnos Widow"
 
     # Going Rogue ATs
     SENTINEL = "Sentinel"
@@ -303,6 +305,26 @@ ARCHETYPE_CAPS_DATA = {
         resistance_cap=0.85,  # Kheldian special
         defense_cap=2.00,
         hp_cap=2091.0,  # Form-dependent
+        recovery_cap=8.0,
+        regeneration_cap=20.0,
+        recharge_cap=5.0,
+    ),
+    ArchetypeType.ARACHNOS_SOLDIER: ArchetypeCaps(
+        archetype=ArchetypeType.ARACHNOS_SOLDIER,
+        damage_cap=4.0,
+        resistance_cap=0.75,
+        defense_cap=2.00,
+        hp_cap=2091.0,  # Crab/Bane builds
+        recovery_cap=8.0,
+        regeneration_cap=20.0,
+        recharge_cap=5.0,
+    ),
+    ArchetypeType.ARACHNOS_WIDOW: ArchetypeCaps(
+        archetype=ArchetypeType.ARACHNOS_WIDOW,
+        damage_cap=5.0,  # Higher like Stalker
+        resistance_cap=0.75,
+        defense_cap=2.00,
+        hp_cap=2091.0,  # Night Widow/Fortunata builds
         recovery_cap=8.0,
         regeneration_cap=20.0,
         recharge_cap=5.0,

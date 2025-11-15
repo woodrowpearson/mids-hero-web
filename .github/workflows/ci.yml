@@ -12,7 +12,7 @@ concurrency:
 
 env:
   PYTHON_VERSION: "3.11"
-  NODE_VERSION: "18"
+  NODE_VERSION: "20"
 
 jobs:
   backend-lint:
@@ -139,7 +139,7 @@ jobs:
         run: npm ci
         
       - name: Run tests
-        run: npm test -- --coverage --watchAll=false
+        run: npm test -- --run --coverage
 
   security:
     name: Security Scan

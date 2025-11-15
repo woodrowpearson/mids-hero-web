@@ -1,0 +1,40 @@
+name: Update Claude Documentation
+
+# Temporarily disabled - needs context-map.json dependency removed
+on:
+  workflow_dispatch:
+    inputs:
+      force_update:
+        description: 'Force documentation update'
+        required: false
+        default: 'false'
+
+# Disabled automatic triggers:
+# on:
+#   push:
+#     paths:
+#       - 'backend/**/*.py'
+#       - 'frontend/**/*.ts'
+#       - 'frontend/**/*.tsx'
+#       - '.claude/**/*.md'
+#       - 'CLAUDE.md'
+
+concurrency:
+  group: update-claude-docs-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  update-docs:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Workflow disabled
+        run: |
+          echo "This workflow is temporarily disabled"
+          echo "Reason: context-map.json dependency needs to be removed"
+          exit 0

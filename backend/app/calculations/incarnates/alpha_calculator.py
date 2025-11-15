@@ -276,7 +276,7 @@ class AlphaSlotCalculator:
             final_mag = enhanced_mag * at_modifier
 
             # Step 5: Add to build totals (additive stacking)
-            effect_key = effect.effect_type.value
+            effect_key = effect.effect_type.name
             if effect_key not in updated_stats.totals:
                 updated_stats.totals[effect_key] = Decimal("0")
 

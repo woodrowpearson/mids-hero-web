@@ -71,15 +71,16 @@ class TestThreeRechargeSOs:
 
         Calculation:
             Total Local Bonus: 115.5% (1.155)
-            After ED Schedule A:
-                - First 70%: 70% × 100% = 70%
-                - Next 30%: 30% × 90% = 27%
-                - Remaining 15.5%: 15.5% × 70% = 10.85%
-                - Total: 107.85% (1.0785)
-            local_mult = 1.0 + 1.0785 = 2.0785
-            actual_recharge = 60.0 / 2.0785 = 28.88
+            After ED Schedule A (thresholds: 70%, 90%, 100%):
+                - Region 1 (0-70%): 70% × 100% = 70.0%
+                - Region 2 (70%-90%): 20% × 90% = 18.0%
+                - Region 3 (90%-100%): 10% × 70% = 7.0%
+                - Region 4 (100%-115.5%): 15.5% × 15% = 2.325%
+                - Total: 97.325% (0.97325)
+            local_mult = 1.0 + 0.97325 = 1.97325
+            actual_recharge = 60.0 / 1.97325 = 30.41
 
-        Expected: ~28.88 seconds
+        Expected: ~30.41 seconds
         """
         calculator = RechargeCalculator()
         result = calculator.calculate_recharge(
@@ -92,8 +93,8 @@ class TestThreeRechargeSOs:
         # Verify ED applied correctly
         assert result.local_recharge_bonus_pre_ed == pytest.approx(1.155, abs=0.001)
         # After ED: should be reduced significantly
-        assert result.local_recharge_bonus_after_ed == pytest.approx(1.0785, abs=0.01)
-        assert result.actual_recharge == pytest.approx(28.88, abs=0.1)
+        assert result.local_recharge_bonus_after_ed == pytest.approx(0.97325, abs=0.01)
+        assert result.actual_recharge == pytest.approx(30.41, abs=0.1)
 
 
 class TestHastenAndSetBonuses:
@@ -289,23 +290,24 @@ class TestPermaHasten:
         Test perma-Hasten with insufficient global recharge
 
         Input:
-            - Global without Hasten: 62.5% (0.625)
-            - Local in Hasten: 95% (0.95)
+            - Global without Hasten: 0% (0.0) - no global recharge
+            - Local in Hasten: 0% (0.0) - unslotted Hasten
 
         Calculation:
-            total_mult = 1.95 × 1.625 = 3.169
-            actual_recharge = 120 / 3.169 = 37.87
-            37.87 > 116.83 → FALSE (not perma)
+            total_mult = 1.0 × 1.0 = 1.0
+            actual_recharge = 120 / 1.0 = 120.0
+            max_allowed = 120 - 1.17 - 2.0 = 116.83
+            120.0 > 116.83 → FALSE (not perma)
 
-        Expected: False, 37.87 seconds
+        Expected: False, 120.0 seconds
         """
         calculator = RechargeCalculator()
         is_perma, recharge = calculator.check_perma_hasten(
-            global_recharge_without_hasten=0.625, local_recharge_in_hasten=0.95
+            global_recharge_without_hasten=0.0, local_recharge_in_hasten=0.0
         )
 
         assert is_perma is False
-        assert recharge == pytest.approx(37.87, abs=0.1)
+        assert recharge == pytest.approx(120.0, abs=0.1)
 
 
 class TestValidation:

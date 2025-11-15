@@ -246,9 +246,10 @@ class TestRecoveryWithMultiplePowers:
 
         Calculation:
             recovery_total = 1.0 + 0.25 + 0.10 = 1.35 (135%)
-            recovery_numeric = 1.35 * 1.67 * 1.666667 * 2.0 = 7.530001 end/sec
+            max_end_multiplier = (100.0 / 100.0) + 1.0 = 2.0
+            recovery_numeric = 1.35 * 1.67 * 1.666667 * 2.0 = 7.515001 end/sec
 
-        Expected: 7.53 end/sec
+        Expected: 7.515 end/sec
         """
         stamina = Effect(unique_id=1, effect_type=EffectType.RECOVERY, magnitude=0.25)
         phys_perf = Effect(unique_id=2, effect_type=EffectType.RECOVERY, magnitude=0.10)
@@ -259,7 +260,7 @@ class TestRecoveryWithMultiplePowers:
         )
 
         assert result.recovery_total == pytest.approx(1.35, abs=0.01)
-        assert result.recovery_numeric == pytest.approx(7.53, abs=0.01)
+        assert result.recovery_numeric == pytest.approx(7.515, abs=0.01)
 
 
 class TestMaxEndurance:

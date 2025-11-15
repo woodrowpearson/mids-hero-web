@@ -331,7 +331,7 @@ jobs:
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          prompt: ${{ steps.build-prompt.outputs.prompt }}
+          direct_prompt: ${{ steps.build-prompt.outputs.prompt }}
           timeout_minutes: "${{ needs.determine-action.outputs.timeout }}"
           max_turns: "${{ needs.determine-action.outputs.max_turns }}"
       

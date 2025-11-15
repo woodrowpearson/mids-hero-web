@@ -1,36 +1,107 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Mids Hero Web - Frontend
+
+Modern Next.js 14 frontend for Mids Hero Web build planner.
+
+## Tech Stack
+
+- **Framework**: Next.js 14 (App Router)
+- **Language**: TypeScript 5.x (strict mode)
+- **Styling**: Tailwind CSS 3.x
+- **Components**: shadcn/ui
+- **Testing**: Vitest + React Testing Library
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18.x or higher
+- npm or yarn
+
+### Installation
+
+```bash
+npm install
+```
+
+### Development
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Testing
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+# Run tests
+npm test
 
-## Learn More
+# Run tests with UI
+npm run test:ui
 
-To learn more about Next.js, take a look at the following resources:
+# Run tests with coverage
+npm run test:coverage
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Build
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm run build
+npm start
+```
 
-## Deploy on Vercel
+## Project Structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+frontend/
+├── app/                    # Next.js App Router
+│   ├── layout.tsx          # Root layout
+│   ├── page.tsx            # Homepage
+│   ├── providers.tsx       # React context providers
+│   └── globals.css         # Global styles
+├── components/
+│   ├── ui/                 # shadcn/ui components
+│   └── layout/             # Layout components (TopNav, Footer)
+│       └── __tests__/      # Component tests
+├── lib/
+│   └── utils.ts            # Utility functions
+└── test/
+    └── setup.ts            # Test configuration
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Design System
+
+### Colors
+
+MidsReborn-inspired dark theme:
+
+- **Background**: `#000000` (pure black)
+- **Panels**: `#1a1a1a`, `#222222`
+- **Hero Blue**: `#0066FF`
+- **Hero Cyan**: `#00CCFF`
+- **Villain Red**: `#CC0000`
+- **Accent Orange**: `#FF9900`
+
+See `app/globals.css` for full color palette.
+
+### Components
+
+Initial shadcn/ui components installed:
+- Button
+- Dialog
+- Select
+- Tabs
+- Tooltip
+
+## Next Steps
+
+- Epic 1.2: State Management Setup (TanStack Query + Zustand)
+- Epic 1.3: Layout Shell + Navigation
+- Epic 1.4: API Client Integration
+
+## References
+
+- [Architecture](../docs/frontend/architecture.md)
+- [Epic Breakdown](../docs/frontend/epic-breakdown.md)
+- [MidsReborn UI Analysis](../docs/frontend/analysis/MIDSREBORN-UI-ANALYSIS-epic-1.1.md)

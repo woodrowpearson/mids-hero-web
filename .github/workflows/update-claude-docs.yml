@@ -1,194 +1,29 @@
 name: Update Claude Documentation
 
+# Workflow disabled - automated timestamp updates provide minimal value
+# Update documentation timestamps manually during actual doc changes
 on:
-  push:
-    paths:
-      - 'backend/**/*.py'
-      - 'frontend/**/*.ts'
-      - 'frontend/**/*.tsx'
-      - '.claude/**/*.md'
-      - 'CLAUDE.md'
   workflow_dispatch:
     inputs:
       force_update:
-        description: 'Force documentation update'
+        description: 'Force documentation update (workflow disabled)'
         required: false
         default: 'false'
-
-concurrency:
-  group: update-claude-docs-${{ github.head_ref || github.run_id }}
-  cancel-in-progress: true
-
-permissions:
-  contents: write
-  pull-requests: write
-  issues: write
 
 jobs:
   update-docs:
     runs-on: ubuntu-latest
-    
+
     steps:
-      - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-      
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      
-      - name: Install dependencies
+      - name: Workflow disabled
         run: |
-          pip install tiktoken pyyaml
-      
-      - name: Create documentation update script
-        run: |
-          mkdir -p scripts
-          cat > scripts/update_claude_docs.py << 'SCRIPT_EOF'
-          #!/usr/bin/env python3
-          """Auto-update Claude documentation based on codebase changes."""
-          
-          import json
-          import os
-          from pathlib import Path
-          import tiktoken
-          import yaml
-          from datetime import datetime
-          
-          def count_tokens(text):
-              """Count tokens in text using tiktoken."""
-              encoding = tiktoken.get_encoding("cl100k_base")
-              return len(encoding.encode(text))
-          
-          def update_readme():
-              """Update .claude/README.md with current directory structure."""
-              claude_dir = Path(".claude")
-              readme_path = claude_dir / "README.md"
-              
-              # Read existing README
-              content = readme_path.read_text()
-              
-              # Update last modified date
-              today = datetime.now().strftime("%Y-%m-%d")
-              content = content.replace(
-                  "Last updated:",
-                  f"Last updated: {today}"
-              )
-              
-              # Write back
-              readme_path.write_text(content)
-              print(f"Updated {readme_path}")
-          
-          def check_file_sizes():
-              """Check and report files exceeding token limits."""
-              # Use hardcoded limits if context-map.json doesn't exist
-              context_map_path = Path(".claude/context-map.json")
-              if context_map_path.exists():
-                  context_map = json.loads(context_map_path.read_text())
-                  limits = context_map["file_health_checks"]["max_file_sizes"]
-              else:
-                  # Hardcoded limits when context-map.json is not available
-                  limits = {
-                      "CLAUDE.md": 5000,
-                      "module_guide": 3000,
-                  }
-
-              issues = []
-
-              # Check CLAUDE.md
-              claude_md = Path("CLAUDE.md")
-              if claude_md.exists():
-                  tokens = count_tokens(claude_md.read_text())
-                  limit = limits["CLAUDE.md"]
-                  if tokens > limit * 0.9:  # 90% threshold
-                      issues.append(f"CLAUDE.md: {tokens}/{limit} tokens (>90%)")
-
-              # Check module guides
-              modules_dir = Path(".claude/modules")
-              if modules_dir.exists():
-                  for module_path in modules_dir.glob("*/guide.md"):
-                      tokens = count_tokens(module_path.read_text())
-                      limit = limits["module_guide"]
-                      if tokens > limit * 0.9:
-                          issues.append(f"{module_path}: {tokens}/{limit} tokens (>90%)")
-
-              if issues:
-                  print("⚠️  Files approaching token limits:")
-                  for issue in issues:
-                      print(f"  - {issue}")
-
-                  # Create issue if needed
-                  with open("token_limit_warnings.txt", "w") as f:
-                      f.write("\n".join(issues))
-          
-          def update_progress_timestamp():
-              """Update progress.json with current timestamp."""
-              progress_file = Path(".claude/state/progress.json")
-              if progress_file.exists():
-                  progress = json.loads(progress_file.read_text())
-                  progress["last_auto_update"] = datetime.now().isoformat()
-                  progress_file.write_text(json.dumps(progress, indent=2))
-                  print(f"Updated {progress_file}")
-          
-          def main():
-              """Run all documentation updates."""
-              print("🔄 Updating Claude documentation...")
-              
-              update_readme()
-              check_file_sizes()
-              update_progress_timestamp()
-              
-              print("✅ Documentation update complete")
-          
-          if __name__ == "__main__":
-              main()
-          SCRIPT_EOF
-          chmod +x scripts/update_claude_docs.py
-      
-      - name: Run documentation update
-        run: python scripts/update_claude_docs.py
-      
-      - name: Check for changes
-        id: check_changes
-        run: |
-          if [[ -n $(git status --porcelain) ]]; then
-            echo "changes=true" >> $GITHUB_OUTPUT
-          else
-            echo "changes=false" >> $GITHUB_OUTPUT
-          fi
-      
-      - name: Create Pull Request
-        if: steps.check_changes.outputs.changes == 'true'
-        uses: peter-evans/create-pull-request@v6
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "docs: auto-update Claude documentation"
-          title: "Auto-update Claude Documentation"
-          body: |
-            This PR was automatically generated to update Claude documentation.
-            
-            Changes include:
-            - Updated timestamps in documentation files
-            - Token limit warnings (if any)
-            - Progress tracking updates
-            
-            Please review and merge if appropriate.
-          branch: auto-update-claude-docs
-          delete-branch: true
-      
-      - name: Report token warnings
-        if: steps.check_changes.outputs.changes == 'true' && contains(steps.check_changes.outputs.*, 'token_limit_warnings.txt')
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const fs = require('fs');
-            const warnings = fs.readFileSync('token_limit_warnings.txt', 'utf8');
-            
-            github.rest.issues.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title: '⚠️ Claude documentation approaching token limits',
-              body: `The following files are approaching their token limits:\n\n${warnings}\n\nConsider refactoring or archiving content.`,
-              labels: ['documentation', 'claude-context']
-            });
+          echo "❌ This workflow is disabled"
+          echo ""
+          echo "Reason: Automated timestamp updates create CI noise for minimal value"
+          echo ""
+          echo "Recommendation: Update documentation timestamps manually during"
+          echo "actual documentation changes, not automatically on every code push."
+          echo ""
+          echo "If you need to update timestamps, use:"
+          echo "  just update-docs"
+          exit 0

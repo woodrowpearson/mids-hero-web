@@ -139,7 +139,7 @@ jobs:
         run: npm ci
         
       - name: Run tests
-        run: npm test -- --coverage --watchAll=false
+        run: npm test -- --run --coverage
 
   security:
     name: Security Scan

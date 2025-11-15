@@ -35,6 +35,8 @@ class ArchetypeType(Enum):
     # Epic ATs
     PEACEBRINGER = "Peacebringer"
     WARSHADE = "Warshade"
+    ARACHNOS_SOLDIER = "Arachnos Soldier"
+    ARACHNOS_WIDOW = "Arachnos Widow"
 
     # Going Rogue ATs
     SENTINEL = "Sentinel"

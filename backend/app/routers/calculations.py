@@ -74,7 +74,7 @@ router = APIRouter()
 # ============================================================================
 
 
-def convert_effect_request_to_effect(effect_request) -> Effect:
+def convert_effect_request_to_effect(effect_request, unique_id: int = 0) -> Effect:
     """Convert API effect request to internal Effect object."""
     # Map effect type string to EffectType enum
     effect_type_map = {
@@ -102,7 +102,8 @@ def convert_effect_request_to_effect(effect_request) -> Effect:
     to_who_map = {
         "self": ToWho.SELF,
         "target": ToWho.TARGET,
-        "both": ToWho.BOTH,
+        # Note: "both" is not currently supported in ToWho enum
+        # Effects targeting both self and target should be modeled as separate effects
     }
 
     effect_type = effect_type_map.get(
@@ -116,6 +117,7 @@ def convert_effect_request_to_effect(effect_request) -> Effect:
     to_who = to_who_map.get(effect_request.to_who.lower(), ToWho.TARGET)
 
     return Effect(
+        unique_id=unique_id,
         effect_type=effect_type,
         magnitude=effect_request.magnitude,
         duration=effect_request.duration,
@@ -156,7 +158,7 @@ def convert_defense_type_enum(defense_enum: DefenseTypeEnum) -> DefenseType:
         "fire": DefenseType.FIRE,
         "cold": DefenseType.COLD,
         "energy": DefenseType.ENERGY,
-        "negative": DefenseType.NEGATIVE,
+        "negative": DefenseType.NEGATIVE_ENERGY,
         "toxic": DefenseType.TOXIC,
         "psionic": DefenseType.PSIONIC,
         "melee": DefenseType.MELEE,
@@ -174,11 +176,44 @@ def convert_resistance_type_enum(resistance_enum: ResistanceTypeEnum) -> Resista
         "fire": ResistanceType.FIRE,
         "cold": ResistanceType.COLD,
         "energy": ResistanceType.ENERGY,
-        "negative": ResistanceType.NEGATIVE,
+        "negative": ResistanceType.NEGATIVE_ENERGY,
         "toxic": ResistanceType.TOXIC,
         "psionic": ResistanceType.PSIONIC,
     }
     return resistance_map.get(resistance_enum.value.lower(), ResistanceType.SMASHING)
+
+
+def convert_defense_type_to_api(internal_dtype: DefenseType) -> DefenseTypeEnum:
+    """Convert internal DefenseType to API DefenseTypeEnum."""
+    reverse_map = {
+        DefenseType.SMASHING: DefenseTypeEnum.SMASHING,
+        DefenseType.LETHAL: DefenseTypeEnum.LETHAL,
+        DefenseType.FIRE: DefenseTypeEnum.FIRE,
+        DefenseType.COLD: DefenseTypeEnum.COLD,
+        DefenseType.ENERGY: DefenseTypeEnum.ENERGY,
+        DefenseType.NEGATIVE_ENERGY: DefenseTypeEnum.NEGATIVE,
+        DefenseType.TOXIC: DefenseTypeEnum.TOXIC,
+        DefenseType.PSIONIC: DefenseTypeEnum.PSIONIC,
+        DefenseType.MELEE: DefenseTypeEnum.MELEE,
+        DefenseType.RANGED: DefenseTypeEnum.RANGED,
+        DefenseType.AOE: DefenseTypeEnum.AOE,
+    }
+    return reverse_map.get(internal_dtype, DefenseTypeEnum.SMASHING)
+
+
+def convert_resistance_type_to_api(internal_rtype: ResistanceType) -> ResistanceTypeEnum:
+    """Convert internal ResistanceType to API ResistanceTypeEnum."""
+    reverse_map = {
+        ResistanceType.SMASHING: ResistanceTypeEnum.SMASHING,
+        ResistanceType.LETHAL: ResistanceTypeEnum.LETHAL,
+        ResistanceType.FIRE: ResistanceTypeEnum.FIRE,
+        ResistanceType.COLD: ResistanceTypeEnum.COLD,
+        ResistanceType.ENERGY: ResistanceTypeEnum.ENERGY,
+        ResistanceType.NEGATIVE_ENERGY: ResistanceTypeEnum.NEGATIVE,
+        ResistanceType.TOXIC: ResistanceTypeEnum.TOXIC,
+        ResistanceType.PSIONIC: ResistanceTypeEnum.PSIONIC,
+    }
+    return reverse_map.get(internal_rtype, ResistanceTypeEnum.SMASHING)
 
 
 # ============================================================================
@@ -213,7 +248,7 @@ async def calculate_power_damage(
     """Calculate damage from a power's effects."""
     try:
         # Convert request effects to internal Effect objects
-        effects = [convert_effect_request_to_effect(e) for e in request.effects]
+        effects = [convert_effect_request_to_effect(e, idx) for idx, e in enumerate(request.effects)]
 
         # Convert enums
         power_type = PowerType(request.power_type.value)
@@ -306,19 +341,19 @@ async def calculate_build_defense(
         # Convert back to API enums
         typed_api = {}
         for dtype, value in defense_values.typed.items():
-            api_dtype = DefenseTypeEnum(dtype.value)
+            api_dtype = convert_defense_type_to_api(dtype)
             typed_api[api_dtype] = value
 
         positional_api = {}
         for dtype, value in defense_values.positional.items():
-            api_dtype = DefenseTypeEnum(dtype.value)
+            api_dtype = convert_defense_type_to_api(dtype)
             positional_api[api_dtype] = value
 
         return DefenseCalculationResponse(
             typed=typed_api,
             positional=positional_api,
-            ddr=defense_values.ddr,
-            elusivity=defense_values.elusivity,
+            ddr=0.0,  # TODO: Add DDR tracking to DefenseValues
+            elusivity=0.0,  # TODO: Add elusivity tracking to DefenseValues
         )
 
     except Exception as e:
@@ -367,12 +402,12 @@ async def calculate_build_resistance(
         # Convert back to API enums
         values_api = {}
         for rtype, value in resistance_values.values.items():
-            api_rtype = ResistanceTypeEnum(rtype.value)
+            api_rtype = convert_resistance_type_to_api(rtype)
             values_api[api_rtype] = value
 
         return ResistanceCalculationResponse(
             values=values_api,
-            resistance_debuff_resistance=resistance_values.resistance_debuff_resistance,
+            resistance_debuff_resistance=0.0,  # TODO: Add RDR tracking to ResistanceValues
         )
 
     except Exception as e:

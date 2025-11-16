@@ -45,11 +45,11 @@ MANIFEST
 backend/uv.lock
 
 # bi-directional sync between ai and local user
-/shared/
+/shared/*
 # But include midsreborn screenshots for frontend development
-!shared/
-!shared/user/
-!shared/user/midsreborn-screenshots/
+!/shared/user/
+/shared/user/*
+!/shared/user/midsreborn-screenshots/
 
 # Git worktrees
 .worktrees/
@@ -77,13 +77,27 @@ artifacts/
 # Archive directory - legacy data and deprecated files
 archive/
 
-# External repositories
-external/
-# But include MidsReborn codebase for frontend UI reference
-!external/
+# External repositories - ignore by default
+external/*
+# But include specific MidsReborn source directories for reference
 !external/dev/
+external/dev/*
 !external/dev/MidsReborn/
+external/dev/MidsReborn/*
 !external/dev/MidsReborn/MidsReborn/
+external/dev/MidsReborn/MidsReborn/*
+# Include only calculation and UI source directories
+!external/dev/MidsReborn/MidsReborn/Core/
+!external/dev/MidsReborn/MidsReborn/Forms/
+!external/dev/MidsReborn/MidsReborn/Controls/
+!external/dev/MidsReborn/MidsReborn/UIv2/
+!external/dev/MidsReborn/MidsReborn/*.cs
+!external/dev/MidsReborn/MidsReborn/*.csproj
+!external/dev/MidsReborn/MidsReborn/*.sln
+# Explicitly exclude build artifacts and large resource files
+external/dev/MidsReborn/MidsReborn/bin/
+external/dev/MidsReborn/MidsReborn/obj/
+external/dev/MidsReborn/**/*.resx
 *.spec
 
 # Installer logs

@@ -12,6 +12,7 @@ export interface UIState {
   columnLayout: 2 | 3 | 4 | 5 | 6; // Number of columns for power display
   showTotalsWindow: boolean;
   showSetBonusPanel: boolean;
+  sidebarCollapsed: boolean; // Epic 1.3: Sidebar collapsed state
 
   // Theme preferences (future)
   theme: "dark" | "light";
@@ -20,6 +21,8 @@ export interface UIState {
   setColumnLayout: (columns: 2 | 3 | 4 | 5 | 6) => void;
   setShowTotalsWindow: (show: boolean) => void;
   setShowSetBonusPanel: (show: boolean) => void;
+  setSidebarCollapsed: (collapsed: boolean) => void;
+  toggleSidebar: () => void;
   setTheme: (theme: "dark" | "light") => void;
 }
 
@@ -31,12 +34,15 @@ export const useUIStore = create<UIState>()(
       columnLayout: 3, // Default to 3 columns
       showTotalsWindow: true,
       showSetBonusPanel: false,
+      sidebarCollapsed: false, // Epic 1.3: Sidebar visible by default
       theme: "dark",
 
       // Actions
       setColumnLayout: (columns) => set({ columnLayout: columns }),
       setShowTotalsWindow: (show) => set({ showTotalsWindow: show }),
       setShowSetBonusPanel: (show) => set({ showSetBonusPanel: show }),
+      setSidebarCollapsed: (collapsed) => set({ sidebarCollapsed: collapsed }),
+      toggleSidebar: () => set((state) => ({ sidebarCollapsed: !state.sidebarCollapsed })),
       setTheme: (theme) => set({ theme }),
     }),
     {

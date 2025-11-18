@@ -1,7 +1,10 @@
 /**
- * TotalsPanel - Main container for defense and resistance displays
+ * TotalsPanel - Main container for all stat displays
  * Integrates with characterStore and useCalculateTotals
  * Implements MidsReborn frmTotals window functionality
+ *
+ * Epic 4.1: Defense and Resistance displays
+ * Epic 4.2: HP, Endurance, Recharge, and Misc stats displays
  */
 
 "use client";
@@ -12,6 +15,10 @@ import { useCharacterStore } from "@/stores/characterStore";
 import { useCalculateTotals } from "@/hooks/useCalculations";
 import { DefensePanel } from "./DefensePanel";
 import { ResistancePanel } from "./ResistancePanel";
+import { HPPanel } from "./HPPanel"; // Epic 4.2
+import { EndurancePanel } from "./EndurancePanel"; // Epic 4.2
+import { RechargePanel } from "./RechargePanel"; // Epic 4.2
+import { MiscStatsPanel } from "./MiscStatsPanel"; // Epic 4.2
 import { LoadingSpinner } from "../ui/LoadingSpinner";
 import { ErrorMessage } from "../ui/ErrorMessage";
 
@@ -147,19 +154,26 @@ export function TotalsPanel({ variant = "default", className }: TotalsPanelProps
     return null;
   }
 
-  // Get archetype-specific caps
+  // Get archetype-specific caps (Epic 4.1)
   const defenseCap = archetype.defenseCap || 45;
   const resistanceCap = archetype.resistanceCap || 75;
 
-  // Render defense and resistance panels
+  // Epic 4.2: Get archetype-specific caps for HP, Endurance
+  const maxHPCap = archetype.maxHP || 2409; // Tanker cap (varies by AT)
+  const regenCap = archetype.regenCap || 300; // Soft cap at 300%
+  const maxEnduranceCap = archetype.maxEndurance || 100; // Usually 100
+  const recoveryCap = archetype.recoveryCap || 10; // Visual cap
+
+  // Render all stat panels (Epic 4.1 + Epic 4.2)
   return (
     <div
       className={cn(
-        "grid grid-cols-1 lg:grid-cols-2 gap-8",
+        "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6",
         variant === "compact" && "gap-4",
         className
       )}
     >
+      {/* Epic 4.1: Defense and Resistance */}
       <DefensePanel
         defense={totals.defense}
         defenseCap={defenseCap}
@@ -168,6 +182,28 @@ export function TotalsPanel({ variant = "default", className }: TotalsPanelProps
       <ResistancePanel
         resistance={totals.resistance}
         resistanceCap={resistanceCap}
+        variant={variant}
+      />
+
+      {/* Epic 4.2: HP, Endurance, Recharge, Misc */}
+      <HPPanel
+        hp={totals.hp}
+        maxHPCap={maxHPCap}
+        regenCap={regenCap}
+        variant={variant}
+      />
+      <EndurancePanel
+        endurance={totals.endurance}
+        maxEnduranceCap={maxEnduranceCap}
+        recoveryCap={recoveryCap}
+        variant={variant}
+      />
+      <RechargePanel
+        recharge={totals.recharge}
+        variant={variant}
+      />
+      <MiscStatsPanel
+        misc={totals.misc}
         variant={variant}
       />
     </div>

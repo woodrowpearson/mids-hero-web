@@ -17,9 +17,11 @@ const createWrapper = () => {
     },
   });
 
-  return ({ children }: { children: React.ReactNode }) => (
+  const Wrapper = ({ children }: { children: React.ReactNode }) => (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
+  Wrapper.displayName = "QueryClientWrapper";
+  return Wrapper;
 };
 
 describe("PowersetSelectionPanel", () => {
@@ -29,30 +31,36 @@ describe("PowersetSelectionPanel", () => {
     // Check for main heading
     expect(screen.getByText("Powersets")).toBeInTheDocument();
 
-    // Check for section labels
+    // Check for powerset selector labels
     expect(screen.getByText("Primary Powerset")).toBeInTheDocument();
     expect(screen.getByText("Secondary Powerset")).toBeInTheDocument();
-    expect(screen.getByText("Pool Powers")).toBeInTheDocument();
-    expect(screen.getByText("Ancillary/Epic Powerset")).toBeInTheDocument();
 
     // Check for all 4 pool power slots
     expect(screen.getByText("Pool Power 1")).toBeInTheDocument();
     expect(screen.getByText("Pool Power 2")).toBeInTheDocument();
     expect(screen.getByText("Pool Power 3")).toBeInTheDocument();
     expect(screen.getByText("Pool Power 4")).toBeInTheDocument();
+
+    // Check for ancillary powerset selector
+    expect(screen.getByText(/Ancillary\/Epic Powerset/)).toBeInTheDocument();
   });
 
   it("displays helper text for powersets", () => {
     render(<PowersetSelectionPanel />, { wrapper: createWrapper() });
 
+    // Check main description
     expect(
       screen.getByText(/Choose your character's power sources/i)
     ).toBeInTheDocument();
 
+    // Check pool power description (on first pool selector)
     expect(
-      screen.getByText(/Optional: Select up to 4 pool power sets/i)
+      screen.getByText(/Choose up to 4 pool power sets/i)
     ).toBeInTheDocument();
 
-    expect(screen.getByText(/Optional: Unlocks at level 35/i)).toBeInTheDocument();
+    // Check ancillary description
+    expect(
+      screen.getByText(/Choose an archetype to see available ancillary powersets/i)
+    ).toBeInTheDocument();
   });
 });

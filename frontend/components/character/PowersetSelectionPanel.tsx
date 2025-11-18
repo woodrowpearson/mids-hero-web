@@ -15,7 +15,7 @@ export function PowersetSelectionPanel() {
       <div>
         <h2 className="text-xl font-semibold mb-4">Powersets</h2>
         <p className="text-sm text-muted-foreground mb-6">
-          Choose your character's power sources. Primary and Secondary are required,
+          Choose your character&apos;s power sources. Primary and Secondary are required,
           while Pool and Ancillary/Epic powersets are optional.
         </p>
       </div>
@@ -30,10 +30,6 @@ export function PowersetSelectionPanel() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Pool Powers Column */}
         <div className="flex flex-col gap-4">
-          <h3 className="text-lg font-medium">Pool Powers</h3>
-          <p className="text-sm text-muted-foreground -mt-2 mb-2">
-            Optional: Select up to 4 pool power sets
-          </p>
           <PoolPowerSelector index={0} />
           <PoolPowerSelector index={1} />
           <PoolPowerSelector index={2} />
@@ -42,10 +38,6 @@ export function PowersetSelectionPanel() {
 
         {/* Ancillary/Epic Column */}
         <div className="flex flex-col gap-4">
-          <h3 className="text-lg font-medium">Ancillary/Epic Powerset</h3>
-          <p className="text-sm text-muted-foreground -mt-2 mb-2">
-            Optional: Unlocks at level 35
-          </p>
           <AncillarySelector />
         </div>
       </div>

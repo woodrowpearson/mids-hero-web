@@ -20,7 +20,7 @@ export function PoolPowerSelector({ index }: PoolPowerSelectorProps) {
 
   // Fetch all pool powersets (not archetype-specific)
   const { data: allPowersets, isLoading, error } = usePowersets({
-    powerset_type: "Pool",
+    type: "Pool",
   });
 
   // Filter to pool powersets only

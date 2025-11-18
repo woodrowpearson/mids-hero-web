@@ -33,7 +33,7 @@ describe("TopPanel", () => {
     store.setArchetype({
       id: 1,
       name: "Blaster",
-      display_name: "Blaster",
+      displayName: "Blaster",
       icon: null,
       origin: null,
     });

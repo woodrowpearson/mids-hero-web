@@ -3,7 +3,6 @@
  * Composes Primary, Secondary, Pool (x4), and Ancillary selectors
  */
 
-import React from "react";
 import { PrimaryPowersetSelector } from "./PrimaryPowersetSelector";
 import { SecondaryPowersetSelector } from "./SecondaryPowersetSelector";
 import { PoolPowerSelector } from "./PoolPowerSelector";

@@ -3,7 +3,6 @@
  * Filtered by selected archetype's primary powersets
  */
 
-import React from "react";
 import { PowersetSelector } from "./PowersetSelector";
 import { useCharacterStore } from "@/stores/characterStore";
 import { usePowersetsByArchetype } from "@/hooks/usePowersets";

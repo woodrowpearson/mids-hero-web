@@ -8,11 +8,7 @@
 import { Metadata } from "next";
 import { BuildLayout } from "@/components/layout/BuildLayout";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { id: string };
-}): Promise<Metadata> {
+export async function generateMetadata(): Promise<Metadata> {
   // TODO: Fetch build from backend (Epic 6)
   // For now, return default metadata
   return {

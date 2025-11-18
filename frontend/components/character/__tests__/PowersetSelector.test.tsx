@@ -4,7 +4,6 @@
 
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { PowersetSelector } from "../PowersetSelector";
 import type { Powerset } from "@/types/character.types";
 
@@ -58,7 +57,7 @@ describe("PowersetSelector", () => {
     render(
       <PowersetSelector
         powersets={mockPowersets}
-        selected={mockPowersets[0]}
+        selected={mockPowersets[0] ?? null}
         onChange={onChange}
         placeholder="Select a powerset"
       />
@@ -106,7 +105,7 @@ describe("PowersetSelector", () => {
     render(
       <PowersetSelector
         powersets={mockPowersets}
-        selected={mockPowersets[0]}
+        selected={mockPowersets[0] ?? null}
         onChange={onChange}
       />
     );

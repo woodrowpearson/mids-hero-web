@@ -4,7 +4,7 @@
  * Handles linked secondaries (e.g., Kheldian ATs)
  */
 
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { PowersetSelector } from "./PowersetSelector";
 import { useCharacterStore } from "@/stores/characterStore";
 import { usePowersetsByArchetype } from "@/hooks/usePowersets";
@@ -13,7 +13,6 @@ import { ErrorMessage } from "@/components/ui/ErrorMessage";
 
 export function SecondaryPowersetSelector() {
   const archetype = useCharacterStore((state) => state.archetype);
-  const primaryPowerset = useCharacterStore((state) => state.primaryPowerset);
   const secondaryPowerset = useCharacterStore((state) => state.secondaryPowerset);
   const setSecondaryPowerset = useCharacterStore(
     (state) => state.setSecondaryPowerset
@@ -39,7 +38,7 @@ export function SecondaryPowersetSelector() {
       secondaryPowersets.length === 1 &&
       archetype
     ) {
-      setSecondaryPowerset(secondaryPowersets[0]);
+      setSecondaryPowerset(secondaryPowersets[0] ?? null);
     }
   }, [secondaryPowersets, secondaryPowerset, setSecondaryPowerset, archetype]);
 

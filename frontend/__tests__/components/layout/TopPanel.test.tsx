@@ -34,8 +34,13 @@ describe("TopPanel", () => {
       id: 1,
       name: "Blaster",
       displayName: "Blaster",
-      icon: null,
-      origin: null,
+      damageScale: 1.125,
+      defenseCap: 45,
+      resistanceCap: 75,
+      damageCap: 500,
+      baseHP: 1204.8,
+      baseRegen: 100,
+      baseRecovery: 100,
     });
 
     render(<TopPanel />);

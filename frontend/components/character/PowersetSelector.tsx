@@ -3,7 +3,6 @@
  * Used by Primary, Secondary, Pool, and Ancillary selectors
  */
 
-import React from "react";
 import {
   Select,
   SelectContent,
@@ -41,7 +40,7 @@ export function PowersetSelector({
     }
 
     const powerset = powersets.find((p) => p.id.toString() === value);
-    onChange(powerset || null);
+    onChange(powerset ?? null);
   };
 
   return (

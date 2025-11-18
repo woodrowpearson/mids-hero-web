@@ -3,7 +3,6 @@
  * Prevents duplicate pool selection across the 4 slots
  */
 
-import React from "react";
 import { PowersetSelector } from "./PowersetSelector";
 import { useCharacterStore } from "@/stores/characterStore";
 import { usePowersets } from "@/hooks/usePowersets";
@@ -61,7 +60,7 @@ export function PoolPowerSelector({ index }: PoolPowerSelectorProps) {
   return (
     <PowersetSelector
       powersets={availablePools}
-      selected={poolPowersets[index]}
+      selected={poolPowersets[index] ?? null}
       onChange={handleChange}
       disabled={false}
       placeholder={`Select Pool Power ${index + 1}`}

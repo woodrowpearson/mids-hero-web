@@ -3,7 +3,6 @@
  * Unlocks at level 35+, hidden for Epic ATs
  */
 
-import React from "react";
 import { PowersetSelector } from "./PowersetSelector";
 import { useCharacterStore } from "@/stores/characterStore";
 import { usePowersetsByArchetype } from "@/hooks/usePowersets";
@@ -79,15 +78,9 @@ export function AncillarySelector() {
           : "Select Ancillary/Epic Powerset"
       }
       label={
-        <span>
-          Ancillary/Epic Powerset
-          {!isEnabled && (
-            <span className="text-muted-foreground font-normal">
-              {" "}
-              (Unlocks at level 35)
-            </span>
-          )}
-        </span>
+        !isEnabled
+          ? "Ancillary/Epic Powerset (Unlocks at level 35)"
+          : "Ancillary/Epic Powerset"
       }
       description={
         !archetype

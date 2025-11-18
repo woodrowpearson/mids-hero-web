@@ -53,14 +53,14 @@ describe("PowersetSelectionPanel", () => {
       screen.getByText(/Choose your character's power sources/i)
     ).toBeInTheDocument();
 
-    // Check pool power description (on first pool selector)
-    expect(
-      screen.getByText(/Choose up to 4 pool power sets/i)
-    ).toBeInTheDocument();
-
-    // Check ancillary description
+    // Check ancillary description (shown when no archetype selected)
     expect(
       screen.getByText(/Choose an archetype to see available ancillary powersets/i)
+    ).toBeInTheDocument();
+
+    // Check primary description (shown when no archetype selected)
+    expect(
+      screen.getByText(/Choose an archetype to see available primary powersets/i)
     ).toBeInTheDocument();
   });
 });

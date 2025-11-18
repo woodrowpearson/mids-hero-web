@@ -27,19 +27,14 @@ export function AncillarySelector() {
   const ancillaryPowersets =
     powersets?.filter((p) => p.type === "Ancillary" || p.type === "Epic") || [];
 
-  // Check if this is an Epic AT (Peacebringer, Warshade, etc.)
-  // Epic ATs don't have ancillary powersets
-  // Note: This assumes the backend provides an isEpic flag on archetypes
-  // For now, we'll check by archetype name
-  const isEpicAT =
-    archetype?.name.includes("Peacebringer") ||
-    archetype?.name.includes("Warshade") ||
-    archetype?.name.includes("Soldier") ||
-    archetype?.name.includes("Widow") ||
-    false;
+  // Check if this archetype has any ancillary powersets available
+  // Epic ATs (Peacebringer, Warshade, Soldier, Widow) don't have ancillary powersets
+  // so they will have an empty list here. Hide the selector entirely for these ATs.
+  const hasAncillaryPowersets = ancillaryPowersets.length > 0;
 
-  // Hide completely for Epic ATs
-  if (isEpicAT) {
+  // Hide completely if no ancillary powersets are available (Epic ATs)
+  // Only hide if we have loaded powersets and confirmed there are none
+  if (!isLoading && !error && archetype && !hasAncillaryPowersets) {
     return null;
   }
 

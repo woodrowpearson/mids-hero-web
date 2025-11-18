@@ -44,20 +44,7 @@ export function TotalsPanel({ variant = "default", className }: TotalsPanelProps
       setIsCalculating(true);
 
       calculateTotals(
-        {
-          archetype_id: buildData.character.archetype?.id || 0,
-          origin_id: buildData.character.origin?.id || 0,
-          alignment: buildData.character.alignment?.name || "Hero",
-          level: buildData.character.level,
-          powers: buildData.powers.map((powerEntry) => ({
-            power_id: powerEntry.power.id,
-            level_taken: powerEntry.level,
-            slots: powerEntry.slots.map((slot) => ({
-              enhancement_id: slot.enhancement?.id || 0,
-              level: slot.level,
-            })),
-          })),
-        },
+        { buildData },
         {
           onSuccess: (data) => {
             setTotals(data);
@@ -77,20 +64,7 @@ export function TotalsPanel({ variant = "default", className }: TotalsPanelProps
     setIsCalculating(true);
 
     calculateTotals(
-      {
-        archetype_id: buildData.character.archetype?.id || 0,
-        origin_id: buildData.character.origin?.id || 0,
-        alignment: buildData.character.alignment?.name || "Hero",
-        level: buildData.character.level,
-        powers: buildData.powers.map((powerEntry) => ({
-          power_id: powerEntry.power.id,
-          level_taken: powerEntry.level,
-          slots: powerEntry.slots.map((slot) => ({
-            enhancement_id: slot.enhancement?.id || 0,
-            level: slot.level,
-          })),
-        })),
-      },
+      { buildData },
       {
         onSuccess: (data) => {
           setTotals(data);

@@ -24,8 +24,8 @@ export function usePowersets(params?: GetPowersetsParams) {
  */
 export function usePowersetsByArchetype(archetypeId?: number) {
   return useQuery({
-    queryKey: ["powersets", { archetype_id: archetypeId }],
-    queryFn: () => powerApi.getPowersets({ archetype_id: archetypeId }),
+    queryKey: ["powersets", { archetypeId }],
+    queryFn: () => powerApi.getPowersets({ archetypeId }),
     staleTime: Infinity,
     enabled: !!archetypeId && archetypeId > 0, // Only fetch when archetype selected
   });

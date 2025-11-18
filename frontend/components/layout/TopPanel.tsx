@@ -28,7 +28,7 @@ export function TopPanel() {
               {name || "Unnamed Hero"}
             </span>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <span>{archetype?.display_name || "No Archetype"}</span>
+              <span>{archetype?.displayName || "No Archetype"}</span>
               <span>•</span>
               <span>Level {level}</span>
             </div>

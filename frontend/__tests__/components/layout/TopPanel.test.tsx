@@ -33,9 +33,14 @@ describe("TopPanel", () => {
     store.setArchetype({
       id: 1,
       name: "Blaster",
-      display_name: "Blaster",
-      icon: null,
-      origin: null,
+      displayName: "Blaster",
+      damageScale: 1.125,
+      defenseCap: 45,
+      resistanceCap: 75,
+      damageCap: 500,
+      baseHP: 1204.8,
+      baseRegen: 100,
+      baseRecovery: 100,
     });
 
     render(<TopPanel />);

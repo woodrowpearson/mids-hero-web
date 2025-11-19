@@ -4,7 +4,6 @@ description: Use when completing tasks, implementing major features, or before m
 ---
 
 # Requesting Code Review
-Last Updated: 2025-11-19 20:27:56 UTC
 
 Dispatch superpowers:code-reviewer subagent to catch issues before they cascade.
 

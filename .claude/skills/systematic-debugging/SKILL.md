@@ -4,7 +4,6 @@ description: Use when encountering any bug, test failure, or unexpected behavior
 ---
 
 # Systematic Debugging
-Last Updated: 2025-11-19 20:27:56 UTC
 
 ## Overview
 

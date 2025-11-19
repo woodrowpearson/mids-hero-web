@@ -4,7 +4,6 @@ description: Use when writing or changing tests, adding mocks, or tempted to add
 ---
 
 # Testing Anti-Patterns
-Last Updated: 2025-11-19 20:27:56 UTC
 
 ## Overview
 

@@ -1,4 +1,3 @@
-Last Updated: 2025-11-19 20:27:56 UTC
 
 Review the completed work using Claude Code's built-in code-reviewer subagent.
 

@@ -4,7 +4,6 @@ description: Use when facing 3+ independent failures that can be investigated wi
 ---
 
 # Dispatching Parallel Agents
-Last Updated: 2025-11-19 20:27:56 UTC
 
 ## Overview
 

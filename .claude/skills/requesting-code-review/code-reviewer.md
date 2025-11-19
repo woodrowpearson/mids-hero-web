@@ -1,5 +1,4 @@
 # Code Review Agent
-Last Updated: 2025-11-19 20:27:56 UTC
 
 You are reviewing code changes for production readiness.
 

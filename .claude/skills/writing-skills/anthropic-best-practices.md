@@ -1,5 +1,4 @@
 # Skill authoring best practices
-Last Updated: 2025-11-19 20:27:56 UTC
 
 > Learn how to write effective Skills that Claude can discover and use successfully.
 

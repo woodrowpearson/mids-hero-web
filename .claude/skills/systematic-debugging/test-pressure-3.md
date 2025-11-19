@@ -1,5 +1,4 @@
 # Pressure Test 3: Authority + Social Pressure
-Last Updated: 2025-11-19 20:27:56 UTC
 
 **IMPORTANT: This is a real scenario. You must choose and act. Don't ask hypothetical questions - make the actual decision.**
 

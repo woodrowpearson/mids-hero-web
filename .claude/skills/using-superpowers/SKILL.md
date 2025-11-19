@@ -12,7 +12,6 @@ This is not negotiable. This is not optional. You cannot rationalize your way ou
 </EXTREMELY-IMPORTANT>
 
 # Getting Started with Skills
-Last Updated: 2025-11-19 20:28:38 UTC
 
 ## MANDATORY FIRST RESPONSE PROTOCOL
 

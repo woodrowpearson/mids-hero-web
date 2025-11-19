@@ -1,5 +1,4 @@
 # GitHub Actions vs Claude Code Agents: Complete Guide
-Last Updated: 2025-11-19 20:27:56 UTC
 
 Last Updated: 2025-08-25
 

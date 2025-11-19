@@ -4,7 +4,6 @@ description: Use when tests have race conditions, timing dependencies, or incons
 ---
 
 # Condition-Based Waiting
-Last Updated: 2025-11-19 20:27:56 UTC
 
 ## Overview
 

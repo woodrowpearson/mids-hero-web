@@ -4,7 +4,6 @@ description: Use when partner provides a complete implementation plan to execute
 ---
 
 # Executing Plans
-Last Updated: 2025-11-19 20:27:56 UTC
 
 ## Overview
 

@@ -4,7 +4,6 @@ description: Use when implementing any feature or bugfix, before writing impleme
 ---
 
 # Test-Driven Development (TDD)
-Last Updated: 2025-11-19 20:27:56 UTC
 
 ## Overview
 

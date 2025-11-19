@@ -4,7 +4,6 @@ description: Use when design is complete and you need detailed implementation ta
 ---
 
 # Writing Plans
-Last Updated: 2025-11-19 20:27:56 UTC
 
 ## Overview
 

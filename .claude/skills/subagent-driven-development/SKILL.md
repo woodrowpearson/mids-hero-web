@@ -4,7 +4,6 @@ description: Use when executing implementation plans with independent tasks in t
 ---
 
 # Subagent-Driven Development
-Last Updated: 2025-11-19 20:27:56 UTC
 
 Execute plan by dispatching fresh subagent per task, with code review after each.
 

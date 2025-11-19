@@ -4,7 +4,6 @@ description: Use when about to claim work is complete, fixed, or passing, before
 ---
 
 # Verification Before Completion
-Last Updated: 2025-11-19 20:27:56 UTC
 
 ## Overview
 

@@ -4,7 +4,6 @@ description: Use when errors occur deep in execution and you need to trace back 
 ---
 
 # Root Cause Tracing
-Last Updated: 2025-11-19 20:27:56 UTC
 
 ## Overview
 

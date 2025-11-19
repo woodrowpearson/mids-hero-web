@@ -4,7 +4,6 @@ description: Use when invalid data causes failures deep in execution, requiring 
 ---
 
 # Defense-in-Depth Validation
-Last Updated: 2025-11-19 20:27:56 UTC
 
 ## Overview
 

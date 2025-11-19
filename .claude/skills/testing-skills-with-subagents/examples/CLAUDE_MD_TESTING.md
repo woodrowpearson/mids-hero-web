@@ -1,5 +1,4 @@
 # Testing CLAUDE.md Skills Documentation
-Last Updated: 2025-11-19 20:27:56 UTC
 
 Testing different documentation variants to find what actually makes agents discover and use skills under pressure.
 

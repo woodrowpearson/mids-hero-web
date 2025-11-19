@@ -4,7 +4,6 @@ description: Use when starting feature work that needs isolation from current wo
 ---
 
 # Using Git Worktrees
-Last Updated: 2025-11-19 20:27:56 UTC
 
 ## Overview
 

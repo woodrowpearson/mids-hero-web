@@ -4,7 +4,6 @@ description: Use when creating new skills, editing existing skills, or verifying
 ---
 
 # Writing Skills
-Last Updated: 2025-11-19 20:27:56 UTC
 
 ## Overview
 

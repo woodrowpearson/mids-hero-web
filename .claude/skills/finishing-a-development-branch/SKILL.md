@@ -4,7 +4,6 @@ description: Use when implementation is complete, all tests pass, and you need t
 ---
 
 # Finishing a Development Branch
-Last Updated: 2025-11-19 20:27:56 UTC
 
 ## Overview
 

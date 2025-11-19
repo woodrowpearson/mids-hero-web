@@ -1,3 +1,5 @@
+Last Updated: 2025-11-19 20:27:56 UTC
+
 Use the superpowers plugin's requesting-code-review skill to perform a comprehensive code review.
 
 Invoke the Skill tool with skill="superpowers:requesting-code-review" to dispatch the superpowers code-reviewer subagent that:

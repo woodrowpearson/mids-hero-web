@@ -1,4 +1,5 @@
 # Import Module Guide
+Last Updated: 2025-11-19 20:27:56 UTC
 
 ## Overview
 The import system processes JSON game data from the filtered City of Data source located at `filtered_data/`.

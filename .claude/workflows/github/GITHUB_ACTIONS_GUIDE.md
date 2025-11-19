@@ -1,4 +1,6 @@
 # GitHub Actions vs Claude Code Agents: Complete Guide
+Last Updated: 2025-11-19 20:27:56 UTC
+
 Last Updated: 2025-08-25
 
 ## Executive Summary
@@ -196,7 +198,7 @@ Manual (user request):
 ### GitHub Actions Context
 - **Scope**: Full repository at trigger commit
 - **Limits**: Controlled by `timeout_minutes` and `max_turns`
-- **Optimization**: 
+- **Optimization**:
   - Use file filters to reduce scope
   - Cache frequently used prompts
   - Limit turn count for efficiency
@@ -213,7 +215,7 @@ Manual (user request):
 
 ### 1. Reduce Workflow Redundancy
 **Current Issue**: Multiple workflows reading similar files
-**Solution**: 
+**Solution**:
 - Consolidate doc-review.yml and doc-auto-sync.yml triggers
 - Share change detection logic via reusable workflow
 
@@ -221,7 +223,7 @@ Manual (user request):
 **Current Issue**: Fixed timeouts regardless of task complexity
 **Solution**:
 ```yaml
-timeout_minutes: ${{ 
+timeout_minutes: ${{
   github.event.pull_request.changed_files < 10 && '5' ||
   github.event.pull_request.changed_files < 50 && '10' ||
   '15'
@@ -340,7 +342,7 @@ gh run view <run-id> --log
 # Download artifacts
 gh run download <run-id>
 
-# Cancel stuck workflow  
+# Cancel stuck workflow
 gh run cancel <run-id>
 ```
 
@@ -387,7 +389,7 @@ Is it triggered by an event?
 
 By understanding these boundaries and using each system for its strengths, we achieve:
 - Better performance
-- Clearer responsibilities  
+- Clearer responsibilities
 - Reduced confusion
 - Improved developer experience
 

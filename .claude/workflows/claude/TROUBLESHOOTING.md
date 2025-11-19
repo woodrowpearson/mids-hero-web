@@ -1,5 +1,5 @@
 # Troubleshooting Guide
-Last Updated: 2025-08-25 00:00:00 UTC
+Last Updated: 2025-11-19 20:27:56 UTC
 
 ## 🚨 Quick Fixes
 
@@ -23,7 +23,7 @@ just db-status          # Check migration status
 just db-migrate        # Apply migrations
 just db-reset          # Nuclear option
 
-# Performance issues  
+# Performance issues
 just db-shell
 VACUUM ANALYZE;        # Update statistics
 ```
@@ -82,13 +82,13 @@ just db-shell
 SELECT count(*) FROM pg_stat_activity;
 
 -- Kill idle connections
-SELECT pg_terminate_backend(pid) 
-FROM pg_stat_activity 
-WHERE state = 'idle' 
+SELECT pg_terminate_backend(pid)
+FROM pg_stat_activity
+WHERE state = 'idle'
 AND state_change < NOW() - INTERVAL '10 minutes';
 
 -- Table sizes
-SELECT schemaname,tablename,pg_size_pretty(pg_total_relation_size(schemaname||'.'||tablename)) 
+SELECT schemaname,tablename,pg_size_pretty(pg_total_relation_size(schemaname||'.'||tablename))
 FROM pg_tables WHERE schemaname='public' ORDER BY pg_total_relation_size(schemaname||'.'||tablename) DESC;
 ```
 
@@ -106,9 +106,9 @@ python -c "import psutil; print(f'{psutil.Process().memory_info().rss / 1024 / 1
 ### Slow Queries
 ```sql
 -- Find slow queries
-SELECT query, mean_exec_time, calls 
-FROM pg_stat_statements 
-ORDER BY mean_exec_time DESC 
+SELECT query, mean_exec_time, calls
+FROM pg_stat_statements
+ORDER BY mean_exec_time DESC
 LIMIT 10;
 
 -- Explain query plan

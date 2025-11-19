@@ -2,7 +2,7 @@
 <https://www.one-tab.com/page/hJC_bgrjSuyZdy9pGECqpg>
 
 # Epic 2.5: Claude Code Context Management Refactor #175
-Last Updated: 2025-08-25 00:00:00 UTC
+Last Updated: 2025-11-19 20:27:56 UTC
 
 ## Epic 2.5 Tasks
 

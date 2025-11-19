@@ -8,13 +8,22 @@ export interface Archetype {
   id: number;
   name: string;
   displayName: string;
-  damageScale: number; // Damage multiplier for this AT
-  defenseCap: number; // Max defense (typically 45% or 50%)
-  resistanceCap: number; // Max resistance (typically 75% or 90%)
-  damageCap: number; // Max damage bonus (typically 400% or 500%)
-  baseHP: number; // Base HP at level 50
-  baseRegen: number; // Base regeneration rate
-  baseRecovery: number; // Base endurance recovery
+  damageScale?: number; // Damage multiplier for this AT (legacy field)
+
+  // Base modifiers (Epic 2.3)
+  baseHp?: number; // Base HP at level 50
+  baseRegen?: number; // Base regeneration rate (decimal, e.g., 0.02 = 2%/s)
+  baseRecovery?: number; // Base endurance recovery (decimal, e.g., 0.0167 = 1.67%/s)
+  baseThreat?: number; // Base threat/aggro modifier (decimal, e.g., 1.0 = 100%)
+
+  // Archetype caps (Epic 2.3)
+  damageCap?: number; // Max damage bonus (decimal, e.g., 5.0 = 500%)
+  resistanceCap?: number; // Max resistance (decimal, e.g., 0.75 = 75%)
+  defenseCap?: number; // Max defense display (decimal, e.g., 2.25 = 225%)
+  hpCap?: number; // Max HP cap (absolute value)
+  regenerationCap?: number; // Max regeneration (decimal, e.g., 30.0 = 3000%)
+  recoveryCap?: number; // Max recovery (decimal, e.g., 8.0 = 800%)
+  rechargeCap?: number; // Max recharge speed (decimal, e.g., 5.0 = 500%)
 }
 
 // Origin definition
@@ -51,11 +60,13 @@ export interface Power {
   id: number;
   name: string;
   displayName: string;
+  description?: string; // Epic 2.3: For inherent power tooltips
   powersetId: number;
   levelAvailable: number;
   prerequisitePowerIds?: number[]; // Powers that must be taken first
   effects: Effect[];
   iconUrl?: string;
+  priority?: number; // Epic 2.3: For sorting inherent powers
 }
 
 // Effect types (buffs, debuffs, damage, etc.)

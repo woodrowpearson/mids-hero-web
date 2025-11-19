@@ -1,5 +1,5 @@
 # Database Schema Reference
-Last Updated: 2025-08-25 00:00:00 UTC
+Last Updated: 2025-11-19 20:27:56 UTC
 
 ## Entity Relationship Diagram
 
@@ -29,7 +29,7 @@ CREATE TABLE archetypes (
     name VARCHAR(50) UNIQUE NOT NULL,      -- "Blaster", "Controller"
     display_name VARCHAR(100) NOT NULL,
     description TEXT,
-    primary_category VARCHAR(50),           -- "hero", "villain"  
+    primary_category VARCHAR(50),           -- "hero", "villain"
     secondary_category VARCHAR(50),
     hit_points_base INTEGER,
     inherent_powers JSON,                   -- ["Rest", "Sprint"]
@@ -67,7 +67,7 @@ CREATE TABLE powers (
     level_available INTEGER NOT NULL,
     power_type VARCHAR(50),                 -- "attack", "defense", "support"
     target_type VARCHAR(50),                -- "self", "enemy", "ally", "location"
-    
+
     -- Numeric stats (DECIMAL for precision)
     accuracy DECIMAL(5,2) DEFAULT 1.0,
     damage_scale DECIMAL(8,3),
@@ -79,23 +79,23 @@ CREATE TABLE powers (
     radius_feet INTEGER,
     arc_degrees INTEGER,
     max_targets INTEGER,
-    
+
     -- Complex JSON data
     effects JSON,                           -- [{"type": "damage", "scale": 1.0, ...}]
     effect_groups JSON,                     -- Grouped/summarized effects
     enhancements_allowed JSON,              -- ["accuracy", "damage", "recharge"]
-    
+
     -- Requirements and restrictions
     requires_line_of_sight BOOLEAN DEFAULT true,
     modes_required JSON,                    -- ["flying", "hovering"]
     modes_disallowed JSON,                  -- ["phased"]
     ai_report TEXT,
-    
+
     -- Display
     icon_path VARCHAR(255),
     display_order INTEGER,
     display_info JSON,
-    
+
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW()
 );
@@ -119,10 +119,10 @@ CREATE TABLE enhancement_sets (
     max_level INTEGER DEFAULT 50,
     allowed_origins JSON,                   -- ["magic", "technology", "mutation"]
     set_type VARCHAR(50),                   -- "invention", "archetype", "special"
-    
+
     -- Set bonuses at different piece counts
     bonuses JSON,                           -- {"2": [...], "3": [...], "6": [...]}
-    
+
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW()
 );
@@ -137,21 +137,21 @@ CREATE TABLE enhancements (
     display_name VARCHAR(100) NOT NULL,
     description TEXT,
     slot_type VARCHAR(50),                  -- "accuracy", "damage", "defense_buff"
-    
+
     -- Enhancement values
     schedule VARCHAR(20),                   -- "A", "B", "C", "D"
     modifier_values JSON,                   -- {"accuracy": 0.265, "endurance": 0.265}
-    
+
     -- Requirements
     min_level INTEGER DEFAULT 1,
     max_level INTEGER DEFAULT 50,
     unique_per_build BOOLEAN DEFAULT false,
-    
+
     -- Crafting (for IOs)
     recipe_id INTEGER,
     salvage_required JSON,
     influence_cost INTEGER,
-    
+
     icon_path VARCHAR(255),
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW()
@@ -220,7 +220,7 @@ CREATE INDEX idx_import_logs_date ON import_logs(started_at);
 ### power_build_summary
 ```sql
 CREATE MATERIALIZED VIEW power_build_summary AS
-SELECT 
+SELECT
     p.id,
     p.name,
     p.internal_name,

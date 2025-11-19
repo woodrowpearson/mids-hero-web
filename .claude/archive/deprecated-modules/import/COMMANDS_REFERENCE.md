@@ -1,5 +1,5 @@
 # Import Commands Reference
-Last Updated: 2025-08-25 00:00:00 UTC
+Last Updated: 2025-11-19 20:27:56 UTC
 
 ## Just Commands
 
@@ -21,7 +21,7 @@ just import-clear <type> <file> [batch_size]
 ### Type-Specific Commands
 ```bash
 just import-archetypes <file>     # Import archetype data
-just import-powersets <file>      # Import powerset data  
+just import-powersets <file>      # Import powerset data
 just import-powers <file>         # Import power data
 just import-enhancements <file>   # Import enhancement data
 just import-recipes <file>        # Import recipe data
@@ -64,7 +64,7 @@ Options:
   json_file                    Path to I12 JSON data file
   --database-url URL          Database connection URL
   --batch-size N              Records per database transaction (default: 1000)
-  --chunk-size N              Records to read at once (default: 5000)  
+  --chunk-size N              Records to read at once (default: 5000)
   --memory-limit GB           Memory limit before GC (default: 1.0)
   --resume-from N             Resume from record number
   --validate-only             Validate without importing
@@ -149,7 +149,7 @@ Database status:
 
 Table record counts:
 📊 Archetypes: 5
-📊 Powersets: 106  
+📊 Powersets: 106
 📊 Powers: 2,147
 📊 Enhancements: 1,934
 
@@ -171,7 +171,7 @@ First 10 errors:
   1. Record 10234: Unknown powerset 'Gadgetry'
   2. Record 10235: Invalid level value: -1
   ...
-  
+
 💡 Tip: Run with --verbose for detailed error logs
 ```
 

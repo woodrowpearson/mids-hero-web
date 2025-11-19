@@ -1,4 +1,5 @@
 # Claude Workflows vs GitHub Workflows
+Last Updated: 2025-11-19 20:27:56 UTC
 
 This directory contains **Claude Code development workflow guides** - instructions for developers using Claude Code on the Mids Hero Web project.
 

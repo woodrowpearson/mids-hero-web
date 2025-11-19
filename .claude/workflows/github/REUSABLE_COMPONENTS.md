@@ -1,4 +1,5 @@
 # GitHub Actions Reusable Components
+Last Updated: 2025-11-19 20:27:56 UTC
 
 ## Overview
 
@@ -221,24 +222,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Get changed files
         uses: tj-actions/changed-files@v44
         with:
           files: |
             backend/**/*.py
             frontend/**/*.{js,ts}
-      
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      
+
       - name: Count tokens
         run: |
           pip install tiktoken
           # ... 30+ lines of token counting logic
-      
+
       - name: Run Claude
         uses: anthropics/claude-code-action@beta
         # ... complex configuration

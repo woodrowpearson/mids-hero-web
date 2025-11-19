@@ -1,5 +1,5 @@
 # Database Module Guide
-Last Updated: 2025-08-25 00:00:00 UTC
+Last Updated: 2025-11-19 20:27:56 UTC
 
 ## Quick Reference
 
@@ -30,28 +30,28 @@ archetypes (5 records)          → backend/app/models/archetype.py
 ```python
 class Power(Base):
     __tablename__ = "powers"
-    
+
     # Identity
     id: int (PK)
     name: str
     internal_name: str (unique)
-    
+
     # Relationships
     powerset_id: int (FK)
-    
+
     # Stats
     level_available: int
     accuracy: Decimal
     damage_scale: Decimal
     endurance_cost: Decimal
     recharge_time: Decimal
-    
+
     # Complex data
     effects: JSON
     effect_groups: JSON
 ```
 
-**Indexes**: 
+**Indexes**:
 - Composite: `(powerset_id, level_available)`
 - GIN: `effects`, `effect_groups` (PostgreSQL)
 - Covering: Build queries optimization
@@ -124,10 +124,10 @@ def upgrade() -> None:
         postgresql_using='gin',
         postgresql_ops={'name': 'gin_trgm_ops'}
     )
-    
+
     # Add column with default
     op.add_column('powers',
-        sa.Column('is_epic', sa.Boolean(), 
+        sa.Column('is_epic', sa.Boolean(),
                   server_default='false', nullable=False)
     )
 
@@ -192,7 +192,7 @@ def batch_insert(records: List[Dict], batch_size: int = 1000):
             batch = records[i:i + batch_size]
             session.bulk_insert_mappings(Power, batch)
             session.commit()
-            
+
             # Memory management
             if i % 10000 == 0:
                 session.close()
@@ -236,14 +236,14 @@ VACUUM;   -- Clean up dead rows
 **Connection pool exhausted**:
 ```python
 # Check active connections
-SELECT count(*) FROM pg_stat_activity 
+SELECT count(*) FROM pg_stat_activity
 WHERE datname = 'mids_web';
 
 # Kill idle connections
-SELECT pg_terminate_backend(pid) 
-FROM pg_stat_activity 
-WHERE datname = 'mids_web' 
-AND state = 'idle' 
+SELECT pg_terminate_backend(pid)
+FROM pg_stat_activity
+WHERE datname = 'mids_web'
+AND state = 'idle'
 AND state_change < NOW() - INTERVAL '10 minutes';
 ```
 

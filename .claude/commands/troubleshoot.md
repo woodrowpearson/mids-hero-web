@@ -1,3 +1,5 @@
+Last Updated: 2025-11-19 20:27:56 UTC
+
 Use the superpowers systematic-debugging skill to troubleshoot bugs, test failures, and unexpected behavior.
 
 Invoke the Skill tool with skill="superpowers:systematic-debugging" to dispatch a debugging agent that follows a four-phase framework:

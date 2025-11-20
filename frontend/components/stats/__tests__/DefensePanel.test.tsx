@@ -59,10 +59,10 @@ describe("DefensePanel", () => {
   it("displays correct percentage values", () => {
     render(<DefensePanel defense={mockDefense} defenseCap={45} />);
 
-    expect(screen.getByText("45.0%")).toBeInTheDocument(); // Smashing and others at cap
-    expect(screen.getByText("30.5%")).toBeInTheDocument(); // Fire, Cold, Ranged
-    expect(screen.getByText("25.2%")).toBeInTheDocument(); // Energy, AoE
-    expect(screen.getByText("18.0%")).toBeInTheDocument(); // Negative
+    expect(screen.getAllByText("45.0%")).toHaveLength(3); // Smashing, Lethal, Melee at cap
+    expect(screen.getAllByText("30.5%")).toHaveLength(3); // Fire, Cold, Ranged
+    expect(screen.getAllByText("25.2%")).toHaveLength(2); // Energy, AoE
+    expect(screen.getByText("18.0%")).toBeInTheDocument(); // Negative (unique)
     expect(screen.getAllByText("0.0%")).toHaveLength(2); // Toxic, Psionic
   });
 

@@ -56,9 +56,8 @@ describe("BuilderPage", () => {
 
     render(<BuilderPage />);
 
-    // Sidebar should be hidden (aria-hidden=true)
-    const sidebar = screen.getByRole("complementary");
-    expect(sidebar).toHaveAttribute("aria-hidden", "true");
+    // Sidebar should not be rendered when collapsed (showSidebar={!sidebarCollapsed})
+    expect(screen.queryByRole("complementary")).not.toBeInTheDocument();
   });
 
   it("displays dashed border for empty state", () => {

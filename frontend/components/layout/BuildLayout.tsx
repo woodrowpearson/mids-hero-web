@@ -35,9 +35,6 @@ export function BuildLayout({
   // Use prop override or store value
   const columns = columnCount ?? columnLayout;
 
-  // Determine if sidebar should be shown
-  const isSidebarVisible = showSidebar && !sidebarCollapsed;
-
   return (
     <div className="flex flex-col h-screen bg-background">
       {/* Top Panel - fixed at top */}

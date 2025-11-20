@@ -109,6 +109,6 @@ describe("usePowersetsByArchetype", () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.data).toEqual(mockPowersets);
-    expect(powerApi.getPowersets).toHaveBeenCalledWith({ archetype_id: 1 });
+    expect(powerApi.getPowersets).toHaveBeenCalledWith({ archetypeId: 1 });
   });
 });

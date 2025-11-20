@@ -95,7 +95,7 @@ describe("TotalsPanel", () => {
     // Reset store before each test
     useCharacterStore.setState({
       archetype: null,
-      totals: null,
+      totals: undefined,
       isCalculating: false,
     });
   });
@@ -111,7 +111,7 @@ describe("TotalsPanel", () => {
   it("shows loading state while calculating", () => {
     useCharacterStore.setState({
       archetype: mockArchetype,
-      totals: null,
+      totals: undefined,
       isCalculating: true,
     });
 
@@ -143,12 +143,12 @@ describe("TotalsPanel", () => {
 
     render(<TotalsPanel />, { wrapper: createWrapper() });
 
-    // Typed defense
-    expect(screen.getByText("Smashing")).toBeInTheDocument();
-    expect(screen.getByText("Lethal")).toBeInTheDocument();
-    expect(screen.getByText("Fire")).toBeInTheDocument();
+    // Typed defense (appears in both Defense and Resistance panels)
+    expect(screen.getAllByText("Smashing")).toHaveLength(2); // Defense + Resistance
+    expect(screen.getAllByText("Lethal")).toHaveLength(2);
+    expect(screen.getAllByText("Fire")).toHaveLength(2);
 
-    // Positional defense
+    // Positional defense (only in Defense panel)
     expect(screen.getByText("Melee")).toBeInTheDocument();
     expect(screen.getByText("Ranged")).toBeInTheDocument();
     expect(screen.getByText("AoE")).toBeInTheDocument();
@@ -279,15 +279,17 @@ describe("TotalsPanel", () => {
 
   it("handles missing totals gracefully", () => {
     useCharacterStore.setState({
-      archetype: mockArchetype,
-      totals: null,
+      archetype: null, // No archetype prevents auto-calculation
+      totals: undefined,
       isCalculating: false,
     });
 
-    const { container } = render(<TotalsPanel />, { wrapper: createWrapper() });
+    render(<TotalsPanel />, { wrapper: createWrapper() });
 
-    // Should render nothing (not even a container)
-    expect(container.firstChild).toBeNull();
+    // Should show message when no archetype
+    expect(
+      screen.getByText("Select an archetype to view build totals")
+    ).toBeInTheDocument();
   });
 
   it("uses default caps when archetype caps are undefined", () => {

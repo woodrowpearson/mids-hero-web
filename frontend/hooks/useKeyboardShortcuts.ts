@@ -8,7 +8,7 @@ import { useEffect } from "react";
 
 export function useKeyboardShortcuts() {
   useEffect(() => {
-    const handleKeyPress = (e: KeyboardEvent) => {
+    const handleKeyPress = (_e: KeyboardEvent) => {
       // TODO: Implement undo/redo in future epic
       // // Undo: Ctrl/Cmd + Z
       // if ((e.metaKey || e.ctrlKey) && e.key === "z" && !e.shiftKey) {

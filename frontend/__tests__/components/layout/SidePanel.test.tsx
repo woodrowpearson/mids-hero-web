@@ -19,7 +19,7 @@ describe("SidePanel", () => {
   it("collapses to zero width when collapsed prop is true", () => {
     render(<SidePanel collapsed={true} />);
 
-    const sidebar = screen.getByRole("complementary");
+    const sidebar = screen.getByRole("complementary", { hidden: true });
     expect(sidebar).toHaveClass("w-0");
     expect(sidebar).not.toHaveClass("w-[250px]");
   });
@@ -40,7 +40,7 @@ describe("SidePanel", () => {
   it("has aria-hidden attribute when collapsed", () => {
     render(<SidePanel collapsed={true} />);
 
-    const sidebar = screen.getByRole("complementary");
+    const sidebar = screen.getByRole("complementary", { hidden: true });
     expect(sidebar).toHaveAttribute("aria-hidden", "true");
   });
 

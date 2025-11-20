@@ -56,9 +56,10 @@ describe("BuilderPage", () => {
 
     render(<BuilderPage />);
 
-    // Sidebar should be hidden (aria-hidden=true)
-    const sidebar = screen.getByRole("complementary");
+    // Sidebar should remain in DOM but be hidden for animations
+    const sidebar = screen.getByRole("complementary", { hidden: true });
     expect(sidebar).toHaveAttribute("aria-hidden", "true");
+    expect(sidebar).toHaveClass("w-0");
   });
 
   it("displays dashed border for empty state", () => {

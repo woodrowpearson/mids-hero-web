@@ -25,8 +25,11 @@ export function StatBar({
   showPercentage = true,
   className,
 }: StatBarProps) {
+  // Clamp negative values to 0 (debuffs shouldn't show negative bars)
+  const clampedValue = Math.max(0, value);
+
   // Calculate bar width as percentage of cap
-  const percentage = cap ? Math.min((value / cap) * 100, 100) : 0;
+  const percentage = cap ? Math.min((clampedValue / cap) * 100, 100) : 0;
 
   // Determine cap status
   const isAtCap = cap !== undefined && value >= cap && value < cap + 0.01; // Within rounding

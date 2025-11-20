@@ -4,7 +4,6 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { archetypeApi } from "@/services";
-import type { Archetype } from "@/types/character.types";
 
 /**
  * Fetch all archetypes

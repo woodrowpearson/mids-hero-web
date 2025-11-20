@@ -34,8 +34,9 @@ describe("BuildLayout", () => {
       </BuildLayout>
     );
 
-    // TopPanel contains "Mids Hero Web"
-    expect(screen.getByText("Mids Hero Web")).toBeInTheDocument();
+    // TopPanel should render with default character name
+    expect(screen.getByRole("banner")).toBeInTheDocument();
+    expect(screen.getByText("Unnamed Hero")).toBeInTheDocument();
   });
 
   it("renders SidePanel when showSidebar is true", () => {
@@ -137,9 +138,10 @@ describe("BuildLayout", () => {
       </BuildLayout>
     );
 
-    // Sidebar should be in document but hidden
-    const sidebar = screen.getByRole("complementary");
+    // Sidebar should be in document but hidden (need { hidden: true } to find it)
+    const sidebar = screen.getByRole("complementary", { hidden: true });
     expect(sidebar).toHaveAttribute("aria-hidden", "true");
+    expect(sidebar).toHaveClass("w-0");
   });
 
   it("applies custom className to main content area", () => {

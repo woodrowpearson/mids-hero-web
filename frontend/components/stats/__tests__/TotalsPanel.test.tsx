@@ -95,7 +95,7 @@ describe("TotalsPanel", () => {
     // Reset store before each test
     useCharacterStore.setState({
       archetype: null,
-      totals: null,
+      totals: undefined,
       isCalculating: false,
     });
   });
@@ -111,7 +111,7 @@ describe("TotalsPanel", () => {
   it("shows loading state while calculating", () => {
     useCharacterStore.setState({
       archetype: mockArchetype,
-      totals: null,
+      totals: undefined,
       isCalculating: true,
     });
 
@@ -280,7 +280,7 @@ describe("TotalsPanel", () => {
   it("handles missing totals gracefully", () => {
     useCharacterStore.setState({
       archetype: mockArchetype,
-      totals: null,
+      totals: undefined,
       isCalculating: false,
     });
 

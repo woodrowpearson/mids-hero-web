@@ -7,7 +7,7 @@ import { renderHook, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useCalculateTotals } from "@/hooks/useCalculations";
 import { calculationApi } from "@/services";
-import type { CalculatedTotals } from "@/types/character.types";
+import type { CalculatedTotals, BuildData } from "@/types/character.types";
 
 // Mock the calculationApi
 vi.mock("@/services", () => ({
@@ -73,7 +73,7 @@ describe("useCalculateTotals", () => {
 
     const { result } = renderHook(() => useCalculateTotals(), { wrapper });
 
-    const mockBuildData = {
+    const mockBuildData: BuildData = {
       character: {
         name: "Test Hero",
         archetype: null,

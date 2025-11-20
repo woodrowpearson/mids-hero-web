@@ -98,8 +98,8 @@ describe("characterStore", () => {
       });
 
       expect(result.current.powers).toHaveLength(1);
-      expect(result.current.powers[0].power).toEqual(mockPower);
-      expect(result.current.powers[0].level).toBe(1);
+      expect(result.current.powers[0]!.power).toEqual(mockPower);
+      expect(result.current.powers[0]!.level).toBe(1);
     });
 
     it("removes power from build", () => {
@@ -121,7 +121,7 @@ describe("characterStore", () => {
         result.current.updatePowerLevel(0, 5);
       });
 
-      expect(result.current.powers[0].level).toBe(5);
+      expect(result.current.powers[0]!.level).toBe(5);
     });
   });
 
@@ -140,7 +140,7 @@ describe("characterStore", () => {
         result.current.addSlot(0);
       });
 
-      expect(result.current.powers[0].slots).toHaveLength(1);
+      expect(result.current.powers[0]!.slots).toHaveLength(1);
     });
 
     it("limits slots to 6 per power", () => {
@@ -153,7 +153,7 @@ describe("characterStore", () => {
         }
       });
 
-      expect(result.current.powers[0].slots).toHaveLength(6);
+      expect(result.current.powers[0]!.slots).toHaveLength(6);
     });
 
     it("slots enhancement", () => {
@@ -164,8 +164,8 @@ describe("characterStore", () => {
         result.current.slotEnhancement(0, 0, mockEnhancement, 50);
       });
 
-      expect(result.current.powers[0].slots[0].enhancement).toEqual(mockEnhancement);
-      expect(result.current.powers[0].slots[0].level).toBe(50);
+      expect(result.current.powers[0]!.slots[0]!.enhancement).toEqual(mockEnhancement);
+      expect(result.current.powers[0]!.slots[0]!.level).toBe(50);
     });
 
     it("removes enhancement from slot", () => {
@@ -177,7 +177,7 @@ describe("characterStore", () => {
         result.current.removeEnhancement(0, 0);
       });
 
-      expect(result.current.powers[0].slots[0].enhancement).toBeNull();
+      expect(result.current.powers[0]!.slots[0]!.enhancement).toBeNull();
     });
   });
 

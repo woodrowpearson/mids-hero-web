@@ -6,20 +6,17 @@
  */
 
 import { create } from "zustand";
-import { devtools, persist } from "zustand/middleware";
+import { devtools, persist, subscribeWithSelector } from "zustand/middleware";
 import type {
-  Character,
   Archetype,
   Origin,
   Alignment,
   Powerset,
   Power,
   PowerEntry,
-  Slot,
   Enhancement,
   BuildData,
   CalculatedTotals,
-  PowersetSlots,
 } from "@/types/character.types";
 
 // Store state interface
@@ -41,7 +38,7 @@ export interface CharacterState {
   powers: PowerEntry[];
 
   // Calculated totals (from backend)
-  totals: CalculatedTotals | null;
+  totals: CalculatedTotals | undefined;
   isCalculating: boolean;
 
   // Actions - Character
@@ -100,15 +97,16 @@ const initialState = {
   ],
   ancillaryPowerset: null,
   powers: [],
-  totals: null,
+  totals: undefined,
   isCalculating: false,
 };
 
 // Create store with middleware
 export const useCharacterStore = create<CharacterState>()(
-  devtools(
-    persist(
-      (set, get) => ({
+  subscribeWithSelector(
+    devtools(
+      persist(
+        (set, get) => ({
           ...initialState,
 
           // Character actions
@@ -150,7 +148,9 @@ export const useCharacterStore = create<CharacterState>()(
           },
           updatePowerLevel: (index, level) => {
             const powers = [...get().powers];
-            powers[index] = { ...powers[index], level };
+            const power = powers[index];
+            if (!power) return;
+            powers[index] = { ...power, level };
             set({ powers });
           },
 
@@ -158,6 +158,7 @@ export const useCharacterStore = create<CharacterState>()(
           addSlot: (powerIndex) => {
             const powers = [...get().powers];
             const power = powers[powerIndex];
+            if (!power) return;
             if (power.slots.length < 6) {
               // Max 6 slots
               power.slots.push({
@@ -170,12 +171,14 @@ export const useCharacterStore = create<CharacterState>()(
           removeSlot: (powerIndex, slotIndex) => {
             const powers = [...get().powers];
             const power = powers[powerIndex];
+            if (!power) return;
             power.slots.splice(slotIndex, 1);
             set({ powers });
           },
           slotEnhancement: (powerIndex, slotIndex, enhancement, level) => {
             const powers = [...get().powers];
             const power = powers[powerIndex];
+            if (!power) return;
             power.slots[slotIndex] = {
               enhancement,
               level,
@@ -185,8 +188,11 @@ export const useCharacterStore = create<CharacterState>()(
           removeEnhancement: (powerIndex, slotIndex) => {
             const powers = [...get().powers];
             const power = powers[powerIndex];
+            if (!power) return;
+            const slot = power.slots[slotIndex];
+            if (!slot) return;
             power.slots[slotIndex] = {
-              ...power.slots[slotIndex],
+              ...slot,
               enhancement: null,
             };
             set({ powers });
@@ -210,7 +216,7 @@ export const useCharacterStore = create<CharacterState>()(
               poolPowersets: powersets.pools,
               ancillaryPowerset: powersets.ancillary,
               powers,
-              totals: totals || null,
+              totals,
             });
           },
           clearBuild: () => set(initialState),
@@ -252,6 +258,7 @@ export const useCharacterStore = create<CharacterState>()(
         }),
       }
     )
+  )
   )
 );
 

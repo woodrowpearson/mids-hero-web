@@ -11,12 +11,12 @@ import { BuildLayout } from "@/components/layout/BuildLayout";
 import { useUIStore } from "@/stores/uiStore";
 
 export default function BuilderPage() {
-  const { columnLayout, sidebarCollapsed } = useUIStore();
+  const { columnLayout } = useUIStore();
 
   return (
     <BuildLayout
       columnCount={columnLayout}
-      showSidebar={!sidebarCollapsed}
+      showSidebar={true}
     >
       {/* Empty state placeholder - Power selection in Epic 3 */}
       <div className="col-span-full flex items-center justify-center p-12 border-2 border-dashed border-muted-foreground/25 rounded-lg min-h-[400px]">

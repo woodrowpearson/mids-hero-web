@@ -4,7 +4,7 @@
  */
 
 import { useQuery } from "@tanstack/react-query";
-import { archetypeApi } from "@/services";
+import { archetypeApi, powerApi } from "@/services";
 import type { Power } from "@/types/character.types";
 
 /**
@@ -27,12 +27,12 @@ export function useInherentPowers(archetypeId: number | undefined) {
       // Uses GET /api/archetypes/{id}/powersets?powerset_type=inherent
       const powersets = await archetypeApi.getPowersets(archetypeId, "inherent");
 
-      // Extract powers from the inherent powerset(s)
+      // Fetch powers for each inherent powerset
+      // Uses GET /api/powersets/:id/powers for each powerset
       const inherentPowers: Power[] = [];
       for (const powerset of powersets) {
-        if (powerset.powers) {
-          inherentPowers.push(...powerset.powers);
-        }
+        const powers = await powerApi.getPowersetPowers(powerset.id);
+        inherentPowers.push(...powers);
       }
 
       // Sort by priority (MidsReborn behavior)

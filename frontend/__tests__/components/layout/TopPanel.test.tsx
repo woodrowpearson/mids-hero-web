@@ -35,12 +35,12 @@ describe("TopPanel", () => {
       name: "Blaster",
       displayName: "Blaster",
       damageScale: 1.125,
-      defenseCap: 45,
-      resistanceCap: 75,
-      damageCap: 500,
-      baseHP: 1204.8,
-      baseRegen: 100,
-      baseRecovery: 100,
+      defenseCap: 0.45,
+      resistanceCap: 0.75,
+      damageCap: 5.0,
+      baseHp: 1204.8,
+      baseRegen: 0.02,
+      baseRecovery: 0.0167,
     });
 
     render(<TopPanel />);

@@ -42,7 +42,7 @@ export function InherentPowersDisplay({
   if (error) {
     return (
       <ErrorMessage
-        error={error instanceof Error ? error : new Error("Failed to load inherent powers")}
+        message={error instanceof Error ? error.message : "Failed to load inherent powers"}
       />
     );
   }

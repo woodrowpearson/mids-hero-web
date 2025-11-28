@@ -13,12 +13,12 @@ const mockArchetype: Archetype = {
   name: "Blaster",
   displayName: "Blaster",
   damageScale: 1.0,
-  defenseCap: 45,
-  resistanceCap: 75,
-  damageCap: 500,
-  baseHP: 1000,
-  baseRegen: 1.0,
-  baseRecovery: 1.0,
+  defenseCap: 0.45,
+  resistanceCap: 0.75,
+  damageCap: 5.0,
+  baseHp: 1000,
+  baseRegen: 0.02,
+  baseRecovery: 0.0167,
 };
 
 const mockPower: Power = {

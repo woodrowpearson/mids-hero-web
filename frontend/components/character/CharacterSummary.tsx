@@ -38,7 +38,12 @@ export function CharacterSummary({
   const summaryText = `${name || "Unnamed"}: Level ${level} ${origin?.displayName || "Unknown"} ${archetype?.displayName || "Archetype"} (${primaryPowerset?.displayName || "None"} / ${secondaryPowerset?.displayName || "None"})`;
 
   const handleSave = () => {
-    setName(editName);
+    // Validate name is not empty or whitespace-only
+    const trimmedName = editName.trim();
+    if (!trimmedName) {
+      return; // Don't save empty names
+    }
+    setName(trimmedName);
     const newLevel = parseInt(editLevel, 10);
     if (!isNaN(newLevel) && newLevel >= 1 && newLevel <= 50) {
       setLevel(newLevel);

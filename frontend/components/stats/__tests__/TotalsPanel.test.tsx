@@ -48,7 +48,7 @@ describe("TotalsPanel", () => {
     defenseCap: 45,
     resistanceCap: 75,
     damageCap: 500,
-    baseHP: 1338.6,
+    baseHp: 1338.6,
     baseRegen: 100,
     baseRecovery: 100,
   };

@@ -50,6 +50,21 @@ class ArchetypeBase(BaseModel):
     hit_points_base: int | None = None
     hit_points_max: int | None = None
 
+    # Base modifiers (Epic 2.3)
+    base_hp: Decimal | None = None
+    base_regen: Decimal | None = None
+    base_recovery: Decimal | None = None
+    base_threat: Decimal | None = None
+
+    # Archetype caps (Epic 2.3)
+    damage_cap: Decimal | None = None
+    resistance_cap: Decimal | None = None
+    defense_cap: Decimal | None = None
+    hp_cap: Decimal | None = None
+    regeneration_cap: Decimal | None = None
+    recovery_cap: Decimal | None = None
+    recharge_cap: Decimal | None = None
+
 
 class ArchetypeCreate(ArchetypeBase):
     pass
@@ -78,11 +93,41 @@ class ArchetypeUpdate(BaseModel):
     hit_points_base: int | None = None
     hit_points_max: int | None = None
 
+    # Base modifiers (Epic 2.3)
+    base_hp: Decimal | None = None
+    base_regen: Decimal | None = None
+    base_recovery: Decimal | None = None
+    base_threat: Decimal | None = None
+
+    # Archetype caps (Epic 2.3)
+    damage_cap: Decimal | None = None
+    resistance_cap: Decimal | None = None
+    defense_cap: Decimal | None = None
+    hp_cap: Decimal | None = None
+    regeneration_cap: Decimal | None = None
+    recovery_cap: Decimal | None = None
+    recharge_cap: Decimal | None = None
+
 
 class Archetype(ArchetypeBase, TimestampedBase, BaseEntitySchema):
     id: int
 
-    @field_serializer("defiant_scale", "deep_sleep_resistance", mode="wrap")
+    @field_serializer(
+        "defiant_scale",
+        "deep_sleep_resistance",
+        "base_hp",
+        "base_regen",
+        "base_recovery",
+        "base_threat",
+        "damage_cap",
+        "resistance_cap",
+        "defense_cap",
+        "hp_cap",
+        "regeneration_cap",
+        "recovery_cap",
+        "recharge_cap",
+        mode="wrap",
+    )
     def serialize_decimal(self, value: Decimal | None, nxt) -> float | None:
         if value is None:
             return None

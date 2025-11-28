@@ -71,6 +71,21 @@ class Archetype(Base):
     hit_points_base = Column(Integer)
     hit_points_max = Column(Integer)
 
+    # Base modifiers (Epic 2.3 - for character sheet display)
+    base_hp = Column(Numeric(10, 2), nullable=True, comment="Base HP at level 50")
+    base_regen = Column(Numeric(10, 6), nullable=True, comment="Base regeneration rate")
+    base_recovery = Column(Numeric(10, 6), nullable=True, comment="Base recovery rate")
+    base_threat = Column(Numeric(5, 2), nullable=True, comment="Base threat/aggro modifier")
+
+    # Archetype caps (Epic 2.3 - from archetype_caps.py)
+    damage_cap = Column(Numeric(5, 2), nullable=True, comment="Damage buff cap")
+    resistance_cap = Column(Numeric(4, 2), nullable=True, comment="Resistance cap")
+    defense_cap = Column(Numeric(4, 2), nullable=True, comment="Defense display cap")
+    hp_cap = Column(Numeric(10, 2), nullable=True, comment="Max HP cap")
+    regeneration_cap = Column(Numeric(5, 2), nullable=True, comment="Regeneration cap")
+    recovery_cap = Column(Numeric(5, 2), nullable=True, comment="Recovery cap")
+    recharge_cap = Column(Numeric(5, 2), nullable=True, comment="Recharge speed cap")
+
     # Source metadata from original JSON
     source_metadata = Column(JSON, nullable=True, comment="Raw JSON from filtered_data")
 

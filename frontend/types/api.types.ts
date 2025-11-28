@@ -26,7 +26,8 @@ export type GetArchetypeResponse = Archetype;
 // GET /api/powersets
 export interface GetPowersetsParams {
   archetypeId?: number;
-  type?: string;
+  type?: string; // Legacy field
+  powersetType?: string; // Epic 2.3: Filter by powerset type (primary, secondary, pool, inherent, etc.)
 }
 export type GetPowersetsResponse = Powerset[];
 

@@ -12,6 +12,10 @@ import type {
   CalculatedTotals,
   DefenseStats,
   ResistanceStats,
+  HPStats,
+  EnduranceStats,
+  RechargeStats,
+  MiscStats,
 } from "@/types/character.types";
 
 // Mock the useCalculateTotals hook
@@ -78,17 +82,41 @@ describe("TotalsPanel", () => {
     psionic: 0,
   };
 
+  // Epic 4.2: New HP stats structure
+  const mockHP: HPStats = {
+    max: 1339,
+    regen_percent: 140.0,
+    regen_per_second: 2.8,
+    absorb: 0,
+  };
+
+  // Epic 4.2: New endurance stats structure
+  const mockEndurance: EnduranceStats = {
+    max: 100,
+    recovery_per_second: 2.08,
+    usage_per_second: 0,
+  };
+
+  // Epic 4.2: New recharge stats structure
+  const mockRecharge: RechargeStats = {
+    global_percent: 70.0,
+  };
+
+  // Epic 4.2: New misc stats structure
+  const mockMisc: MiscStats = {
+    accuracy: 15.0,
+    tohit: 10.0,
+    damage: 50.0,
+  };
+
+  // Updated to use Epic 4.2 nested structure
   const mockTotals: CalculatedTotals = {
     defense: mockDefense,
     resistance: mockResistance,
-    maxHP: 1338.6,
-    maxEndurance: 100,
-    regeneration: 2.5,
-    recovery: 1.67,
-    globalRecharge: 0,
-    globalDamage: 0,
-    globalAccuracy: 0,
-    globalToHit: 0,
+    hp: mockHP,
+    endurance: mockEndurance,
+    recharge: mockRecharge,
+    misc: mockMisc,
   };
 
   beforeEach(() => {
@@ -235,7 +263,7 @@ describe("TotalsPanel", () => {
     expect(defenseHeader).toHaveClass("text-base");
   });
 
-  it("applies responsive grid layout", () => {
+  it("applies responsive grid layout (Epic 4.2: 3 columns)", () => {
     useCharacterStore.setState({
       archetype: mockArchetype,
       totals: mockTotals,
@@ -246,7 +274,8 @@ describe("TotalsPanel", () => {
 
     const gridContainer = container.querySelector(".grid");
     expect(gridContainer).toHaveClass("grid-cols-1");
-    expect(gridContainer).toHaveClass("lg:grid-cols-2");
+    expect(gridContainer).toHaveClass("md:grid-cols-2");
+    expect(gridContainer).toHaveClass("xl:grid-cols-3");
   });
 
   it("applies custom className", () => {
@@ -311,5 +340,94 @@ describe("TotalsPanel", () => {
     const bars = screen.getAllByRole("presentation");
     const smashingDefenseBar = bars[0];
     expect(smashingDefenseBar).toHaveStyle({ width: "100%" }); // 45/45
+  });
+
+  // Epic 4.2: New panel tests
+  describe("Epic 4.2 panels", () => {
+    it("renders HP panel with all stats", () => {
+      useCharacterStore.setState({
+        archetype: mockArchetype,
+        totals: mockTotals,
+        isCalculating: false,
+      });
+
+      render(<TotalsPanel />, { wrapper: createWrapper() });
+
+      expect(screen.getByText("Health")).toBeInTheDocument();
+      expect(screen.getByText("Max HP")).toBeInTheDocument();
+      expect(screen.getByText("Regeneration")).toBeInTheDocument();
+    });
+
+    it("renders Endurance panel with all stats", () => {
+      useCharacterStore.setState({
+        archetype: mockArchetype,
+        totals: mockTotals,
+        isCalculating: false,
+      });
+
+      render(<TotalsPanel />, { wrapper: createWrapper() });
+
+      expect(screen.getByText("Endurance")).toBeInTheDocument();
+      expect(screen.getByText("Max End")).toBeInTheDocument();
+      expect(screen.getByText("End Rec")).toBeInTheDocument();
+      expect(screen.getByText("End Use")).toBeInTheDocument();
+    });
+
+    it("renders Recharge panel with global recharge", () => {
+      useCharacterStore.setState({
+        archetype: mockArchetype,
+        totals: mockTotals,
+        isCalculating: false,
+      });
+
+      render(<TotalsPanel />, { wrapper: createWrapper() });
+
+      expect(screen.getByText("Recharge")).toBeInTheDocument();
+      expect(screen.getByText("Global Recharge")).toBeInTheDocument();
+    });
+
+    it("renders Misc Effects panel", () => {
+      useCharacterStore.setState({
+        archetype: mockArchetype,
+        totals: mockTotals,
+        isCalculating: false,
+      });
+
+      render(<TotalsPanel />, { wrapper: createWrapper() });
+
+      expect(screen.getByText("Misc Effects")).toBeInTheDocument();
+      expect(screen.getByText("Accuracy:")).toBeInTheDocument();
+      expect(screen.getByText("ToHit:")).toBeInTheDocument();
+      expect(screen.getByText("Damage:")).toBeInTheDocument();
+    });
+
+    it("shows perma-Hasten indicator when recharge >= 70%", () => {
+      useCharacterStore.setState({
+        archetype: mockArchetype,
+        totals: mockTotals, // mockRecharge has 70%
+        isCalculating: false,
+      });
+
+      render(<TotalsPanel />, { wrapper: createWrapper() });
+
+      expect(screen.getByText("Perma-Hasten achieved (+70% threshold)")).toBeInTheDocument();
+    });
+
+    it("renders all 6 panels", () => {
+      useCharacterStore.setState({
+        archetype: mockArchetype,
+        totals: mockTotals,
+        isCalculating: false,
+      });
+
+      render(<TotalsPanel />, { wrapper: createWrapper() });
+
+      expect(screen.getByText("Defense")).toBeInTheDocument();
+      expect(screen.getByText("Resistance")).toBeInTheDocument();
+      expect(screen.getByText("Health")).toBeInTheDocument();
+      expect(screen.getByText("Endurance")).toBeInTheDocument();
+      expect(screen.getByText("Recharge")).toBeInTheDocument();
+      expect(screen.getByText("Misc Effects")).toBeInTheDocument();
+    });
   });
 });

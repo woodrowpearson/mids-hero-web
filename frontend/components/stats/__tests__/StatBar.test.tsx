@@ -165,4 +165,115 @@ describe("StatBar", () => {
     const bar = screen.getByLabelText("Lethal: 30.0% of 45% cap");
     expect(bar).toBeInTheDocument();
   });
+
+  // Epic 4.2: New format tests
+  describe("Epic 4.2 formats", () => {
+    it("formats value as number (whole number)", () => {
+      render(<StatBar label="Max HP" value={1205} cap={2409} color="hp" format="number" />);
+
+      expect(screen.getByText("1205")).toBeInTheDocument();
+    });
+
+    it("formats value as decimal with 1 decimal place", () => {
+      render(<StatBar label="End Rec" value={2.08} cap={10} color="endurance" format="decimal" />);
+
+      expect(screen.getByText("2.1")).toBeInTheDocument();
+    });
+
+    it("formats value as decimal with 0 decimals for whole numbers", () => {
+      render(<StatBar label="End Rec" value={3} cap={10} color="endurance" format="decimal" />);
+
+      expect(screen.getByText("3")).toBeInTheDocument();
+    });
+
+    it("formats value as percent-offset with + sign", () => {
+      render(<StatBar label="Recharge" value={125} cap={200} color="recharge" format="percent-offset" />);
+
+      expect(screen.getByText("+125.0%")).toBeInTheDocument();
+    });
+
+    it("formats zero value without + sign for percent-offset", () => {
+      render(<StatBar label="Recharge" value={0} cap={200} color="recharge" format="percent-offset" />);
+
+      expect(screen.getByText("0.0%")).toBeInTheDocument();
+    });
+  });
+
+  // Epic 4.2: Suffix tests
+  describe("Epic 4.2 suffix", () => {
+    it("displays suffix after value", () => {
+      render(<StatBar label="Recovery" value={2.08} cap={10} color="endurance" format="decimal" suffix="/s" />);
+
+      expect(screen.getByText("2.1/s")).toBeInTheDocument();
+    });
+  });
+
+  // Epic 4.2: Sub-value tests
+  describe("Epic 4.2 showSubValue", () => {
+    it("displays sub-value below main bar", () => {
+      render(<StatBar label="Regen" value={140} cap={300} color="hp" format="percent" showSubValue="2.8/s" />);
+
+      expect(screen.getByText("140.0%")).toBeInTheDocument();
+      expect(screen.getByText("2.8/s")).toBeInTheDocument();
+    });
+  });
+
+  // Epic 4.2: Milestone tests
+  describe("Epic 4.2 showMilestone", () => {
+    it("highlights value when milestone is reached", () => {
+      render(<StatBar label="Recharge" value={75} cap={200} color="recharge" format="percent-offset" showMilestone={70} />);
+
+      const valueDisplay = screen.getByText("+75.0%");
+      expect(valueDisplay).toHaveClass("text-green-500");
+      expect(valueDisplay).toHaveClass("font-bold");
+    });
+
+    it("shows green border on bar when milestone is reached", () => {
+      render(<StatBar label="Recharge" value={75} cap={200} color="recharge" format="percent-offset" showMilestone={70} />);
+
+      const bar = screen.getByRole("presentation");
+      expect(bar).toHaveClass("border-green-400");
+    });
+
+    it("does not highlight when below milestone", () => {
+      render(<StatBar label="Recharge" value={50} cap={200} color="recharge" format="percent-offset" showMilestone={70} />);
+
+      const valueDisplay = screen.getByText("+50.0%");
+      expect(valueDisplay).not.toHaveClass("text-green-500");
+    });
+  });
+
+  // Epic 4.2: New color themes
+  describe("Epic 4.2 color themes", () => {
+    it("applies hp-absorb color gradient", () => {
+      render(<StatBar label="Absorb" value={500} cap={1000} color="hp-absorb" />);
+
+      const bar = screen.getByRole("presentation");
+      expect(bar).toHaveClass("from-cyan-400");
+      expect(bar).toHaveClass("to-cyan-600");
+    });
+
+    it("applies endurance-usage color gradient", () => {
+      render(<StatBar label="End Use" value={0.5} cap={10} color="endurance-usage" />);
+
+      const bar = screen.getByRole("presentation");
+      expect(bar).toHaveClass("from-red-500");
+      expect(bar).toHaveClass("to-red-700");
+    });
+  });
+
+  // Epic 4.2: allowNegative tests
+  describe("Epic 4.2 allowNegative", () => {
+    it("clamps negative values to 0 when allowNegative is false", () => {
+      render(<StatBar label="End Use" value={-5} cap={10} color="endurance-usage" format="decimal" allowNegative={false} />);
+
+      expect(screen.getByText("0")).toBeInTheDocument();
+    });
+
+    it("shows negative values when allowNegative is true (default)", () => {
+      render(<StatBar label="Fire" value={-10} cap={45} color="defense" />);
+
+      expect(screen.getByText("-10.0%")).toBeInTheDocument();
+    });
+  });
 });

@@ -18,7 +18,7 @@ export { EndurancePanel } from "./EndurancePanel";
 export { RechargePanel } from "./RechargePanel";
 export { MiscStatsPanel } from "./MiscStatsPanel";
 
-// Type exports
+// Component prop type exports
 export type { StatBarProps } from "./StatBar";
 export type { DefensePanelProps } from "./DefensePanel";
 export type { ResistancePanelProps } from "./ResistancePanel";
@@ -27,3 +27,14 @@ export type { HPPanelProps } from "./HPPanel";
 export type { EndurancePanelProps } from "./EndurancePanel";
 export type { RechargePanelProps } from "./RechargePanel";
 export type { MiscStatsPanelProps } from "./MiscStatsPanel";
+
+// Re-export stat types for convenience (Epic 4.2)
+export type {
+  DefenseStats,
+  ResistanceStats,
+  HPStats,
+  EnduranceStats,
+  RechargeStats,
+  MiscStats,
+  CalculatedTotals,
+} from "@/types/character.types";

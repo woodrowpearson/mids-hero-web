@@ -330,6 +330,88 @@ class ResistanceCalculationResponse(BaseModel):
         }
 
 
+class HPStatsResponse(BaseModel):
+    """Response for HP stats calculation."""
+
+    max: int = Field(..., description="Maximum HP after buffs and caps")
+    regen_percent: float = Field(
+        ..., description="Regeneration as percentage of base (100% = base regen)"
+    )
+    regen_per_second: float = Field(
+        ..., description="HP regenerated per second"
+    )
+    absorb: float = Field(default=0.0, description="Absorb shield value")
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "max": 1205,
+                "regen_percent": 140.0,
+                "regen_per_second": 2.8,
+                "absorb": 0.0,
+            }
+        }
+
+
+class EnduranceStatsResponse(BaseModel):
+    """Response for endurance stats calculation."""
+
+    max: int = Field(default=100, description="Maximum endurance")
+    recovery_per_second: float = Field(
+        ..., description="Endurance recovered per second"
+    )
+    usage_per_second: float = Field(
+        default=0.0, description="Endurance used per second (toggles)"
+    )
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "max": 100,
+                "recovery_per_second": 2.08,
+                "usage_per_second": 0.0,
+            }
+        }
+
+
+class RechargeStatsResponse(BaseModel):
+    """Response for global recharge stats."""
+
+    global_percent: float = Field(
+        ..., description="Global recharge bonus as percentage (0% = base)"
+    )
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "global_percent": 125.0,
+            }
+        }
+
+
+class MiscStatsResponse(BaseModel):
+    """Response for miscellaneous stats (accuracy, tohit, damage)."""
+
+    accuracy: float = Field(
+        default=0.0, description="Global accuracy bonus as percentage"
+    )
+    tohit: float = Field(
+        default=0.0, description="Global tohit bonus as percentage"
+    )
+    damage: float = Field(
+        default=0.0, description="Global damage bonus as percentage"
+    )
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "accuracy": 15.0,
+                "tohit": 10.0,
+                "damage": 50.0,
+            }
+        }
+
+
 class BuildTotalsRequest(BaseModel):
     """Request for complete build totals calculation."""
 
@@ -340,7 +422,30 @@ class BuildTotalsRequest(BaseModel):
     resistance_bonuses: list[ResistanceBonusInput] = Field(
         default_factory=list, description="Resistance bonuses from all sources"
     )
-    # TODO: Add recharge, damage, accuracy, and other stats in future updates
+    recharge_bonuses: list[float] = Field(
+        default_factory=list, description="Recharge bonuses (0.0-1.0 scale)"
+    )
+    damage_bonuses: list[float] = Field(
+        default_factory=list, description="Damage bonuses (0.0-1.0 scale)"
+    )
+    accuracy_bonuses: list[float] = Field(
+        default_factory=list, description="Accuracy bonuses (0.0-1.0 scale)"
+    )
+    tohit_bonuses: list[float] = Field(
+        default_factory=list, description="ToHit bonuses (0.0-1.0 scale)"
+    )
+    hp_bonuses: list[float] = Field(
+        default_factory=list, description="HP max bonuses (0.0-1.0 scale)"
+    )
+    regen_bonuses: list[float] = Field(
+        default_factory=list, description="Regen bonuses (0.0-1.0 scale)"
+    )
+    recovery_bonuses: list[float] = Field(
+        default_factory=list, description="Endurance recovery bonuses (0.0-1.0 scale)"
+    )
+    absorb_value: float = Field(
+        default=0.0, description="Total absorb shield value"
+    )
 
     class Config:
         json_schema_extra = {
@@ -348,6 +453,14 @@ class BuildTotalsRequest(BaseModel):
                 "archetype": "Scrapper",
                 "defense_bonuses": [{"bonuses": {"melee": 0.30}}],
                 "resistance_bonuses": [{"bonuses": {"smashing": 0.20}}],
+                "recharge_bonuses": [0.70, 0.10, 0.05],
+                "damage_bonuses": [0.50],
+                "accuracy_bonuses": [0.09],
+                "tohit_bonuses": [0.06],
+                "hp_bonuses": [0.10],
+                "regen_bonuses": [0.40],
+                "recovery_bonuses": [0.25],
+                "absorb_value": 0.0,
             }
         }
 
@@ -359,7 +472,16 @@ class BuildTotalsResponse(BaseModel):
     resistance: ResistanceCalculationResponse = Field(
         ..., description="Resistance totals"
     )
-    # TODO: Add recharge, damage, accuracy, and other stats in future updates
+    hp: HPStatsResponse = Field(..., description="HP stats (max, regen, absorb)")
+    endurance: EnduranceStatsResponse = Field(
+        ..., description="Endurance stats (max, recovery, usage)"
+    )
+    recharge: RechargeStatsResponse = Field(
+        ..., description="Global recharge stats"
+    )
+    misc: MiscStatsResponse = Field(
+        ..., description="Misc stats (accuracy, tohit, damage)"
+    )
 
     class Config:
         json_schema_extra = {
@@ -373,6 +495,25 @@ class BuildTotalsResponse(BaseModel):
                 "resistance": {
                     "values": {"smashing": 0.20},
                     "resistance_debuff_resistance": 0.0,
+                },
+                "hp": {
+                    "max": 1205,
+                    "regen_percent": 140.0,
+                    "regen_per_second": 2.8,
+                    "absorb": 0.0,
+                },
+                "endurance": {
+                    "max": 100,
+                    "recovery_per_second": 2.08,
+                    "usage_per_second": 0.0,
+                },
+                "recharge": {
+                    "global_percent": 125.0,
+                },
+                "misc": {
+                    "accuracy": 15.0,
+                    "tohit": 10.0,
+                    "damage": 50.0,
                 },
             }
         }

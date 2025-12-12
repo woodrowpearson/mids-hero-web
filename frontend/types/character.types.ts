@@ -9,6 +9,7 @@ export interface Archetype {
   name: string;
   displayName: string;
   damageScale?: number; // Damage multiplier for this AT (legacy field)
+  icon?: string; // Icon URL (Epic 4.2)
 
   // Base modifiers (Epic 2.3)
   baseHp?: number; // Base HP at level 50
@@ -16,13 +17,22 @@ export interface Archetype {
   baseRecovery?: number; // Base endurance recovery (decimal, e.g., 0.0167 = 1.67%/s)
   baseThreat?: number; // Base threat/aggro modifier (decimal, e.g., 1.0 = 100%)
 
-  // Archetype caps (Epic 2.3)
+  // Archetype caps (Epic 2.3 + Epic 4.1/4.2)
   damageCap?: number; // Max damage bonus (decimal, e.g., 5.0 = 500%)
   resistanceCap?: number; // Max resistance (decimal, e.g., 0.75 = 75%)
   defenseCap?: number; // Max defense display (decimal, e.g., 2.25 = 225%)
-  hpCap?: number; // Max HP cap (absolute value)
-  regenerationCap?: number; // Max regeneration (decimal, e.g., 30.0 = 3000%)
+
+  // HP caps (Epic 4.2) - use consistent naming
+  maxHP?: number; // Max HP cap (absolute value, e.g., 2409)
+  hpCap?: number; // Alias for maxHP (legacy)
+  regenCap?: number; // Regen % cap (usually 300%)
+  regenerationCap?: number; // Alias for regenCap (legacy)
+
+  // Endurance caps (Epic 4.2)
+  maxEndurance?: number; // Usually 100, some ATs higher
   recoveryCap?: number; // Max recovery (decimal, e.g., 8.0 = 800%)
+
+  // Recharge cap
   rechargeCap?: number; // Max recharge speed (decimal, e.g., 5.0 = 500%)
 }
 
@@ -188,21 +198,34 @@ export interface BuildData {
   totals?: CalculatedTotals; // Optional, calculated by backend
 }
 
-// Calculated totals (from backend)
-export interface CalculatedTotals {
-  defense: DefenseStats;
-  resistance: ResistanceStats;
-  maxHP: number;
-  maxEndurance: number;
-  regeneration: number; // HP/sec
-  recovery: number; // End/sec
-  globalRecharge: number; // Percentage
-  globalDamage: number; // Percentage
-  globalAccuracy: number; // Percentage
-  globalToHit: number; // Percentage
+// Epic 4.2: HP stats (matches backend HPStatsResponse)
+export interface HPStats {
+  max: number; // Max HP value
+  regen_percent: number; // Regeneration % (base 100%)
+  regen_per_second: number; // HP regenerated per second
+  absorb?: number; // Absorb shield value (optional)
 }
 
-// Defense statistics
+// Epic 4.2: Endurance stats (matches backend EnduranceStatsResponse)
+export interface EnduranceStats {
+  max: number; // Max Endurance value (usually 100)
+  recovery_per_second: number; // Endurance recovered per second
+  usage_per_second: number; // Endurance used per second (0 for static build)
+}
+
+// Epic 4.2: Recharge stats (matches backend RechargeStatsResponse)
+export interface RechargeStats {
+  global_percent: number; // Global recharge % from set bonuses, IOs (base 0%)
+}
+
+// Epic 4.2: Misc stats (matches backend MiscStatsResponse)
+export interface MiscStats {
+  accuracy: number; // Global accuracy bonus %
+  tohit: number; // Global tohit bonus %
+  damage: number; // Global damage bonus %
+}
+
+// Defense statistics (matches backend DefenseCalculationResponse)
 export interface DefenseStats {
   smashing: number;
   lethal: number;
@@ -217,7 +240,7 @@ export interface DefenseStats {
   aoe: number;
 }
 
-// Resistance statistics
+// Resistance statistics (matches backend ResistanceCalculationResponse)
 export interface ResistanceStats {
   smashing: number;
   lethal: number;
@@ -227,4 +250,14 @@ export interface ResistanceStats {
   negative: number;
   psionic: number;
   toxic: number;
+}
+
+// Calculated totals (from backend BuildTotalsResponse - Epic 4.2 structure)
+export interface CalculatedTotals {
+  defense: DefenseStats;
+  resistance: ResistanceStats;
+  hp: HPStats; // Epic 4.2
+  endurance: EnduranceStats; // Epic 4.2
+  recharge: RechargeStats; // Epic 4.2
+  misc: MiscStats; // Epic 4.2
 }

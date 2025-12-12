@@ -57,10 +57,14 @@ from app.schemas.calculations import (  # Request/Response models; Enums
     DefenseCalculationRequest,
     DefenseCalculationResponse,
     DefenseTypeEnum,
+    EnduranceStatsResponse,
     ErrorResponse,
     GameConstantsResponse,
+    HPStatsResponse,
+    MiscStatsResponse,
     ProcCalculationRequest,
     ProcCalculationResponse,
+    RechargeStatsResponse,
     ResistanceCalculationRequest,
     ResistanceCalculationResponse,
     ResistanceTypeEnum,
@@ -429,7 +433,10 @@ async def calculate_build_resistance(
     Combines:
     - Defense calculations
     - Resistance calculations
-    - (Future) Recharge, damage, accuracy, and other stats
+    - HP stats (max HP, regeneration, absorb)
+    - Endurance stats (max end, recovery, usage)
+    - Recharge stats (global recharge bonus)
+    - Misc stats (accuracy, tohit, damage bonuses)
 
     More efficient than calling individual endpoints separately.
     """,
@@ -457,13 +464,119 @@ async def calculate_build_totals(
         )
         resistance_resp = await calculate_build_resistance(resistance_req)
 
+        # Get archetype base stats for HP/endurance calculations
+        archetype_hp_base = _get_archetype_hp_base(request.archetype.value)
+        archetype_hp_cap = _get_archetype_hp_cap(request.archetype.value)
+
+        # Calculate HP stats
+        hp_bonus_total = sum(request.hp_bonuses) if request.hp_bonuses else 0.0
+        regen_bonus_total = sum(request.regen_bonuses) if request.regen_bonuses else 0.0
+
+        # HP max = base * (1 + bonus), capped
+        hp_max_raw = archetype_hp_base * (1 + hp_bonus_total)
+        hp_max = min(int(hp_max_raw), archetype_hp_cap)
+
+        # Regen percent = 100% base + bonuses (as percentage)
+        regen_percent = 100.0 + (regen_bonus_total * 100.0)
+
+        # Regen per second = (base HP * regen%) / (60 * magic constant)
+        # magic constant = 1.666667 (game tick conversion)
+        magic_constant = 1.666667
+        regen_per_second = (archetype_hp_base * (regen_percent / 100.0)) / (60.0 * magic_constant)
+
+        hp_stats = HPStatsResponse(
+            max=hp_max,
+            regen_percent=round(regen_percent, 1),
+            regen_per_second=round(regen_per_second, 2),
+            absorb=request.absorb_value,
+        )
+
+        # Calculate endurance stats
+        recovery_bonus_total = sum(request.recovery_bonuses) if request.recovery_bonuses else 0.0
+
+        # Base recovery = 1.67 end/sec at 100%
+        base_recovery = 1.67
+        recovery_percent = 1.0 + recovery_bonus_total
+        recovery_per_second = base_recovery * recovery_percent
+
+        endurance_stats = EnduranceStatsResponse(
+            max=100,  # Standard max endurance
+            recovery_per_second=round(recovery_per_second, 2),
+            usage_per_second=0.0,  # Would need toggle data to calculate
+        )
+
+        # Calculate recharge stats
+        recharge_bonus_total = sum(request.recharge_bonuses) if request.recharge_bonuses else 0.0
+        recharge_percent = recharge_bonus_total * 100.0  # Convert to percentage
+
+        recharge_stats = RechargeStatsResponse(
+            global_percent=round(recharge_percent, 1),
+        )
+
+        # Calculate misc stats
+        accuracy_bonus = sum(request.accuracy_bonuses) if request.accuracy_bonuses else 0.0
+        tohit_bonus = sum(request.tohit_bonuses) if request.tohit_bonuses else 0.0
+        damage_bonus = sum(request.damage_bonuses) if request.damage_bonuses else 0.0
+
+        misc_stats = MiscStatsResponse(
+            accuracy=round(accuracy_bonus * 100.0, 1),
+            tohit=round(tohit_bonus * 100.0, 1),
+            damage=round(damage_bonus * 100.0, 1),
+        )
+
         return BuildTotalsResponse(
             defense=defense_resp,
             resistance=resistance_resp,
+            hp=hp_stats,
+            endurance=endurance_stats,
+            recharge=recharge_stats,
+            misc=misc_stats,
         )
 
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+
+
+def _get_archetype_hp_base(archetype: str) -> int:
+    """Get base HP for archetype at level 50."""
+    hp_bases = {
+        "Tanker": 1874,
+        "Brute": 1499,
+        "Scrapper": 1338,
+        "Stalker": 1204,
+        "Blaster": 1071,
+        "Defender": 1071,
+        "Corruptor": 1071,
+        "Controller": 1071,
+        "Dominator": 1071,
+        "Mastermind": 803,
+        "Peacebringer": 1606,
+        "Warshade": 1606,
+        "Arachnos Soldier": 1338,
+        "Arachnos Widow": 1338,
+    }
+    return hp_bases.get(archetype, 1338)
+
+
+def _get_archetype_hp_cap(archetype: str) -> int:
+    """Get HP cap for archetype."""
+    hp_caps = {
+        "Tanker": 3212,
+        "Brute": 2409,
+        "Scrapper": 2409,
+        "Stalker": 2409,
+        "Blaster": 1606,
+        "Defender": 1606,
+        "Corruptor": 1606,
+        "Controller": 1606,
+        "Dominator": 1606,
+        "Mastermind": 1606,
+        "Peacebringer": 2409,
+        "Warshade": 2409,
+        "Arachnos Soldier": 2409,
+        "Arachnos Widow": 2409,
+    }
+    return hp_caps.get(archetype, 2409)
 
 
 @router.get(
